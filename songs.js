@@ -639,7 +639,7 @@ window.SONGS = [
   {a: "Lenny Valentino & Artur Rojek", t: "Chłopiec z plasteliny", y: 2001, c: "PL", cc: "PL", src: "Discogs + Spotify", g: ["rock", "elektronika"], p: 25, x: ["Mietall Walus"], sp: "3sn0STf2Ac0DX8KKHaEpqS"},
   {a: "Małgorzata Ostrowska", t: "Golebi puch", y: 2001, c: "PL", cc: "PL", src: "Spotify + MusicBrainz", p: 40, sp: "0aOBieOudfwGGpMlXLehoD"},
   {a: "Małgorzata Ostrowska", t: "Szklana pogoda", y: 2001, c: "PL", cc: "PL", src: "Spotify + MusicBrainz", p: 46, sp: "0Ya7fYlJjeSVSo6rMjHkeL"},
-  {a: "Rena Rolska", t: "Jeszcze Poczekajmy", y: 2001, c: "PL", cc: "PL", src: "Discogs", g: ["pop"], p: 22, sp: "1g3D0NCw85GCTphXOWEf8E"},
+  {a: "Rena Rolska", t: "Jeszcze Poczekajmy", y: 1961, c: "PL", cc: "PL", src: "Discogs", g: ["pop"], p: 22, sp: "1g3D0NCw85GCTphXOWEf8E"},
   {a: "Robert Gawlinski", t: "Nie pokonasz miłości", y: 2001, c: "PL", cc: "PL", src: "Spotify + MusicBrainz", p: 32, sp: "1OEkLYOl4Iy5Fs1SFNw7TT"},
   {a: "Smolik & Artur Rojek", t: "50 Tysięcy 881", y: 2001, c: "PL", cc: "PL", src: "Discogs", g: ["elektronika", "pop"], p: 31, sp: "2drryErIbRlwS9rg2GomoA"},
   {a: "T.Love", t: "Ajrisz", y: 2001, c: "PL", cc: "PL", src: "Discogs + Spotify", g: ["rock", "pop"], p: 46, sp: "6WgO2rYOdgdOvQBywjyhre"},
