@@ -114,11 +114,19 @@
       </div>
       <div data-for="multi">
         <label class="check"><input type="checkbox" id="show-all"> Pokazuj przez cały czas osie wszystkich graczy</label>
+        <p class="label" style="margin-top:12px">Wyzwanie (1 żeton)</p>
+        <div class="seg">
+          <label><input type="radio" name="challenge" value="place" checked> Wskaż inne miejsce na osi</label>
+          <label><input type="radio" name="challenge" value="year"> Podaj dokładny rok</label>
+        </div>
+        <p class="muted small" id="challenge-desc"></p>
       </div>
       <div data-for="solo">
         <label class="row">Dozwolone pomyłki
           <input type="number" id="lives" min="1" max="10" value="3">
         </label>
+        <label class="check"><input type="checkbox" id="endless"> Gra bez końca – bez celu kart, grasz do wyczerpania pomyłek i bijesz swój rekord</label>
+        <p class="muted small" id="record-info"></p>
       </div>
       <div data-for="melody">
         <p class="label">Co zgadujemy?</p>
@@ -224,9 +232,9 @@
     <ol>
       <li>Każdy gracz zaczyna z kartą startową – samym rokiem (bez piosenki) – na osi czasu.</li>
       <li>Słuchasz fragmentu piosenki (bez tytułu i roku) i wskazujesz, gdzie pasuje na Twojej osi – przed, między albo po kartach.</li>
-      <li>Multiplayer: inni gracze mogą rzucić <b>wyzwanie</b> (1 żeton) i wskazać inne miejsce. Jeśli Ty się pomylisz, a oni trafią – zabierają kartę.</li>
+      <li>Multiplayer: inni gracze mogą rzucić <b>wyzwanie</b> (1 żeton). W wariancie „inne miejsce” pretendent wskazuje inne miejsce na Twojej osi – jeśli Ty się pomylisz, a on trafi, zabiera kartę. W wariancie „dokładny rok” pretendent podaje rok wydania – jeśli trafi co do roku, zabiera kartę niezależnie od Twojego ruchu.</li>
       <li>Za odgadnięcie wykonawcy i tytułu dostajesz żeton (maks. 5). 1 żeton = pominięcie piosenki, 3 żetony = kupienie karty.</li>
-      <li>Wygrywa pierwsza osoba z ustaloną liczbą kart. W trybie 1 gracza masz ograniczoną liczbę pomyłek.</li>
+      <li>Wygrywa pierwsza osoba z ustaloną liczbą kart. W trybie 1 gracza masz ograniczoną liczbę pomyłek; w grze bez końca grasz do ich wyczerpania i bijesz swój rekord.</li>
     </ol>
     <h3>Jaka to melodia</h3>
     <ol>

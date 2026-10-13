@@ -274,6 +274,9 @@ const state = {
   slot: null,
   challenger: null,
   challengeSlot: null,
+  challengeYear: null,
+  challengeMode: 'place',
+  endless: false,
   winTarget: 10,
   awarded: false,
   guessType: 'title',
@@ -399,7 +402,7 @@ const LEVELS = [
 ];
 
 const filterState = Object.assign(
-  { decade: [], genre: [], country: [], level: 1, plShare: 50, clip: 30, random: false, hint: false, showAll: true },
+  { decade: [], genre: [], country: [], level: 1, plShare: 50, clip: 30, random: false, hint: false, showAll: true, endless: false, challenge: 'place' },
   store.get('filters', {}),
 ); // decade/genre/country przechowują WYŁĄCZONE wartości
 // dawne dekady sprzed 1960 r. nie są już osobnymi kategoriami
@@ -453,6 +456,24 @@ $$('input[name=level]').forEach((r) => {
 });
 $('#pl-share').value = String(filterState.plShare);
 $('#pl-share').addEventListener('input', (e) => { filterState.plShare = Number(e.target.value); saveFilters(); updatePoolInfo(); });
+$('#endless').checked = filterState.endless;
+$('#endless').addEventListener('change', (e) => { filterState.endless = e.target.checked; saveFilters(); updateModeOptions(); });
+$$('input[name=challenge]').forEach((r) => {
+  r.checked = r.value === filterState.challenge;
+  r.addEventListener('change', () => { filterState.challenge = r.value; saveFilters(); updateModeOptions(); });
+});
+// rekordy gry bez końca – osobno dla każdego poziomu trudności
+const recordKey = () => `level${filterState.level}`;
+function updateModeOptions() {
+  $('#win-target').disabled = state.mode === 'solo' && filterState.endless;
+  const rec = store.get('records', {})[recordKey()];
+  $('#record-info').textContent = filterState.endless
+    ? (rec ? `Twój rekord na poziomie „${(LEVELS[filterState.level] || LEVELS[1]).name}” – ułożone piosenki: ${rec}.` : 'Nie masz jeszcze rekordu na tym poziomie.')
+    : '';
+  $('#challenge-desc').textContent = filterState.challenge === 'year'
+    ? 'Pretendent wpisuje rok wydania. Jeśli trafi co do roku – zabiera kartę, niezależnie od tego, czy gracz ułożył ją dobrze.'
+    : 'Pretendent wskazuje inne miejsce na osi gracza. Jeśli gracz się pomyli, a pretendent trafi – zabiera kartę.';
+}
 $('#show-all').checked = filterState.showAll;
 $('#show-all').addEventListener('change', (e) => { filterState.showAll = e.target.checked; saveFilters(); });
 $('#clip-length').value = String(filterState.clip);
@@ -468,6 +489,7 @@ function updatePoolInfo() {
   const active = Object.keys(FILTERS).filter((f) => filterState[f].length).length;
   $('#filters summary').textContent = `Filtry: dekady, gatunki, kraje${active ? ` (aktywne: ${active})` : ''}`;
   $('#difficulty-desc').textContent = (LEVELS[filterState.level] || LEVELS[1]).desc;
+  updateModeOptions();
   $('#share-box').classList.toggle('hidden', poolValue() !== 'ALL');
   $('#pl-share-label').textContent = `${filterState.plShare}% polskich · ${100 - filterState.plShare}% zagranicznych`;
   if (!pool.length) {
@@ -498,6 +520,10 @@ function startGame() {
   state.guessType = document.querySelector('input[name=guess]:checked').value;
   state.difficulty = filterState.level;
   state.showAll = filterState.showAll;
+  state.endless = state.mode === 'solo' && filterState.endless;
+  state.challengeMode = filterState.challenge;
+  state.challengeYear = null;
+  state.recordLevel = recordKey();
   const plShare = poolValue() === 'ALL' ? filterState.plShare / 100 : (poolValue() === 'PL' ? 1 : 0);
   state.deck = new Deck(songPool(), { level: state.difficulty, plShare });
   prefetched = null;
@@ -537,7 +563,7 @@ function dealStartYears(pool) {
 async function startTurn() {
   stopAudio();
   Object.assign(state, {
-    phase: 'listen', slot: null, challenger: null, challengeSlot: null, awarded: false,
+    phase: 'listen', slot: null, challenger: null, challengeSlot: null, challengeYear: null, awarded: false,
     current: null, preview: null,
   });
   $('#reveal').classList.add('hidden');
@@ -557,9 +583,32 @@ const nextPlayerIndex = () => (state.mode === 'multi' ? (state.turn + 1) % state
 // na trudnych poziomach oś następnego gracza zmienia się do chwili odkrycia karty – wtedy szukamy dopiero po odkryciu
 const prefetchAfterReveal = () => isTimeline() && state.difficulty >= 2;
 
+// Cały 30-sekundowy fragment (~1 MB) pobieramy z góry. Bez tego telefony zaczynały grać przy małym
+// buforze i po chwili zatrzymywały się na doładowanie. Serwer iTunes zezwala na to (CORS: *).
+async function withAudio(preview) {
+  if (!preview || preview.blobUrl) return preview;
+  try {
+    const res = await fetch(preview.url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const blob = new Blob([await res.arrayBuffer()], { type: 'audio/mp4' });
+    // kopia – obiekt w pamięci podręcznej wyszukiwania zostaje bez adresu blob (ten jest zwalniany po piosence)
+    return { ...preview, blobUrl: URL.createObjectURL(blob) };
+  } catch (e) {
+    console.warn('Nie udało się pobrać całego fragmentu – odtwarzanie strumieniowe', e);
+  }
+  return preview;
+}
+let currentBlobUrl = null;
+function setAudioSource(preview) {
+  if (currentBlobUrl && currentBlobUrl !== preview.blobUrl) URL.revokeObjectURL(currentBlobUrl);
+  currentBlobUrl = preview.blobUrl || null;
+  $('#audio').src = preview.blobUrl || preview.url;
+  $('#audio').load();
+}
+
 function prefetchNext() {
   const song = state.deck.draw(nearYearsFor(nextPlayerIndex()));
-  prefetched = song ? { song, deck: state.deck, promise: findPreview(song).catch(() => null) } : null;
+  prefetched = song ? { song, deck: state.deck, promise: findPreview(song).then(withAudio).catch(() => null) } : null;
 }
 
 async function drawSong() {
@@ -577,7 +626,8 @@ async function drawSong() {
     } else {
       song = state.deck.draw(nearYearsFor(state.turn));
       if (!song) break;
-      preview = await findPreview(song);
+      $('#mystery-status').textContent = 'Szukam fragmentu piosenki…';
+      preview = await withAudio(await findPreview(song));
     }
     if (myDraw !== state.drawId) return; // gra została przerwana
     if (preview) {
@@ -585,7 +635,7 @@ async function drawSong() {
       state.preview = preview;
       state.clipLen = filterState.clip;
       state.clipStart = filterState.random && filterState.clip < 30 ? Math.random() * (29 - filterState.clip) : 0;
-      $('#audio').src = preview.url;
+      setAudioSource(preview);
       $('#mystery-status').replaceChildren(state.mode === 'melody'
         ? 'Posłuchaj i wpisz odpowiedź.'
         : 'Posłuchaj i wybierz miejsce na swojej osi czasu.');
@@ -642,11 +692,22 @@ function revealTimeline() {
   const song = state.current;
   const p = activePlayer();
   const ok = placeIsCorrect(p.timeline, state.slot, song.y);
-  const challengeOk = state.challenger != null && state.challengeSlot != null
-    && placeIsCorrect(p.timeline, state.challengeSlot, song.y);
+  const yearMode = state.challengeMode === 'year' && state.challenger != null;
+  const challengeOk = state.challenger != null && (yearMode
+    ? state.challengeYear === song.y
+    : state.challengeSlot != null && placeIsCorrect(p.timeline, state.challengeSlot, song.y));
   let verdict;
   let note;
-  if (ok) {
+  const yearInfo = yearMode && !challengeOk
+    ? el('div', { class: 'muted' }, `${state.players[state.challenger].name} podał(a) rok ${state.challengeYear} – pudło.`) : null;
+  if (yearMode && challengeOk) {
+    // dokładny rok wygrywa niezależnie od ruchu gracza
+    const ch = state.players[state.challenger];
+    addToTimeline(ch, song);
+    verdict = el('div', { class: 'verdict ' + (ok ? 'bad' : 'ok') },
+      `🎯 ${ch.name} podał(a) dokładny rok – karta trafia do: ${ch.name}!`);
+    note = `🎯 kartę zdobył(a) ${ch.name} (dokładny rok)`;
+  } else if (ok) {
     p.timeline.splice(state.slot, 0, song);
     verdict = el('div', { class: 'verdict ok' }, state.mode === 'solo'
       ? '✔ Dobrze! Karta trafia na Twoją oś.'
@@ -665,7 +726,7 @@ function revealTimeline() {
     note = `✘ ${p.name}`;
   }
   state.history.push({ song, preview: state.preview, player: p.name, ok: ok || challengeOk, note });
-  showReveal(verdict);
+  showReveal(verdict, yearInfo);
 }
 
 function showReveal(...extra) {
@@ -675,7 +736,7 @@ function showReveal(...extra) {
   $('#reveal').replaceChildren(
     el('div', { class: 'year' }, String(song.y)),
     el('div', {}, el('b', {}, song.t), ' — ', artistLine(song), ' ', flagEl(song)),
-    ...extra,
+    ...extra.filter(Boolean),
     listenLink(song, state.preview),
   );
   $('#reveal').classList.remove('hidden');
@@ -691,7 +752,7 @@ function buyCard() {
   // zakupiona karta mogła przesunąć indeksy – resetujemy wybór miejsca
   state.slot = null;
   state.phase = 'listen';
-  if (p.timeline.length >= state.winTarget) return endGame();
+  if (!state.endless && p.timeline.length >= state.winTarget) return endGame();
   render();
 }
 
@@ -733,7 +794,7 @@ function revealMelody(gaveUp) {
 /* --- wspólne --- */
 function nextTurn() {
   if (isTimeline()) {
-    const winner = state.players.find((p) => p.timeline.length >= state.winTarget);
+    const winner = !state.endless && state.players.find((p) => p.timeline.length >= state.winTarget);
     if (winner || (state.mode === 'solo' && activePlayer().lives <= 0)) return endGame();
   } else if (state.turnsPlayed >= state.rounds * state.players.length) {
     return endGame();
@@ -762,6 +823,14 @@ function endGame() {
   if (state.mode === 'melody' && state.players.length === 1) {
     const max = state.rounds * (state.guessType === 'both' ? 2 : 1);
     $('#winner-title').textContent = `🎤 Twój wynik: ${best.score} z ${max} pkt`;
+  } else if (state.mode === 'solo' && state.endless) {
+    const placed = best.timeline.filter((c) => !c.start).length;
+    const records = store.get('records', {});
+    const prev = records[state.recordLevel] || 0;
+    if (placed > prev) { records[state.recordLevel] = placed; store.set('records', records); }
+    $('#winner-title').textContent = placed > prev
+      ? `🏆 Nowy rekord! Ułożone piosenki: ${placed} (poprzedni: ${prev}).`
+      : `Koniec gry – ułożone piosenki: ${placed}. Rekord: ${prev}.`;
   } else if (state.mode === 'solo') {
     $('#winner-title').textContent = best.timeline.length >= state.winTarget
       ? `🏆 Wygrana! Zebrano ${cardsLabel(best.timeline.length)}.`
@@ -869,7 +938,10 @@ function render() {
     $('#turn-title').textContent = state.players.length > 1 ? `Tura: ${p.name}` : `Piosenka ${state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1)} z ${state.rounds}`;
     $('#turn-info').textContent = state.players.length > 1 ? `Runda ${round}/${state.rounds}` : `Wynik: ${p.score} pkt`;
   } else {
-    $('#turn-title').textContent = state.mode === 'solo' ? `Twoja oś: ${cardsLabel(p.timeline.length)} z ${state.winTarget}` : `Tura: ${p.name}`;
+    const placed = p.timeline.filter((c) => !c.start).length;
+    const rec = store.get('records', {})[state.recordLevel] || 0;
+    $('#turn-title').textContent = state.mode !== 'solo' ? `Tura: ${p.name}`
+      : (state.endless ? `Ułożone piosenki: ${placed} · rekord: ${Math.max(rec, placed)}` : `Twoja oś: ${cardsLabel(p.timeline.length)} z ${state.winTarget}`);
     $('#turn-info').textContent = `Żetony: ${'🪙'.repeat(p.tokens) || 'brak'}`
       + (state.mode === 'solo' ? ` · Pomyłki: ${'❤️'.repeat(Math.max(0, p.lives))}` : '');
   }
@@ -899,7 +971,9 @@ function render() {
     placed: state.mode === 'multi' ? 'Zatwierdź wybór albo pozwól innym rzucić wyzwanie.' : 'Zatwierdź wybór.',
     challenge: state.challenger == null
       ? 'Kto rzuca wyzwanie? (koszt: 1 żeton)'
-      : `${state.players[state.challenger]?.name}, wybierz INNE miejsce na osi gracza ${p.name}.`,
+      : (state.challengeMode === 'year'
+        ? `${state.players[state.challenger]?.name}, wpisz dokładny rok wydania tej piosenki.`
+        : `${state.players[state.challenger]?.name}, wybierz INNE miejsce na osi gracza ${p.name}.`),
     revealed: state.mode === 'multi' ? 'Czy gracz podał poprawnie wykonawcę i tytuł? Decyduje reszta stołu.' : '',
   };
   $('#hint').textContent = (state.current || state.phase === 'revealed') ? (hints[state.phase] || '') : '';
@@ -934,10 +1008,12 @@ function renderTimeline(container, timeline, interactive) {
     if (interactive) {
       let cls = 'slot';
       let label = '＋';
+      // przy jednej karcie na osi same plusy bywają mylące – podpisujemy kierunek
+      if (timeline.length === 1) { cls += ' labeled'; label = i === 0 ? '＋ Wcześniej' : '＋ Później'; }
       if (state.slot === i) { cls += ' chosen'; label = state.mode === 'solo' ? 'tutaj' : activePlayer().name; }
       if (state.challengeSlot === i) { cls += ' challenge'; label = state.players[state.challenger].name; }
       const disabled = !state.current
-        || (state.phase === 'challenge' && (state.challenger == null || i === state.slot));
+        || (state.phase === 'challenge' && (state.challenger == null || i === state.slot || state.challengeMode === 'year'));
       items.push(el('button', {
         class: cls, disabled, onclick: () => onSlotClick(i), 'aria-label': `Miejsce ${i + 1}`,
       }, label));
@@ -995,7 +1071,23 @@ function renderActions() {
       });
       btns.push(el('button', { class: 'ghost', onclick: () => { state.phase = 'placed'; render(); } }, 'Anuluj'));
     } else {
-      btns.push(el('button', { class: 'primary', disabled: state.challengeSlot == null, onclick: revealTimeline }, '✔ Odkryj kartę'));
+      if (state.challengeMode === 'year') {
+        const go = el('button', { class: 'primary', disabled: state.challengeYear == null, onclick: revealTimeline }, '✔ Odkryj kartę');
+        const input = el('input', {
+          type: 'number', id: 'challenge-year', min: '1900', max: String(new Date().getFullYear()), inputmode: 'numeric',
+          placeholder: 'Rok, np. 1984', 'aria-label': 'Rok wydania', value: state.challengeYear ?? '',
+          oninput: (e) => {
+            const y = parseInt(e.target.value, 10);
+            state.challengeYear = y >= 1900 && y <= new Date().getFullYear() ? y : null;
+            go.disabled = state.challengeYear == null;
+          },
+          onkeydown: (e) => { if (e.key === 'Enter' && state.challengeYear != null) revealTimeline(); },
+        });
+        btns.push(input, go);
+        setTimeout(() => input.focus(), 0);
+      } else {
+        btns.push(el('button', { class: 'primary', disabled: state.challengeSlot == null, onclick: revealTimeline }, '✔ Odkryj kartę'));
+      }
     }
   } else if (state.phase === 'revealed') {
     if (state.mode === 'multi') {
@@ -1004,7 +1096,7 @@ function renderActions() {
         onclick: () => { p.tokens += 1; state.awarded = true; render(); },
       }, state.awarded ? '+1 żeton przyznany' : '🪙 Odgadł(a) wykonawcę i tytuł'));
     }
-    const over = state.mode === 'solo' && (p.lives <= 0 || p.timeline.length >= state.winTarget);
+    const over = state.mode === 'solo' && (p.lives <= 0 || (!state.endless && p.timeline.length >= state.winTarget));
     btns.push(el('button', { class: 'primary', onclick: nextTurn },
       over ? 'Zobacz podsumowanie →' : (state.mode === 'solo' ? 'Następna piosenka →' : 'Następny gracz →')));
   }

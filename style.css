@@ -309,3 +309,8 @@ select {
   .song-edit { width: 100%; }
   .song-edit select { flex: 1; max-width: none; }
 }
+
+/* --- podpisane miejsca przy pierwszej piosence, pole roku przy wyzwaniu --- */
+.slot.labeled { width: auto; padding: 0 12px; font-size: .9rem; white-space: nowrap; }
+#challenge-year { width: 140px; font-size: 1.1rem; }
+@media (max-width: 640px) { #challenge-year { flex: 1; width: auto; } }
