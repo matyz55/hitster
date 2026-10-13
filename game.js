@@ -274,9 +274,17 @@ function nextTurn() {
 function endGame() {
   stopAudio();
   const best = state.players.slice().sort((a, b) => b.timeline.length - a.timeline.length)[0];
-  $('#winner-title').textContent = `🏆 Wygrywa ${best.name} (${best.timeline.length} kart)!`;
+  $('#winner-title').textContent = `🏆 Wygrywa ${best.name} (${cardsLabel(best.timeline.length)})!`;
   renderTimeline($('#winner-timeline'), best.timeline, false);
   showScreen('end');
+}
+
+function cardsLabel(n) {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (n === 1) return '1 karta';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${n} karty`;
+  return `${n} kart`;
 }
 
 /* ---------- audio ---------- */

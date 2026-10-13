@@ -170,7 +170,7 @@ Poziomy:
 | Sanah | Kolońska i szlugi | 2021 | MusicBrainz = Wikipedia; [pl.wikipedia: Kolońska i szlugi](https://pl.wikipedia.org/wiki/Kolońska_i_szlugi) |
 | sanah & Dawid Podsiadło | Ostatnia nadzieja | 2022 | MusicBrainz = Wikipedia; [pl.wikipedia: Ostatnia nadzieja](https://pl.wikipedia.org/wiki/Ostatnia_nadzieja) |
 
-## Poziom v1 (26 utworów)
+## Poziom v1 (25 utworów)
 
 | Wykonawca | Tytuł | Rok | Uwagi |
 |---|---|---|---|
@@ -186,7 +186,6 @@ Poziomy:
 | Sinéad O'Connor | Nothing Compares 2 U | 1990 | MB: 1990 (wersja Sinéad O'Connor); oryginał The Family z 1985; [en.wikipedia: Nothing Compares 2 U](https://en.wikipedia.org/wiki/Nothing_Compares_2_U) |
 | Billie Eilish | bad guy | 2019 | tylko MusicBrainz |
 | Czesław Niemen | Dziwny jest ten świat | 1967 | Wikipedia: 10.07.1967 (singel i album); MB ma tylko późniejsze reedycje; [pl.wikipedia: Dziwny jest ten świat (utwór muzyczny)](https://pl.wikipedia.org/wiki/Dziwny_jest_ten_świat_(utwór_muzyczny)) |
-| Maryla Rodowicz | Małgośka | 1973 | Wikipedia: marzec 1973; MB tylko album Rok z 1974; [pl.wikipedia: Małgośka](https://pl.wikipedia.org/wiki/Małgośka) |
 | Krzysztof Krawczyk | Parostatek | 1976 | tylko MusicBrainz |
 | Maanam | Cykady na Cykladach | 1981 | Wikipedia: 1981; MB tylko późniejsze wydania; [pl.wikipedia: Cykady na Cykladach](https://pl.wikipedia.org/wiki/Cykady_na_Cykladach) |
 | Lombard | Przeżyj to sam | 1982 | Wikipedia: 1982; MB tylko album koncertowy z 1983; [pl.wikipedia: Przeżyj to sam](https://pl.wikipedia.org/wiki/Przeżyj_to_sam) |
@@ -201,12 +200,13 @@ Poziomy:
 | Kortez | Zostań | 2015 | tylko MusicBrainz |
 | Kwiat Jabłoni | Dziś późno pójdę spać | 2018 | tylko MusicBrainz |
 
-## Odrzucone (24)
+## Odrzucone (25)
 
 | Wykonawca | Tytuł | Powód | MusicBrainz | Wikipedia |
 |---|---|---|---|---|
 | Czerwone Gitary | Nie spoczniemy | brak dwóch zgodnych źródeł / sprzeczne dane | 1991 | – |
 | Trubadurzy | Znamy się tylko z widzenia | brak dwóch zgodnych źródeł / sprzeczne dane | 1993 | – |
+| Maryla Rodowicz | Małgośka | brak oryginalnego nagrania w iTunes (tylko koncertowe/remiksy lub brak) | 1974 | 1973 (album: 1974) |
 | Zbigniew Wodecki | Zacznij od Bacha | brak dwóch zgodnych źródeł / sprzeczne dane | 1994 | – |
 | Budka Suflera | Jolka, Jolka pamiętasz | brak oryginalnego nagrania w iTunes (tylko koncertowe/remiksy lub brak) | 1984 | 1982 (album: 1984) |
 | Republika | Biała flaga | brak dwóch zgodnych źródeł / sprzeczne dane | 1981 | 1982 (album: 1993) |

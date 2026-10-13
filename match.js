@@ -4,13 +4,13 @@
 // Wspólne dla gry (game.js) i skryptu sprawdzającego listę piosenek.
 (function (root) {
   const norm = (s) => s.toLowerCase().replace(/ł/g, 'l').normalize('NFKD')
-    .replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '');
+    .replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '');
 
   // tytuł bez dopisków w nawiasach i po myślniku, np. „(2011 Remaster)”, „- Radio Edit”
   const baseTitle = (t) => norm(t.replace(/\s*[([].*?[)\]]/g, '').replace(/\s+[-–]\s+.*$/, ''));
 
   // wersje, które nie są oryginalnym nagraniem studyjnym
-  const UNWANTED = /\b(live|na żywo|koncert|remix|remixes|mix|karaoke|instrumental|acoustic|akustycz\w*|unplugged|cover|tribute|re-?recorded|demo|sped up|slowed|pianoforte|orchestral|symphonic|wersja|without|taylor's|męskie granie)\b|\(\s*\d{4}(\s+ii)?\s*\)/i;
+  const UNWANTED = /\b(live|na żywo|koncert|remix|remixes|mix|karaoke|instrumental|acoustic|akustycz\w*|unplugged|cover|tribute|re-?recorded|demo|sped up|slowed|pianoforte|orchestral|symphonic|wersja|without rap|taylor's|męskie granie)\b|\(\s*\d{4}\s+ii\s*\)/i;
   // „... Version” / „... Edit” dopuszczamy tylko w neutralnych odmianach
   const OK_VERSION = /\b(single|album|mono|stereo|original|radio|soundtrack|us|uk|explicit|clean|edited|bonus track|remastered|\d{4} remastered)\s+(version|edit)\b/gi;
   const BAD_VERSION = /\b(version|edit|versión)\b/i;
@@ -19,9 +19,12 @@
     return song.a.split(/ & | feat\. /)[0];
   }
 
-  function isUnwanted(r) {
+  function isUnwanted(r, song) {
     const track = r.trackName || '';
     if (UNWANTED.test(track) || UNWANTED.test(r.collectionName || '')) return true;
+    // „(2013)” przy utworze z 2000 r. oznacza zwykle nowe nagranie
+    const yr = track.match(/\(\s*(\d{4})\s*\)/);
+    if (yr && song.y && Number(yr[1]) > song.y + 1) return true;
     return BAD_VERSION.test(track.replace(OK_VERSION, ''));
   }
 
@@ -34,7 +37,7 @@
     let best = null;
     let bestScore = 0;
     for (const r of results) {
-      if (!r.previewUrl || isUnwanted(r)) continue;
+      if (!r.previewUrl || isUnwanted(r, song)) continue;
       const artist = norm((r.artistName || '').replace(/^the /i, ''));
       if (!artist.includes(wantArtist)) continue;
       const track = r.trackName || '';
@@ -42,8 +45,11 @@
       if (exact.has(norm(track))) score = 4;
       else if (base.has(baseTitle(track))) score = 2;
       else continue;
+      if (song.m && norm(track) === norm(song.m)) score += 1;
       if (artist === wantArtist) score += 2;
       else if (artist.startsWith(wantArtist)) score += 1;
+      // song.al – fragment nazwy albumu z oryginalnym nagraniem (podpowiedź przy wielu wersjach)
+      if (song.al && norm(r.collectionName || '').includes(norm(song.al))) score += 1;
       if (score > bestScore) { best = r; bestScore = score; }
     }
     return best;
