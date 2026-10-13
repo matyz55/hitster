@@ -903,7 +903,7 @@ window.SONGS = [
   {a: "Luxtorpeda", t: "HYMN", y: 2012, c: "PL", cc: "PL", src: "Discogs + Spotify", g: ["rock"], p: 37, sp: "1TqrTK2LDT9ZO79EhrRSFP"},
   {a: "Luxtorpeda", t: "WILKI DWA", y: 2012, c: "PL", cc: "PL", src: "Discogs + Spotify", g: ["rock"], p: 38, sp: "6HtFpYx3yZo9nJNumfn7Ts"},
   {a: "Maria Peszek", t: "Sorry Polsko", y: 2012, c: "PL", cc: "PL", src: "Discogs + Spotify", g: ["elektronika", "rock"], p: 32, sp: "633WGcoYmJrMCozV8Hssdh"},
-  {a: "Małgorzata Ostrowska", t: "Meluzyna", y: 2012, c: "PL", cc: "PL", src: "Discogs", g: ["pop"], p: 40, sp: "6PknKpcCSahGb9fCcqCPbv"},
+  {a: "Małgorzata Ostrowska", t: "Meluzyna", y: 1985, c: "PL", cc: "PL", src: "Discogs", g: ["pop"], p: 40, sp: "6PknKpcCSahGb9fCcqCPbv"},
   {a: "Mela Koteluk", t: "Melodia ulotna", y: 2012, c: "PL", cc: "PL", src: "Discogs + Spotify", g: ["pop"], p: 51, sp: "6ARQYuejfkqO1DOcMRdga5"},
   {a: "Mela Koteluk", t: "Spadochron", y: 2012, c: "PL", cc: "PL", src: "Discogs + Spotify", g: ["pop"], p: 44, sp: "798JkKDIFTyBJ6guJDphIY"},
   {a: "Piotr Rogucki", t: "Piosenka pisana nocą", y: 2012, c: "PL", cc: "PL", src: "Spotify + MusicBrainz", p: 37, sp: "3lydXt9Zi8w22wS5KKRGSd"},
