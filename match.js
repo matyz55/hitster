@@ -44,6 +44,17 @@
     return BAD_VERSION.test(track.replace(OK_VERSION, ''));
   }
 
+  function isLaterDuet(r, song) {
+    const year = parseInt((r.releaseDate || '').slice(0, 4), 10);
+    if (!song.y || !year || year <= song.y + 10) return false;
+    const known = new Set(artistsOf(song).map((a) => norm(a.replace(/^the /i, ''))));
+    const credited = (r.artistName || '').split(/\s*(?:&|,|\bfeat\.?|\bft\.|\bx\b|\band\b|\bi\b)\s*/i)
+      .map((a) => norm(a.replace(/^the /i, ''))).filter(Boolean);
+    const whole = norm((r.artistName || '').replace(/^the /i, ''));
+    if (known.has(whole)) return false;
+    return credited.some((a) => ![...known].some((k) => k.includes(a) || a.includes(k)));
+  }
+
   function pickPreview(results, song) {
     const wantArtist = norm(mainArtist(song).replace(/^the /i, ''));
     // song.m – opcjonalny tytuł, pod jakim utwór figuruje w iTunes (np. „Pt. 2” zamiast „Part 2”)
@@ -56,6 +67,9 @@
       if (!r.previewUrl || isUnwanted(r, song)) continue;
       const artist = norm((r.artistName || '').replace(/^the /i, ''));
       if (!artist.includes(wantArtist)) continue;
+      // nowe nagranie z gościem (np. „Maryla Rodowicz & Lanberry” 2025 zamiast „Małgośki” z 1973 r.):
+      // dodatkowy wykonawca spoza piosenki + wydanie ponad 10 lat po roku piosenki → pomijamy
+      if (isLaterDuet(r, song)) continue;
       const track = r.trackName || '';
       let score = 0;
       if (exact.has(norm(track))) score = 4;
