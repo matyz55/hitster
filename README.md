@@ -3,7 +3,7 @@
 Przeglądarkowa gra muzyczna: układanie piosenek na osi czasu (inspirowane planszówką
 Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje od lat 50. do dziś.
 
-**Zagraj:** https://matyz55.github.io/hitster/ (po włączeniu GitHub Pages)
+**Zagraj:** https://matyz55.github.io/songster/ (po włączeniu GitHub Pages)
 
 ## Tryby gry
 
