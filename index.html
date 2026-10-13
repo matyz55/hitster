@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hitster – muzyczna oś czasu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>🎵 Hitster<span>web</span></h1>
+    <button id="btn-rules" class="ghost">Zasady</button>
+  </header>
+
+  <!-- EKRAN USTAWIEŃ -->
+  <main id="screen-setup" class="screen">
+    <section class="card">
+      <h2>Gracze</h2>
+      <div id="players-list"></div>
+      <button id="btn-add-player" class="ghost">+ Dodaj gracza</button>
+    </section>
+
+    <section class="card">
+      <h2>Piosenki</h2>
+      <div class="seg" id="pool-select">
+        <label><input type="radio" name="pool" value="ALL" checked> Mieszane</label>
+        <label><input type="radio" name="pool" value="PL"> Tylko polskie</label>
+        <label><input type="radio" name="pool" value="INT"> Tylko zagraniczne</label>
+      </div>
+      <label class="check">
+        <input type="checkbox" id="include-v1">
+        Dołącz utwory, których rok potwierdza tylko jedno źródło
+      </label>
+      <p class="muted" id="pool-info"></p>
+    </section>
+
+    <section class="card">
+      <h2>Ustawienia</h2>
+      <label class="row">Karty potrzebne do wygranej
+        <input type="number" id="win-target" min="3" max="20" value="10">
+      </label>
+      <label class="row">Żetony na start
+        <input type="number" id="start-tokens" min="0" max="5" value="2">
+      </label>
+    </section>
+
+    <button id="btn-start" class="primary big">Zaczynamy!</button>
+  </main>
+
+  <!-- EKRAN GRY -->
+  <main id="screen-game" class="screen hidden">
+    <section id="scoreboard"></section>
+
+    <section class="card player-turn">
+      <div class="turn-head">
+        <h2 id="turn-title"></h2>
+        <div id="turn-tokens" class="tokens"></div>
+      </div>
+
+      <div id="mystery" class="mystery">
+        <div class="vinyl" id="vinyl"><div class="label">?</div></div>
+        <div class="mystery-body">
+          <div id="mystery-status" class="muted">Ładowanie piosenki…</div>
+          <div class="controls">
+            <button id="btn-play" class="primary" disabled>▶ Odtwórz</button>
+            <button id="btn-skip" class="ghost" title="Pomiń piosenkę za 1 żeton">⏭ Pomiń (1 żeton)</button>
+          </div>
+          <div class="progress"><div id="progress-bar"></div></div>
+          <div id="reveal" class="reveal hidden"></div>
+        </div>
+      </div>
+
+      <p id="hint" class="hint"></p>
+      <div id="timeline" class="timeline"></div>
+
+      <div id="actions" class="actions"></div>
+    </section>
+  </main>
+
+  <!-- EKRAN KOŃCOWY -->
+  <main id="screen-end" class="screen hidden">
+    <section class="card center">
+      <h2 id="winner-title"></h2>
+      <div id="winner-timeline" class="timeline readonly"></div>
+      <button id="btn-again" class="primary big">Zagraj ponownie</button>
+    </section>
+  </main>
+
+  <dialog id="dlg-rules">
+    <h2>Zasady</h2>
+    <ol>
+      <li>Każdy gracz zaczyna z jedną odkrytą kartą na swojej osi czasu.</li>
+      <li>W swojej turze gracz słucha fragmentu piosenki (bez tytułu i roku) i wskazuje, w którym miejscu jego osi czasu ona pasuje – przed, między lub po kartach, które już ma.</li>
+      <li>Po zatwierdzeniu inni gracze mogą rzucić <b>wyzwanie</b> (koszt: 1 żeton) i wskazać inne miejsce na osi aktywnego gracza.</li>
+      <li>Odkrycie karty: jeśli gracz miał rację – karta zostaje na jego osi. Jeśli nie, a pretendent trafił – pretendent zabiera kartę na swoją oś (we właściwe miejsce). W przeciwnym razie karta przepada.</li>
+      <li>Za poprawne podanie wykonawcy <b>i</b> tytułu gracz dostaje 1 żeton (maks. 5). Ocenia reszta graczy.</li>
+      <li>Żetony: 1 żeton – pominięcie piosenki, 3 żetony – kupienie karty (trafia od razu na właściwe miejsce osi).</li>
+      <li>Wygrywa pierwsza osoba, która zbierze ustaloną liczbę kart.</li>
+    </ol>
+    <p class="muted">Utwory w tym samym roku można układać w dowolnej kolejności. Rok na karcie to rok pierwszego wydania nagrania.</p>
+    <p class="muted">Fragmenty (30 s) pochodzą z publicznego API iTunes Search. Wymagany dostęp do internetu.</p>
+    <form method="dialog"><button class="primary">OK</button></form>
+  </dialog>
+
+  <audio id="audio" preload="auto"></audio>
+  <script src="songs.js"></script>
+  <script src="match.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
