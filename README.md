@@ -18,7 +18,7 @@ GitHub Pages dla repozytorium.
 
 Wymagany jest internet: 30-sekundowe fragmenty utworów są pobierane w trakcie
 gry z publicznego [iTunes Search API](https://performance-partners.apple.com/search-api)
-(format AAC/.m4a – działa w Chrome, Edge, Firefoksie i Safari).
+(format AAC/.m4a – przeglądarka musi go obsługiwać).
 
 ## Zasady (w skrócie)
 

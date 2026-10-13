@@ -298,7 +298,7 @@ $('#btn-play').addEventListener('click', () => {
   if (audio.paused) {
     audio.play().catch((e) => {
       $('#mystery-status').textContent = e.name === 'NotSupportedError'
-        ? 'Ta przeglądarka nie obsługuje formatu AAC (.m4a) – użyj Chrome, Edge, Firefoksa lub Safari.'
+        ? 'Ta przeglądarka nie obsługuje formatu AAC (.m4a) – spróbuj w innej przeglądarce.'
         : 'Nie udało się odtworzyć: ' + e.message;
     });
   } else {
