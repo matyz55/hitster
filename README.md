@@ -21,7 +21,8 @@ poziomie piosenki są losowane równomiernie z różnych dekad, a przy mieszanyc
 można ustawić **udział polskich** (domyślnie 50%). W multiplayerze można widzieć osie wszystkich graczy.
 Na telefonie oś czasu jest pionowa, a przyciski akcji przyklejone do dołu ekranu.
 
-Przed grą można zawęzić pulę piosenek: polskie/zagraniczne, **dekady**, **gatunki**
+Przed grą można zawęzić pulę piosenek: polskie/zagraniczne, **dekady** (lata 30.–60. to jedna
+kategoria „do 1969”, bo starszych piosenek jest niewiele), **gatunki**
 (z Discogs), **kraj wykonawcy**, a także ustawić
 **długość fragmentu** (30/15/10/5 s), odtwarzanie z **losowego miejsca** i podpowiedź
 z dekadą. Ustawienia są zapamiętywane. Po grze widać listę

@@ -93,7 +93,11 @@ const listenLink = (song, preview, label) => el('a', {
 // 4. Poziom trudny (oś czasu): mniej więcej co druga piosenka jest wydana blisko lat kart gracza,
 //    ale tylko z dekad, które nie są nadreprezentowane – gra nie utknie w jednym okresie.
 const artistKeys = (s) => SongMatch.artistsOf(s).map((a) => SongMatch.norm(a.replace(/^the /i, ''))).filter(Boolean);
-const decadeOf = (s) => Math.floor(s.y / 10) * 10;
+// piosenek sprzed 1960 r. jest bardzo mało – lata 30., 40. i 50. tworzą jedną kategorię z latami 60.
+const OLDEST_DECADE = 1960;
+const decadeOf = (s) => Math.max(OLDEST_DECADE, Math.floor(s.y / 10) * 10);
+const decadeLabel = (d) => (d === OLDEST_DECADE ? 'do 1969' : `${d}s`);
+const decadeRange = (d) => (d === OLDEST_DECADE ? 'do 1969 r.' : `lata ${d % 100 || '00'}. (${d}–${d + 9})`);
 
 class Deck {
   constructor(songs, { level = 1, plShare = 0.5 } = {}) {
@@ -346,7 +350,7 @@ const NO_COUNTRY = '?';
 const genresOf = (s) => (s.g && s.g.length ? s.g : [NO_GENRE]);
 const countryOf = (s) => (s.cc || NO_COUNTRY).toUpperCase();
 const FILTERS = {
-  decade: { values: (s) => [decadeOf(s)], label: (d) => `${d}s`, sort: (a, b) => a - b },
+  decade: { values: (s) => [decadeOf(s)], label: decadeLabel, sort: (a, b) => a - b },
   genre: { values: genresOf, label: (g) => g, sort: (a, b) => (a === NO_GENRE) - (b === NO_GENRE) || a.localeCompare(b, 'pl') },
   country: {
     values: (s) => [countryOf(s)],
@@ -376,6 +380,8 @@ const filterState = Object.assign(
   { decade: [], genre: [], country: [], level: 1, plShare: 50, clip: 30, random: false, hint: false, showAll: true },
   store.get('filters', {}),
 ); // decade/genre/country przechowują WYŁĄCZONE wartości
+// dawne dekady sprzed 1960 r. nie są już osobnymi kategoriami
+filterState.decade = filterState.decade.filter((d) => Number(d) >= OLDEST_DECADE);
 
 function saveFilters() { store.set('filters', filterState); }
 
@@ -545,7 +551,7 @@ async function drawSong() {
         ? 'Posłuchaj i wpisz odpowiedź.'
         : 'Posłuchaj i wybierz miejsce na swojej osi czasu.');
       if (state.mode === 'melody' && filterState.hint) {
-        $('#mystery-status').append(' ', el('span', { class: 'decade-hint' }, `Podpowiedź: lata ${decadeOf(song) % 100 || '00'}. (${decadeOf(song)}–${decadeOf(song) + 9})`));
+        $('#mystery-status').append(' ', el('span', { class: 'decade-hint' }, `Podpowiedź: ${decadeRange(decadeOf(song))}`));
       }
       $('#btn-play').disabled = false;
       render();
