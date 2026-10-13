@@ -131,7 +131,7 @@ input[type=number] { width: 80px; }
 .tcard .y { font-size: 1.7rem; font-weight: 800; color: var(--gold); }
 .tcard .a { font-size: .78rem; color: var(--muted); }
 .tcard .t { font-size: .85rem; font-weight: 600; }
-.tcard .flag { font-size: .75rem; }
+.tcard .flag { font-size: 1.1rem; }
 .tcard.new { outline: 3px solid var(--ok); }
 .tcard.lost { outline: 3px solid var(--bad); opacity: .6; }
 
@@ -159,4 +159,57 @@ dialog li { margin-bottom: 6px; }
   .vinyl { width: 72px; height: 72px; }
   .tcard { width: 108px; min-height: 124px; }
   .tcard .y { font-size: 1.4rem; }
+}
+
+/* --- ekran startowy i nawigacja --- */
+.topbar h1 { cursor: pointer; }
+.topbar-actions { display: flex; gap: 8px; }
+.lead { font-size: 1.2rem; text-align: center; margin: 12px 0 16px; }
+.screen-title { margin: 4px 0 16px; }
+.center { text-align: center; }
+.modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 16px; }
+.mode {
+  display: flex; flex-direction: column; gap: 8px; align-items: flex-start; text-align: left;
+  padding: 20px; background: var(--panel); border: 2px solid transparent; border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+}
+.mode:hover { border-color: var(--accent); }
+.mode b { font-size: 1.15rem; }
+.mode-icon { font-size: 2rem; }
+.grow { flex: 1; }
+.label { margin: 0 0 8px; }
+.small { font-size: .8rem; }
+.card h3, dialog h3 { margin: 12px 0 6px; font-size: 1rem; color: var(--accent-2); }
+
+/* --- odpowiedzi w „Jaka to melodia” --- */
+.guess { display: flex; flex-direction: column; gap: 8px; margin: 8px 0; }
+.guess input { width: 100%; font-size: 1.05rem; padding: 10px 12px; }
+.listen { display: inline-block; margin-top: 6px; color: var(--accent-2); }
+
+/* --- podsumowanie --- */
+.ranking { text-align: left; display: inline-block; margin: 0 0 12px; }
+.played { padding-left: 0; list-style: none; margin: 0; }
+.played li {
+  display: grid; grid-template-columns: 52px 1fr auto; gap: 4px 12px; align-items: center;
+  padding: 10px 8px; border-bottom: 1px solid #2f2a44;
+}
+.played li.ok .py { color: var(--ok); }
+.played li.bad .py { color: var(--bad); }
+.played .py { font-weight: 800; font-size: 1.1rem; }
+.played .pn { grid-column: 2; font-size: .85rem; }
+.played .listen { grid-column: 3; grid-row: 1 / span 2; margin: 0; white-space: nowrap; }
+
+/* --- edytor dat --- */
+input[type=search] {
+  width: 100%; font: inherit; color: var(--text); background: var(--panel-2);
+  border: 1px solid #3d3755; border-radius: 8px; padding: 10px 12px; margin: 8px 0;
+}
+.song-editor { max-height: 60vh; overflow-y: auto; margin-bottom: 12px; }
+.song-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 4px; border-bottom: 1px solid #2f2a44; }
+.song-row.edited input { border-color: var(--gold); }
+.song-meta { min-width: 0; }
+
+@media (max-width: 560px) {
+  .played li { grid-template-columns: 44px 1fr; }
+  .played .listen { grid-column: 2; grid-row: auto; }
 }

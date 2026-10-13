@@ -55,5 +55,51 @@
     return best;
   }
 
-  root.HitsterMatch = { norm, pickPreview, mainArtist };
+  /* ---------- sprawdzanie odpowiedzi (tryb „Jaka to melodia”) ---------- */
+
+  function levenshtein(a, b) {
+    if (a === b) return 0;
+    let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
+    for (let i = 1; i <= a.length; i++) {
+      const cur = [i];
+      for (let j = 1; j <= b.length; j++) {
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      }
+      prev = cur;
+    }
+    return prev[b.length];
+  }
+
+  // ile literówek wybaczamy – zależnie od długości odpowiedzi
+  const tolerance = (len) => (len <= 3 ? 0 : len <= 6 ? 1 : len <= 12 ? 2 : 3);
+
+  const answerNorm = (s) => norm(s.replace(/&/g, ' and ').replace(/^\s*(the|a)\s+/i, ''));
+
+  function fuzzyEqual(guess, variants) {
+    const g = answerNorm(guess);
+    if (!g) return false;
+    return variants.some((v) => {
+      const n = answerNorm(v);
+      return n && levenshtein(g, n) <= tolerance(n.length);
+    });
+  }
+
+  function titleVariants(t) {
+    const noParens = t.replace(/\s*[([].*?[)\]]/g, '').trim();
+    const inParens = (t.match(/[([](.*?)[)\]]/) || [])[1];
+    const beforeSlash = t.split(/\s*\/\s*/)[0];
+    return [t, noParens, beforeSlash, inParens && noParens.length < 4 ? inParens : null].filter(Boolean);
+  }
+
+  function artistVariants(a) {
+    const parts = a.split(/\s*(?:&|,| feat\.? | ft\. | and | i )\s*/i).filter(Boolean);
+    // samo nazwisko przy dwuczłonowych nazwach („Bregović”, „Presley”)
+    const surnames = parts.map((p) => p.trim().split(/\s+/)).filter((w) => w.length === 2 && w[1].length >= 4).map((w) => w[1]);
+    return [a, ...parts, ...surnames];
+  }
+
+  const checkTitle = (guess, song) => fuzzyEqual(guess, titleVariants(song.t));
+  const checkArtist = (guess, song) => fuzzyEqual(guess, artistVariants(song.a));
+
+  root.HitsterMatch = { norm, pickPreview, mainArtist, levenshtein, checkTitle, checkArtist };
 }(typeof window !== 'undefined' ? window : globalThis));

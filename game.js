@@ -2,6 +2,7 @@
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => [...document.querySelectorAll(sel)];
 const el = (tag, attrs = {}, ...children) => {
   const node = document.createElement(tag);
   for (const [k, v] of Object.entries(attrs)) {
@@ -22,17 +23,102 @@ const shuffle = (arr) => {
   }
   return a;
 };
-const { pickPreview, mainArtist } = window.HitsterMatch;
-const flag = (song) => (song.c === 'PL' ? '🇵🇱' : '🌍');
+const clampInt = (v, min, max, def) => {
+  const n = parseInt(v, 10);
+  return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : def;
+};
+const store = {
+  get(key, def) {
+    try { const v = localStorage.getItem('hitster.' + key); return v == null ? def : JSON.parse(v); } catch (e) { return def; }
+  },
+  set(key, val) {
+    try { localStorage.setItem('hitster.' + key, JSON.stringify(val)); } catch (e) { /* tryb prywatny */ }
+  },
+};
+const { pickPreview, mainArtist, checkTitle, checkArtist } = window.HitsterMatch;
+
 const MAX_TOKENS = 5;
 const SKIP_COST = 1;
 const BUY_COST = 3;
+const MAX_PLAYERS = 8;
+
+/* ---------- piosenki, flagi, poprawki dat ---------- */
+const songKey = (s) => s.a + '|' + s.t;
+const ORIGINAL_YEAR = new Map(window.SONGS.map((s) => [songKey(s), s.y]));
+
+function applyYearOverrides() {
+  const overrides = store.get('yearOverrides', {});
+  for (const s of window.SONGS) s.y = overrides[songKey(s)] ?? ORIGINAL_YEAR.get(songKey(s));
+}
+applyYearOverrides();
+
+// flaga z dwuliterowego kodu kraju (ISO 3166-1); XW/XE itp. i brak kodu → globus
+function flag(song) {
+  const cc = (song.cc || '').toUpperCase();
+  if (!/^[A-Z]{2}$/.test(cc) || cc.startsWith('X')) return '🌍';
+  return String.fromCodePoint(...[...cc].map((ch) => 0x1f1e6 + ch.charCodeAt(0) - 65));
+}
+const countryName = (() => {
+  try {
+    const dn = new Intl.DisplayNames(['pl'], { type: 'region' });
+    return (song) => (song.cc ? dn.of(song.cc.toUpperCase()) : 'kraj nieznany');
+  } catch (e) {
+    return (song) => song.cc || 'kraj nieznany';
+  }
+})();
+const flagEl = (song) => el('span', { class: 'flag', title: countryName(song) }, flag(song));
+
+/* ---------- linki do serwisów streamingowych ---------- */
+function streamUrl(song, preview) {
+  const platform = store.get('platform', 'youtube');
+  const q = encodeURIComponent(`${mainArtist(song)} ${song.t}`);
+  if (platform === 'spotify') {
+    return song.sp ? `https://open.spotify.com/track/${song.sp}` : `https://open.spotify.com/search/${q}`;
+  }
+  if (platform === 'apple') {
+    return preview && preview.link ? preview.link : `https://music.apple.com/search?term=${q}`;
+  }
+  return `https://www.youtube.com/results?search_query=${q}`;
+}
+const PLATFORM_NAMES = { youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple Music' };
+const listenLink = (song, preview, label) => el('a', {
+  href: streamUrl(song, preview), target: '_blank', rel: 'noopener', class: 'listen',
+}, label || `Posłuchaj całości (${PLATFORM_NAMES[store.get('platform', 'youtube')]}) ↗`);
+
+/* ---------- talia z równomiernym rozkładem dekad ---------- */
+// Losujemy najpierw dekadę – tę, z której w tej grze padło najmniej piosenek –
+// a dopiero potem piosenkę z tej dekady. Dzięki temu żadna dekada nie dominuje.
+class Deck {
+  constructor(songs) {
+    this.byDecade = new Map();
+    for (const s of shuffle(songs)) {
+      const d = Math.floor(s.y / 10) * 10;
+      if (!this.byDecade.has(d)) this.byDecade.set(d, []);
+      this.byDecade.get(d).push(s);
+    }
+    this.used = new Map([...this.byDecade.keys()].map((d) => [d, 0]));
+  }
+  get size() {
+    let n = 0;
+    for (const list of this.byDecade.values()) n += list.length;
+    return n;
+  }
+  draw() {
+    const available = [...this.byDecade.entries()].filter(([, l]) => l.length);
+    if (!available.length) return null;
+    const least = Math.min(...available.map(([d]) => this.used.get(d)));
+    const candidates = available.filter(([d]) => this.used.get(d) === least);
+    const [decade, list] = candidates[Math.floor(Math.random() * candidates.length)];
+    this.used.set(decade, this.used.get(decade) + 1);
+    return list.pop();
+  }
+}
 
 /* ---------- podgląd audio z iTunes Search API ---------- */
 const previewCache = new Map();
 
 async function findPreview(song) {
-  const key = song.a + '|' + song.t;
+  const key = songKey(song);
   if (previewCache.has(key)) return previewCache.get(key);
   const term = song.q || `${mainArtist(song)} ${song.t}`;
   let result = null;
@@ -82,89 +168,149 @@ async function fetchWithRetry(url, attempts = 3) {
 }
 
 /* ---------- stan gry ---------- */
+const MODES = {
+  solo: { title: 'Hitster – 1 gracz', minPlayers: 1, maxPlayers: 1 },
+  multi: { title: 'Hitster – multiplayer', minPlayers: 2, maxPlayers: MAX_PLAYERS },
+  melody: { title: 'Jaka to melodia', minPlayers: 1, maxPlayers: MAX_PLAYERS },
+};
+
 const state = {
-  players: [],        // {name, tokens, timeline: [song]}
-  deck: [],
+  mode: null,
+  players: [],        // {name, tokens, timeline: [song], score, lives}
+  deck: null,
   turn: 0,
-  current: null,      // aktualna piosenka
+  current: null,
   preview: null,
   phase: 'setup',     // listen | placed | challenge | revealed
-  slot: null,         // wybrane miejsce gracza aktywnego
-  challenger: null,   // indeks gracza rzucającego wyzwanie
+  slot: null,
+  challenger: null,
   challengeSlot: null,
   winTarget: 10,
   awarded: false,
+  guessType: 'title',
+  rounds: 5,
+  turnsPlayed: 0,
+  history: [],        // {song, preview, player, ok, note}
+  drawId: 0,
 };
+const activePlayer = () => state.players[state.turn];
+const isHitster = () => state.mode === 'solo' || state.mode === 'multi';
 
-/* ---------- ekran ustawień ---------- */
-const DEFAULT_NAMES = ['Gracz 1', 'Gracz 2'];
+/* ---------- nawigacja między ekranami ---------- */
+const SCREENS = ['home', 'setup', 'game', 'end', 'settings'];
+let screenBeforeSettings = 'home';
+function showScreen(name) {
+  for (const s of SCREENS) $('#screen-' + s).classList.toggle('hidden', s !== name);
+  if (name !== 'game') stopAudio();
+  window.scrollTo(0, 0);
+}
+
+$('#logo').addEventListener('click', () => {
+  if ($('#screen-game').classList.contains('hidden') || confirm('Przerwać grę i wrócić do ekranu startowego?')) {
+    state.drawId++;
+    showScreen('home');
+  }
+});
+$('#btn-rules').addEventListener('click', () => $('#dlg-rules').showModal());
+$('#btn-settings').addEventListener('click', () => {
+  const visible = SCREENS.find((s) => !$('#screen-' + s).classList.contains('hidden'));
+  if (visible === 'settings') return;
+  if (visible === 'game' && !confirm('Przerwać grę i przejść do ustawień?')) return;
+  state.drawId++;
+  screenBeforeSettings = visible === 'game' ? 'home' : visible;
+  renderSettings();
+  showScreen('settings');
+});
+$('#btn-settings-back').addEventListener('click', () => {
+  if (screenBeforeSettings === 'setup') updatePoolInfo();
+  if (screenBeforeSettings === 'end') renderPlayedList();
+  showScreen(screenBeforeSettings);
+});
+
+/* ---------- ekran startowy ---------- */
+$$('.mode').forEach((b) => b.addEventListener('click', () => openSetup(b.dataset.mode)));
+{
+  const pl = window.SONGS.filter((s) => s.c === 'PL').length;
+  $('#home-info').textContent = `${window.SONGS.length} piosenek w bazie: ${pl} polskich i ${window.SONGS.length - pl} zagranicznych.`;
+}
+
+/* ---------- ekran ustawień rozgrywki ---------- */
+function openSetup(mode) {
+  state.mode = mode;
+  const cfg = MODES[mode];
+  $('#setup-title').textContent = cfg.title;
+  $$('[data-for]').forEach((n) => n.classList.toggle('hidden', !n.dataset.for.split(' ').includes(mode)));
+  let names = store.get('players', ['Gracz 1', 'Gracz 2']);
+  if (names.length < cfg.minPlayers) names = names.concat(['Gracz 2']).slice(0, cfg.minPlayers);
+  if (names.length > cfg.maxPlayers) names = names.slice(0, cfg.maxPlayers);
+  renderSetupPlayers(names);
+  updatePoolInfo();
+  showScreen('setup');
+}
 
 function renderSetupPlayers(names) {
-  const list = $('#players-list');
-  list.replaceChildren(...names.map((n, i) => el('div', { class: 'player-row' },
+  const cfg = MODES[state.mode];
+  $('#sec-players h2').textContent = cfg.maxPlayers === 1 ? 'Gracz' : `Gracze (${cfg.minPlayers}–${cfg.maxPlayers})`;
+  $('#players-list').replaceChildren(...names.map((n, i) => el('div', { class: 'player-row' },
     el('input', { type: 'text', value: n, maxlength: '20', 'aria-label': `Gracz ${i + 1}` }),
-    names.length > 1
+    names.length > cfg.minPlayers
       ? el('button', { class: 'ghost', title: 'Usuń', onclick: () => {
         const cur = readSetupNames(); cur.splice(i, 1); renderSetupPlayers(cur);
       } }, '✕')
       : null,
   )));
-  $('#btn-add-player').disabled = names.length >= 8;
+  $('#btn-add-player').classList.toggle('hidden', names.length >= cfg.maxPlayers);
 }
-const readSetupNames = () => [...document.querySelectorAll('#players-list input')].map((i) => i.value);
-
-function poolValue() {
-  return document.querySelector('input[name=pool]:checked').value;
-}
-function songPool() {
-  const p = poolValue();
-  const withV1 = $('#include-v1').checked;
-  return window.SONGS.filter((s) => (p === 'ALL' || s.c === p) && (withV1 || s.v >= 2));
-}
-function updatePoolInfo() {
-  const pool = songPool();
-  const years = pool.map((s) => s.y);
-  $('#pool-info').textContent = `${pool.length} piosenek z lat ${Math.min(...years)}–${Math.max(...years)}`;
-}
+const readSetupNames = () => $$('#players-list input').map((i) => i.value);
 
 $('#btn-add-player').addEventListener('click', () => {
   const names = readSetupNames();
   names.push(`Gracz ${names.length + 1}`);
   renderSetupPlayers(names);
 });
-document.querySelectorAll('input[name=pool]').forEach((r) => r.addEventListener('change', updatePoolInfo));
-$('#include-v1').addEventListener('change', updatePoolInfo);
-$('#btn-rules').addEventListener('click', () => $('#dlg-rules').showModal());
-$('#btn-again').addEventListener('click', () => showScreen('setup'));
-$('#btn-start').addEventListener('click', startGame);
+$('#btn-back').addEventListener('click', () => showScreen('home'));
+$$('input[name=pool]').forEach((r) => r.addEventListener('change', updatePoolInfo));
 
-function showScreen(name) {
-  for (const s of ['setup', 'game', 'end']) $('#screen-' + s).classList.toggle('hidden', s !== name);
-  if (name !== 'game') stopAudio();
+const poolValue = () => document.querySelector('input[name=pool]:checked').value;
+function songPool() {
+  const p = poolValue();
+  return window.SONGS.filter((s) => p === 'ALL' || s.c === p);
 }
+function updatePoolInfo() {
+  const pool = songPool();
+  const years = pool.map((s) => s.y);
+  const decades = new Set(pool.map((s) => Math.floor(s.y / 10))).size;
+  $('#pool-info').textContent = `${pool.length} piosenek z lat ${Math.min(...years)}–${Math.max(...years)} (${decades} dekad). Dekady losowane są równomiernie.`;
+}
+
+$('#btn-start').addEventListener('click', startGame);
+$('#btn-again').addEventListener('click', () => openSetup(state.mode));
+$('#btn-home').addEventListener('click', () => showScreen('home'));
 
 /* ---------- przebieg gry ---------- */
 function startGame() {
   const names = readSetupNames().map((n, i) => n.trim() || `Gracz ${i + 1}`);
+  store.set('players', names);
   const startTokens = clampInt($('#start-tokens').value, 0, MAX_TOKENS, 2);
-  state.winTarget = clampInt($('#win-target').value, 3, 20, 10);
-  state.deck = shuffle(songPool());
-  if (state.deck.length < names.length * 3) {
-    alert('Za mało piosenek dla tylu graczy.');
+  const lives = clampInt($('#lives').value, 1, 10, 3);
+  state.winTarget = clampInt($('#win-target').value, 3, 30, 10);
+  state.rounds = clampInt($('#rounds').value, 1, 30, 5);
+  state.guessType = document.querySelector('input[name=guess]:checked').value;
+  state.deck = new Deck(songPool());
+  const needed = isHitster() ? names.length * 3 : names.length * state.rounds;
+  if (state.deck.size < needed) {
+    alert('Za mało piosenek w wybranej puli dla tych ustawień.');
     return;
   }
-  state.players = names.map((name) => ({ name, tokens: startTokens, timeline: [state.deck.pop()] }));
+  state.players = names.map((name) => ({
+    name, tokens: startTokens, timeline: isHitster() ? [state.deck.draw()] : [], score: 0, lives,
+  }));
   state.turn = Math.floor(Math.random() * names.length);
+  state.turnsPlayed = 0;
+  state.history = [];
   showScreen('game');
   startTurn();
 }
-
-function clampInt(v, min, max, def) {
-  const n = parseInt(v, 10);
-  return Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : def;
-}
-
-const activePlayer = () => state.players[state.turn];
 
 async function startTurn() {
   stopAudio();
@@ -173,32 +319,40 @@ async function startTurn() {
     current: null, preview: null,
   });
   $('#reveal').classList.add('hidden');
+  $('#guess-form').reset();
   render();
   await drawSong();
 }
 
 // dobiera kolejną piosenkę, pomijając te bez dostępnego fragmentu
 async function drawSong() {
+  const myDraw = ++state.drawId;
   $('#btn-play').disabled = true;
   setVinyl(null);
-  while (state.deck.length) {
-    const song = state.deck.pop();
+  for (;;) {
+    const song = state.deck.draw();
+    if (!song) break;
     $('#mystery-status').textContent = 'Szukam fragmentu piosenki…';
     const preview = await findPreview(song);
+    if (myDraw !== state.drawId) return; // gra została przerwana
     if (preview) {
       state.current = song;
       state.preview = preview;
       $('#audio').src = preview.url;
-      $('#mystery-status').textContent = 'Posłuchaj i wybierz miejsce na swojej osi czasu.';
+      $('#mystery-status').textContent = state.mode === 'melody'
+        ? 'Posłuchaj i wpisz odpowiedź.'
+        : 'Posłuchaj i wybierz miejsce na swojej osi czasu.';
       $('#btn-play').disabled = false;
       render();
+      if (state.mode === 'melody') $(state.guessType === 'artist' ? '#guess-artist' : '#guess-title').focus();
       return;
     }
-    if (!previewCache.has(song.a + '|' + song.t)) {
-      // błąd sieci – odkładamy piosenkę na spód talii i próbujemy ponownie za chwilę
-      state.deck.unshift(song);
+    if (!previewCache.has(songKey(song))) {
+      // błąd sieci – oddajemy piosenkę do talii i próbujemy ponownie za chwilę
+      state.deck.byDecade.get(Math.floor(song.y / 10) * 10).unshift(song);
       $('#mystery-status').textContent = 'Nie mogę połączyć się z serwerem fragmentów. Ponawiam za 10 s…';
       await new Promise((r) => setTimeout(r, 10000));
+      if (myDraw !== state.drawId) return;
       continue;
     }
     console.warn('Brak fragmentu:', song.a, song.t);
@@ -207,6 +361,7 @@ async function drawSong() {
   endGame();
 }
 
+/* --- Hitster --- */
 function placeIsCorrect(timeline, slot, year) {
   const before = timeline[slot - 1];
   const after = timeline[slot];
@@ -231,52 +386,107 @@ function onSlotClick(i) {
   render();
 }
 
-function reveal() {
+function revealHitster() {
   const song = state.current;
   const p = activePlayer();
   const ok = placeIsCorrect(p.timeline, state.slot, song.y);
   const challengeOk = state.challenger != null && state.challengeSlot != null
     && placeIsCorrect(p.timeline, state.challengeSlot, song.y);
   let verdict;
+  let note;
   if (ok) {
     p.timeline.splice(state.slot, 0, song);
-    verdict = el('div', { class: 'verdict ok' }, `✔ Dobrze! Karta trafia do: ${p.name}.`);
+    verdict = el('div', { class: 'verdict ok' }, state.mode === 'solo'
+      ? '✔ Dobrze! Karta trafia na Twoją oś.'
+      : `✔ Dobrze! Karta trafia do: ${p.name}.`);
+    note = `✔ ${p.name}`;
   } else if (challengeOk) {
     const ch = state.players[state.challenger];
     addToTimeline(ch, song);
     verdict = el('div', { class: 'verdict bad' }, `✘ Pudło – kartę przejmuje ${ch.name}!`);
+    note = `✘ ${p.name}, kartę przejął(a) ${ch.name}`;
   } else {
-    verdict = el('div', { class: 'verdict bad' }, '✘ Pudło – karta przepada.');
+    if (state.mode === 'solo') p.lives -= 1;
+    verdict = el('div', { class: 'verdict bad' }, state.mode === 'solo'
+      ? `✘ Pudło – karta przepada. Pozostałe pomyłki: ${p.lives}.`
+      : '✘ Pudło – karta przepada.');
+    note = `✘ ${p.name}`;
   }
-  state.revealedOk = ok;
+  state.history.push({ song, preview: state.preview, player: p.name, ok: ok || challengeOk, note });
+  showReveal(verdict);
+}
+
+function showReveal(...extra) {
+  const song = state.current;
   state.phase = 'revealed';
   setVinyl(state.preview.art);
-  const box = $('#reveal');
-  box.replaceChildren(
+  $('#reveal').replaceChildren(
     el('div', { class: 'year' }, String(song.y)),
-    el('div', {}, el('b', {}, song.t), ' — ', song.a, ' ', flag(song)),
-    verdict,
-    state.preview.link
-      ? el('a', { href: state.preview.link, target: '_blank', rel: 'noopener', class: 'muted' }, 'Posłuchaj całości ↗')
-      : null,
+    el('div', {}, el('b', {}, song.t), ' — ', song.a, ' ', flagEl(song)),
+    ...extra,
+    listenLink(song, state.preview),
   );
-  box.classList.remove('hidden');
+  $('#reveal').classList.remove('hidden');
   render();
 }
 
-function nextTurn() {
-  const winner = state.players.find((p) => p.timeline.length >= state.winTarget);
-  if (winner) return endGame();
-  state.turn = (state.turn + 1) % state.players.length;
-  startTurn();
+function buyCard() {
+  const p = activePlayer();
+  if (p.tokens < BUY_COST || !state.deck.size) return;
+  p.tokens -= BUY_COST;
+  addToTimeline(p, state.deck.draw());
+  // zakupiona karta mogła przesunąć indeksy – resetujemy wybór miejsca
+  state.slot = null;
+  state.phase = 'listen';
+  if (p.timeline.length >= state.winTarget) return endGame();
+  render();
 }
 
-function endGame() {
-  stopAudio();
-  const best = state.players.slice().sort((a, b) => b.timeline.length - a.timeline.length)[0];
-  $('#winner-title').textContent = `🏆 Wygrywa ${best.name} (${cardsLabel(best.timeline.length)})!`;
-  renderTimeline($('#winner-timeline'), best.timeline, false);
-  showScreen('end');
+/* --- Jaka to melodia --- */
+$('#guess-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (state.mode !== 'melody' || state.phase !== 'listen' || !state.current) return;
+  revealMelody(false);
+});
+$('#btn-giveup').addEventListener('click', () => {
+  if (state.mode === 'melody' && state.phase === 'listen' && state.current) revealMelody(true);
+});
+
+function revealMelody(gaveUp) {
+  const song = state.current;
+  const p = activePlayer();
+  const parts = [];
+  if (state.guessType !== 'artist') {
+    const guess = $('#guess-title').value;
+    parts.push({ label: 'Tytuł', guess, ok: !gaveUp && checkTitle(guess, song) });
+  }
+  if (state.guessType !== 'title') {
+    const guess = $('#guess-artist').value;
+    parts.push({ label: 'Wykonawca', guess, ok: !gaveUp && checkArtist(guess, song) });
+  }
+  const points = parts.filter((x) => x.ok).length;
+  p.score += points;
+  state.turnsPlayed += 1;
+  state.history.push({
+    song, preview: state.preview, player: p.name, ok: points === parts.length,
+    note: `${p.name}: ${points}/${parts.length} pkt`,
+  });
+  const lines = parts.map((x) => el('div', { class: 'verdict ' + (x.ok ? 'ok' : 'bad') },
+    `${x.ok ? '✔' : '✘'} ${x.label}: ${x.guess.trim() ? `„${x.guess.trim()}”` : '—'}`));
+  lines.push(el('div', { class: 'muted' }, state.players.length > 1 ? `+${points} pkt dla: ${p.name}` : `+${points} pkt`));
+  showReveal(...lines);
+}
+
+/* --- wspólne --- */
+function nextTurn() {
+  if (isHitster()) {
+    const winner = state.players.find((p) => p.timeline.length >= state.winTarget);
+    if (winner || (state.mode === 'solo' && activePlayer().lives <= 0)) return endGame();
+  } else if (state.turnsPlayed >= state.rounds * state.players.length) {
+    return endGame();
+  }
+  state.turn = (state.turn + 1) % state.players.length;
+  startTurn();
 }
 
 function cardsLabel(n) {
@@ -285,6 +495,49 @@ function cardsLabel(n) {
   if (n === 1) return '1 karta';
   if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${n} karty`;
   return `${n} kart`;
+}
+const pointsLabel = (n) => `${n} pkt`;
+
+function endGame() {
+  stopAudio();
+  state.drawId++;
+  state.phase = 'ended';
+  const metric = isHitster() ? (p) => p.timeline.length : (p) => p.score;
+  const label = isHitster() ? cardsLabel : pointsLabel;
+  const ranking = state.players.slice().sort((a, b) => metric(b) - metric(a));
+  const best = ranking[0];
+  if (state.mode === 'melody' && state.players.length === 1) {
+    const max = state.rounds * (state.guessType === 'both' ? 2 : 1);
+    $('#winner-title').textContent = `🎤 Twój wynik: ${best.score} z ${max} pkt`;
+  } else if (state.mode === 'solo') {
+    $('#winner-title').textContent = best.timeline.length >= state.winTarget
+      ? `🏆 Wygrana! Zebrano ${cardsLabel(best.timeline.length)}.`
+      : `Koniec gry – zebrano ${cardsLabel(best.timeline.length)} z ${state.winTarget}.`;
+  } else {
+    const tie = ranking.length > 1 && metric(ranking[1]) === metric(best);
+    $('#winner-title').textContent = tie ? `🤝 Remis! (${label(metric(best))})` : `🏆 Wygrywa ${best.name} (${label(metric(best))})!`;
+  }
+  $('#ranking').replaceChildren(...(ranking.length > 1
+    ? [el('ol', { class: 'ranking' }, ranking.map((p) => el('li', {}, `${p.name} – ${label(metric(p))}`)))]
+    : []));
+  const tl = $('#winner-timeline');
+  tl.classList.toggle('hidden', !isHitster());
+  if (isHitster()) renderTimeline(tl, best.timeline, false);
+  renderPlayedList();
+  showScreen('end');
+}
+
+function renderPlayedList() {
+  const list = $('#played-list');
+  if (!state.history.length) {
+    list.replaceChildren(el('li', { class: 'muted' }, 'W tej grze nie zagrała żadna piosenka.'));
+    return;
+  }
+  list.replaceChildren(...state.history.map((h) => el('li', { class: h.ok ? 'ok' : 'bad' },
+    el('span', { class: 'py' }, String(h.song.y)),
+    el('span', { class: 'pt' }, el('b', {}, h.song.t), ' — ', h.song.a, ' ', flagEl(h.song)),
+    el('span', { class: 'pn muted' }, h.note),
+    listenLink(h.song, h.preview, `${PLATFORM_NAMES[store.get('platform', 'youtube')]} ↗`))));
 }
 
 /* ---------- audio ---------- */
@@ -314,9 +567,12 @@ audio.addEventListener('timeupdate', () => {
 });
 
 $('#btn-skip').addEventListener('click', () => {
+  if (!['listen', 'placed'].includes(state.phase) || !state.current) return;
   const p = activePlayer();
-  if (p.tokens < SKIP_COST || state.phase !== 'listen' && state.phase !== 'placed') return;
-  p.tokens -= SKIP_COST;
+  if (isHitster()) {
+    if (p.tokens < SKIP_COST) return;
+    p.tokens -= SKIP_COST;
+  }
   stopAudio();
   state.slot = null;
   state.phase = 'listen';
@@ -330,31 +586,62 @@ function setVinyl(art) {
   v.style.backgroundImage = art ? `url("${art}")` : '';
 }
 
-/* ---------- renderowanie ---------- */
+/* ---------- renderowanie gry ---------- */
 function render() {
-  if (state.phase === 'setup') return;
+  if (!state.players.length || $('#screen-game').classList.contains('hidden')) return;
   const p = activePlayer();
+  const hitster = isHitster();
 
+  $('#scoreboard').classList.toggle('hidden', state.players.length === 1 && state.mode !== 'melody');
   $('#scoreboard').replaceChildren(...state.players.map((pl, i) => el('div', {
     class: 'score' + (i === state.turn ? ' active' : ''),
-  }, pl.name, ': ', el('b', {}, String(pl.timeline.length)), `/${state.winTarget} kart · `,
-  el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || '–'))));
+  }, pl.name, ': ', hitster
+    ? [el('b', {}, String(pl.timeline.length)), `/${state.winTarget} kart · `, el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || '–')]
+    : [el('b', {}, String(pl.score)), ' pkt'])));
 
-  $('#turn-title').textContent = `Tura: ${p.name}`;
-  $('#turn-tokens').textContent = `Żetony: ${'🪙'.repeat(p.tokens) || 'brak'}`;
-  $('#btn-skip').disabled = p.tokens < SKIP_COST || !['listen', 'placed'].includes(state.phase) || !state.current;
+  if (state.mode === 'melody') {
+    const round = Math.min(state.rounds, Math.floor(state.turnsPlayed / state.players.length) + 1);
+    $('#turn-title').textContent = state.players.length > 1 ? `Tura: ${p.name}` : `Piosenka ${state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1)} z ${state.rounds}`;
+    $('#turn-info').textContent = state.players.length > 1 ? `Runda ${round}/${state.rounds}` : `Wynik: ${p.score} pkt`;
+  } else {
+    $('#turn-title').textContent = state.mode === 'solo' ? `Twoja oś: ${cardsLabel(p.timeline.length)} z ${state.winTarget}` : `Tura: ${p.name}`;
+    $('#turn-info').textContent = `Żetony: ${'🪙'.repeat(p.tokens) || 'brak'}`
+      + (state.mode === 'solo' ? ` · Pomyłki: ${'❤️'.repeat(Math.max(0, p.lives))}` : '');
+  }
+
+  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current;
+  $('#btn-skip').textContent = hitster ? `⏭ Pomiń (${SKIP_COST} żeton)` : '⏭ Inna piosenka';
+  $('#btn-skip').disabled = !canSkip || (hitster && p.tokens < SKIP_COST);
+
+  // pola odpowiedzi: zawsze w „Jaka to melodia”, w Hitsterze solo – opcjonalnie, za żeton
+  const showGuess = !!state.current && state.phase !== 'revealed'
+    && (state.mode === 'melody' || state.mode === 'solo');
+  $('#guess-form').classList.toggle('hidden', !showGuess);
+  if (showGuess) {
+    const type = state.mode === 'melody' ? state.guessType : 'both';
+    $('#guess-title').classList.toggle('hidden', type === 'artist');
+    $('#guess-artist').classList.toggle('hidden', type === 'title');
+    $('#btn-guess').classList.toggle('hidden', state.mode !== 'melody');
+    $('#btn-giveup').classList.toggle('hidden', state.mode !== 'melody');
+    $('#guess-title').placeholder = state.mode === 'solo' ? 'Tytuł (opcjonalnie – za żeton)' : 'Tytuł';
+    $('#guess-artist').placeholder = state.mode === 'solo' ? 'Wykonawca (opcjonalnie – za żeton)' : 'Wykonawca';
+  }
 
   const hints = {
-    listen: `${p.name}, kliknij miejsce (＋) na osi, gdzie pasuje ta piosenka.`,
-    placed: 'Zatwierdź wybór albo pozwól innym rzucić wyzwanie.',
+    listen: hitster ? (state.mode === 'solo'
+      ? 'Kliknij miejsce (＋) na osi, gdzie pasuje ta piosenka.'
+      : `${p.name}, kliknij miejsce (＋) na osi, gdzie pasuje ta piosenka.`) : '',
+    placed: state.mode === 'multi' ? 'Zatwierdź wybór albo pozwól innym rzucić wyzwanie.' : 'Zatwierdź wybór.',
     challenge: state.challenger == null
       ? 'Kto rzuca wyzwanie? (koszt: 1 żeton)'
-      : `${state.players[state.challenger].name}, wybierz INNE miejsce na osi gracza ${p.name}.`,
-    revealed: 'Czy gracz podał poprawnie wykonawcę i tytuł? Decyduje reszta stołu.',
+      : `${state.players[state.challenger]?.name}, wybierz INNE miejsce na osi gracza ${p.name}.`,
+    revealed: state.mode === 'multi' ? 'Czy gracz podał poprawnie wykonawcę i tytuł? Decyduje reszta stołu.' : '',
   };
-  $('#hint').textContent = hints[state.phase] || '';
+  $('#hint').textContent = (state.current || state.phase === 'revealed') ? (hints[state.phase] || '') : '';
 
-  renderTimeline($('#timeline'), p.timeline, ['listen', 'placed', 'challenge'].includes(state.phase));
+  const tl = $('#timeline');
+  tl.classList.toggle('hidden', !hitster);
+  if (hitster) renderTimeline(tl, p.timeline, ['listen', 'placed', 'challenge'].includes(state.phase));
   renderActions();
 }
 
@@ -365,7 +652,7 @@ function renderTimeline(container, timeline, interactive) {
     if (interactive) {
       let cls = 'slot';
       let label = '＋';
-      if (state.slot === i) { cls += ' chosen'; label = activePlayer().name; }
+      if (state.slot === i) { cls += ' chosen'; label = state.mode === 'solo' ? 'tutaj' : activePlayer().name; }
       if (state.challengeSlot === i) { cls += ' challenge'; label = state.players[state.challenger].name; }
       const disabled = !state.current
         || (state.phase === 'challenge' && (state.challenger == null || i === state.slot));
@@ -379,7 +666,7 @@ function renderTimeline(container, timeline, interactive) {
         el('div', { class: 'a' }, s.a),
         el('div', { class: 'y' }, String(s.y)),
         el('div', { class: 't' }, s.t),
-        el('div', { class: 'flag' }, flag(s))));
+        el('div', { class: 'flag' }, flagEl(s))));
     }
   }
   container.replaceChildren(...items);
@@ -390,15 +677,22 @@ function renderTimeline(container, timeline, interactive) {
 function renderActions() {
   const p = activePlayer();
   const btns = [];
-  if (state.phase === 'listen' || state.phase === 'placed') {
-    btns.push(el('button', { class: 'primary', disabled: state.slot == null, onclick: reveal }, '✔ Zatwierdź i odkryj'));
-    const canChallenge = state.players.some((pl, i) => i !== state.turn && pl.tokens >= 1);
+  if (state.mode === 'melody') {
+    if (state.phase === 'revealed') {
+      const last = state.turnsPlayed >= state.rounds * state.players.length;
+      btns.push(el('button', { class: 'primary', onclick: nextTurn }, last ? 'Zobacz wyniki →' : (state.players.length > 1 ? 'Następny gracz →' : 'Następna piosenka →')));
+    }
+  } else if (state.phase === 'listen' || state.phase === 'placed') {
+    btns.push(el('button', { class: 'primary', disabled: state.slot == null, onclick: onConfirmPlacement }, '✔ Zatwierdź i odkryj'));
+    if (state.mode === 'multi') {
+      const canChallenge = state.players.some((pl, i) => i !== state.turn && pl.tokens >= 1);
+      btns.push(el('button', {
+        class: 'gold', disabled: state.slot == null || !canChallenge,
+        onclick: () => { state.phase = 'challenge'; render(); },
+      }, '⚔ Wyzwanie'));
+    }
     btns.push(el('button', {
-      class: 'gold', disabled: state.slot == null || !canChallenge,
-      onclick: () => { state.phase = 'challenge'; render(); },
-    }, '⚔ Wyzwanie'));
-    btns.push(el('button', {
-      class: 'ghost', disabled: p.tokens < BUY_COST || !state.deck.length,
+      class: 'ghost', disabled: p.tokens < BUY_COST || !state.deck.size,
       title: 'Za 3 żetony dobierasz kartę, która od razu trafia na właściwe miejsce osi',
       onclick: buyCard,
     }, `Kup kartę (${BUY_COST} żetony)`));
@@ -413,31 +707,99 @@ function renderActions() {
       });
       btns.push(el('button', { class: 'ghost', onclick: () => { state.phase = 'placed'; render(); } }, 'Anuluj'));
     } else {
-      btns.push(el('button', { class: 'primary', disabled: state.challengeSlot == null, onclick: reveal }, '✔ Odkryj kartę'));
+      btns.push(el('button', { class: 'primary', disabled: state.challengeSlot == null, onclick: revealHitster }, '✔ Odkryj kartę'));
     }
   } else if (state.phase === 'revealed') {
-    btns.push(el('button', {
-      class: 'ok', disabled: state.awarded || p.tokens >= MAX_TOKENS,
-      onclick: () => { p.tokens += 1; state.awarded = true; render(); },
-    }, state.awarded ? '+1 żeton przyznany' : '🪙 Odgadł(a) wykonawcę i tytuł'));
-    btns.push(el('button', { class: 'primary', onclick: nextTurn }, 'Następny gracz →'));
+    if (state.mode === 'multi') {
+      btns.push(el('button', {
+        class: 'ok', disabled: state.awarded || p.tokens >= MAX_TOKENS,
+        onclick: () => { p.tokens += 1; state.awarded = true; render(); },
+      }, state.awarded ? '+1 żeton przyznany' : '🪙 Odgadł(a) wykonawcę i tytuł'));
+    }
+    const over = state.mode === 'solo' && (p.lives <= 0 || p.timeline.length >= state.winTarget);
+    btns.push(el('button', { class: 'primary', onclick: nextTurn },
+      over ? 'Zobacz podsumowanie →' : (state.mode === 'solo' ? 'Następna piosenka →' : 'Następny gracz →')));
   }
   $('#actions').replaceChildren(...btns);
 }
 
-function buyCard() {
-  const p = activePlayer();
-  if (p.tokens < BUY_COST || !state.deck.length) return;
-  p.tokens -= BUY_COST;
-  const bought = state.deck.shift();
-  addToTimeline(p, bought);
-  // zakupiona karta mogła przesunąć indeksy – resetujemy wybór miejsca
-  state.slot = null;
-  state.phase = 'listen';
-  if (p.timeline.length >= state.winTarget) return endGame();
-  render();
+// w trybie solo przy zatwierdzeniu sprawdzamy też (opcjonalnie) wpisany tytuł i wykonawcę
+function onConfirmPlacement() {
+  if (state.mode === 'melody' && state.players.length === 1) {
+    const max = state.rounds * (state.guessType === 'both' ? 2 : 1);
+    $('#winner-title').textContent = `🎤 Twój wynik: ${best.score} z ${max} pkt`;
+  } else if (state.mode === 'solo') {
+    const song = state.current;
+    const t = $('#guess-title').value;
+    const a = $('#guess-artist').value;
+    const p = activePlayer();
+    if (t.trim() || a.trim()) {
+      const ok = checkTitle(t, song) && checkArtist(a, song);
+      if (ok && p.tokens < MAX_TOKENS) p.tokens += 1;
+      revealHitster();
+      $('#reveal').insertBefore(el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') },
+        ok ? '🪙 Tytuł i wykonawca poprawne: +1 żeton' : '✘ Tytuł lub wykonawca niepoprawne – bez żetonu'), $('#reveal .listen'));
+      render();
+      return;
+    }
+  }
+  revealHitster();
 }
 
-/* ---------- start ---------- */
-renderSetupPlayers(DEFAULT_NAMES);
-updatePoolInfo();
+/* ---------- ustawienia: platforma i poprawki dat ---------- */
+$$('input[name=platform]').forEach((r) => {
+  r.checked = r.value === store.get('platform', 'youtube');
+  r.addEventListener('change', () => store.set('platform', r.value));
+});
+
+let searchTimer = null;
+$('#song-search').addEventListener('input', () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(renderSongEditor, 150);
+});
+$('#btn-reset-years').addEventListener('click', () => {
+  if (!confirm('Przywrócić oryginalne daty wszystkich piosenek?')) return;
+  store.set('yearOverrides', {});
+  applyYearOverrides();
+  renderSongEditor();
+});
+
+function renderSettings() {
+  $('#song-search').value = '';
+  renderSongEditor();
+}
+
+function renderSongEditor() {
+  const q = HitsterMatch.norm($('#song-search').value);
+  const overrides = store.get('yearOverrides', {});
+  const edited = Object.keys(overrides).length;
+  let matches = window.SONGS.filter((s) => !q || HitsterMatch.norm(s.a + ' ' + s.t).includes(q)
+    || HitsterMatch.norm(s.t + ' ' + s.a).includes(q));
+  // bez wyszukiwania pokazujemy najpierw poprawione piosenki
+  if (!q) matches = matches.filter((s) => overrides[songKey(s)] != null);
+  const shown = matches.slice(0, 50);
+  $('#song-search-info').textContent = q
+    ? `Znaleziono: ${matches.length}${matches.length > shown.length ? ` (pokazuję ${shown.length} – zawęź wyszukiwanie)` : ''}`
+    : `Poprawione daty: ${edited}. Wpisz wykonawcę lub tytuł, aby znaleźć piosenkę.`;
+  $('#song-editor').replaceChildren(...shown.map((s) => {
+    const key = songKey(s);
+    const orig = ORIGINAL_YEAR.get(key);
+    const input = el('input', {
+      type: 'number', min: '1900', max: String(new Date().getFullYear()), value: String(s.y),
+      'aria-label': `Rok: ${s.t}`,
+      onchange: (e) => {
+        const y = clampInt(e.target.value, 1900, new Date().getFullYear(), orig);
+        const ov = store.get('yearOverrides', {});
+        if (y === orig) delete ov[key]; else ov[key] = y;
+        store.set('yearOverrides', ov);
+        s.y = y;
+        e.target.value = String(y);
+        renderSongEditor();
+      },
+    });
+    return el('div', { class: 'song-row' + (s.y !== orig ? ' edited' : '') },
+      el('div', { class: 'song-meta' }, el('b', {}, s.t), el('span', { class: 'muted' }, ` — ${s.a} `), flagEl(s),
+        el('div', { class: 'muted small' }, `Źródło daty: ${s.src || '—'}${s.y !== orig ? ` · oryginalnie ${orig}` : ''}`)),
+      input);
+  }));
+}
