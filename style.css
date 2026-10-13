@@ -206,7 +206,7 @@ input[type=search] {
 }
 .song-editor { max-height: 60vh; overflow-y: auto; margin-bottom: 12px; }
 .song-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 4px; border-bottom: 1px solid #2f2a44; }
-.song-row.edited input { border-color: var(--gold); }
+.song-row input.edited { border-color: var(--gold); }
 .song-meta { min-width: 0; }
 
 @media (max-width: 560px) {
@@ -297,3 +297,15 @@ select {
 .tcard.start { background: transparent; border: 2px dashed var(--gold); }
 .tcard.start .a { color: var(--gold); text-transform: uppercase; font-size: .7rem; letter-spacing: .5px; }
 .mini.start { background: transparent; border: 1px dashed var(--gold); }
+
+/* --- flagi jako obrazki --- */
+.flag-img { width: 1.35em; height: auto; vertical-align: -0.15em; border-radius: 2px; box-shadow: 0 0 0 1px rgba(255,255,255,.15); }
+.tcard .flag .flag-img { width: 28px; }
+.song-edit { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
+.song-edit select { max-width: 150px; }
+.song-row select.edited { border-color: var(--gold); }
+@media (max-width: 640px) {
+  .song-row { flex-wrap: wrap; }
+  .song-edit { width: 100%; }
+  .song-edit select { flex: 1; max-width: none; }
+}

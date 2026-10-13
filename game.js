@@ -45,28 +45,48 @@ const MAX_PLAYERS = 8;
 /* ---------- piosenki, flagi, poprawki dat ---------- */
 const songKey = (s) => s.a + '|' + s.t;
 const ORIGINAL_YEAR = new Map(window.SONGS.map((s) => [songKey(s), s.y]));
+const ORIGINAL_COUNTRY = new Map(window.SONGS.map((s) => [songKey(s), { cc: s.cc || '', c: s.c }]));
 
-function applyYearOverrides() {
-  const overrides = store.get('yearOverrides', {});
-  for (const s of window.SONGS) s.y = overrides[songKey(s)] ?? ORIGINAL_YEAR.get(songKey(s));
+// poprawki użytkownika (rok i kraj) zapisane w przeglądarce
+function applyOverrides() {
+  const years = store.get('yearOverrides', {});
+  const countries = store.get('countryOverrides', {});
+  for (const s of window.SONGS) {
+    const key = songKey(s);
+    s.y = years[key] ?? ORIGINAL_YEAR.get(key);
+    const orig = ORIGINAL_COUNTRY.get(key);
+    if (countries[key] != null) {
+      s.cc = countries[key];
+      // polska/zagraniczna wynika z kraju; „nieznany” zostawia pierwotną kategorię
+      s.c = s.cc === 'PL' ? 'PL' : (s.cc ? 'INT' : orig.c);
+    } else {
+      s.cc = orig.cc;
+      s.c = orig.c;
+    }
+  }
 }
-applyYearOverrides();
+applyOverrides();
 
-// flaga z dwuliterowego kodu kraju (ISO 3166-1); XW/XE itp. i brak kodu → globus
-function flag(song) {
-  const cc = (song.cc || '').toUpperCase();
-  if (!/^[A-Z]{2}$/.test(cc) || cc.startsWith('X')) return '🌍';
-  return String.fromCodePoint(...[...cc].map((ch) => 0x1f1e6 + ch.charCodeAt(0) - 65));
-}
+// Flagi jako obrazki SVG (pakiet flag-icons, katalog flags/) – emoji flag nie działają w Windows
+const FLAG_SET = new Set(window.FLAG_CODES || []);
+const hasFlag = (cc) => FLAG_SET.has((cc || '').toLowerCase());
 const countryName = (() => {
   try {
     const dn = new Intl.DisplayNames(['pl'], { type: 'region' });
-    return (song) => (song.cc ? dn.of(song.cc.toUpperCase()) : 'kraj nieznany');
+    // YU to historyczny kod Jugosławii – przeglądarki pokazują go jako „Serbia”
+    const special = { YU: 'Jugosławia' };
+    return (song) => (song.cc ? special[song.cc.toUpperCase()] || dn.of(song.cc.toUpperCase()) : 'kraj nieznany');
   } catch (e) {
     return (song) => song.cc || 'kraj nieznany';
   }
 })();
-const flagEl = (song) => el('span', { class: 'flag', title: countryName(song) }, flag(song));
+function flagEl(song) {
+  const name = countryName(song);
+  if (!hasFlag(song.cc)) return el('span', { class: 'flag', title: name, 'aria-label': name }, '🌍');
+  return el('img', {
+    class: 'flag-img', src: `flags/${song.cc.toLowerCase()}.svg`, alt: name, title: name, width: '20', height: '15',
+  });
+}
 
 /* ---------- linki do serwisów streamingowych ---------- */
 function streamUrl(song, preview) {
@@ -354,7 +374,7 @@ const FILTERS = {
   genre: { values: genresOf, label: (g) => g, sort: (a, b) => (a === NO_GENRE) - (b === NO_GENRE) || a.localeCompare(b, 'pl') },
   country: {
     values: (s) => [countryOf(s)],
-    label: (c) => (c === NO_COUNTRY ? '🌍 nieznany' : `${flag({ cc: c })} ${countryName({ cc: c })}`),
+    label: (c) => (c === NO_COUNTRY ? '🌍 nieznany' : [flagEl({ cc: c }), ' ', countryName({ cc: c })]),
     sort: null, // wg liczby piosenek
   },
 };
@@ -1024,11 +1044,24 @@ $('#song-search').addEventListener('input', () => {
   searchTimer = setTimeout(renderSongEditor, 150);
 });
 $('#btn-reset-years').addEventListener('click', () => {
-  if (!confirm('Przywrócić oryginalne daty wszystkich piosenek?')) return;
+  if (!confirm('Przywrócić oryginalne daty i kraje wszystkich piosenek?')) return;
   store.set('yearOverrides', {});
-  applyYearOverrides();
+  store.set('countryOverrides', {});
+  applyOverrides();
   renderSongEditor();
 });
+
+// lista krajów do wyboru: najpierw te obecne w bazie piosenek, potem pozostałe (alfabetycznie, po polsku)
+const COUNTRY_OPTIONS = (() => {
+  const inData = new Set(window.SONGS.map((s) => (s.cc || '').toUpperCase()).filter(Boolean));
+  const all = new Set([...inData, ...(window.FLAG_CODES || []).map((c) => c.toUpperCase())]);
+  const byName = (a, b) => a[1].localeCompare(b[1], 'pl');
+  const opts = [...all].map((c) => [c, countryName({ cc: c })]);
+  return [['', 'kraj nieznany'],
+    ...opts.filter(([c]) => inData.has(c)).sort(byName),
+    ['—', '──────────'],
+    ...opts.filter(([c]) => !inData.has(c)).sort(byName)];
+})();
 
 function renderSettings() {
   $('#song-search').value = '';
@@ -1038,21 +1071,22 @@ function renderSettings() {
 function renderSongEditor() {
   const q = SongMatch.norm($('#song-search').value);
   const overrides = store.get('yearOverrides', {});
-  const edited = Object.keys(overrides).length;
+  const cOverrides = store.get('countryOverrides', {});
+  const edited = new Set([...Object.keys(overrides), ...Object.keys(cOverrides)]).size;
   let matches = window.SONGS.filter((s) => !q || SongMatch.norm(s.a + ' ' + s.t).includes(q)
     || SongMatch.norm(s.t + ' ' + s.a).includes(q));
   // bez wyszukiwania pokazujemy najpierw poprawione piosenki
-  if (!q) matches = matches.filter((s) => overrides[songKey(s)] != null);
+  if (!q) matches = matches.filter((s) => overrides[songKey(s)] != null || cOverrides[songKey(s)] != null);
   const shown = matches.slice(0, 50);
   $('#song-search-info').textContent = q
     ? `Znaleziono: ${matches.length}${matches.length > shown.length ? ` (pokazuję ${shown.length} – zawęź wyszukiwanie)` : ''}`
-    : `Poprawione daty: ${edited}. Wpisz wykonawcę lub tytuł, aby znaleźć piosenkę.`;
+    : `Poprawione piosenki: ${edited}. Wpisz wykonawcę lub tytuł, aby znaleźć piosenkę.`;
   $('#song-editor').replaceChildren(...shown.map((s) => {
     const key = songKey(s);
     const orig = ORIGINAL_YEAR.get(key);
     const input = el('input', {
       type: 'number', min: '1900', max: String(new Date().getFullYear()), value: String(s.y),
-      'aria-label': `Rok: ${s.t}`,
+      'aria-label': `Rok: ${s.t}`, class: s.y !== orig ? 'edited' : '',
       onchange: (e) => {
         const y = clampInt(e.target.value, 1900, new Date().getFullYear(), orig);
         const ov = store.get('yearOverrides', {});
@@ -1063,9 +1097,23 @@ function renderSongEditor() {
         renderSongEditor();
       },
     });
-    return el('div', { class: 'song-row' + (s.y !== orig ? ' edited' : '') },
+    const origC = ORIGINAL_COUNTRY.get(key);
+    const country = el('select', {
+      'aria-label': `Kraj: ${s.t}`,
+      class: s.cc !== origC.cc ? 'edited' : '',
+      onchange: (e) => {
+        const ov = store.get('countryOverrides', {});
+        if (e.target.value === origC.cc) delete ov[key]; else ov[key] = e.target.value;
+        store.set('countryOverrides', ov);
+        applyOverrides();
+        renderSongEditor();
+      },
+    }, COUNTRY_OPTIONS.map(([code, name]) => el('option', { value: code, selected: code === (s.cc || ''), disabled: code === '—' }, name)));
+    const changed = s.y !== orig || s.cc !== origC.cc;
+    return el('div', { class: 'song-row' + (changed ? ' edited' : '') },
       el('div', { class: 'song-meta' }, el('b', {}, s.t), el('span', { class: 'muted' }, ` — ${s.a} `), flagEl(s),
-        el('div', { class: 'muted small' }, `Źródło daty: ${s.src || '—'}${s.y !== orig ? ` · oryginalnie ${orig}` : ''}`)),
-      input);
+        el('div', { class: 'muted small' }, `Źródło daty: ${s.src || '—'}${s.y !== orig ? ` · oryginalnie ${orig}` : ''}`
+          + `${s.cc !== origC.cc ? ` · kraj oryginalnie: ${countryName(origC)}` : ''}`)),
+      el('div', { class: 'song-edit' }, input, country));
   }));
 }

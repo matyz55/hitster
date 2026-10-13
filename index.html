@@ -208,12 +208,12 @@
       </div>
     </section>
     <section class="card">
-      <h2>Lata wydania piosenek</h2>
-      <p class="muted">Znalazłeś błąd? Popraw rok – zmiana zapisze się w tej przeglądarce i będzie używana w kolejnych grach.</p>
+      <h2>Rok i kraj piosenek</h2>
+      <p class="muted">Znalazłeś błąd? Popraw rok albo kraj wykonawcy – zmiana zapisze się w tej przeglądarce i będzie używana w kolejnych grach. Kraj decyduje też, czy piosenka jest polska, czy zagraniczna.</p>
       <input type="search" id="song-search" placeholder="Szukaj wykonawcy lub tytułu…" aria-label="Szukaj piosenki">
       <p class="muted" id="song-search-info"></p>
       <div id="song-editor" class="song-editor"></div>
-      <button id="btn-reset-years" class="ghost">Przywróć wszystkie oryginalne daty</button>
+      <button id="btn-reset-years" class="ghost">Przywróć wszystkie oryginalne dane</button>
     </section>
     <button id="btn-settings-back" class="primary big">Gotowe</button>
   </main>
@@ -246,6 +246,7 @@
 
   <audio id="audio" preload="auto"></audio>
   <script src="songs.js"></script>
+  <script src="flags/codes.js"></script>
   <script src="match.js"></script>
   <script src="game.js"></script>
 </body>

@@ -31,7 +31,8 @@ wszystkich piosenek, które padły, z linkami do serwisu streamingowego.
 ## Ustawienia (⚙)
 
 - serwis dla przycisku „Posłuchaj całości”: YouTube, Spotify albo Apple Music,
-- poprawianie roku wydania dowolnej piosenki (zapisywane w przeglądarce).
+- poprawianie roku wydania i kraju wykonawcy dowolnej piosenki (zapisywane w przeglądarce;
+  kraj decyduje też, czy piosenka jest polska, czy zagraniczna).
 
 ## Jak uruchomić lokalnie
 
@@ -58,6 +59,9 @@ Rok oznacza **rok pierwszego wydania nagrania** danego wykonawcy.
 [MusicBrainz](https://musicbrainz.org/), Wikipedia oraz daty wydań ze Spotify
 (z eksportu playlist). Piosenka trafia do gry, jeśli rok podaje choć jedno źródło.
 Szczegóły, reguła wyboru roku i pełna tabela: [`VERIFICATION.md`](VERIFICATION.md).
+
+Flagi to obrazki SVG z pakietu [flag-icons](https://github.com/lipis/flag-icons) 7.5.0
+(licencja MIT, `flags/LICENSE`) – emoji flag nie wyświetlają się w Windows.
 
 Dopasowanie nagrania w iTunes (`match.js`) wymaga zgodności wykonawcy i tytułu
 oraz pomija wersje koncertowe, remiksy, karaoke i covery (pola `q`, `m`, `al`
