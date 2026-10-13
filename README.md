@@ -1,10 +1,28 @@
 # Hitster web 🎵
 
-Przeglądarkowa gra muzyczna wzorowana na planszówce **Hitster**: słuchasz
-fragmentu piosenki i próbujesz wstawić ją we właściwe miejsce swojej osi czasu
-(wg roku wydania). Polskie i zagraniczne przeboje od lat 50. do dziś.
+Przeglądarkowa gra muzyczna wzorowana na planszówce **Hitster**, z dodatkowym
+trybem w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje od lat 50. do dziś.
 
-## Jak uruchomić
+**Zagraj:** https://matyz55.github.io/hitster/ (po włączeniu GitHub Pages)
+
+## Tryby gry
+
+- **Hitster – 1 gracz** – układasz piosenki na osi czasu wg roku wydania;
+  masz ograniczoną liczbę pomyłek. Wpisanie poprawnego tytułu i wykonawcy daje żeton.
+- **Hitster – multiplayer** – 2–8 graczy przy jednym urządzeniu, z wyzwaniami
+  i żetonami jak w planszówce.
+- **Jaka to melodia** – 1–8 graczy po kolei odgadują tytuł, wykonawcę albo oba.
+  Wielkość liter, polskie znaki i drobne literówki nie mają znaczenia.
+
+Każda gra losuje piosenki równomiernie z różnych dekad. Po grze widać listę
+wszystkich piosenek, które padły, z linkami do serwisu streamingowego.
+
+## Ustawienia (⚙)
+
+- serwis dla przycisku „Posłuchaj całości”: YouTube, Spotify albo Apple Music,
+- poprawianie roku wydania dowolnej piosenki (zapisywane w przeglądarce).
+
+## Jak uruchomić lokalnie
 
 To statyczna strona – bez instalacji i bez budowania.
 
@@ -13,47 +31,22 @@ python3 -m http.server 8000
 # otwórz http://localhost:8000
 ```
 
-Można też po prostu otworzyć `index.html` w przeglądarce albo włączyć
-GitHub Pages dla repozytorium.
-
 Wymagany jest internet: 30-sekundowe fragmenty utworów są pobierane w trakcie
 gry z publicznego [iTunes Search API](https://performance-partners.apple.com/search-api)
-(format AAC/.m4a – przeglądarka musi go obsługiwać).
+(format AAC/.m4a – przeglądarka musi go obsługiwać). Piosenki, dla których iTunes
+nie ma fragmentu, są w grze automatycznie pomijane.
 
-## Zasady (w skrócie)
-
-1. Każdy gracz zaczyna z jedną odkrytą kartą.
-2. W swojej turze słuchasz piosenki i wybierasz miejsce na osi (przed, między
-   albo po swoich kartach).
-3. Inni gracze mogą rzucić **wyzwanie** (1 żeton) i wskazać inne miejsce.
-4. Trafiłeś – karta zostaje. Nie trafiłeś, a pretendent tak – karta trafia do
-   niego. W innym przypadku przepada.
-5. Odgadnięcie wykonawcy i tytułu = +1 żeton (maks. 5).
-   1 żeton = pominięcie piosenki, 3 żetony = kupienie karty.
-6. Wygrywa pierwsza osoba z ustaloną liczbą kart (domyślnie 10).
-
-Utwory z tego samego roku można kłaść w dowolnej kolejności.
-
-## Lista piosenek i weryfikacja lat
+## Lista piosenek i lata wydania
 
 Piosenki są w pliku [`songs.js`](songs.js) (`a` – wykonawca, `t` – tytuł,
-`y` – rok, `c` – `PL`/`INT`). Rok oznacza **rok pierwszego wydania nagrania**
-(singla lub albumu, na którym utwór ukazał się po raz pierwszy).
+`y` – rok, `c` – `PL`/`INT`, `cc` – kraj artysty, `src` – źródło daty).
+Rok oznacza **rok pierwszego wydania nagrania** danego wykonawcy.
 
-Każdy rok został sprawdzony automatycznie w dwóch źródłach:
+Źródła: [Discogs](https://www.discogs.com/) (wydanie sprawdzane po trackliście),
+[MusicBrainz](https://musicbrainz.org/), Wikipedia oraz daty wydań ze Spotify
+(z eksportu playlist). Piosenka trafia do gry, jeśli rok podaje choć jedno źródło.
+Szczegóły, reguła wyboru roku i pełna tabela: [`VERIFICATION.md`](VERIFICATION.md).
 
-- [MusicBrainz](https://musicbrainz.org/) – najwcześniejsza data pierwszego
-  wydania nagrania danego wykonawcy,
-- Wikipedia (pole „wydany” / „released” w infoboksie artykułu o utworze).
-
-Domyślnie w grze są tylko utwory z poziomu **v2** – oba źródła są zgodne albo
-rozbieżność została wyjaśniona (np. wcześniejsza data w MusicBrainz dotyczyła
-bootlegu lub dema). Utwory **v1** (rok potwierdza tylko jedno źródło) można
-dołączyć zaznaczając opcję w ustawieniach gry. Utwory z danymi sprzecznymi lub
-bez fragmentu w iTunes zostały odrzucone. Pełna tabela z uzasadnieniem:
-[`VERIFICATION.md`](VERIFICATION.md). Jeśli znajdziesz błąd – popraw rok w `songs.js`.
-
-Własną piosenkę dodasz, dopisując wiersz do `songs.js`; gra sama znajdzie
-fragment w iTunes (pole `q` nadpisuje frazę wyszukiwania, a `m` – tytuł, pod
-jakim utwór figuruje w iTunes). Dopasowanie nagrania (`match.js`) wymaga zgodności
-wykonawcy i tytułu oraz pomija wersje koncertowe, remiksy, karaoke i covery.
+Dopasowanie nagrania w iTunes (`match.js`) wymaga zgodności wykonawcy i tytułu
+oraz pomija wersje koncertowe, remiksy, karaoke i covery (pola `q`, `m`, `al`
+w `songs.js` to podpowiedzi dla wyszukiwarki).
