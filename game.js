@@ -29,13 +29,13 @@ const clampInt = (v, min, max, def) => {
 };
 const store = {
   get(key, def) {
-    try { const v = localStorage.getItem('hitster.' + key); return v == null ? def : JSON.parse(v); } catch (e) { return def; }
+    try { const v = localStorage.getItem('songster.' + key); return v == null ? def : JSON.parse(v); } catch (e) { return def; }
   },
   set(key, val) {
-    try { localStorage.setItem('hitster.' + key, JSON.stringify(val)); } catch (e) { /* tryb prywatny */ }
+    try { localStorage.setItem('songster.' + key, JSON.stringify(val)); } catch (e) { /* tryb prywatny */ }
   },
 };
-const { pickPreview, mainArtist, checkTitle, checkArtist } = window.HitsterMatch;
+const { pickPreview, mainArtist, checkTitle, checkArtist } = window.SongMatch;
 
 const MAX_TOKENS = 5;
 const SKIP_COST = 1;
@@ -169,8 +169,8 @@ async function fetchWithRetry(url, attempts = 3) {
 
 /* ---------- stan gry ---------- */
 const MODES = {
-  solo: { title: 'Hitster – 1 gracz', minPlayers: 1, maxPlayers: 1 },
-  multi: { title: 'Hitster – multiplayer', minPlayers: 2, maxPlayers: MAX_PLAYERS },
+  solo: { title: 'Oś czasu – 1 gracz', minPlayers: 1, maxPlayers: 1 },
+  multi: { title: 'Oś czasu – multiplayer', minPlayers: 2, maxPlayers: MAX_PLAYERS },
   melody: { title: 'Jaka to melodia', minPlayers: 1, maxPlayers: MAX_PLAYERS },
 };
 
@@ -192,9 +192,11 @@ const state = {
   turnsPlayed: 0,
   history: [],        // {song, preview, player, ok, note}
   drawId: 0,
+  clipStart: 0,
+  clipLen: 30,
 };
 const activePlayer = () => state.players[state.turn];
-const isHitster = () => state.mode === 'solo' || state.mode === 'multi';
+const isTimeline = () => state.mode === 'solo' || state.mode === 'multi';
 
 /* ---------- nawigacja między ekranami ---------- */
 const SCREENS = ['home', 'setup', 'game', 'end', 'settings'];
@@ -272,15 +274,101 @@ $('#btn-back').addEventListener('click', () => showScreen('home'));
 $$('input[name=pool]').forEach((r) => r.addEventListener('change', updatePoolInfo));
 
 const poolValue = () => document.querySelector('input[name=pool]:checked').value;
-function songPool() {
+
+/* --- filtry: dekady, gatunki, kraje, popularność --- */
+const NO_GENRE = 'bez gatunku';
+const NO_COUNTRY = '?';
+const decadeOf = (s) => Math.floor(s.y / 10) * 10;
+const genresOf = (s) => (s.g && s.g.length ? s.g : [NO_GENRE]);
+const countryOf = (s) => (s.cc || NO_COUNTRY).toUpperCase();
+const FILTERS = {
+  decade: { values: (s) => [decadeOf(s)], label: (d) => `${d}s`, sort: (a, b) => a - b },
+  genre: { values: genresOf, label: (g) => g, sort: (a, b) => (a === NO_GENRE) - (b === NO_GENRE) || a.localeCompare(b, 'pl') },
+  country: {
+    values: (s) => [countryOf(s)],
+    label: (c) => (c === NO_COUNTRY ? '🌍 nieznany' : `${flag({ cc: c })} ${countryName({ cc: c })}`),
+    sort: null, // wg liczby piosenek
+  },
+};
+// próg popularności (Spotify, 0–100): mediana i 80. percentyl w bazie
+const POP_LEVELS = (() => {
+  const ps = window.SONGS.map((s) => s.p).filter((p) => p != null).sort((a, b) => a - b);
+  const q = (f) => (ps.length ? ps[Math.floor(f * (ps.length - 1))] : 0);
+  return [0, q(0.5), q(0.8)];
+})();
+
+const filterState = Object.assign(
+  { decade: [], genre: [], country: [], popularity: 0, clip: 30, random: false, hint: false },
+  store.get('filters', {}),
+); // decade/genre/country przechowują WYŁĄCZONE wartości
+
+function saveFilters() { store.set('filters', filterState); }
+
+function songPool(ignore) {
   const p = poolValue();
-  return window.SONGS.filter((s) => p === 'ALL' || s.c === p);
+  const minPop = POP_LEVELS[filterState.popularity] || 0;
+  return window.SONGS.filter((s) => (p === 'ALL' || s.c === p)
+    && (s.p == null || s.p >= minPop)
+    && Object.keys(FILTERS).every((f) => f === ignore
+      || FILTERS[f].values(s).some((v) => !filterState[f].includes(String(v)))));
 }
+
+function renderFilters() {
+  for (const [name, f] of Object.entries(FILTERS)) {
+    // liczby przy filtrze uwzględniają pozostałe filtry, ale nie ten
+    const counts = new Map();
+    for (const s of songPool(name)) for (const v of f.values(s)) counts.set(v, (counts.get(v) || 0) + 1);
+    const base = window.SONGS.filter((s) => poolValue() === 'ALL' || s.c === poolValue());
+    const all = new Set(base.flatMap(f.values));
+    const values = [...all].sort(f.sort || ((a, b) => (counts.get(b) || 0) - (counts.get(a) || 0)));
+    $('#f-' + name).replaceChildren(...values.map((v) => {
+      const off = filterState[name].includes(String(v));
+      return el('button', {
+        type: 'button', class: 'chip', 'aria-pressed': String(!off),
+        onclick: () => {
+          const list = filterState[name];
+          const i = list.indexOf(String(v));
+          if (i >= 0) list.splice(i, 1); else list.push(String(v));
+          saveFilters(); updatePoolInfo();
+        },
+      }, f.label(v), el('span', { class: 'n' }, String(counts.get(v) || 0)));
+    }));
+  }
+}
+
+$$('[data-all]').forEach((b) => b.addEventListener('click', () => {
+  filterState[b.dataset.all] = []; saveFilters(); updatePoolInfo();
+}));
+$$('[data-none]').forEach((b) => b.addEventListener('click', () => {
+  const f = FILTERS[b.dataset.none];
+  filterState[b.dataset.none] = [...new Set(window.SONGS.flatMap(f.values))].map(String);
+  saveFilters(); updatePoolInfo();
+}));
+$$('input[name=popularity]').forEach((r) => {
+  r.checked = Number(r.value) === filterState.popularity;
+  r.addEventListener('change', () => { filterState.popularity = Number(r.value); saveFilters(); updatePoolInfo(); });
+});
+$('#clip-length').value = String(filterState.clip);
+$('#clip-length').addEventListener('change', (e) => { filterState.clip = Number(e.target.value); saveFilters(); });
+$('#clip-random').checked = filterState.random;
+$('#clip-random').addEventListener('change', (e) => { filterState.random = e.target.checked; saveFilters(); });
+$('#hint-decade').checked = filterState.hint;
+$('#hint-decade').addEventListener('change', (e) => { filterState.hint = e.target.checked; saveFilters(); });
+
 function updatePoolInfo() {
+  renderFilters();
   const pool = songPool();
+  const active = Object.keys(FILTERS).filter((f) => filterState[f].length).length + (filterState.popularity ? 1 : 0);
+  $('#filters summary').textContent = `Filtry: dekady, gatunki, kraje, popularność${active ? ` (aktywne: ${active})` : ''}`;
+  if (!pool.length) {
+    $('#pool-info').textContent = 'Żadna piosenka nie pasuje do wybranych filtrów.';
+    $('#btn-start').disabled = true;
+    return;
+  }
+  $('#btn-start').disabled = false;
   const years = pool.map((s) => s.y);
-  const decades = new Set(pool.map((s) => Math.floor(s.y / 10))).size;
-  $('#pool-info').textContent = `${pool.length} piosenek z lat ${Math.min(...years)}–${Math.max(...years)} (${decades} dekad). Dekady losowane są równomiernie.`;
+  const decades = new Set(pool.map(decadeOf)).size;
+  $('#pool-info').textContent = `${pool.length} piosenek z lat ${Math.min(...years)}–${Math.max(...years)} (dekad: ${decades}). Dekady losowane są równomiernie.`;
 }
 
 $('#btn-start').addEventListener('click', startGame);
@@ -297,13 +385,14 @@ function startGame() {
   state.rounds = clampInt($('#rounds').value, 1, 30, 5);
   state.guessType = document.querySelector('input[name=guess]:checked').value;
   state.deck = new Deck(songPool());
-  const needed = isHitster() ? names.length * 3 : names.length * state.rounds;
+  prefetched = null;
+  const needed = isTimeline() ? names.length * 3 : names.length * state.rounds;
   if (state.deck.size < needed) {
     alert('Za mało piosenek w wybranej puli dla tych ustawień.');
     return;
   }
   state.players = names.map((name) => ({
-    name, tokens: startTokens, timeline: isHitster() ? [state.deck.draw()] : [], score: 0, lives,
+    name, tokens: startTokens, timeline: isTimeline() ? [state.deck.draw()] : [], score: 0, lives,
   }));
   state.turn = Math.floor(Math.random() * names.length);
   state.turnsPlayed = 0;
@@ -325,25 +414,46 @@ async function startTurn() {
 }
 
 // dobiera kolejną piosenkę, pomijając te bez dostępnego fragmentu
+// kolejna piosenka szukana w tle, gdy gracz słucha obecnej
+let prefetched = null;
+function prefetchNext() {
+  const song = state.deck.draw();
+  prefetched = song ? { song, deck: state.deck, promise: findPreview(song).catch(() => null) } : null;
+}
+
 async function drawSong() {
   const myDraw = ++state.drawId;
   $('#btn-play').disabled = true;
   setVinyl(null);
   for (;;) {
-    const song = state.deck.draw();
-    if (!song) break;
+    let song;
+    let preview;
     $('#mystery-status').textContent = 'Szukam fragmentu piosenki…';
-    const preview = await findPreview(song);
+    if (prefetched && prefetched.deck === state.deck) {
+      ({ song } = prefetched);
+      preview = await prefetched.promise;
+      prefetched = null;
+    } else {
+      song = state.deck.draw();
+      if (!song) break;
+      preview = await findPreview(song);
+    }
     if (myDraw !== state.drawId) return; // gra została przerwana
     if (preview) {
       state.current = song;
       state.preview = preview;
+      state.clipLen = filterState.clip;
+      state.clipStart = filterState.random && filterState.clip < 30 ? Math.random() * (29 - filterState.clip) : 0;
       $('#audio').src = preview.url;
-      $('#mystery-status').textContent = state.mode === 'melody'
+      $('#mystery-status').replaceChildren(state.mode === 'melody'
         ? 'Posłuchaj i wpisz odpowiedź.'
-        : 'Posłuchaj i wybierz miejsce na swojej osi czasu.';
+        : 'Posłuchaj i wybierz miejsce na swojej osi czasu.');
+      if (state.mode === 'melody' && filterState.hint) {
+        $('#mystery-status').append(' ', el('span', { class: 'decade-hint' }, `Podpowiedź: lata ${decadeOf(song) % 100 || '00'}. (${decadeOf(song)}–${decadeOf(song) + 9})`));
+      }
       $('#btn-play').disabled = false;
       render();
+      prefetchNext();
       if (state.mode === 'melody') $(state.guessType === 'artist' ? '#guess-artist' : '#guess-title').focus();
       return;
     }
@@ -361,7 +471,7 @@ async function drawSong() {
   endGame();
 }
 
-/* --- Hitster --- */
+/* --- Oś czasu --- */
 function placeIsCorrect(timeline, slot, year) {
   const before = timeline[slot - 1];
   const after = timeline[slot];
@@ -386,7 +496,7 @@ function onSlotClick(i) {
   render();
 }
 
-function revealHitster() {
+function revealTimeline() {
   const song = state.current;
   const p = activePlayer();
   const ok = placeIsCorrect(p.timeline, state.slot, song.y);
@@ -479,7 +589,7 @@ function revealMelody(gaveUp) {
 
 /* --- wspólne --- */
 function nextTurn() {
-  if (isHitster()) {
+  if (isTimeline()) {
     const winner = state.players.find((p) => p.timeline.length >= state.winTarget);
     if (winner || (state.mode === 'solo' && activePlayer().lives <= 0)) return endGame();
   } else if (state.turnsPlayed >= state.rounds * state.players.length) {
@@ -502,8 +612,8 @@ function endGame() {
   stopAudio();
   state.drawId++;
   state.phase = 'ended';
-  const metric = isHitster() ? (p) => p.timeline.length : (p) => p.score;
-  const label = isHitster() ? cardsLabel : pointsLabel;
+  const metric = isTimeline() ? (p) => p.timeline.length : (p) => p.score;
+  const label = isTimeline() ? cardsLabel : pointsLabel;
   const ranking = state.players.slice().sort((a, b) => metric(b) - metric(a));
   const best = ranking[0];
   if (state.mode === 'melody' && state.players.length === 1) {
@@ -521,8 +631,8 @@ function endGame() {
     ? [el('ol', { class: 'ranking' }, ranking.map((p) => el('li', {}, `${p.name} – ${label(metric(p))}`)))]
     : []));
   const tl = $('#winner-timeline');
-  tl.classList.toggle('hidden', !isHitster());
-  if (isHitster()) renderTimeline(tl, best.timeline, false);
+  tl.classList.toggle('hidden', !isTimeline());
+  if (isTimeline()) renderTimeline(tl, best.timeline, false);
   renderPlayedList();
   showScreen('end');
 }
@@ -547,8 +657,13 @@ function stopAudio() {
   $('#vinyl').classList.remove('spinning');
   $('#btn-play').textContent = '▶ Odtwórz';
 }
+const clipEnd = () => state.clipStart + (state.phase === 'revealed' ? 30 : state.clipLen);
 $('#btn-play').addEventListener('click', () => {
   if (audio.paused) {
+    // przed odkryciem odtwarzamy tylko wybrany fragment; po odkryciu – cały podgląd
+    if (audio.currentTime < state.clipStart || audio.currentTime >= clipEnd() - 0.2) {
+      audio.currentTime = state.phase === 'revealed' ? 0 : state.clipStart;
+    }
     audio.play().catch((e) => {
       $('#mystery-status').textContent = e.name === 'NotSupportedError'
         ? 'Ta przeglądarka nie obsługuje formatu AAC (.m4a) – spróbuj w innej przeglądarce.'
@@ -562,14 +677,21 @@ audio.addEventListener('play', () => { $('#vinyl').classList.add('spinning'); $(
 audio.addEventListener('pause', () => { $('#vinyl').classList.remove('spinning'); $('#btn-play').textContent = '▶ Odtwórz'; });
 audio.addEventListener('ended', () => { audio.currentTime = 0; });
 audio.addEventListener('timeupdate', () => {
-  const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+  if (state.phase !== 'revealed' && audio.currentTime >= state.clipStart + state.clipLen) {
+    audio.pause();
+    audio.currentTime = state.clipStart;
+  }
+  const revealed = state.phase === 'revealed';
+  const start = revealed ? 0 : state.clipStart;
+  const len = revealed ? (audio.duration || 30) : state.clipLen;
+  const pct = Math.min(100, Math.max(0, ((audio.currentTime - start) / len) * 100));
   $('#progress-bar').style.width = pct + '%';
 });
 
 $('#btn-skip').addEventListener('click', () => {
   if (!['listen', 'placed'].includes(state.phase) || !state.current) return;
   const p = activePlayer();
-  if (isHitster()) {
+  if (isTimeline()) {
     if (p.tokens < SKIP_COST) return;
     p.tokens -= SKIP_COST;
   }
@@ -590,12 +712,12 @@ function setVinyl(art) {
 function render() {
   if (!state.players.length || $('#screen-game').classList.contains('hidden')) return;
   const p = activePlayer();
-  const hitster = isHitster();
+  const timeline = isTimeline();
 
   $('#scoreboard').classList.toggle('hidden', state.players.length === 1 && state.mode !== 'melody');
   $('#scoreboard').replaceChildren(...state.players.map((pl, i) => el('div', {
     class: 'score' + (i === state.turn ? ' active' : ''),
-  }, pl.name, ': ', hitster
+  }, pl.name, ': ', timeline
     ? [el('b', {}, String(pl.timeline.length)), `/${state.winTarget} kart · `, el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || '–')]
     : [el('b', {}, String(pl.score)), ' pkt'])));
 
@@ -610,10 +732,10 @@ function render() {
   }
 
   const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current;
-  $('#btn-skip').textContent = hitster ? `⏭ Pomiń (${SKIP_COST} żeton)` : '⏭ Inna piosenka';
-  $('#btn-skip').disabled = !canSkip || (hitster && p.tokens < SKIP_COST);
+  $('#btn-skip').textContent = timeline ? `⏭ Pomiń (${SKIP_COST} żeton)` : '⏭ Inna piosenka';
+  $('#btn-skip').disabled = !canSkip || (timeline && p.tokens < SKIP_COST);
 
-  // pola odpowiedzi: zawsze w „Jaka to melodia”, w Hitsterze solo – opcjonalnie, za żeton
+  // pola odpowiedzi: zawsze w „Jaka to melodia”, w osi czasu solo – opcjonalnie, za żeton
   const showGuess = !!state.current && state.phase !== 'revealed'
     && (state.mode === 'melody' || state.mode === 'solo');
   $('#guess-form').classList.toggle('hidden', !showGuess);
@@ -628,7 +750,7 @@ function render() {
   }
 
   const hints = {
-    listen: hitster ? (state.mode === 'solo'
+    listen: timeline ? (state.mode === 'solo'
       ? 'Kliknij miejsce (＋) na osi, gdzie pasuje ta piosenka.'
       : `${p.name}, kliknij miejsce (＋) na osi, gdzie pasuje ta piosenka.`) : '',
     placed: state.mode === 'multi' ? 'Zatwierdź wybór albo pozwól innym rzucić wyzwanie.' : 'Zatwierdź wybór.',
@@ -640,8 +762,8 @@ function render() {
   $('#hint').textContent = (state.current || state.phase === 'revealed') ? (hints[state.phase] || '') : '';
 
   const tl = $('#timeline');
-  tl.classList.toggle('hidden', !hitster);
-  if (hitster) renderTimeline(tl, p.timeline, ['listen', 'placed', 'challenge'].includes(state.phase));
+  tl.classList.toggle('hidden', !timeline);
+  if (timeline) renderTimeline(tl, p.timeline, ['listen', 'placed', 'challenge'].includes(state.phase));
   renderActions();
 }
 
@@ -707,7 +829,7 @@ function renderActions() {
       });
       btns.push(el('button', { class: 'ghost', onclick: () => { state.phase = 'placed'; render(); } }, 'Anuluj'));
     } else {
-      btns.push(el('button', { class: 'primary', disabled: state.challengeSlot == null, onclick: revealHitster }, '✔ Odkryj kartę'));
+      btns.push(el('button', { class: 'primary', disabled: state.challengeSlot == null, onclick: revealTimeline }, '✔ Odkryj kartę'));
     }
   } else if (state.phase === 'revealed') {
     if (state.mode === 'multi') {
@@ -736,14 +858,14 @@ function onConfirmPlacement() {
     if (t.trim() || a.trim()) {
       const ok = checkTitle(t, song) && checkArtist(a, song);
       if (ok && p.tokens < MAX_TOKENS) p.tokens += 1;
-      revealHitster();
+      revealTimeline();
       $('#reveal').insertBefore(el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') },
         ok ? '🪙 Tytuł i wykonawca poprawne: +1 żeton' : '✘ Tytuł lub wykonawca niepoprawne – bez żetonu'), $('#reveal .listen'));
       render();
       return;
     }
   }
-  revealHitster();
+  revealTimeline();
 }
 
 /* ---------- ustawienia: platforma i poprawki dat ---------- */
@@ -770,11 +892,11 @@ function renderSettings() {
 }
 
 function renderSongEditor() {
-  const q = HitsterMatch.norm($('#song-search').value);
+  const q = SongMatch.norm($('#song-search').value);
   const overrides = store.get('yearOverrides', {});
   const edited = Object.keys(overrides).length;
-  let matches = window.SONGS.filter((s) => !q || HitsterMatch.norm(s.a + ' ' + s.t).includes(q)
-    || HitsterMatch.norm(s.t + ' ' + s.a).includes(q));
+  let matches = window.SONGS.filter((s) => !q || SongMatch.norm(s.a + ' ' + s.t).includes(q)
+    || SongMatch.norm(s.t + ' ' + s.a).includes(q));
   // bez wyszukiwania pokazujemy najpierw poprawione piosenki
   if (!q) matches = matches.filter((s) => overrides[songKey(s)] != null);
   const shown = matches.slice(0, 50);

@@ -213,3 +213,22 @@ input[type=search] {
   .played li { grid-template-columns: 44px 1fr; }
   .played .listen { grid-column: 2; grid-row: auto; }
 }
+
+/* --- filtry --- */
+.filters { margin-top: 12px; }
+.filters summary { cursor: pointer; color: var(--accent-2); padding: 6px 0; }
+.filter-group { margin: 12px 0; }
+.filter-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px; }
+button.link { background: none; border: 0; padding: 0; color: var(--accent-2); font-size: .85rem; text-decoration: underline; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  padding: 6px 10px; border-radius: 999px; font-size: .9rem; background: var(--panel-2);
+  border: 1px solid #3d3755; color: var(--muted);
+}
+.chip[aria-pressed="true"] { border-color: var(--accent); color: var(--text); background: rgba(255,61,127,.15); }
+.chip .n { opacity: .6; font-size: .8em; margin-left: 4px; }
+select {
+  font: inherit; color: var(--text); background: var(--panel-2);
+  border: 1px solid #3d3755; border-radius: 8px; padding: 8px 10px;
+}
+.decade-hint { color: var(--gold); font-weight: 600; }

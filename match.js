@@ -15,8 +15,16 @@
   const OK_VERSION = /\b(single|album|mono|stereo|original|radio|soundtrack|us|uk|explicit|clean|edited|bonus track|remastered|\d{4} remastered)\s+(version|edit)\b/gi;
   const BAD_VERSION = /\b(version|edit|versión)\b/i;
 
+  // ma – główny wykonawca, gdy jego nazwa sama zawiera „&” (np. „Simon & Garfunkel”)
+  function artistsOf(song) {
+    if (song.ma && song.a.startsWith(song.ma)) {
+      return [song.ma, ...song.a.slice(song.ma.length).split(/ & | feat\. /).filter(Boolean)];
+    }
+    return song.a.split(/ & | feat\. /);
+  }
+
   function mainArtist(song) {
-    return song.a.split(/ & | feat\. /)[0];
+    return artistsOf(song)[0];
   }
 
   function isUnwanted(r, song) {
@@ -91,15 +99,16 @@
     return [t, noParens, beforeSlash, inParens && noParens.length < 4 ? inParens : null].filter(Boolean);
   }
 
-  function artistVariants(a) {
-    const parts = a.split(/\s*(?:&|,| feat\.? | ft\. | and | i )\s*/i).filter(Boolean);
+  function artistVariants(song) {
+    const a = song.a;
+    const parts = artistsOf(song).map((p) => p.trim()).filter(Boolean);
     // samo nazwisko przy dwuczłonowych nazwach („Bregović”, „Presley”)
     const surnames = parts.map((p) => p.trim().split(/\s+/)).filter((w) => w.length === 2 && w[1].length >= 4).map((w) => w[1]);
     return [a, ...parts, ...surnames];
   }
 
   const checkTitle = (guess, song) => fuzzyEqual(guess, titleVariants(song.t));
-  const checkArtist = (guess, song) => fuzzyEqual(guess, artistVariants(song.a));
+  const checkArtist = (guess, song) => fuzzyEqual(guess, artistVariants(song));
 
-  root.HitsterMatch = { norm, pickPreview, mainArtist, levenshtein, checkTitle, checkArtist };
+  root.SongMatch = { norm, pickPreview, mainArtist, levenshtein, checkTitle, checkArtist };
 }(typeof window !== 'undefined' ? window : globalThis));
