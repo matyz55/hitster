@@ -19,16 +19,18 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 ## Pozostałe dane
 
 - **Kraj artysty (flaga)** – MusicBrainz (kraj lub obszar artysty; region typu „England” jest przeliczany na państwo), a gdy brak – [Wikidata](https://www.wikidata.org/) (kraj pochodzenia zespołu lub obywatelstwo, tylko gdy jednoznaczne). 🌍 = nie ustalono. Polska/zagraniczna = kraj artysty.
+- **Ręczne poprawki kraju:** Ewa Farna – Polska (decyzja; w MusicBrainz: Czechy). Polscy wykonawcy automatycznie dopasowani do zagranicznych imienników, poprawieni po sprawdzeniu w MusicBrainz (*country:PL*): Tilt, MAFIA, Hurt, Feel, Jamal, VOX, Jacek Stachursky, ŁZY Adam Konkol; w Wikidacie: IRA, Ørganek | ØNA, Dwa plus Jeden, Muniek Staszczyk.
+- **Kategoria „polskie” bez flagi** (żadne źródło nie podaje kraju, ale utwory są wyłącznie na polskich playlistach): Anna Wyszkoni, Antek Smykiewicz, Basia Stępniak-Wilk, Bluszcz, KARAŚ/ROGUCKI, KOSKA, Klincz, Maciek Czemplik, Marcelina, Wojciech Baranowski.
 - **Gatunki** – kategorie gatunków i stylów z Discogs (np. styl z „Metal” → metal, Disco/Italo-Disco → disco), a gdy brak – gatunki ze Spotify.
 - **Popularność** – wskaźnik popularności utworu w Spotify (0–100) z eksportu playlist.
 
 ## Podsumowanie
 
-- piosenek w grze: **3322** (polskich: 589, zagranicznych: 2733)
+- piosenek w grze: **3322** (polskich: 618, zagranicznych: 2704)
 - bez żadnej daty (pominięte): 6
 - covery zamiast oryginałów (pominięte): 5
 - usunięte duplikaty: 2
-- bez ustalonego kraju artysty: 43
+- bez ustalonego kraju artysty: 37
 
 | Źródło roku | Piosenek |
 |---|---|
@@ -872,8 +874,8 @@ W grze użyto roku z Discogs. Jeśli uważasz, że poprzedni był lepszy – pop
 | Dusty Springfield | Spooky | 1970 | Discogs + MusicBrainz | 1970 | 1970 | 1968 | GB |
 | Dusty Springfield | The Look Of Love | 1967 | Discogs | 1967 | – | 2006 | GB |
 | Dusty Springfield | You Don't Have To Say You Love Me | 1966 | Spotify + MusicBrainz | – | 1966 | 1966 | GB |
-| Dwa plus Jeden | Chodź, Pomaluj Mój Świat | 1978 | MusicBrainz (Spotify: 2014) | – | 1978 | 2014 | ? |
-| Dwa plus Jeden | Wstawaj szkoda dnia | 1972 | Spotify (MusicBrainz: 1978) | – | 1978 | 1972 | ? |
+| Dwa plus Jeden | Chodź, Pomaluj Mój Świat | 1978 | MusicBrainz (Spotify: 2014) | – | 1978 | 2014 | PL |
+| Dwa plus Jeden | Wstawaj szkoda dnia | 1972 | Spotify (MusicBrainz: 1978) | – | 1978 | 1972 | PL |
 | Dzamble | Wymyśliłem Ciebie | 1971 | Discogs + Spotify | 1971 | – | 1971 | PL |
 | Dżem | Czerwony jak cegła | 1985 | Discogs | 1985 | – | 2011 | PL |
 | Dżem | Do kołyski | 2004 | Discogs + Spotify | 2004 | – | 2004 | PL |
@@ -1032,8 +1034,8 @@ W grze użyto roku z Discogs. Jeśli uważasz, że poprzedni był lepszy – pop
 | Everlast | What It's Like | 1998 | Spotify + MusicBrainz | 2004 | 1998 | 1998 | US |
 | Everything But The Girl | Missing | 1994 | Discogs + Spotify | 1994 | – | 1994 | GB |
 | Ewa Bem | Serce to jest muzyk | 2001 | MusicBrainz (Spotify: 2014) | – | 2001 | 2014 | PL |
-| Ewa Farna | Cicho | 2009 | Discogs + MusicBrainz+Wikipedia | 2009 | 2009 | – | CZ |
-| Ewa Farna | Ewakuacja | 2010 | Spotify + MusicBrainz | 2011 | 2010 | 2010 | CZ |
+| Ewa Farna | Cicho | 2009 | Discogs + MusicBrainz+Wikipedia | 2009 | 2009 | – | PL |
+| Ewa Farna | Ewakuacja | 2010 | Spotify + MusicBrainz | 2011 | 2010 | 2010 | PL |
 | Ewelina Flinta | Zaluje (Insanity) | 2003 | Spotify + MusicBrainz | – | 2003 | 2003 | PL |
 | Ewelina Lisowska | Nieodporny Rozum | 2012 | MusicBrainz (Spotify: 2013) | – | 2012 | 2013 | PL |
 | Ewelina Lisowska | W Stronę Słońca | 2012 | Spotify + MusicBrainz | – | 2012 | 2012 | PL |
@@ -1054,7 +1056,7 @@ W grze użyto roku z Discogs. Jeśli uważasz, że poprzedni był lepszy – pop
 | Faster Pussycat | House of Pain | 1989 | Discogs + Spotify | 1989 | – | 1989 | US |
 | Fatboy Slim | Right Here, Right Now | 1998 | Discogs + Spotify | 1998 | – | 1998 | GB |
 | Fatboy Slim | Sunset (Bird of Prey) | 2000 | Discogs + Spotify | 2000 | – | 2000 | GB |
-| Feel | A gdy jest już ciemno | 2007 | Discogs + MusicBrainz+Wikipedia | 2007 | 2007 | – | JP |
+| Feel | A gdy jest już ciemno | 2007 | Discogs + MusicBrainz+Wikipedia | 2007 | 2007 | – | PL |
 | Felicjan Andrzejczak | Czas ołowiu | 2013 | Spotify | – | – | 2013 | PL |
 | Felicjan Andrzejczak | Jolka, jolka pamiętasz | 2013 | Spotify (MusicBrainz: 2014) | – | 2014 | 2013 | PL |
 | Felicjan Andrzejczak | Noc komety | 2013 | Spotify | – | – | 2013 | PL |
@@ -1306,7 +1308,7 @@ W grze użyto roku z Discogs. Jeśli uważasz, że poprzedni był lepszy – pop
 | Hozier | Too Sweet | 2024 | Discogs + Spotify | 2024 | – | 2024 | IE |
 | Human | Polski | 1993 | Discogs | 1993 | – | 2013 | US |
 | HUNTR/X & EJAE | Golden | 2025 | Discogs + Spotify | 2025 | – | 2025 | US |
-| Hurt | Załoga G | 2005 | Discogs + Spotify | 2005 | – | 2005 | US |
+| Hurt | Załoga G | 2005 | Discogs + Spotify | 2005 | – | 2005 | PL |
 | Hurts | Wonderful Life | 2010 | Discogs | 2010 | – | 2011 | GB |
 | Ian Brown | F.E.A.R. | 2001 | Spotify + MusicBrainz | – | 2001 | 2001 | GB |
 | Ich Troje | A Wszystko To...(Bo Ciebie Kocham) | 1999 | Discogs + Spotify | 1999 | – | 1999 | PL |
@@ -1333,9 +1335,9 @@ W grze użyto roku z Discogs. Jeśli uważasz, że poprzedni był lepszy – pop
 | INXS | Mystify | 1987 | Discogs + Spotify | 1987 | – | 1987 | AU |
 | INXS | Need You Tonight | 1987 | Discogs + Spotify | 1987 | – | 1987 | AU |
 | INXS | Never Tear Us Apart | 1987 | Discogs + Spotify | 1987 | – | 1987 | AU |
-| IRA | Mój Dom | 1991 | Discogs + Spotify | 1991 | – | 1991 | BR |
-| IRA | Nadzieja | 1991 | Discogs + Spotify | 1991 | – | 1991 | BR |
-| IRA | Wiara | 1993 | Discogs + Spotify | 1993 | – | 1993 | BR |
+| IRA | Mój Dom | 1991 | Discogs + Spotify | 1991 | – | 1991 | PL |
+| IRA | Nadzieja | 1991 | Discogs + Spotify | 1991 | – | 1991 | PL |
+| IRA | Wiara | 1993 | Discogs + Spotify | 1993 | – | 1993 | PL |
 | Irena Jarocka | Motylem jestem | 1974 | Discogs + Spotify | 1974 | – | 1974 | PL |
 | Irena Jarocka | Odpływają Kawiarenki | 1995 | Discogs | 1995 | – | 2015 | PL |
 | Irena Jarocka | Wymyśliłam cię | 1974 | Discogs + Spotify | 1974 | – | 1974 | PL |
@@ -1354,11 +1356,11 @@ W grze użyto roku z Discogs. Jeśli uważasz, że poprzedni był lepszy – pop
 | Jacek Kaczmarski | Obława | 1987 | Discogs | 1987 | – | 2012 | PL |
 | Jacek Kaczmarski & Przemyslaw Gintrowski | Modlitwa o wschodzie słońca | 1986 | MusicBrainz (Spotify: 2002) | – | 1986 | 2002 | PL |
 | Jacek Kaczmarski & Przemyslaw Gintrowski | Mury | 1987 | Discogs | 1987 | – | 2002 | PL |
-| Jacek Stachursky | Zostanmy Razem | 2010 | Spotify | – | – | 2010 | ? |
+| Jacek Stachursky | Zostanmy Razem | 2010 | Spotify | – | – | 2010 | PL |
 | Jack Harlow | Lovin On Me | 2023 | Discogs + Spotify | 2023 | – | 2023 | US |
 | Jack Savoretti | You Don't Have To Say You Love Me / Io che non vivo senza te - Medley | 2022 | Spotify | – | – | 2022 | GB |
 | Jack White & Alicia Keys | Another Way to Die | 2008 | Discogs + MusicBrainz | 2008 | 2008 | 2007 | US |
-| Jamal | Peron | 2013 | Discogs + Spotify | 2013 | – | 2013 | US |
+| Jamal | Peron | 2013 | Discogs + Spotify | 2013 | – | 2013 | PL |
 | Jamelia | Superstar | 2003 | Discogs + Spotify | 2003 | – | 2003 | GB |
 | James | Getting Away With It (All Messed Up) | 2001 | Discogs + Spotify | 2001 | – | 2001 | GB |
 | James | Laid | 1993 | Discogs | 1993 | – | 1998 | GB |
@@ -1861,7 +1863,7 @@ W grze użyto roku z Discogs. Jeśli uważasz, że poprzedni był lepszy – pop
 | Madonna | You'll See | 1995 | Spotify + MusicBrainz | – | 1995 | 1995 | US |
 | Madonna & Justin Timberlake | 4 Minutes | 2008 | Discogs + Spotify | 2008 | – | 2008 | US |
 | Mae Stephens | If We Ever Broke Up | 2023 | Spotify + MusicBrainz | – | 2023 | 2023 | GB |
-| MAFIA | Imię Deszczu | 1996 | Discogs | 1996 | – | 2008 | US |
+| MAFIA | Imię Deszczu | 1996 | Discogs | 1996 | – | 2008 | PL |
 | Magda Umer | Koncert Jesienny na Dwa Świerszcze | 2008 | MusicBrainz (Spotify: 2015) | – | 2008 | 2015 | PL |
 | Magda Umer | Koncert jesienny na dwa świerszcze i wiatr w kominie | 1973 | Discogs + MusicBrainz | 1973 | 1973 | 1972 | PL |
 | Magda Umer | Oczy Tej Małej | 1991 | Discogs | 1991 | – | 2014 | PL |
@@ -2064,7 +2066,7 @@ W grze użyto roku z Discogs. Jeśli uważasz, że poprzedni był lepszy – pop
 | Mumford & Sons | I Will Wait | 2012 | Discogs + Spotify | 2012 | – | 2012 | GB |
 | Mumford & Sons | Little Lion Man | 2008 | Discogs | 2008 | – | 2009 | GB |
 | Mungo Jerry | In the Summertime | 1970 | Discogs | 1970 | – | 1971 | GB |
-| Muniek Staszczyk | Pola | 2019 | Discogs + Spotify | 2019 | – | 2019 | ? |
+| Muniek Staszczyk | Pola | 2019 | Discogs + Spotify | 2019 | – | 2019 | PL |
 | Murray Head | One Night In Bangkok | 1984 | Discogs + MusicBrainz | 1984 | 1984 | 1980 | GB |
 | Muse | Hysteria | 2003 | Discogs | 2003 | – | 2004 | GB |
 | Muse | Knights of Cydonia | 2006 | Discogs | 2006 | – | 2013 | GB |
@@ -3172,8 +3174,8 @@ W grze użyto roku z Discogs. Jeśli uważasz, że poprzedni był lepszy – pop
 | Third Eye Blind | Semi-Charmed Life | 1997 | Discogs + Spotify | 1997 | – | 1997 | US |
 | This Mortal Coil | Song To The Siren | 1983 | Discogs | 1983 | – | 1984 | GB |
 | Tiffany | I Think We're Alone Now | 1987 | Spotify + MusicBrainz | 2011 | 1987 | 1987 | US |
-| Tilt | Jeszcze będzie przepięknie | 1996 | Discogs | 1996 | – | 2000 | GB |
-| Tilt | Mówię ci, że | 1986 | Discogs | 1986 | – | 2000 | GB |
+| Tilt | Jeszcze będzie przepięknie | 1996 | Discogs | 1996 | – | 2000 | PL |
+| Tilt | Mówię ci, że | 1986 | Discogs | 1986 | – | 2000 | PL |
 | Timbaland & Justin Timberlake | Give It To Me | 2007 | Discogs + Spotify | 2007 | – | 2007 | US |
 | Timbaland & Keri Hilson | The Way I Are | 2007 | Discogs + Spotify | 2007 | – | 2007 | US |
 | Timbaland & OneRepublic | Apologize | 2007 | Discogs + Spotify | 2007 | – | 2007 | US |
@@ -3300,7 +3302,7 @@ W grze użyto roku z Discogs. Jeśli uważasz, że poprzedni był lepszy – pop
 | Voo Voo | Gdybym | 2014 | Discogs + Spotify | 2014 | – | 2014 | PL |
 | Voo Voo | Jak Gdyby Nigdy Nic | 1998 | MusicBrainz (Spotify: 2015) | – | 1998 | 2015 | PL |
 | Voo Voo | Nim Stanie Się Tak, Jak Gdyby Nigdy Nic Nie Było | 1994 | Discogs | 1994 | – | 2006 | PL |
-| VOX | Bananowy song | 1980 | Discogs | 1980 | – | 2003 | DE |
+| VOX | Bananowy song | 1980 | Discogs | 1980 | – | 2003 | PL |
 | W.A.S.P. | Wild Child | 1985 | Discogs + Spotify | 1985 | – | 1985 | US |
 | WALK THE MOON | Shut Up and Dance | 2014 | Discogs + Spotify | 2014 | – | 2014 | US |
 | Walter Murphy | A Fifth Of Beethoven | 1976 | Discogs | 1976 | – | 1977 | US |
@@ -3403,5 +3405,5 @@ W grze użyto roku z Discogs. Jeśli uważasz, że poprzedni był lepszy – pop
 | Édith Piaf | La Vie en rose | 1947 | Discogs | 1947 | – | 2008 | FR |
 | Édith Piaf | Milord | 1959 | Discogs | 1959 | – | 1986 | FR |
 | Édith Piaf | Non, je ne regrette rien | 1960 | Discogs | 1960 | – | 1991 | FR |
-| Ørganek | ØNA & Nosowska | Kochana | 2018 | Spotify | – | – | 2018 | ? |
-| ŁZY Adam Konkol | Agnieszka | 2023 | Spotify | – | – | 2023 | ? |
+| Ørganek | ØNA & Nosowska | Kochana | 2018 | Spotify | – | – | 2018 | PL |
+| ŁZY Adam Konkol | Agnieszka | 2023 | Spotify | – | – | 2023 | PL |
