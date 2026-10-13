@@ -56,7 +56,7 @@
         <label><input type="radio" name="pool" value="INT"> Zagraniczne</label>
       </div>
       <details class="filters" id="filters">
-        <summary>Filtry: dekady, gatunki, kraje, popularność</summary>
+        <summary>Filtry: dekady, gatunki, kraje</summary>
         <div class="filter-group">
           <div class="filter-head"><b>Dekady</b> <button type="button" class="link" data-all="decade">wszystkie</button> <button type="button" class="link" data-none="decade">żadna</button></div>
           <div class="chips" id="f-decade"></div>
@@ -69,15 +69,6 @@
         <div class="filter-group">
           <div class="filter-head"><b>Kraj wykonawcy</b> <button type="button" class="link" data-all="country">wszystkie</button> <button type="button" class="link" data-none="country">żaden</button></div>
           <div class="chips" id="f-country"></div>
-        </div>
-        <div class="filter-group">
-          <div class="filter-head"><b>Popularność</b></div>
-          <div class="seg">
-            <label><input type="radio" name="popularity" value="0" checked> Wszystkie</label>
-            <label><input type="radio" name="popularity" value="1"> Znane</label>
-            <label><input type="radio" name="popularity" value="2"> Największe hity</label>
-          </div>
-          <p class="muted small">Według popularności utworu w Spotify (z eksportu playlist).</p>
         </div>
       </details>
       <p class="muted" id="pool-info"></p>
@@ -98,6 +89,17 @@
     </section>
 
     <section class="card">
+      <h2>Poziom trudności</h2>
+      <div class="seg">
+        <label><input type="radio" name="difficulty" value="0"> Łatwy</label>
+        <label><input type="radio" name="difficulty" value="1" checked> Normalny</label>
+        <label><input type="radio" name="difficulty" value="2"> Trudny</label>
+        <label><input type="radio" name="difficulty" value="3"> Ekspert</label>
+      </div>
+      <p class="muted" id="difficulty-desc"></p>
+    </section>
+
+    <section class="card">
       <h2>Zasady tej gry</h2>
       <div data-for="solo multi">
         <label class="row">Karty potrzebne do wygranej
@@ -106,6 +108,9 @@
         <label class="row">Żetony na start
           <input type="number" id="start-tokens" min="0" max="5" value="2">
         </label>
+      </div>
+      <div data-for="multi">
+        <label class="check"><input type="checkbox" id="show-all"> Pokazuj przez cały czas osie wszystkich graczy</label>
       </div>
       <div data-for="solo">
         <label class="row">Dozwolone pomyłki
@@ -165,8 +170,10 @@
 
       <p id="hint" class="hint"></p>
       <div id="timeline" class="timeline"></div>
-      <div id="actions" class="actions"></div>
+      <div id="actions" class="actions sticky-actions"></div>
     </section>
+
+    <section id="others" class="others hidden" aria-label="Osie pozostałych graczy"></section>
   </main>
 
   <!-- EKRAN KOŃCOWY -->
@@ -223,6 +230,12 @@
       <li>Gracze po kolei słuchają fragmentu i wpisują tytuł, wykonawcę albo oba (zależnie od ustawień).</li>
       <li>Za każdą poprawną część jest punkt. Drobne literówki, wielkość liter i polskie znaki nie mają znaczenia.</li>
     </ol>
+    <h3>Losowanie piosenek</h3>
+    <ul>
+      <li>Każdy wykonawca pojawia się w jednej grze najwyżej raz.</li>
+      <li>Poziom trudności: <b>Łatwy</b> – największe hity; <b>Normalny</b> – znane piosenki; <b>Trudny</b> – wszystkie piosenki, a na osi czasu utwory wydane blisko lat Twoich kart; <b>Ekspert</b> – mniej znane piosenki, wpadające między karty leżące najbliżej siebie.</li>
+      <li>Na poziomach łatwym i normalnym piosenki losowane są równomiernie z różnych dekad.</li>
+    </ul>
     <p class="muted">Utwory z tego samego roku można układać w dowolnej kolejności. Rok na karcie to rok pierwszego wydania nagrania. Fragmenty (30 s) pochodzą z iTunes Search API.</p>
     <form method="dialog"><button class="primary">OK</button></form>
   </dialog>

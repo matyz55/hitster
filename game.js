@@ -85,11 +85,17 @@ const listenLink = (song, preview, label) => el('a', {
   href: streamUrl(song, preview), target: '_blank', rel: 'noopener', class: 'listen',
 }, label || `Posłuchaj całości (${PLATFORM_NAMES[store.get('platform', 'youtube')]}) ↗`);
 
-/* ---------- talia z równomiernym rozkładem dekad ---------- */
-// Losujemy najpierw dekadę – tę, z której w tej grze padło najmniej piosenek –
-// a dopiero potem piosenkę z tej dekady. Dzięki temu żadna dekada nie dominuje.
+/* ---------- talia ---------- */
+// Zasady losowania:
+// 1. Każdy wykonawca może pojawić się w jednej grze tylko raz (także jako gość w duecie).
+// 2. Poziom łatwy/normalny: najpierw losujemy dekadę, z której w tej grze padło najmniej piosenek,
+//    a dopiero potem piosenkę – żadna dekada nie dominuje.
+// 3. Poziom trudny/ekspert (oś czasu): wybieramy piosenki wydane blisko lat, które gracz już ma na osi.
+const artistKeys = (s) => SongMatch.artistsOf(s).map((a) => SongMatch.norm(a.replace(/^the /i, ''))).filter(Boolean);
+
 class Deck {
-  constructor(songs) {
+  constructor(songs, difficulty = 1) {
+    this.difficulty = difficulty;
     this.byDecade = new Map();
     for (const s of shuffle(songs)) {
       const d = Math.floor(s.y / 10) * 10;
@@ -97,20 +103,64 @@ class Deck {
       this.byDecade.get(d).push(s);
     }
     this.used = new Map([...this.byDecade.keys()].map((d) => [d, 0]));
+    this.usedArtists = new Set();
   }
   get size() {
     let n = 0;
     for (const list of this.byDecade.values()) n += list.length;
     return n;
   }
-  draw() {
+  isFresh(s) {
+    return artistKeys(s).every((k) => !this.usedArtists.has(k));
+  }
+  // usuwa z talii piosenki wykonawców, którzy już grali
+  prune(list) {
+    for (let i = list.length - 1; i >= 0; i--) if (!this.isFresh(list[i])) list.splice(i, 1);
+  }
+  take(song) {
+    const d = Math.floor(song.y / 10) * 10;
+    const list = this.byDecade.get(d);
+    list.splice(list.indexOf(song), 1);
+    this.used.set(d, this.used.get(d) + 1);
+    for (const k of artistKeys(song)) this.usedArtists.add(k);
+    return song;
+  }
+  // piosenka nie zagrała (np. brak fragmentu lub błąd sieci) – wykonawca znów jest dostępny
+  release(song, putBack) {
+    for (const k of artistKeys(song)) this.usedArtists.delete(k);
+    if (putBack) this.byDecade.get(Math.floor(song.y / 10) * 10).unshift(song);
+  }
+  draw(nearYears) {
+    for (const list of this.byDecade.values()) this.prune(list);
     const available = [...this.byDecade.entries()].filter(([, l]) => l.length);
     if (!available.length) return null;
+    if (nearYears && nearYears.length && this.difficulty >= 2) return this.take(this.drawNear(nearYears));
     const least = Math.min(...available.map(([d]) => this.used.get(d)));
     const candidates = available.filter(([d]) => this.used.get(d) === least);
-    const [decade, list] = candidates[Math.floor(Math.random() * candidates.length)];
-    this.used.set(decade, this.used.get(decade) + 1);
-    return list.pop();
+    const [, list] = candidates[Math.floor(Math.random() * candidates.length)];
+    return this.take(list[list.length - 1]);
+  }
+  // trudniejsze poziomy: piosenka, która wpada blisko kart już leżących na osi
+  drawNear(nearYears) {
+    const years = nearYears.slice().sort((a, b) => a - b);
+    const pool = [];
+    for (const list of this.byDecade.values()) pool.push(...list.slice(-120));
+    const score = (s) => {
+      let i = 0;
+      while (i < years.length && years[i] < s.y) i++;
+      const prev = years[i - 1];
+      const next = years[i];
+      const dist = Math.min(prev == null ? 99 : s.y - prev, next == null ? 99 : next - s.y);
+      // ten sam rok co karta na osi to łatwizna (pasuje z obu stron) – karzemy
+      if (dist === 0) return 100 + Math.random();
+      if (this.difficulty >= 3) {
+        const gap = (next ?? s.y + 12) - (prev ?? s.y - 12);
+        return gap + dist + Math.random() * 2;
+      }
+      return dist + Math.random() * 2;
+    };
+    pool.sort((a, b) => score(a) - score(b));
+    return pool[Math.floor(Math.random() * Math.min(3, pool.length))];
   }
 }
 
@@ -192,6 +242,8 @@ const state = {
   turnsPlayed: 0,
   history: [],        // {song, preview, player, ok, note}
   drawId: 0,
+  difficulty: 1,
+  showAll: true,
   clipStart: 0,
   clipLen: 30,
 };
@@ -290,15 +342,26 @@ const FILTERS = {
     sort: null, // wg liczby piosenek
   },
 };
-// próg popularności (Spotify, 0–100): mediana i 80. percentyl w bazie
-const POP_LEVELS = (() => {
+// popularność w Spotify (0–100) – progi wg kwantyli w bazie
+const POP_Q = (() => {
   const ps = window.SONGS.map((s) => s.p).filter((p) => p != null).sort((a, b) => a - b);
-  const q = (f) => (ps.length ? ps[Math.floor(f * (ps.length - 1))] : 0);
-  return [0, q(0.5), q(0.8)];
+  return (f) => (ps.length ? ps[Math.floor(f * (ps.length - 1))] : 0);
 })();
+const DIFFICULTY = [
+  { name: 'Łatwy', minPop: POP_Q(0.75),
+    desc: 'Tylko największe hity (najpopularniejsza ćwiartka w Spotify), piosenki z różnych dekad.' },
+  { name: 'Normalny', minPop: POP_Q(0.35),
+    desc: 'Znane piosenki, równomiernie z różnych dekad.' },
+  { name: 'Trudny', minPop: 0,
+    desc: 'Wszystkie piosenki. Na osi czasu dostajesz utwory wydane blisko lat kart, które już masz.' },
+  { name: 'Ekspert', minPop: 0, maxPop: POP_Q(0.6),
+    desc: 'Mniej znane piosenki. Na osi czasu utwory wpadają między karty leżące najbliżej siebie.' },
+];
+// piosenki bez danych o popularności to klasyki z pierwotnej listy – traktujemy je jak hity
+const popOk = (s, lvl) => (s.p == null ? lvl.maxPop == null : s.p >= lvl.minPop && (lvl.maxPop == null || s.p <= lvl.maxPop));
 
 const filterState = Object.assign(
-  { decade: [], genre: [], country: [], popularity: 0, clip: 30, random: false, hint: false },
+  { decade: [], genre: [], country: [], difficulty: 1, clip: 30, random: false, hint: false, showAll: true },
   store.get('filters', {}),
 ); // decade/genre/country przechowują WYŁĄCZONE wartości
 
@@ -306,9 +369,9 @@ function saveFilters() { store.set('filters', filterState); }
 
 function songPool(ignore) {
   const p = poolValue();
-  const minPop = POP_LEVELS[filterState.popularity] || 0;
+  const lvl = DIFFICULTY[filterState.difficulty] || DIFFICULTY[1];
   return window.SONGS.filter((s) => (p === 'ALL' || s.c === p)
-    && (s.p == null || s.p >= minPop)
+    && popOk(s, lvl)
     && Object.keys(FILTERS).every((f) => f === ignore
       || FILTERS[f].values(s).some((v) => !filterState[f].includes(String(v)))));
 }
@@ -344,10 +407,12 @@ $$('[data-none]').forEach((b) => b.addEventListener('click', () => {
   filterState[b.dataset.none] = [...new Set(window.SONGS.flatMap(f.values))].map(String);
   saveFilters(); updatePoolInfo();
 }));
-$$('input[name=popularity]').forEach((r) => {
-  r.checked = Number(r.value) === filterState.popularity;
-  r.addEventListener('change', () => { filterState.popularity = Number(r.value); saveFilters(); updatePoolInfo(); });
+$$('input[name=difficulty]').forEach((r) => {
+  r.checked = Number(r.value) === filterState.difficulty;
+  r.addEventListener('change', () => { filterState.difficulty = Number(r.value); saveFilters(); updatePoolInfo(); });
 });
+$('#show-all').checked = filterState.showAll;
+$('#show-all').addEventListener('change', (e) => { filterState.showAll = e.target.checked; saveFilters(); });
 $('#clip-length').value = String(filterState.clip);
 $('#clip-length').addEventListener('change', (e) => { filterState.clip = Number(e.target.value); saveFilters(); });
 $('#clip-random').checked = filterState.random;
@@ -358,8 +423,9 @@ $('#hint-decade').addEventListener('change', (e) => { filterState.hint = e.targe
 function updatePoolInfo() {
   renderFilters();
   const pool = songPool();
-  const active = Object.keys(FILTERS).filter((f) => filterState[f].length).length + (filterState.popularity ? 1 : 0);
-  $('#filters summary').textContent = `Filtry: dekady, gatunki, kraje, popularność${active ? ` (aktywne: ${active})` : ''}`;
+  const active = Object.keys(FILTERS).filter((f) => filterState[f].length).length;
+  $('#filters summary').textContent = `Filtry: dekady, gatunki, kraje${active ? ` (aktywne: ${active})` : ''}`;
+  $('#difficulty-desc').textContent = (DIFFICULTY[filterState.difficulty] || DIFFICULTY[1]).desc;
   if (!pool.length) {
     $('#pool-info').textContent = 'Żadna piosenka nie pasuje do wybranych filtrów.';
     $('#btn-start').disabled = true;
@@ -368,7 +434,8 @@ function updatePoolInfo() {
   $('#btn-start').disabled = false;
   const years = pool.map((s) => s.y);
   const decades = new Set(pool.map(decadeOf)).size;
-  $('#pool-info').textContent = `${pool.length} piosenek z lat ${Math.min(...years)}–${Math.max(...years)} (dekad: ${decades}). Dekady losowane są równomiernie.`;
+  const artists = new Set(pool.map((s) => artistKeys(s)[0])).size;
+  $('#pool-info').textContent = `${pool.length} piosenek (${artists} wykonawców) z lat ${Math.min(...years)}–${Math.max(...years)}, dekad: ${decades}. Każdy wykonawca pojawi się w grze najwyżej raz.`;
 }
 
 $('#btn-start').addEventListener('click', startGame);
@@ -384,10 +451,13 @@ function startGame() {
   state.winTarget = clampInt($('#win-target').value, 3, 30, 10);
   state.rounds = clampInt($('#rounds').value, 1, 30, 5);
   state.guessType = document.querySelector('input[name=guess]:checked').value;
-  state.deck = new Deck(songPool());
+  state.difficulty = filterState.difficulty;
+  state.showAll = filterState.showAll;
+  state.deck = new Deck(songPool(), state.difficulty);
   prefetched = null;
   const needed = isTimeline() ? names.length * 3 : names.length * state.rounds;
-  if (state.deck.size < needed) {
+  const artists = new Set(songPool().map((s) => artistKeys(s)[0])).size;
+  if (state.deck.size < needed || artists < needed) {
     alert('Za mało piosenek w wybranej puli dla tych ustawień.');
     return;
   }
@@ -416,8 +486,16 @@ async function startTurn() {
 // dobiera kolejną piosenkę, pomijając te bez dostępnego fragmentu
 // kolejna piosenka szukana w tle, gdy gracz słucha obecnej
 let prefetched = null;
+// rok kart gracza, który dostanie następną piosenkę (dla trudniejszych poziomów)
+function nearYearsFor(playerIndex) {
+  return isTimeline() ? state.players[playerIndex].timeline.map((s) => s.y) : null;
+}
+const nextPlayerIndex = () => (state.mode === 'multi' ? (state.turn + 1) % state.players.length : state.turn);
+// na trudnych poziomach oś następnego gracza zmienia się do chwili odkrycia karty – wtedy szukamy dopiero po odkryciu
+const prefetchAfterReveal = () => isTimeline() && state.difficulty >= 2;
+
 function prefetchNext() {
-  const song = state.deck.draw();
+  const song = state.deck.draw(nearYearsFor(nextPlayerIndex()));
   prefetched = song ? { song, deck: state.deck, promise: findPreview(song).catch(() => null) } : null;
 }
 
@@ -434,7 +512,7 @@ async function drawSong() {
       preview = await prefetched.promise;
       prefetched = null;
     } else {
-      song = state.deck.draw();
+      song = state.deck.draw(nearYearsFor(state.turn));
       if (!song) break;
       preview = await findPreview(song);
     }
@@ -453,19 +531,20 @@ async function drawSong() {
       }
       $('#btn-play').disabled = false;
       render();
-      prefetchNext();
+      if (!prefetchAfterReveal()) prefetchNext();
       if (state.mode === 'melody') $(state.guessType === 'artist' ? '#guess-artist' : '#guess-title').focus();
       return;
     }
     if (!previewCache.has(songKey(song))) {
       // błąd sieci – oddajemy piosenkę do talii i próbujemy ponownie za chwilę
-      state.deck.byDecade.get(Math.floor(song.y / 10) * 10).unshift(song);
+      state.deck.release(song, true);
       $('#mystery-status').textContent = 'Nie mogę połączyć się z serwerem fragmentów. Ponawiam za 10 s…';
       await new Promise((r) => setTimeout(r, 10000));
       if (myDraw !== state.drawId) return;
       continue;
     }
     console.warn('Brak fragmentu:', song.a, song.t);
+    state.deck.release(song, false);
   }
   $('#mystery-status').textContent = 'Talia się skończyła!';
   endGame();
@@ -538,6 +617,7 @@ function showReveal(...extra) {
   );
   $('#reveal').classList.remove('hidden');
   render();
+  if (prefetchAfterReveal() && !prefetched) prefetchNext();
 }
 
 function buyCard() {
@@ -764,7 +844,24 @@ function render() {
   const tl = $('#timeline');
   tl.classList.toggle('hidden', !timeline);
   if (timeline) renderTimeline(tl, p.timeline, ['listen', 'placed', 'challenge'].includes(state.phase));
+  renderOthers();
   renderActions();
+}
+
+// osie pozostałych graczy (multiplayer, opcja „Pokazuj osie wszystkich graczy”)
+function renderOthers() {
+  const box = $('#others');
+  const show = state.mode === 'multi' && state.showAll;
+  box.classList.toggle('hidden', !show);
+  if (!show) return;
+  const fresh = state.phase === 'revealed' ? state.current : null;
+  box.replaceChildren(el('h2', {}, 'Osie pozostałych graczy'), ...state.players.map((pl, i) => (i === state.turn ? null
+    : el('div', { class: 'other' },
+      el('div', { class: 'other-head' }, el('b', {}, pl.name), ` · ${cardsLabel(pl.timeline.length)} · `,
+        el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || 'brak żetonów')),
+      el('div', { class: 'mini-timeline' }, pl.timeline.map((s) => el('div', { class: 'mini' + (s === fresh ? ' new' : '') },
+        el('b', {}, String(s.y)), el('span', { class: 'mt' }, s.t), el('span', { class: 'ma' }, s.a)))))))
+    .filter(Boolean));
 }
 
 function renderTimeline(container, timeline, interactive) {

@@ -110,5 +110,5 @@
   const checkTitle = (guess, song) => fuzzyEqual(guess, titleVariants(song.t));
   const checkArtist = (guess, song) => fuzzyEqual(guess, artistVariants(song));
 
-  root.SongMatch = { norm, pickPreview, mainArtist, levenshtein, checkTitle, checkArtist };
+  root.SongMatch = { norm, pickPreview, mainArtist, artistsOf, levenshtein, checkTitle, checkArtist };
 }(typeof window !== 'undefined' ? window : globalThis));

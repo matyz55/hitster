@@ -232,3 +232,59 @@ select {
   border: 1px solid #3d3755; border-radius: 8px; padding: 8px 10px;
 }
 .decade-hint { color: var(--gold); font-weight: 600; }
+
+/* --- osie pozostałych graczy --- */
+.others { background: var(--panel); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; }
+.others h2 { margin: 0 0 8px; font-size: 1rem; color: var(--muted); }
+.other { padding: 8px 0; border-top: 1px solid #2f2a44; }
+.other-head { font-size: .9rem; margin-bottom: 6px; }
+.mini-timeline { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+.mini {
+  flex: 0 0 auto; display: flex; flex-direction: column; width: 96px; padding: 6px 8px;
+  border-radius: 8px; background: var(--panel-2); font-size: .72rem; line-height: 1.25;
+}
+.mini b { color: var(--gold); font-size: .95rem; }
+.mini .mt { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini .ma { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mini.new { outline: 2px solid var(--ok); }
+
+/* --- telefony: pionowa oś czasu, przyciski akcji przyklejone do dołu --- */
+@media (max-width: 640px) {
+  .topbar { padding: 10px 12px; }
+  .topbar h1 { font-size: 1.3rem; }
+  .topbar-actions button { padding: 8px 10px; font-size: .9rem; }
+  .screen { padding: 0 12px 24px; }
+  .card { padding: 14px 12px; }
+  button { min-height: 44px; }
+  button.chip, button.link { min-height: 0; }
+  .seg label { flex: 1 1 auto; text-align: center; }
+
+  #scoreboard { flex-wrap: nowrap; overflow-x: auto; margin-bottom: 10px; }
+  .score { flex: 0 0 auto; }
+
+  .mystery { gap: 12px; }
+  .vinyl { width: 64px; height: 64px; }
+  .controls button { flex: 1; }
+
+  .timeline { flex-direction: column; overflow-x: visible; padding: 8px 0; scroll-snap-type: none; }
+  .tcard {
+    width: 100%; min-height: 0; padding: 10px 12px; text-align: left;
+    display: grid; grid-template-columns: 64px 1fr auto; grid-template-areas: "y t f" "y a f";
+    align-items: center; column-gap: 10px;
+  }
+  .tcard .y { grid-area: y; font-size: 1.5rem; }
+  .tcard .t { grid-area: t; }
+  .tcard .a { grid-area: a; }
+  .tcard .flag { grid-area: f; font-size: 1.3rem; }
+  .slot { width: 100%; height: 30px; min-height: 30px; margin: 4px 0; font-size: 1rem; }
+  .slot.chosen, .slot.challenge { width: 100%; height: 44px; }
+
+  .sticky-actions {
+    position: sticky; bottom: 0; z-index: 5; margin: 8px -12px -14px; padding: 10px 12px;
+    background: var(--panel); border-top: 1px solid #2f2a44; border-radius: 0 0 var(--radius) var(--radius);
+  }
+  .sticky-actions:empty { display: none; }
+  .sticky-actions button { flex: 1 1 auto; }
+
+  .played li { grid-template-columns: 44px 1fr; }
+}

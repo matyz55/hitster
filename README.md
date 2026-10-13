@@ -14,10 +14,17 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
 - **Jaka to melodia** – 1–8 graczy po kolei odgadują tytuł, wykonawcę albo oba.
   Wielkość liter, polskie znaki i drobne literówki nie mają znaczenia.
 
+Każdy wykonawca pojawia się w jednej grze najwyżej raz. **Poziom trudności**:
+łatwy (największe hity), normalny (znane piosenki), trudny (wszystkie; na osi czasu
+utwory wydane blisko lat Twoich kart) i ekspert (mniej znane; utwory wpadające między
+karty leżące najbliżej siebie). W multiplayerze można widzieć osie wszystkich graczy.
+Na telefonie oś czasu jest pionowa, a przyciski akcji przyklejone do dołu ekranu.
+
 Przed grą można zawęzić pulę piosenek: polskie/zagraniczne, **dekady**, **gatunki**
-(z Discogs), **kraj wykonawcy**, **popularność** (wg Spotify), a także ustawić
+(z Discogs), **kraj wykonawcy**, a także ustawić
 **długość fragmentu** (30/15/10/5 s), odtwarzanie z **losowego miejsca** i podpowiedź
-z dekadą. Ustawienia są zapamiętywane. Każda gra losuje piosenki równomiernie z różnych dekad. Po grze widać listę
+z dekadą. Ustawienia są zapamiętywane. Na poziomie łatwym i normalnym piosenki losowane są
+równomiernie z różnych dekad. Po grze widać listę
 wszystkich piosenek, które padły, z linkami do serwisu streamingowego.
 
 ## Ustawienia (⚙)
