@@ -288,3 +288,7 @@ select {
 
   .played li { grid-template-columns: 44px 1fr; }
 }
+
+/* --- proporcja polskich i zagranicznych --- */
+.share { margin-top: 12px; }
+.share input[type=range] { width: 100%; accent-color: var(--accent); margin-top: 6px; }

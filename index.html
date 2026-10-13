@@ -55,6 +55,10 @@
         <label><input type="radio" name="pool" value="PL"> Polskie</label>
         <label><input type="radio" name="pool" value="INT"> Zagraniczne</label>
       </div>
+      <div id="share-box" class="share">
+        <label for="pl-share">Udział polskich piosenek: <b id="pl-share-label"></b></label>
+        <input type="range" id="pl-share" min="0" max="100" step="10" value="50">
+      </div>
       <details class="filters" id="filters">
         <summary>Filtry: dekady, gatunki, kraje</summary>
         <div class="filter-group">
@@ -91,10 +95,9 @@
     <section class="card">
       <h2>Poziom trudności</h2>
       <div class="seg">
-        <label><input type="radio" name="difficulty" value="0"> Łatwy</label>
-        <label><input type="radio" name="difficulty" value="1" checked> Normalny</label>
-        <label><input type="radio" name="difficulty" value="2"> Trudny</label>
-        <label><input type="radio" name="difficulty" value="3"> Ekspert</label>
+        <label><input type="radio" name="level" value="0"> Łatwy</label>
+        <label><input type="radio" name="level" value="1" checked> Średni</label>
+        <label><input type="radio" name="level" value="2"> Trudny</label>
       </div>
       <p class="muted" id="difficulty-desc"></p>
     </section>
@@ -233,8 +236,9 @@
     <h3>Losowanie piosenek</h3>
     <ul>
       <li>Każdy wykonawca pojawia się w jednej grze najwyżej raz.</li>
-      <li>Poziom trudności: <b>Łatwy</b> – największe hity; <b>Normalny</b> – znane piosenki; <b>Trudny</b> – wszystkie piosenki, a na osi czasu utwory wydane blisko lat Twoich kart; <b>Ekspert</b> – mniej znane piosenki, wpadające między karty leżące najbliżej siebie.</li>
-      <li>Na poziomach łatwym i normalnym piosenki losowane są równomiernie z różnych dekad.</li>
+      <li>Poziom trudności: <b>Łatwy</b> – znane piosenki; <b>Średni</b> – wszystkie piosenki; <b>Trudny</b> – mniej znane piosenki, a na osi czasu częściej utwory wydane blisko lat Twoich kart.</li>
+      <li>Na każdym poziomie piosenki losowane są z różnych dekad – żadna dekada nie dominuje.</li>
+      <li>Przy mieszanych piosenkach gra pilnuje ustawionego udziału polskich i zagranicznych.</li>
     </ul>
     <p class="muted">Utwory z tego samego roku można układać w dowolnej kolejności. Rok na karcie to rok pierwszego wydania nagrania. Fragmenty (30 s) pochodzą z iTunes Search API.</p>
     <form method="dialog"><button class="primary">OK</button></form>
