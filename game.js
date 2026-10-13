@@ -44,6 +44,8 @@ const MAX_PLAYERS = 8;
 
 /* ---------- piosenki, flagi, poprawki dat ---------- */
 const songKey = (s) => s.a + '|' + s.t;
+// wszyscy wykonawcy (a – pierwszych dwóch, x – kolejni)
+const artistLine = (s) => [s.a, ...(s.x || [])].join(' & ');
 const ORIGINAL_YEAR = new Map(window.SONGS.map((s) => [songKey(s), s.y]));
 const ORIGINAL_COUNTRY = new Map(window.SONGS.map((s) => [songKey(s), { cc: s.cc || '', c: s.c }]));
 
@@ -672,7 +674,7 @@ function showReveal(...extra) {
   setVinyl(state.preview.art);
   $('#reveal').replaceChildren(
     el('div', { class: 'year' }, String(song.y)),
-    el('div', {}, el('b', {}, song.t), ' — ', song.a, ' ', flagEl(song)),
+    el('div', {}, el('b', {}, song.t), ' — ', artistLine(song), ' ', flagEl(song)),
     ...extra,
     listenLink(song, state.preview),
   );
@@ -786,7 +788,7 @@ function renderPlayedList() {
   }
   list.replaceChildren(...state.history.map((h) => el('li', { class: h.ok ? 'ok' : 'bad' },
     el('span', { class: 'py' }, String(h.song.y)),
-    el('span', { class: 'pt' }, el('b', {}, h.song.t), ' — ', h.song.a, ' ', flagEl(h.song)),
+    el('span', { class: 'pt' }, el('b', {}, h.song.t), ' — ', artistLine(h.song), ' ', flagEl(h.song)),
     el('span', { class: 'pn muted' }, h.note),
     listenLink(h.song, h.preview, `${PLATFORM_NAMES[store.get('platform', 'youtube')]} ↗`))));
 }

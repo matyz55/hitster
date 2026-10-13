@@ -12,7 +12,8 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
 - **Oś czasu – multiplayer** – 2–8 graczy przy jednym urządzeniu, z wyzwaniami
   i żetonami jak w planszówce.
 - **Jaka to melodia** – 1–8 graczy po kolei odgadują tytuł, wykonawcę albo oba.
-  Wielkość liter, polskie znaki i drobne literówki nie mają znaczenia.
+  Wielkość liter, polskie znaki i drobne literówki nie mają znaczenia. Przy duetach
+  i utworach kilku wykonawców wystarczy podać jednego z nich.
 
 Każdy wykonawca pojawia się w jednej grze najwyżej raz. **Poziom trudności**:
 łatwy (znane piosenki), średni – domyślny (wszystkie piosenki) i trudny (mniej znane;

@@ -16,11 +16,19 @@
   const BAD_VERSION = /\b(version|edit|versión)\b/i;
 
   // ma – główny wykonawca, gdy jego nazwa sama zawiera „&” (np. „Simon & Garfunkel”)
+  // x – kolejni wykonawcy (trzeci i dalsi), jeśli piosenkę nagrało więcej osób
   function artistsOf(song) {
-    if (song.ma && song.a.startsWith(song.ma)) {
-      return [song.ma, ...song.a.slice(song.ma.length).split(/ & | feat\. /).filter(Boolean)];
-    }
-    return song.a.split(/ & | feat\. /);
+    const listed = song.ma && song.a.startsWith(song.ma)
+      ? [song.ma, ...song.a.slice(song.ma.length).split(/ & | feat\. /).filter(Boolean)]
+      : song.a.split(/ & | feat\. /);
+    return [...listed, ...(song.x || [])];
+  }
+
+  // duety zapisane jedną nazwą: „KARAŚ/ROGUCKI”, „Coverdale/Page”, „Ørganek | ØNA”, „Axwell /\ Ingrosso”.
+  // Dzielimy tylko, gdy obie części mają co najmniej 4 znaki – „AC/DC” czy „HUNTR/X” zostają całe.
+  function duoParts(name) {
+    const parts = name.split(/\s*(?:\/\\|\/|\|)\s*/).map((p) => p.trim()).filter(Boolean);
+    return parts.length > 1 && parts.every((p) => norm(p).length >= 4) ? parts : [];
   }
 
   function mainArtist(song) {
@@ -101,7 +109,8 @@
 
   function artistVariants(song) {
     const a = song.a;
-    const parts = artistsOf(song).map((p) => p.trim()).filter(Boolean);
+    const listed = artistsOf(song).map((p) => p.trim()).filter(Boolean);
+    const parts = [...listed, ...listed.flatMap(duoParts)];
     // samo nazwisko przy dwuczłonowych nazwach („Bregović”, „Presley”)
     const surnames = parts.map((p) => p.trim().split(/\s+/)).filter((w) => w.length === 2 && w[1].length >= 4).map((w) => w[1]);
     return [a, ...parts, ...surnames];
