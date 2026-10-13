@@ -486,13 +486,30 @@ function startGame() {
     return;
   }
   state.players = names.map((name) => ({
-    name, tokens: startTokens, timeline: isTimeline() ? [state.deck.draw()] : [], score: 0, lives,
+    name, tokens: startTokens, timeline: [], score: 0, lives,
   }));
+  if (isTimeline()) dealStartYears(songPool());
   state.turn = Math.floor(Math.random() * names.length);
   state.turnsPlayed = 0;
   state.history = [];
   showScreen('game');
   startTurn();
+}
+
+// Karta startowa to sam rok (bez piosenki). Każdy gracz dostaje rok z innej kategorii dekad
+// (jeśli to możliwe), a sam rok to rok losowej piosenki z puli – więc pasuje do zakresu gry.
+function dealStartYears(pool) {
+  const byDecade = new Map();
+  for (const s of pool) {
+    if (!byDecade.has(decadeOf(s))) byDecade.set(decadeOf(s), []);
+    byDecade.get(decadeOf(s)).push(s.y);
+  }
+  let decades = [];
+  for (const pl of state.players) {
+    if (!decades.length) decades = shuffle([...byDecade.keys()]);
+    const years = byDecade.get(decades.pop());
+    pl.timeline.push({ y: years[Math.floor(Math.random() * years.length)], start: true });
+  }
 }
 
 async function startTurn() {
@@ -883,8 +900,8 @@ function renderOthers() {
     : el('div', { class: 'other' },
       el('div', { class: 'other-head' }, el('b', {}, pl.name), ` · ${cardsLabel(pl.timeline.length)} · `,
         el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || 'brak żetonów')),
-      el('div', { class: 'mini-timeline' }, pl.timeline.map((s) => el('div', { class: 'mini' + (s === fresh ? ' new' : '') },
-        el('b', {}, String(s.y)), el('span', { class: 'mt' }, s.t), el('span', { class: 'ma' }, s.a)))))))
+      el('div', { class: 'mini-timeline' }, pl.timeline.map((s) => el('div', { class: 'mini' + (s === fresh ? ' new' : '') + (s.start ? ' start' : '') },
+        el('b', {}, String(s.y)), el('span', { class: 'mt' }, s.start ? 'start' : s.t), el('span', { class: 'ma' }, s.start ? '' : s.a)))))))
     .filter(Boolean));
 }
 
@@ -905,11 +922,17 @@ function renderTimeline(container, timeline, interactive) {
     }
     if (i < timeline.length) {
       const s = timeline[i];
-      items.push(el('div', { class: 'tcard' + (s === revealedSong ? ' new' : '') },
-        el('div', { class: 'a' }, s.a),
-        el('div', { class: 'y' }, String(s.y)),
-        el('div', { class: 't' }, s.t),
-        el('div', { class: 'flag' }, flagEl(s))));
+      items.push(s.start
+        ? el('div', { class: 'tcard start', title: 'Karta startowa – sam rok' },
+          el('div', { class: 'a' }, 'karta startowa'),
+          el('div', { class: 'y' }, String(s.y)),
+          el('div', { class: 't' }, ''),
+          el('div', { class: 'flag' }, '📅'))
+        : el('div', { class: 'tcard' + (s === revealedSong ? ' new' : '') },
+          el('div', { class: 'a' }, s.a),
+          el('div', { class: 'y' }, String(s.y)),
+          el('div', { class: 't' }, s.t),
+          el('div', { class: 'flag' }, flagEl(s))));
     }
   }
   container.replaceChildren(...items);
