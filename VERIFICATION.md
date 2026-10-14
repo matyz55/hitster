@@ -33,7 +33,7 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 
 - piosenek w grze: **5452** (polskich: 1893, zagranicznych: 3559)
 - bez żadnej daty (pominięte): 59
-- covery zamiast oryginałów (pominięte): 47
+- covery zamiast oryginałów (pominięte): 46
 - usunięte duplikaty: 33
 - bez ustalonego kraju artysty: 96
 
@@ -50,8 +50,8 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 | Spotify + Discogs + MusicBrainz | 68 |
 | Discogs + MusicBrainz+Wikipedia | 56 |
 | Wikipedia + Discogs | 55 |
+| Ręczna poprawka (opis niżej) | 37 |
 | Discogs + MusicBrainz | 37 |
-| Ręczna poprawka (opis niżej) | 36 |
 | Spotify + Discogs | 19 |
 | MusicBrainz+Wikipedia | 8 |
 | MusicBrainz+Wikipedia + Spotify + Discogs | 5 |
@@ -59,7 +59,6 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 | MusicBrainz+Wikipedia + Spotify | 3 |
 | Discogs – album „Niemen Enigmatic”, utwór na trackliście; zamiast coveru Ewy Bem & Bemibek | 1 |
 | Discogs – „Skaldowie i Łucja Prus – W żółtych płomieniach liści”; zamiast coveru The Dumplings | 1 |
-| Discogs – singiel „Plamy na słońcu”; zamiast wersji Kazik Na Żywo | 1 |
 | Discogs – „Przeboje polskiego rocka – Nie będę Julią”, utwór na trackliście; zamiast nagrania Agnieszki Chylińskiej z 2019 r. | 1 |
 
 ## Rozbieżności Discogs ↔ wcześniejsza weryfikacja (MusicBrainz + Wikipedia)
@@ -81,6 +80,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 
 | Wykonawca | Tytuł | Rok | Źródło |
 |---|---|---|---|
+| Kazik Na Żywo | Plamy na słońcu | 2011 | Discogs – album „Bar La Curva / Plamy na słońcu” (2011); inny utwór niż „Plamy na słońcu” Klinczu (1984) |
 | Kapitan Nemo | Twoja Lorelei | 1984 | Discogs – „Kapitan Nemo - Zimne Kino / Twoja Lorelei” (1984), utwór „Twoja Lorelei” na trackliście; 1992 to składanka „The Best Of” |
 | Czerwone Gitary | Kwiaty we włosach | 1969 | Discogs – „Czerwone Gitary - Czerwone Gitary 3” (1969), utwór „Kwiaty We Włosach” na trackliście; 1991 to składanka „The Best Of Czerwone Gitary” |
 | Chłopcy z Placu Broni | O Ela! | 1993 | MusicBrainz – oficjalny album „Kocham Cię” (1993); w Discogs tylko wersja koncertowa z 2004 |
@@ -174,7 +174,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Wykonawca | Tytuł |
 |---|---|
 | Jary Oddział Zamknięty | Ten Wasz Swiat |
-| Kazik Na Żywo | Plamy na słońcu |
 | Męskie Granie Orkiestra & Daria Zawiałow | Płoną góry, płoną lasy |
 | Bitamina | Niech no tylko zakwitną jabłonie |
 | Felicjan Andrzejczak | Noc komety |
@@ -2689,6 +2688,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kazik & Edyta Bartosiewicz | Cztery pokoje | 2000 | Spotify + Discogs (singiel) + MusicBrainz | 2001 | 2000 | 2000 | PL |
 | Kazik & Kwartet ProForma | Gdybym miał kogoś | 2017 | Discogs + Spotify | 2017 | – | 2017 | ? |
 | Kazik Na Żywo | Celina | 1994 | Discogs + Spotify | 1994 | – | 1994 | PL |
+| Kazik Na Żywo | Plamy na słońcu | 2011 | Discogs – album „Bar La Curva / Plamy na słońcu” (2011); inny utwór niż „Plamy na słońcu” Klinczu (1984) | 2011 | – | 2011 | PL |
 | Kazik Na Żywo | Spalam się | 1994 | Discogs + Spotify | 1994 | – | 1994 | PL |
 | Kazik na Żywo | W południe | 1999 | Discogs + Wikipedia | 1999 | – | – | PL |
 | Kazik Staszewski | 100 000 000 | 1993 | Wikipedia | – | – | – | PL |
@@ -2770,7 +2770,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Klaus Mitffoch | Strzeż się tych miejsc | 1984 | Discogs | 1984 | – | 2005 | PL |
 | Klaus Mitffoch & Lech Janerka | Konstytucje | 2005 | Spotify | – | – | 2005 | PL |
 | Klincz | Latarnik | 1985 | Discogs (singiel) | 1999 | – | 2013 | ? |
-| Klincz | Plamy na słońcu | 1984 | Discogs – singiel „Plamy na słońcu” (1984); zamiast wersji Kazik Na Żywo | 1984 | – | – | PL |
 | Klingande | Jubel | 2013 | Discogs | 2013 | – | – | FR |
 | Kobranocka | Hipisówka | 1992 | Discogs | 1992 | – | 2007 | PL |
 | Kobranocka | I nikomu nie wolno się z tego śmiać | 1988 | Discogs | 1988 | – | 2003 | PL |
