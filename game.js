@@ -1397,7 +1397,12 @@ function renderSuggest() {
       el('b', { class: 'notr' }, x.kind === 'artist' ? x.a : x.t),
       x.kind === 'song' ? el('span', { class: 'notr' }, ` — ${x.a}`) : null);
     // pointerdown, żeby wybór zadziałał przed utratą fokusu przez pole
-    li.addEventListener('pointerdown', (e) => { e.preventDefault(); pickSuggestion(i); });
+    li.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      pickSuggestion(i);
+      // na ekranie dotykowym po wyborze chowamy klawiaturę (zdejmujemy fokus z pola)
+      if (e.pointerType === 'touch' || e.pointerType === 'pen') $('#guess-song').blur();
+    });
     return li;
   }));
   if (suggestActive >= 0) {
