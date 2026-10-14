@@ -6,12 +6,12 @@
   <title>Songster – duży ekran</title>
   <link rel="icon" href="icons/icon-192.png" type="image/png">
   <style>
-    :root { --bg: #12101a; --panel: #1d1a29; --panel-2: #272338; --text: #f3f0ff; --muted: #a49cbf;
+    :root { --u: max(1px, calc(100vw / 1920)); --bg: #12101a; --panel: #1d1a29; --panel-2: #272338; --text: #f3f0ff; --muted: #a49cbf;
       --accent: #ff3d7f; --accent-2: #2de2e6; --ok: #3ddc84; --bad: #ff5c5c; --gold: #ffc93c; }
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; }
     body { background: radial-gradient(circle at 20% 0%, #2a1840 0%, var(--bg) 60%); background-color: var(--bg); color: var(--text);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: clamp(16px, 1.6vw, 28px); overflow: hidden; }
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: clamp(16px, 1.6vw, calc(64 * var(--u))); overflow: hidden; }
     .wrap { height: 100%; display: flex; flex-direction: column; padding: 2vh 3vw; gap: 1.5vh; overflow: hidden; }
     header { display: flex; align-items: center; justify-content: space-between; gap: 2vw; }
     h1 { margin: 0; font-size: 1.8em; white-space: nowrap; }
@@ -19,11 +19,11 @@
     .many .score { font-size: .8em; padding: .25em .6em; }
     .info { color: var(--gold); font-size: 1.1em; }
     .scores { display: flex; gap: 1vw; flex-wrap: wrap; }
-    .score { background: var(--panel); border: 3px solid transparent; border-radius: 14px; padding: .4em .9em; font-size: 1.05em; }
+    .score { background: var(--panel); border: calc(3 * var(--u)) solid transparent; border-radius: calc(14 * var(--u)); padding: .4em .9em; font-size: 1.05em; }
     .score.active { border-color: var(--accent); }
     .main { display: flex; gap: 3vw; align-items: center; flex-shrink: 0; }
-    .vinyl { width: min(16vh, 6em); height: min(16vh, 6em); border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 0 4px #000;
-      background: repeating-radial-gradient(circle, #111 0 3px, #222 3px 6px); display: grid; place-items: center; background-size: cover; background-position: center; }
+    .vinyl { width: min(16vh, 6em); height: min(16vh, 6em); border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 0 calc(4 * var(--u)) #000;
+      background: repeating-radial-gradient(circle, #111 0 calc(3 * var(--u)), #222 calc(3 * var(--u)) calc(6 * var(--u))); display: grid; place-items: center; background-size: cover; background-position: center; }
     .compact .vinyl { width: min(10vh, 4em); height: min(10vh, 4em); }
     .compact .reveal .year { font-size: 2.2em; }
     .vinyl .lbl { width: 38%; height: 38%; border-radius: 50%; background: var(--accent); display: grid; place-items: center; font-weight: 800; font-size: 1.6em; }
@@ -38,18 +38,18 @@
     /* przyciski jak w oknie gry – można je klikać także tutaj */
     .actions { display: flex; flex-wrap: wrap; gap: .5em; align-items: center; flex-shrink: 0; }
     .actions:empty { display: none; }
-    .actions button { font-size: .8em; border: 0; border-radius: 10px; padding: .45em .9em; color: var(--text); background: var(--panel-2); }
+    .actions button { font-size: .8em; border: 0; border-radius: calc(10 * var(--u)); padding: .45em .9em; color: var(--text); background: var(--panel-2); }
     .actions button.primary { background: var(--accent); font-weight: 600; }
-    .actions button.ghost { background: transparent; border: 1px solid #3d3755; }
+    .actions button.ghost { background: transparent; border: calc(1 * var(--u)) solid #3d3755; }
     .actions button.ok { background: var(--ok); color: #0b1d12; font-weight: 600; }
     .actions button.gold { background: var(--gold); color: #2b2000; font-weight: 600; }
     .actions button:disabled { opacity: .4; cursor: default; }
     .actions .note { color: var(--muted); font-size: .8em; }
     /* osie czasu: zawsze wszystkie, rozmiar kart liczony w tv.js tak, by zmieściły się bez przewijania */
     .timelines { flex: 1; min-height: 0; overflow: hidden; display: grid; gap: 1vh 1.5vw; }
-    .tl-row { display: flex; align-items: center; gap: .8vw; min-height: 0; min-width: 0; border-radius: 14px; padding: 0 .4vw; }
+    .tl-row { display: flex; align-items: center; gap: .8vw; min-height: 0; min-width: 0; border-radius: calc(14 * var(--u)); padding: 0 .4vw; }
     .tl-row.active { grid-column: 1 / -1; }
-    .tl-row.active { background: rgba(255, 61, 127, .08); outline: 2px solid rgba(255, 61, 127, .5); }
+    .tl-row.active { background: rgba(255, 61, 127, .08); outline: calc(2 * var(--u)) solid rgba(255, 61, 127, .5); }
     .tl-name { width: 11vw; flex-shrink: 0; font-weight: 800; font-size: var(--nfs, 1em); line-height: 1.15; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
     .tl-name small { display: block; font-weight: 400; color: var(--muted); font-size: .7em; white-space: normal; }
     .tl-row.active .tl-name small { font-size: .55em; }
@@ -60,22 +60,22 @@
     .card .y { font-size: 1.9em; font-weight: 900; color: var(--gold); line-height: 1.05; }
     .card .t { font-weight: 700; font-size: .85em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .card .a { color: var(--muted); font-size: .75em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .flag { width: 1.6em; height: auto; border-radius: 3px; vertical-align: -0.15em; }
+    .flag { width: 1.6em; height: auto; border-radius: calc(3 * var(--u)); vertical-align: -0.15em; }
     .card .flag { width: 1.3em; align-self: center; }
     .tiny .card .a, .tiny .card .flag { display: none; }
     .tiny .card .t { -webkit-line-clamp: 1; }
     .tiny .card .y { font-size: 1.6em; }
     .tiny .card { justify-content: center; gap: .2em; }
-    .card.start { background: transparent; border: 3px dashed var(--gold); }
-    .card.new { outline: 4px solid var(--ok); }
-    .card.mystery { background: linear-gradient(160deg, var(--accent), #b0245a); border: 3px solid #fff; justify-content: center; gap: .2em;
+    .card.start { background: transparent; border: calc(3 * var(--u)) dashed var(--gold); }
+    .card.new { outline: calc(4 * var(--u)) solid var(--ok); }
+    .card.mystery { background: linear-gradient(160deg, var(--accent), #b0245a); border: calc(3 * var(--u)) solid #fff; justify-content: center; gap: .2em;
       animation: pulse 1.2s ease-in-out infinite; }
     .card.mystery.ch { background: linear-gradient(160deg, var(--gold), #c48a00); color: #1d1a29; }
     .card.mystery .q { font-size: 2.6em; font-weight: 900; line-height: 1; }
     .card.mystery .who { font-weight: 800; font-size: .8em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     @keyframes pulse { 50% { transform: translateY(-.25em); box-shadow: 0 .5em 1.2em rgba(0, 0, 0, .5); } }
     .mark { flex: 0 0 auto; width: calc(var(--cw, 11vw) * .55); height: var(--ch, 14vh); border-radius: .7em; display: grid; place-items: center; text-align: center;
-      font-size: var(--fs, 1em); font-weight: 800; border: 3px dashed; padding: .2em; overflow: hidden; }
+      font-size: var(--fs, 1em); font-weight: 800; border: calc(3 * var(--u)) dashed; padding: .2em; overflow: hidden; }
     .mark.bad { color: var(--bad); border-color: var(--bad); }
     .mark.ok { color: var(--ok); border-color: var(--ok); }
     .mark.challenge { color: var(--gold); border-color: var(--gold); }
@@ -83,7 +83,7 @@
     .end ol { font-size: 1.4em; }
     .waiting { margin: auto; text-align: center; color: var(--muted); font-size: 1.4em; }
     .waiting b { color: var(--text); font-size: 1.6em; display: block; margin-bottom: .5em; }
-    button { font: inherit; font-size: .7em; border: 1px solid #3d3755; background: transparent; color: var(--text); border-radius: 10px; padding: .4em .9em; cursor: pointer; }
+    button { font: inherit; font-size: .7em; border: calc(1 * var(--u)) solid #3d3755; background: transparent; color: var(--text); border-radius: calc(10 * var(--u)); padding: .4em .9em; cursor: pointer; }
     .hidden { display: none !important; }
   </style>
 </head>

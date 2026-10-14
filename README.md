@@ -43,7 +43,8 @@ Wszystkie osie mieszczą się na ekranie bez przewijania (przy 4+ graczach w dw�
 wybrane miejsce karty (i miejsce wskazane przy wyzwaniu) oraz znaczniki po pomyłce. Stan graczy
 (karty, żetony) jest przy ich osiach. Przyciski z okna gry (zatwierdź, wyzwanie z podpowiedzią, kto może je
 rzucić, kupno karty, pominięcie…) są też na dużym ekranie i można je tam klikać. Wszystko skaluje się
-na bieżąco do rozmiaru okna.
+na bieżąco do rozmiaru okna – także w 2K i 4K (czcionki, ramki i odstępy rosną z rozdzielczością,
+okładki pobierane są w jakości dopasowanej do ekranu).
 
 **Wersja angielska**: język wybiera się w Ustawieniach (domyślnie wg języka przeglądarki).
 Teksty interfejsu przechodzą przez `T()` (`i18n.js`), słownik jest w `i18n-en.js`; tytuły

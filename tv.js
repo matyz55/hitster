@@ -65,7 +65,7 @@ function render(s) {
     // przy osiach czasu stan graczy jest przy każdej osi – górnej tablicy wyników nie dublujemy
     rows.length > 1 ? null : h('div', 'scores', (s.scores || []).map((x) => h('div', 'score' + (x.active ? ' active' : ''), x.text))));
   const vinyl = h('div', 'vinyl' + (s.art ? ' cover' : ''), h('div', 'lbl', '?'));
-  if (s.art) vinyl.style.backgroundImage = `url("${s.art}")`;
+  if (s.art) vinyl.style.backgroundImage = `url("${sharpArt(s.art)}")`;
   const body = h('div', '', h('div', 'status', s.status || ''));
   if (s.reveal) {
     body.append(h('div', 'reveal', h('div', 'year', s.reveal.y),
@@ -92,7 +92,15 @@ function render(s) {
 // wszystkie osie na ekranie bez przewijania (fitTimelines): oś aktywnego gracza na całą szerokość u góry, pozostałe
 // (przy 4+ osiach) w dwóch kolumnach; wysokość dzielimy między wiersze, a szerokość kart dobieramy tak,
 // by cały rząd zmieścił się w jednej linii
+// jednostka skali: 1 px przy szerokości 1920 px, 2 px przy 4K (3840 px)
+const scaleUnit = () => Math.max(1, window.innerWidth / 1920);
+// okładka z iTunes w rozdzielczości dopasowanej do ekranu (adres zawiera rozmiar, np. 300x300bb)
+function sharpArt(url) {
+  const px = Math.min(1200, Math.max(300, Math.ceil((window.innerHeight * 0.16 * (window.devicePixelRatio || 1)) / 100) * 100));
+  return url.replace(/\/\d+x\d+bb\./, `/${px}x${px}bb.`);
+}
 function fitTimelines() {
+  const u = scaleUnit();
   const box = app.querySelector('.timelines');
   if (!box) return;
   const rows = [...box.children];
@@ -111,18 +119,18 @@ function fitTimelines() {
     const items = [...tl.children];
     const units = items.reduce((a, n) => a + (n.classList.contains('mark') ? 0.55 : 1), 0) || 1;
     const gap = Math.max(3, window.innerWidth * 0.004);
-    const cw = Math.max(20, Math.min(window.innerWidth * 0.12, rowH * 1.4, (tl.clientWidth - gap * (items.length - 1)) / units));
-    const ch = Math.max(20, Math.min(rowH - 6, cw * 1.35));
+    const cw = Math.max(20 * u, Math.min(window.innerWidth * 0.12, rowH * 1.4, (tl.clientWidth - gap * (items.length - 1)) / units));
+    const ch = Math.max(20 * u, Math.min(rowH - 6 * u, cw * 1.35));
     tl.style.setProperty('--cw', `${cw}px`);
     tl.style.setProperty('--ch', `${ch}px`);
     tl.style.setProperty('--gap', `${gap}px`);
     // czcionka karty: rok (4 cyfry) musi zmieścić się w szerokości, a wszystkie linijki w wysokości
     // (w małych kartach chowamy wykonawcę i flagę, tytuł ma jedną linijkę)
-    const tiny = ch < 85;
+    const tiny = ch < 85 * u;
     tl.style.setProperty('--fs', `${Math.max(6, Math.min(cw / 5.8, ch / (tiny ? 3.9 : 7.4)))}px`);
     r.classList.toggle('tiny', tiny);
     const name = r.querySelector('.tl-name');
-    if (name) r.style.setProperty('--nfs', `${Math.max(10, Math.min(rowH * 0.3, 30, name.clientWidth / (0.62 * Math.max(4, name.firstChild.textContent.length))))}px`);
+    if (name) r.style.setProperty('--nfs', `${Math.max(10, Math.min(rowH * 0.3, window.innerWidth / 64, name.clientWidth / (0.62 * Math.max(4, name.firstChild.textContent.length))))}px`);
   }
 }
 // cały ekran bez przewijania: zaczynamy od czcionki zależnej od szerokości okna i zmniejszamy ją (oraz minimalną
@@ -130,7 +138,8 @@ function fitTimelines() {
 function fit() {
   const box = app.querySelector('.timelines');
   const rows = box ? box.children.length : 0;
-  let fs = Math.max(12, Math.min(30, window.innerWidth * 0.016));
+  // do 4K: czcionka rośnie z szerokością okna (1920 px → 30 px, 3840 px → 60 px)
+  let fs = Math.max(12, Math.min(64, window.innerWidth * 0.0157));
   let minH = rows > 4 ? 0.5 : (rows ? 0.4 : 0);
   for (let k = 0; k < 20; k++) {
     app.style.fontSize = `${fs}px`;
@@ -140,7 +149,7 @@ function fit() {
     if (fs > 10) fs *= 0.92; else minH *= 0.9;
   }
 }
-window.addEventListener('resize', () => last && fit());
+window.addEventListener('resize', () => last && render(last));
 
 let channel = null;
 try {
