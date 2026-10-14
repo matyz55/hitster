@@ -40,7 +40,7 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 | Źródło roku | Piosenek |
 |---|---|
 | Discogs + Spotify | 1984 |
-| Discogs | 1791 |
+| Discogs | 1778 |
 | Discogs + Wikipedia | 316 |
 | Spotify + MusicBrainz | 297 |
 | Spotify | 279 |
@@ -51,8 +51,8 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 | Discogs + MusicBrainz+Wikipedia | 56 |
 | Wikipedia + Discogs | 55 |
 | Discogs + MusicBrainz | 37 |
+| Ręczna poprawka (opis niżej) | 32 |
 | Spotify + Discogs | 19 |
-| Ręczna poprawka (opis niżej) | 19 |
 | MusicBrainz+Wikipedia | 8 |
 | MusicBrainz+Wikipedia + Spotify + Discogs | 5 |
 | MusicBrainz+Wikipedia + Discogs | 4 |
@@ -77,12 +77,19 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 
 | Wykonawca | Tytuł | Rok | Źródło |
 |---|---|---|---|
+| Kapitan Nemo | Twoja Lorelei | 1984 | Discogs – „Kapitan Nemo - Zimne Kino / Twoja Lorelei” (1984), utwór „Twoja Lorelei” na trackliście; 1992 to składanka „The Best Of” |
+| Czerwone Gitary | Kwiaty we włosach | 1969 | Discogs – „Czerwone Gitary - Czerwone Gitary 3” (1969), utwór „Kwiaty We Włosach” na trackliście; 1991 to składanka „The Best Of Czerwone Gitary” |
 | Chłopcy z Placu Broni | O Ela! | 1993 | MusicBrainz – oficjalny album „Kocham Cię” (1993); w Discogs tylko wersja koncertowa z 2004 |
+| Renata Przemyk | Babę Zesłał Bóg | 1991 | Discogs – „Renata Przemyk - Ya Hozna” (1991), utwór „Babę Zesłał Bóg” na trackliście; 2003 to składanka „The Best Of” |
+| Formacja Niezywych Schabuff | Klub wesołego szampana | 1988 | Discogs – „Various - Rock Życia” (1988), utwór „Klub Wesołego Szampana” na trackliście; 1994 to składanka „Nasze Piosenki Najlepsze” |
+| Lady Pank | Sztuka latania | 1985 | Discogs – „Various - Sztuka Latania” (1985), utwór „Sztuka Latania” na trackliście; 1990 to składanka „The Best Of” |
+| Krystyna Prońko | Psalm stojących w kolejce | 1981 | Discogs – album „Kolęda Nocka” (1981, Ernest Bryll / Wojciech Trzciński), utwór B1, śpiew Krystyna Prońko; 1992 to składanka (zgłoszenie użytkownika) |
 | Małgorzata Ostrowska | Meluzyna | 1985 | Poprawka użytkownika (zmiana w repozytorium); Discogs dawał 2012 – reedycję |
 | Krystyna Prońko | Jesteś lekiem na całe zło | 1983 | Discogs – album „Krystyna Prońko” (1983), utwór na trackliście |
 | KULT | Do Ani | 1986 | MusicBrainz – oficjalny singiel „Piloci / Do Ani” (1986); w Discogs na albumie „Kult” (1987) jako „O Ani” |
 | Niemen | Sen O Warszawie | 1966 | Discogs – EP „Niemen” (1966, Polska), utwór na trackliście |
 | Republika | Biała Flaga | 1991 | Discogs – najwcześniejsze wydanie płytowe (album „1991”); Wikipedia: nagranie radiowe 1982, MusicBrainz: demo 1981 |
+| Budka Suflera | Jolka Jolka pamiętasz | 1983 | Discogs – „Various - TOP '83 "Klub Razem"” (1983), utwór „Jolka, Jolka Pamiętasz” na trackliście; 1984 to składanka „1974 - 1984” |
 | AC/DC | T.N.T. | 1975 | Discogs (ponowne sprawdzenie) – AC/DC - T.N.T. / „T.N.T.” |
 | Thelma Houston | Don't Leave Me This Way | 1976 | Discogs – album „Any Way You Like It” (1976, USA), utwór na trackliście |
 | Sister Sledge | He's the Greatest Dancer | 1978 | Discogs (ponowne sprawdzenie) – Sister Sledge - He's The Greatest Dancer / We Are Family / „He's The Greatest Dancer” |
@@ -93,10 +100,12 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Four Tops | Reach Out I'll Be There | 1966 | Discogs (ponowne sprawdzenie) – Four Tops - Reach Out I'll Be There / „Reach Out I'll Be There” |
 | Rena Rolska | Jeszcze Poczekajmy | 1961 | Poprawka użytkownika (zmiana w repozytorium); Discogs dawał 2001 – reedycję |
 | Andrzej Dabrowski | Zielono Mi | 1970 | Discogs – singiel 7" „Zielono mi” (1970); 1997 to kompilacja (zgłoszenie użytkownika) |
+| Skaldowie | Dopóki jesteś | 1979 | Discogs – „Skaldowie - Rezerwat Miłości” (1979), utwór „Dopóki Jesteś” na trackliście; 1991 to składanka „Greatest Hits Of Skaldowie Vol. 2” |
 | Kombi | Nasze rendez-vous | 1985 | Discogs (ponowne sprawdzenie) – Kombi - Kombi 4 / „Nasze Randez-Vous” |
 | Edyta Bartosiewicz | Opowieść | 2001 | Discogs – singiel promocyjny „Opowieść” (2001); 2014 to kompilacja „Love & More…” (zgłoszenie użytkownika) |
 | Al Green | Let's Stay Together | 1971 | Discogs (ponowne sprawdzenie) – Al Green - Let's Stay Together / Tomorrow's Dream / „Let's Stay Together” |
 | B.J. Thomas | Rain Drops Keep Falling on My Head | 1969 | Discogs (ponowne sprawdzenie) – B.J. Thomas - Raindrops Keep Fallin' On My Head / „Raindrops Keep Fallin' On My Head” |
+| Bauhaus | Bela Lugosi's Dead | 1979 | Discogs – „Bauhaus - Bela Lugosi's Dead” (1979), utwór „Bela Lugosi's Dead” na trackliście; 1985 to składanka „1979-1983” |
 | Damien Rice | The Blower's Daughter | 2001 | Discogs (ponowne sprawdzenie) – Damien Rice - The Blowers Daughter / „The Blowers Daughter” |
 | Guns N' Roses | Don't Cry | 1991 | Discogs (ponowne sprawdzenie) – album „Use Your Illusion I” (1991); wpis z 1986 r. to kaseta demo (zgłoszenie użytkownika) – Guns 'N' Roses* - Guns 'N' Roses / „Don't Cry” |
 | Ray Wilson & Stiltskin | Inside | 1994 | Discogs – singiel Stiltskin „Inside” (1994); Ray Wilson był wokalistą Stiltskin |
@@ -105,12 +114,16 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Anna Jurksztowicz | Hej, man! | 1987 | Discogs (ponowne sprawdzenie) – Anna Jurksztowicz - Dziękuję, Nie Tańczę / „Hej, Man!” |
 | Elżbieta Mielczarek | Poczekalnia PKP | 1982 | Discogs – singiel „Blues” (1982): „Poczekalnia PKP” / „Trouble in Mind” |
 | ABC & Halina Frackowiak | Napisz proszę | 1969 | Discogs – singiel „Grupa ABC Andrzeja Nebeskiego – Napisz proszę” (1969); 2021 to reedycja w Spotify |
+| Kabaret Starszych Panow | Herbatka | 1970 | Discogs – „Various, Kabaret Starszych Panów - Wizyta Starszych Panów” (1970), utwór „Herbatka” na trackliście; 1999 to składanka „Złote Przeboje” |
 | Kalina Jedrusik | Bo we mnie jest seks | 1992 | Discogs (ponowne sprawdzenie) – Kalina Jędrusik - Kalinowe Serce / „Bo We Mnie Jest Sex ” |
 | Nosowska | Na Całych Jeziorach Ty | 2008 | Discogs (ponowne sprawdzenie) – Nosowska* - Osiecka / „Na Całych Jeziorach Ty” |
 | Nosowska | Kto? | 2011 | Discogs (ponowne sprawdzenie) – Nosowska* - 8 / „Kto?” |
 | Katarzyna Sobczyk | Mały książę | 1968 | Discogs – album „Zakochani są sami na świecie” (1968), utwór „Mały książę” na trackliście |
+| Lady Pank | Tańcz głupia tańcz | 1983 | Discogs – „Various - Na Luzie” (1983), utwór „Tańcz Głupia Tańcz” na trackliście; 1990 to składanka „The Best Of” |
 | Madame | Sybilla (Może własnie Sybilla) | 1985 | Wikipedia – artykuł „Może właśnie Sybilla” (1985); 2001 to późniejsze wydanie |
 | Nosowska | Uciekaj, Moje Serce | 2008 | Discogs (ponowne sprawdzenie) – Nosowska* - Osiecka / „Uciekaj, Moje Serce” |
+| Myslovitz | The Iris Sleeps Under the Snow | 2001 | Discogs – „Ścianka - ...Only Your Bus Doesn't Stop Here EP” (2001), utwór „The Iris Sleeps Under The Snow - Myslovitz Version” na trackliście; 2003 to składanka „The Best Of” |
+| Tommy Edwards | It's All in the Game | 1958 | Discogs – singiel „It’s All in the Game / Please Love Me Forever” (1958); przebój to nagranie z 1958 r. (pierwsza wersja z 1951 r. to inne nagranie), 2012 to składanka |
 
 ## Usunięte duplikaty
 
@@ -651,7 +664,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Bass Astral x Igo | Juno | 2017 | Discogs + Spotify | 2017 | – | 2017 | ? |
 | Bastille | Pompeii | 2013 | Discogs + Spotify | 2013 | – | 2013 | GB |
 | Bat For Lashes | Daniel | 2009 | Discogs + Spotify | 2009 | – | 2009 | GB |
-| Bauhaus | Bela Lugosi's Dead | 1985 | Discogs | 1985 | – | 2018 | GB |
+| Bauhaus | Bela Lugosi's Dead | 1979 | Discogs – „Bauhaus - Bela Lugosi's Dead” (1979), utwór „Bela Lugosi's Dead” na trackliście; 1985 to składanka „1979-1983” | 1985 | – | 2018 | GB |
 | Bay City Rollers | Bye Bye Baby | 1974 | Discogs (singiel) | 1975 | – | 1975 | GB |
 | Bazzi | Mine | 2017 | Discogs | 2017 | – | – | US |
 | bbno$ & Rich Brian | edamame | 2021 | Spotify + MusicBrainz | – | 2021 | 2021 | CA |
@@ -939,7 +952,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Budka Suflera | Czas czekania, czas olśnienia | 1984 | Discogs | 1984 | – | 2010 | PL |
 | Budka Suflera | Czas ołowiu | 1984 | Discogs | 1984 | – | 2000 | PL |
 | Budka Suflera | Jest taki samotny dom | 1975 | Discogs | 1975 | – | 1998 | PL |
-| Budka Suflera | Jolka Jolka pamiętasz | 1984 | Discogs | 1984 | – | 2000 | PL |
+| Budka Suflera | Jolka Jolka pamiętasz | 1983 | Discogs – „Various - TOP '83 "Klub Razem"” (1983), utwór „Jolka, Jolka Pamiętasz” na trackliście; 1984 to składanka „1974 - 1984” | 1984 | – | 2000 | PL |
 | Budka Suflera | Martwe morze | 1998 | Discogs + Wikipedia | 1998 | – | – | PL |
 | Budka Suflera | Memu miastu na do widzenia | 1981 | Discogs | 1981 | – | – | PL |
 | Budka Suflera | Moja Alabama | 1986 | Discogs + Wikipedia | 1986 | – | – | PL |
@@ -1177,7 +1190,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Czerwone Gitary | Gdy kiedyś znów zawołam cię | 1994 | Discogs | 1994 | – | 2014 | PL |
 | Czerwone Gitary | Historia jednej znajomości | 1966 | Discogs + Spotify | 1966 | – | 1966 | PL |
 | Czerwone Gitary | Jesień idzie przez park | 1979 | Discogs | 1979 | – | 2015 | PL |
-| Czerwone Gitary | Kwiaty we włosach | 1991 | Discogs | 1991 | – | 2014 | PL |
+| Czerwone Gitary | Kwiaty we włosach | 1969 | Discogs – „Czerwone Gitary - Czerwone Gitary 3” (1969), utwór „Kwiaty We Włosach” na trackliście; 1991 to składanka „The Best Of Czerwone Gitary” | 1991 | – | 2014 | PL |
 | Czerwone Gitary | Nie spoczniemy | 1976 | Discogs (singiel) | 1977 | – | – | PL |
 | Czerwone Gitary | Nie zadzieraj nosa | 1966 | Discogs + Spotify | 1966 | – | 1966 | PL |
 | Czerwone Gitary | Powiedz stary gdzieś ty był | 1969 | Discogs (singiel) | 1991 | – | 2015 | PL |
@@ -1865,7 +1878,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Foreigner | I Want to Know What Love Is | 1984 | Discogs + Spotify | 1984 | – | 1984 | US |
 | Foreigner | Waiting for a Girl like You | 1981 | Discogs + Spotify | 1981 | – | 1981 | US |
 | Formacja Niezywych Schabuff | Da Da Da | 1997 | Discogs (singiel) | 1998 | – | 1998 | PL |
-| Formacja Niezywych Schabuff | Klub wesołego szampana | 1994 | Discogs | 1994 | – | 2005 | PL |
+| Formacja Niezywych Schabuff | Klub wesołego szampana | 1988 | Discogs – „Various - Rock Życia” (1988), utwór „Klub Wesołego Szampana” na trackliście; 1994 to składanka „Nasze Piosenki Najlepsze” | 1994 | – | 2005 | PL |
 | Foster The People | Pumped Up Kicks | 2010 | Discogs | 2010 | – | 2011 | US |
 | Four Tops | I Can't Help Myself (Sugar Pie Honey Bunch) | 1967 | MusicBrainz | – | 1967 | – | US |
 | Four Tops | Reach Out I'll Be There | 1966 | Discogs (ponowne sprawdzenie) | 1966 | 1967 | 1967 | US |
@@ -2499,7 +2512,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | JVKE | golden hour | 2022 | Discogs + Spotify | 2022 | – | 2022 | US |
 | k.d. lang | Constant Craving | 1991 | Discogs | 1991 | – | 2010 | CA |
 | Kabaret Starszych Panow | Addio Pomidory | 1962 | Discogs | 1962 | – | 2015 | PL |
-| Kabaret Starszych Panow | Herbatka | 1999 | Discogs | 1999 | – | 2015 | PL |
+| Kabaret Starszych Panow | Herbatka | 1970 | Discogs – „Various, Kabaret Starszych Panów - Wizyta Starszych Panów” (1970), utwór „Herbatka” na trackliście; 1999 to składanka „Złote Przeboje” | 1999 | – | 2015 | PL |
 | Kabaret Starszych Panow | Jezeli Kochac To Nie Indywidualnie | 2015 | Spotify | – | – | 2015 | PL |
 | Kabaret Starszych Panow | Już Czas Na Sen | 1999 | Discogs | 1999 | – | 2015 | PL |
 | Kabaret Starszych Panow | Piosenka jest dobra na wszystko | 1962 | Discogs | 1962 | – | 2015 | PL |
@@ -2533,7 +2546,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kanye West | Stronger | 2007 | Discogs + Spotify | 2007 | – | 2007 | ? |
 | Kanye West & Pusha T | Runaway | 2010 | Discogs + Spotify | 2010 | – | 2010 | ? |
 | Kaoma | Lambada | 1989 | Discogs + Wikipedia | 1989 | – | – | FR |
-| Kapitan Nemo | Twoja Lorelei | 1992 | Discogs | 1992 | – | 2014 | PL |
+| Kapitan Nemo | Twoja Lorelei | 1984 | Discogs – „Kapitan Nemo - Zimne Kino / Twoja Lorelei” (1984), utwór „Twoja Lorelei” na trackliście; 1992 to składanka „The Best Of” | 1992 | – | 2014 | PL |
 | KARAŚ/ROGUCKI & Kamil Holden Kryszak | Kilka westchnień | 2020 | Discogs + Spotify | 2020 | – | 2020 | ? |
 | Karel Fialka | Hey Matthew | 1987 | Discogs | 1987 | – | 1988 | GB |
 | Karin Stanek | Chłopiec z gitarą | 1963 | Discogs | 1963 | – | 2009 | PL |
@@ -2782,7 +2795,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Krystyna Prońko | Niech moje serce kołysze ciebie do snu | 1975 | Wikipedia | 1992 | – | – | PL |
 | Krystyna Prońko | Opadają mi ręce | 1980 | Wikipedia + Discogs (singiel) | 1998 | – | – | PL |
 | Krystyna Prońko | Poranne łzy | 1980 | Discogs | 1980 | – | 2000 | PL |
-| Krystyna Prońko | Psalm stojących w kolejce | 1992 | Discogs | 1992 | – | 2000 | PL |
+| Krystyna Prońko | Psalm stojących w kolejce | 1981 | Discogs – album „Kolęda Nocka” (1981, Ernest Bryll / Wojciech Trzciński), utwór B1, śpiew Krystyna Prońko; 1992 to składanka (zgłoszenie użytkownika) | 1992 | – | 2000 | PL |
 | Krystyna Prońko | Senna Kołysanka | 1979 | Discogs (singiel) | 1992 | – | 2000 | PL |
 | Krystyna Prońko | Skok na bank | 1980 | Wikipedia | – | – | – | PL |
 | Krystyna Prońko & Halina Frackowiak | Tam gdzie lekki wieje wiatr | 1990 | MusicBrainz (Spotify: 2015) | – | 1990 | 2015 | PL |
@@ -2914,8 +2927,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Lady Pank | Sly | 1985 | Discogs (singiel) | 1991 | – | – | PL |
 | Lady Pank | Stacja Warszawa | 2004 | Discogs | 2004 | – | 2012 | PL |
 | Lady Pank | Strach się bać | 2007 | Discogs + Wikipedia | 2007 | – | – | PL |
-| Lady Pank | Sztuka latania | 1990 | Discogs | 1990 | – | 2012 | PL |
-| Lady Pank | Tańcz głupia tańcz | 1990 | Discogs | 1990 | – | 2004 | PL |
+| Lady Pank | Sztuka latania | 1985 | Discogs – „Various - Sztuka Latania” (1985), utwór „Sztuka Latania” na trackliście; 1990 to składanka „The Best Of” | 1990 | – | 2012 | PL |
+| Lady Pank | Tańcz głupia tańcz | 1983 | Discogs – „Various - Na Luzie” (1983), utwór „Tańcz Głupia Tańcz” na trackliście; 1990 to składanka „The Best Of” | 1990 | – | 2004 | PL |
 | Lady Pank | Vademecum skauta | 1983 | Discogs | 1983 | – | 2003 | PL |
 | Lady Pank | Wciąż bardziej obcy | 1983 | Discogs + Spotify | 1983 | – | 1983 | PL |
 | Lady Pank | Wenus, Mars | 2007 | Discogs + Wikipedia | 2007 | – | – | PL |
@@ -3609,7 +3622,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Myslovitz | Peggy Brown | 1996 | Discogs + Spotify | 1996 | – | 1996 | PL |
 | Myslovitz | Scenariusz dla moich sąsiadów | 1997 | Discogs + Spotify | 1997 | – | 1997 | PL |
 | Myslovitz | Sprzedawcy marzeń | 2002 | Discogs + Wikipedia | 2002 | – | – | PL |
-| Myslovitz | The Iris Sleeps Under the Snow | 2003 | Discogs | 2003 | – | 2021 | PL |
+| Myslovitz | The Iris Sleeps Under the Snow | 2001 | Discogs – „Ścianka - ...Only Your Bus Doesn't Stop Here EP” (2001), utwór „The Iris Sleeps Under The Snow - Myslovitz Version” na trackliście; 2003 to składanka „The Best Of” | 2003 | – | 2021 | PL |
 | Myslovitz | To nie był film | 1997 | Discogs (singiel) | 2003 | – | – | PL |
 | Myslovitz | W Deszczu Maleńkich Żółtych Kwiatów | 2006 | Discogs + Spotify | 2006 | – | 2006 | PL |
 | Myslovitz | Z twarzą Marilyn Monroe | 1996 | Discogs + Spotify | 1996 | – | 1996 | PL |
@@ -4243,7 +4256,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Redbone | Come and Get Your Love | 1973 | Discogs + Spotify | 1973 | – | 1973 | US |
 | Rema & Selena Gomez | Calm Down | 2022 | Discogs | 2022 | – | 2023 | NG |
 | Rena Rolska | Jeszcze Poczekajmy | 1961 | Poprawka użytkownika (zmiana w repozytorium); Discogs dawał 2001 – reedycję | 2001 | – | 2015 | PL |
-| Renata Przemyk | Babę Zesłał Bóg | 2003 | Discogs | 2003 | – | 2011 | PL |
+| Renata Przemyk | Babę Zesłał Bóg | 1991 | Discogs – „Renata Przemyk - Ya Hozna” (1991), utwór „Babę Zesłał Bóg” na trackliście; 2003 to składanka „The Best Of” | 2003 | – | 2011 | PL |
 | Renata Przemyk | Kochana | 2003 | Discogs | 2003 | – | 2013 | PL |
 | Renata Przemyk | Odjazd | 2009 | Spotify + Discogs (singiel) + MusicBrainz | – | 2009 | 2009 | PL |
 | Renata Przemyk | Ten taniec | 1994 | Discogs | 1994 | – | 2013 | PL |
@@ -4588,7 +4601,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Sixteen | Obudź We Mnie Wenus | 1997 | Discogs | 1997 | – | 2009 | PL |
 | Sixteen | To takie proste | 1998 | Discogs + Wikipedia | 1998 | – | – | PL |
 | Skaldowie | Cała jesteś w skowronkach | 1969 | Discogs + Spotify | 1969 | – | 1969 | PL |
-| Skaldowie | Dopóki jesteś | 1991 | Discogs | 1991 | – | 2008 | PL |
+| Skaldowie | Dopóki jesteś | 1979 | Discogs – „Skaldowie - Rezerwat Miłości” (1979), utwór „Dopóki Jesteś” na trackliście; 1991 to składanka „Greatest Hits Of Skaldowie Vol. 2” | 1991 | – | 2008 | PL |
 | Skaldowie | Jeszcze kocham | 1972 | Discogs + Wikipedia | 1991 | – | – | PL |
 | Skaldowie | Juhas zmarł | 1972 | Discogs + Wikipedia | 2000 | – | – | PL |
 | Skaldowie | Krywaniu, Krywaniu | 1972 | Discogs + Spotify | 1972 | – | 1972 | PL |
@@ -5324,7 +5337,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Tom Walker | Leave a Light On | 2017 | Discogs + Spotify | 2017 | – | 2017 | GB |
 | Tomasz Apanasiuk | Księżycowa prośba | 2025 | Spotify | – | – | 2025 | ? |
 | Tommy Dorsey Orchestra & Warren Covington | Tea for Two Cha Cha | 1958 | Discogs | 1958 | 1991 | – | US |
-| Tommy Edwards | It's All in the Game | 2012 | Discogs | 2012 | – | – | US |
+| Tommy Edwards | It's All in the Game | 1958 | Discogs – singiel „It’s All in the Game / Please Love Me Forever” (1958); przebój to nagranie z 1958 r. (pierwsza wersja z 1951 r. to inne nagranie), 2012 to składanka | 2012 | – | – | US |
 | Tommy James & The Shondells | Crimson & Clover | 1968 | Discogs | 1968 | – | 1989 | US |
 | Tommy Richman | MILLION DOLLAR BABY | 2024 | Spotify + Discogs (singiel) + MusicBrainz | – | 2024 | 2024 | US |
 | Tommy Roe | Sheila | 1962 | Discogs | 1962 | – | – | US |
