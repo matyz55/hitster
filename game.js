@@ -169,8 +169,18 @@ function streamUrl(song, preview) {
   return `https://www.youtube.com/results?search_query=${q}`;
 }
 const PLATFORM_NAMES = { youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple Music' };
+// Android: link „intent://” otwiera od razu aplikację (YouTube / Spotify / Apple Music), a gdy jej nie ma –
+// stronę WWW (S.browser_fallback_url). iPhone: zwykłe linki https tych serwisów same otwierają aplikację (Universal Links).
+const APP_PACKAGES = { youtube: 'com.google.android.youtube', spotify: 'com.spotify.music', apple: 'com.apple.android.music' };
+const IS_ANDROID = /Android/i.test(navigator.userAgent);
+function appUrl(url) {
+  const pkg = APP_PACKAGES[store.get('platform', 'youtube')];
+  if (!IS_ANDROID || !pkg) return url;
+  const u = new URL(url);
+  return `intent://${u.host}${u.pathname}${u.search}#Intent;scheme=https;package=${pkg};S.browser_fallback_url=${encodeURIComponent(url)};end`;
+}
 const listenLink = (song, preview, label) => el('a', {
-  href: streamUrl(song, preview), target: '_blank', rel: 'noopener', class: 'listen',
+  href: appUrl(streamUrl(song, preview)), target: '_blank', rel: 'noopener', class: 'listen',
 }, label || T('Posłuchaj całości ({0}) ↗', PLATFORM_NAMES[store.get('platform', 'youtube')]));
 
 /* ---------- talia ---------- */
