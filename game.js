@@ -1458,7 +1458,12 @@ $('#guess-song').addEventListener('keydown', (e) => {
 let lastSuggestPointer = '';
 $('#guess-suggest').addEventListener('pointerdown', (e) => { lastSuggestPointer = e.pointerType; });
 $('#guess-suggest').addEventListener('mousedown', (e) => e.preventDefault());
-$('#guess-song').addEventListener('blur', () => { suggestItems = []; suggestActive = -1; renderSuggest(); });
+// lista zamyka się po wyborze, Esc albo dotknięciu/kliknięciu poza polem i listą – nie przy samej utracie fokusu
+// (na telefonach dotknięcie listy albo schowanie klawiatury zabiera fokus z pola i lista znikała przed przewinięciem)
+const closeSuggest = () => { if (suggestItems.length) { suggestItems = []; suggestActive = -1; renderSuggest(); } };
+document.addEventListener('pointerdown', (e) => { if (!e.target.closest('.suggest-wrap')) closeSuggest(); });
+// Tab na komputerze: fokus przechodzi do innego elementu poza listą
+$('#guess-song').addEventListener('blur', (e) => { if (e.relatedTarget && !e.relatedTarget.closest('.suggest-wrap')) closeSuggest(); });
 $('#guess-form').addEventListener('reset', () => { guessPick = null; suggestItems = []; suggestActive = -1; renderSuggest(); });
 
 /* --- Jaka to melodia --- */
