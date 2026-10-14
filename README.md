@@ -39,6 +39,10 @@ najczęściej mylone piosenki, historia rekordów i wykres postępów.
 **Duży ekran** (📺): drugie okno (`tv.html`) dla telewizora lub rzutnika, z dużymi kartami
 i osiami wszystkich graczy; okno gry na tym samym urządzeniu jest pilotem (BroadcastChannel).
 
+**Wersja angielska**: język wybiera się w Ustawieniach (domyślnie wg języka przeglądarki).
+Teksty interfejsu przechodzą przez `T()` (`i18n.js`), słownik jest w `i18n-en.js`; tytuły
+piosenek i nazwy wykonawców się nie zmieniają.
+
 **Statystyki odwiedzin**: Umami Cloud (`analytics.js`) – bez ciasteczek; zdarzenia
 `start-gry` (tryb, poziom, zestaw, liczba graczy, język), `koniec-gry` (tryb, czas, wynik),
 `czas-wizyty`, `statystyki`, `duzy-ekran`. Dane wysyłane są tylko z matyz55.github.io.

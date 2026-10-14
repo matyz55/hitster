@@ -36,6 +36,7 @@ const store = {
   },
 };
 const { pickPreview, mainArtist, checkTitle, checkArtist } = window.SongMatch;
+translatePage();
 
 const MAX_TOKENS = 5;
 const SKIP_COST = 1;
@@ -139,9 +140,9 @@ const FLAG_SET = new Set(window.FLAG_CODES || []);
 const hasFlag = (cc) => FLAG_SET.has((cc || '').toLowerCase());
 const countryName = (() => {
   try {
-    const dn = new Intl.DisplayNames(['pl'], { type: 'region' });
+    const dn = new Intl.DisplayNames([LANG], { type: 'region' });
     // YU to historyczny kod Jugosławii – przeglądarki pokazują go jako „Serbia”
-    const special = { YU: 'Jugosławia' };
+    const special = { YU: T('Jugosławia') };
     return (song) => (song.cc ? special[song.cc.toUpperCase()] || dn.of(song.cc.toUpperCase()) : 'kraj nieznany');
   } catch (e) {
     return (song) => song.cc || 'kraj nieznany';
@@ -170,7 +171,7 @@ function streamUrl(song, preview) {
 const PLATFORM_NAMES = { youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple Music' };
 const listenLink = (song, preview, label) => el('a', {
   href: streamUrl(song, preview), target: '_blank', rel: 'noopener', class: 'listen',
-}, label || `Posłuchaj całości (${PLATFORM_NAMES[store.get('platform', 'youtube')]}) ↗`);
+}, label || T('Posłuchaj całości ({0}) ↗', PLATFORM_NAMES[store.get('platform', 'youtube')]));
 
 /* ---------- talia ---------- */
 // Zasady losowania:
@@ -184,7 +185,7 @@ const artistKeys = (s) => SongMatch.artistsOf(s).map((a) => SongMatch.norm(a.rep
 const OLDEST_DECADE = 1960;
 const decadeOf = (s) => Math.max(OLDEST_DECADE, Math.floor(s.y / 10) * 10);
 const decadeLabel = (d) => (d === OLDEST_DECADE ? 'do 1969' : `${d}s`);
-const decadeRange = (d) => (d === OLDEST_DECADE ? 'do 1969 r.' : `lata ${d % 100 || '00'}. (${d}–${d + 9})`);
+const decadeRange = (d) => (d === OLDEST_DECADE ? T('do 1969 r.') : T('lata {0}. ({1}–{2})', d % 100 || '00', d, d + 9));
 
 class Deck {
   constructor(songs, { level = 1, plShare = 0.5 } = {}) {
@@ -314,7 +315,7 @@ async function fetchWithRetry(url, attempts = 3) {
       console.warn('fetch', e);
     }
     if (i < attempts - 1) {
-      $('#mystery-status').textContent = 'Serwer z fragmentami jest zajęty, ponawiam…';
+      $('#mystery-status').textContent = T('Serwer z fragmentami jest zajęty, ponawiam…');
       await new Promise((r) => setTimeout(r, 3000 * (i + 1)));
     }
   }
@@ -324,14 +325,14 @@ async function fetchWithRetry(url, attempts = 3) {
 /* ---------- stan gry ---------- */
 const MAX_TEAMS = 4;
 const MODES = {
-  solo: { title: 'Oś czasu – 1 gracz', minPlayers: 1, maxPlayers: 1 },
-  multi: { title: 'Oś czasu – multiplayer', minPlayers: 2, maxPlayers: MAX_PLAYERS },
-  teams: { title: 'Oś czasu – drużyny', minPlayers: 2, maxPlayers: MAX_TEAMS, teams: true },
+  solo: { title: T('Oś czasu – 1 gracz'), minPlayers: 1, maxPlayers: 1 },
+  multi: { title: T('Oś czasu – multiplayer'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
+  teams: { title: T('Oś czasu – drużyny'), minPlayers: 2, maxPlayers: MAX_TEAMS, teams: true },
   melody: { title: 'Jaka to melodia', minPlayers: 1, maxPlayers: MAX_PLAYERS },
   steps: { title: 'Melodia krok po kroku', minPlayers: 1, maxPlayers: MAX_PLAYERS },
   timed: { title: 'Na czas', minPlayers: 1, maxPlayers: 1 },
-  hilo: { title: 'Starsza czy nowsza?', minPlayers: 1, maxPlayers: 1 },
-  duel: { title: 'Pojedynek dekad', minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  hilo: { title: T('Starsza czy nowsza?'), minPlayers: 1, maxPlayers: 1 },
+  duel: { title: T('Pojedynek dekad'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   buzz: { title: 'Kto pierwszy?', minPlayers: 2, maxPlayers: MAX_PLAYERS },
 };
 // klawisze graczy w „Kto pierwszy?” (oprócz przycisków na ekranie)
@@ -340,9 +341,9 @@ const BUZZ_COLORS = ['#ff3d7f', '#2de2e6', '#ffc93c', '#3ddc84', '#a78bfa', '#ff
 // karty specjalne (modyfikatory osi czasu)
 const SPECIAL_CHANCE = 0.2;
 const SPECIALS = {
-  double: { icon: '✨', name: 'Karta podwójna', desc: 'dobre ułożenie daje dodatkową kartę' },
-  steal: { icon: '🪙', name: 'Kradzież żetonu', desc: 'dobre ułożenie zabiera żeton graczowi, który ma ich najwięcej' },
-  swap: { icon: '🔄', name: 'Zamiana osi', desc: 'po dobrym ułożeniu możesz zamienić się osią z innym graczem' },
+  double: { icon: '✨', name: T('Karta podwójna'), desc: T('dobre ułożenie daje dodatkową kartę') },
+  steal: { icon: '🪙', name: T('Kradzież żetonu'), desc: T('dobre ułożenie zabiera żeton graczowi, który ma ich najwięcej') },
+  swap: { icon: '🔄', name: T('Zamiana osi'), desc: T('po dobrym ułożeniu możesz zamienić się osią z innym graczem') },
 };
 // „Melodia krok po kroku”: długość fragmentu i punkty za odgadnięcie na danym kroku
 const STEPS = [{ len: 1, pts: 4 }, { len: 2, pts: 3 }, { len: 4, pts: 2 }, { len: 8, pts: 1 }];
@@ -445,7 +446,7 @@ function openTv() {
 }
 
 $('#logo').addEventListener('click', () => {
-  if ($('#screen-game').classList.contains('hidden') || confirm('Przerwać grę i wrócić do ekranu startowego?')) {
+  if ($('#screen-game').classList.contains('hidden') || confirm(T('Przerwać grę i wrócić do ekranu startowego?'))) {
     state.drawId++;
     showScreen('home');
   }
@@ -456,7 +457,7 @@ $('#btn-tv-home').addEventListener('click', openTv);
 $('#btn-settings').addEventListener('click', () => {
   const visible = SCREENS.find((s) => !$('#screen-' + s).classList.contains('hidden'));
   if (visible === 'settings') return;
-  if (visible === 'game' && !confirm('Przerwać grę i przejść do ustawień?')) return;
+  if (visible === 'game' && !confirm(T('Przerwać grę i przejść do ustawień?'))) return;
   state.drawId++;
   screenBeforeSettings = visible === 'game' ? 'home' : visible;
   renderSettings();
@@ -472,7 +473,7 @@ $('#btn-settings-back').addEventListener('click', () => {
 $$('.mode').forEach((b) => b.addEventListener('click', () => openSetup(b.dataset.mode)));
 {
   const pl = window.SONGS.filter((s) => s.c === 'PL').length;
-  $('#home-info').textContent = `${window.SONGS.length} piosenek w bazie: ${pl} polskich i ${window.SONGS.length - pl} zagranicznych.`;
+  $('#home-info').textContent = T('{0} piosenek w bazie: {1} polskich i {2} zagranicznych.', window.SONGS.length, pl, window.SONGS.length - pl);
 }
 
 /* ---------- ekran ustawień rozgrywki ---------- */
@@ -482,16 +483,16 @@ function openSetup(mode) {
   $('#setup-title').textContent = cfg.title;
   $$('[data-for]').forEach((n) => n.classList.toggle('hidden', !n.dataset.for.split(' ').includes(mode)));
   if (cfg.teams) {
-    let teams = store.get('teams', [{ name: 'Drużyna 1', members: '' }, { name: 'Drużyna 2', members: '' }]);
-    while (teams.length < cfg.minPlayers) teams.push({ name: `Drużyna ${teams.length + 1}`, members: '' });
+    let teams = store.get('teams', [{ name: T('Drużyna {0}', 1), members: '' }, { name: T('Drużyna {0}', 2), members: '' }]);
+    while (teams.length < cfg.minPlayers) teams.push({ name: T('Drużyna {0}', teams.length + 1), members: '' });
     renderSetupPlayers(teams.slice(0, cfg.maxPlayers));
   } else {
-    let names = store.get('players', ['Gracz 1', 'Gracz 2']);
-    if (names.length < cfg.minPlayers) names = names.concat(['Gracz 2']).slice(0, cfg.minPlayers);
+    let names = store.get('players', [T('Gracz {0}', 1), T('Gracz {0}', 2)]);
+    if (names.length < cfg.minPlayers) names = names.concat([T('Gracz 2')]).slice(0, cfg.minPlayers);
     if (names.length > cfg.maxPlayers) names = names.slice(0, cfg.maxPlayers);
     renderSetupPlayers(names.map((name) => ({ name })));
   }
-  $('#rounds-label').textContent = mode === 'buzz' ? T('Liczba piosenek') : (cfg.teams ? 'Piosenek na drużynę' : 'Piosenek na gracza');
+  $('#rounds-label').textContent = mode === 'buzz' ? T('Liczba piosenek') : (cfg.teams ? T('Piosenek na drużynę') : T('Piosenek na gracza'));
   if (mode === 'duel') renderDuelPick();
   updatePoolInfo();
   showScreen('setup');
@@ -500,21 +501,21 @@ function openSetup(mode) {
 // rows: [{name, members?}] – w trybie drużyn każdy wiersz ma też listę członków
 function renderSetupPlayers(rows) {
   const cfg = MODES[state.mode];
-  const noun = cfg.teams ? 'Drużyny' : 'Gracze';
-  $('#sec-players h2').textContent = cfg.maxPlayers === 1 ? 'Gracz' : `${noun} (${cfg.minPlayers}–${cfg.maxPlayers})`;
+  const noun = cfg.teams ? T('Drużyny') : T('Gracze');
+  $('#sec-players h2').textContent = cfg.maxPlayers === 1 ? T('Gracz') : `${noun} (${cfg.minPlayers}–${cfg.maxPlayers})`;
   $('#players-list').replaceChildren(...rows.map((r, i) => el('div', { class: 'player-row' + (cfg.teams ? ' team-row' : '') },
-    el('input', { type: 'text', value: r.name, maxlength: '20', class: 'p-name', 'aria-label': cfg.teams ? `Nazwa drużyny ${i + 1}` : `Gracz ${i + 1}` }),
+    el('input', { type: 'text', value: r.name, maxlength: '20', class: 'p-name', 'aria-label': cfg.teams ? T('Nazwa drużyny {0}', i + 1) : T('Gracz {0}', i + 1) }),
     cfg.teams ? el('input', {
       type: 'text', value: r.members || '', maxlength: '120', class: 'p-members',
-      placeholder: 'Członkowie, np. Ania, Bartek, Ola', 'aria-label': `Członkowie drużyny ${i + 1}`,
+      placeholder: T('Członkowie, np. Ania, Bartek, Ola'), 'aria-label': T('Członkowie drużyny {0}', i + 1),
     }) : null,
     rows.length > cfg.minPlayers
-      ? el('button', { class: 'ghost', title: 'Usuń', onclick: () => {
+      ? el('button', { class: 'ghost', title: T('Usuń'), onclick: () => {
         const cur = readSetupRows(); cur.splice(i, 1); renderSetupPlayers(cur);
       } }, '✕')
       : null,
   )));
-  $('#btn-add-player').textContent = cfg.teams ? '+ Dodaj drużynę' : '+ Dodaj gracza';
+  $('#btn-add-player').textContent = cfg.teams ? T('+ Dodaj drużynę') : T('+ Dodaj gracza');
   $('#btn-add-player').classList.toggle('hidden', rows.length >= cfg.maxPlayers);
 }
 const readSetupRows = () => $$('#players-list .player-row').map((row) => ({
@@ -525,7 +526,7 @@ const readSetupNames = () => readSetupRows().map((r) => r.name);
 
 $('#btn-add-player').addEventListener('click', () => {
   const rows = readSetupRows();
-  rows.push({ name: `${MODES[state.mode].teams ? 'Drużyna' : 'Gracz'} ${rows.length + 1}`, members: '' });
+  rows.push({ name: `${MODES[state.mode].teams ? T('Drużyna') : T('Gracz')} ${rows.length + 1}`, members: '' });
   renderSetupPlayers(rows);
 });
 $('#btn-back').addEventListener('click', () => showScreen('home'));
@@ -564,15 +565,15 @@ const TOP_SONGS = new Set(['PL', 'INT'].flatMap((c) => window.SONGS
   .slice(0, TOP_PER_CATEGORY).map(songKey)));
 // indeks = wartość w ustawieniach (zapisane filtry i rekordy); kolejność na ekranie ustala index.html
 const LEVELS = [
-  { name: 'Łatwy', desc: 'Znane piosenki (popularniejsza połowa w Spotify), równomiernie z różnych dekad.',
+  { name: T('Łatwy'), desc: T('Znane piosenki (popularniejsza połowa w Spotify), równomiernie z różnych dekad.'),
     // bez danych o popularności: klasyki z pierwotnej listy i przeboje z list przebojów są „znane”,
     // piosenki dodane z Wikipedii dla uzupełnienia roku (w) – już nie
     ok: (s) => (s.p == null ? !s.w : s.p >= POP_MEDIAN[s.c]) },
-  { name: 'Średni', desc: 'Wszystkie piosenki, równomiernie z różnych dekad.', ok: () => true },
-  { name: 'Trudny', desc: 'Mniej znane piosenki. Na osi czasu częściej trafiają się utwory wydane blisko lat Twoich kart – ale dekady wciąż są wymieszane.',
+  { name: T('Średni'), desc: T('Wszystkie piosenki, równomiernie z różnych dekad.'), ok: () => true },
+  { name: T('Trudny'), desc: T('Mniej znane piosenki. Na osi czasu częściej trafiają się utwory wydane blisko lat Twoich kart – ale dekady wciąż są wymieszane.'),
     // piosenki bez danych o popularności to klasyki i przeboje z list – nie są „mniej znane”
     ok: (s) => s.p != null && s.p < POP_MEDIAN[s.c] },
-  { name: 'Bardzo łatwy', desc: 'Tylko największe przeboje: ok. 1000 najpopularniejszych piosenek w Spotify (po połowie polskich i zagranicznych), równomiernie z różnych dekad.',
+  { name: T('Bardzo łatwy'), desc: T('Tylko największe przeboje: ok. 1000 najpopularniejszych piosenek w Spotify (po połowie polskich i zagranicznych), równomiernie z różnych dekad.'),
     ok: (s) => TOP_SONGS.has(songKey(s)) },
 ];
 
@@ -649,7 +650,7 @@ function updateModeOptions() {
   $('#win-target').disabled = state.mode === 'solo' && filterState.endless;
   const rec = store.get('records', {})[recordKey()];
   $('#record-info').textContent = filterState.endless
-    ? (rec ? `Twój rekord na poziomie „${(LEVELS[filterState.level] || LEVELS[1]).name}” – ułożone piosenki: ${rec}.` : 'Nie masz jeszcze rekordu na tym poziomie.')
+    ? (rec ? T('Twój rekord na poziomie „{0}” – ułożone piosenki: {1}.', (LEVELS[filterState.level] || LEVELS[1]).name, rec) : T('Nie masz jeszcze rekordu na tym poziomie.'))
     : '';
   $('#expert-opts').classList.toggle('hidden', !filterState.expert);
   const sp = (filterState.specials || []).filter((k) => isMultiMode(state.mode) || k === 'double');
@@ -662,11 +663,11 @@ function updateModeOptions() {
   $('#hilo-record').textContent = hr ? T('Twój rekord na poziomie „{0}”: seria {1}.', lvlName, hr) : '';
   const parts = expertParts();
   $('#expert-desc').textContent = parts.length
-    ? `Kartę zatrzymujesz tylko wtedy, gdy ułożysz ją dobrze i podasz: ${parts.map((x) => PART_NAMES[x]).join(', ')}.`
+    ? T('Kartę zatrzymujesz tylko wtedy, gdy ułożysz ją dobrze i podasz: {0}.', parts.map((x) => PART_NAMES[x]).join(', '))
     : '';
   $('#challenge-desc').textContent = filterState.challenge === 'year'
-    ? 'Pretendent wpisuje rok wydania. Jeśli trafi co do roku – zabiera kartę, niezależnie od tego, czy gracz ułożył ją dobrze.'
-    : 'Pretendent wskazuje inne miejsce na osi gracza. Jeśli gracz się pomyli, a pretendent trafi – zabiera kartę.';
+    ? T('Pretendent wpisuje rok wydania. Jeśli trafi co do roku – zabiera kartę, niezależnie od tego, czy gracz ułożył ją dobrze.')
+    : T('Pretendent wskazuje inne miejsce na osi gracza. Jeśli gracz się pomyli, a pretendent trafi – zabiera kartę.');
 }
 $('#show-all').checked = filterState.showAll;
 $('#show-all').addEventListener('change', (e) => { filterState.showAll = e.target.checked; saveFilters(); });
@@ -718,31 +719,31 @@ const decadeLabelLong = (d) => (d === OLDEST_DECADE ? T('do 1969')
   : (d >= 2000 ? T('lata {0}.', d) : T('lata {0}.', String(d % 100))) + ` (${d}–${d + 9})`);
 const expertParts = () => (filterState.expert ? [
   filterState.expTitle && 'title', filterState.expArtist && 'artist', filterState.expYear && 'year'].filter(Boolean) : []);
-const PART_NAMES = { title: 'tytuł', artist: 'wykonawcę', year: 'dokładny rok' };
+const PART_NAMES = { title: T('tytuł'), artist: T('wykonawcę'), year: T('dokładny rok') };
 
 /* --- zestawy tematyczne: gotowe i zapisane przez gracza ustawienia filtrów --- */
 const allValues = (f) => [...new Set(window.SONGS.flatMap(FILTERS[f].values))].map(String);
 const only = (f, keep) => allValues(f).filter((v) => !keep.includes(v));
 const PRESETS = [
-  { id: 'all', name: 'Wszystkie piosenki', desc: 'Bez zawężania – wszystkie piosenki z bazy.',
+  { id: 'all', name: T('Wszystkie piosenki'), desc: T('Bez zawężania – wszystkie piosenki z bazy.'),
     set: () => ({ pool: 'ALL', tag: null, decade: [], genre: [], country: [] }) },
-  { id: 'trojka', name: '📻 Przeboje Trójki', desc: 'Piosenki, które były na 1. miejscu Listy Przebojów Programu Trzeciego (wg polskiej Wikipedii) lub są w plebiscytach „Polski Top Wszech Czasów” Trójki.',
+  { id: 'trojka', name: T('📻 Przeboje Trójki'), desc: T('Piosenki, które były na 1. miejscu Listy Przebojów Programu Trzeciego (wg polskiej Wikipedii) lub są w plebiscytach „Polski Top Wszech Czasów” Trójki.'),
     set: () => ({ pool: 'ALL', tag: 'trojka', decade: [], genre: [], country: [] }) },
-  { id: 'opole', name: '🎙 Opole', desc: 'Piosenki wykonywane na Krajowym Festiwalu Piosenki Polskiej w Opolu (wg artykułów o kolejnych festiwalach w polskiej Wikipedii).',
+  { id: 'opole', name: T('🎙 Opole'), desc: T('Piosenki wykonywane na Krajowym Festiwalu Piosenki Polskiej w Opolu (wg artykułów o kolejnych festiwalach w polskiej Wikipedii).'),
     set: () => ({ pool: 'PL', tag: 'opole', decade: [], genre: [], country: [] }) },
-  { id: 'eurowizja', name: '🌍 Eurowizja', desc: 'Piosenki z Konkursu Piosenki Eurowizji (wg kategorii „Eurovision songs” angielskiej Wikipedii).',
+  { id: 'eurowizja', name: T('🌍 Eurowizja'), desc: T('Piosenki z Konkursu Piosenki Eurowizji (wg kategorii „Eurovision songs” angielskiej Wikipedii).'),
     set: () => ({ pool: 'ALL', tag: 'eurowizja', decade: [], genre: [], country: [] }) },
-  { id: 'discopolo', name: '🕺 Disco polo', desc: 'Piosenki z gatunku disco polo.',
+  { id: 'discopolo', name: T('🕺 Disco polo'), desc: T('Piosenki z gatunku disco polo.'),
     set: () => ({ pool: 'ALL', tag: null, decade: [], genre: only('genre', ['disco polo']), country: [] }) },
-  { id: 'film', name: '🎬 Muzyka filmowa', desc: 'Piosenki i motywy z filmów (gatunek „muzyka filmowa”).',
+  { id: 'film', name: T('🎬 Muzyka filmowa'), desc: T('Piosenki i motywy z filmów (gatunek „muzyka filmowa”).'),
     set: () => ({ pool: 'ALL', tag: null, decade: [], genre: only('genre', ['muzyka filmowa']), country: [] }) },
-  { id: 'oldies', name: '📀 Złote przeboje (do 1979)', desc: 'Piosenki wydane do 1979 roku.',
+  { id: 'oldies', name: T('📀 Złote przeboje (do 1979)'), desc: T('Piosenki wydane do 1979 roku.'),
     set: () => ({ pool: 'ALL', tag: null, decade: only('decade', [String(OLDEST_DECADE), '1970']), genre: [], country: [] }) },
-  { id: 'pl80', name: '🇵🇱 Polskie lata 80.', desc: 'Polskie piosenki z lat 1980–1989.',
+  { id: 'pl80', name: T('🇵🇱 Polskie lata 80.'), desc: T('Polskie piosenki z lat 1980–1989.'),
     set: () => ({ pool: 'PL', tag: null, decade: only('decade', ['1980']), genre: [], country: [] }) },
-  { id: 'pl90', name: '🇵🇱 Polskie lata 90.', desc: 'Polskie piosenki z lat 1990–1999.',
+  { id: 'pl90', name: T('🇵🇱 Polskie lata 90.'), desc: T('Polskie piosenki z lat 1990–1999.'),
     set: () => ({ pool: 'PL', tag: null, decade: only('decade', ['1990']), genre: [], country: [] }) },
-  { id: 'new', name: '🆕 Nowości (od 2020)', desc: 'Piosenki wydane od 2020 roku.',
+  { id: 'new', name: T('🆕 Nowości (od 2020)'), desc: T('Piosenki wydane od 2020 roku.'),
     set: () => ({ pool: 'ALL', tag: null, decade: only('decade', ['2020']), genre: [], country: [] }) },
 ];
 const currentSettings = () => ({
@@ -781,20 +782,20 @@ function renderPresets() {
       onclick: () => applyPreset(p.set),
     }, p.name),
     p.own ? el('button', {
-      type: 'button', class: 'link preset-del', title: `Usuń zestaw „${p.name}”`, 'aria-label': `Usuń zestaw ${p.name}`,
+      type: 'button', class: 'link preset-del', title: T('Usuń zestaw „{0}”', p.name), 'aria-label': T('Usuń zestaw {0}', p.name),
       onclick: () => {
-        if (!confirm(`Usunąć zestaw „${p.name}”?`)) return;
+        if (!confirm(T('Usunąć zestaw „{0}”?', p.name))) return;
         store.set('presets', store.get('presets', []).filter((x) => x.id !== p.id));
         renderPresets();
       },
     }, '✕') : null)));
-  $('#preset-desc').textContent = active ? (active.desc || 'Twój zapisany zestaw.') : 'Własne ustawienia (zmienione filtry).';
+  $('#preset-desc').textContent = active ? (active.desc || T('Twój zapisany zestaw.')) : T('Własne ustawienia (zmienione filtry).');
 }
 $('#btn-save-preset').addEventListener('click', () => {
-  const name = (prompt('Nazwa zestawu:', '') || '').trim().slice(0, 30);
+  const name = (prompt(T('Nazwa zestawu:'), '') || '').trim().slice(0, 30);
   if (!name) return;
   const own = store.get('presets', []).filter((p) => p.name !== name);
-  own.push({ id: 'u' + Date.now(), name, desc: 'Twój zapisany zestaw.', set: currentSettings() });
+  own.push({ id: 'u' + Date.now(), name, desc: T('Twój zapisany zestaw.'), set: currentSettings() });
   store.set('presets', own);
   renderPresets();
 });
@@ -807,13 +808,13 @@ function updatePoolInfo() {
   renderPresets();
   const pool = songPool();
   const active = Object.keys(FILTERS).filter((f) => filterState[f].length).length;
-  $('#filters summary').textContent = `Filtry: dekady, gatunki, kraje${active ? ` (aktywne: ${active})` : ''}`;
+  $('#filters summary').textContent = T('Filtry: dekady, gatunki, kraje{0}', active ? ` (aktywne: ${active})` : '');
   $('#difficulty-desc').textContent = (LEVELS[filterState.level] || LEVELS[1]).desc;
   updateModeOptions();
   $('#share-box').classList.toggle('hidden', poolValue() !== 'ALL');
-  $('#pl-share-label').textContent = `${filterState.plShare}% polskich · ${100 - filterState.plShare}% zagranicznych`;
+  $('#pl-share-label').textContent = T('{0}% polskich · {1}% zagranicznych', filterState.plShare, 100 - filterState.plShare);
   if (!pool.length) {
-    $('#pool-info').textContent = 'Żadna piosenka nie pasuje do wybranych filtrów i zestawu.';
+    $('#pool-info').textContent = T('Żadna piosenka nie pasuje do wybranych filtrów i zestawu.');
     $('#btn-start').disabled = true;
     return;
   }
@@ -823,7 +824,7 @@ function updatePoolInfo() {
   const artists = new Set(pool.map((s) => artistKeys(s)[0])).size;
   const pl = pool.filter((s) => s.c === 'PL').length;
   const preset = filterState.tag && PRESETS.find((p) => p.id === filterState.tag);
-  $('#pool-info').textContent = `${preset ? `Zestaw „${preset.name.replace(/^\S+\s/, '')}”: ` : ''}${pool.length} piosenek (polskich: ${pl}, zagranicznych: ${pool.length - pl}; ${artists} wykonawców) z lat ${Math.min(...years)}–${Math.max(...years)}, dekad: ${decades}. Każdy wykonawca pojawi się w grze najwyżej raz.`;
+  $('#pool-info').textContent = T('{0}{1} piosenek (polskich: {2}, zagranicznych: {3}; {4} wykonawców) z lat {5}–{6}, dekad: {7}. Każdy wykonawca pojawi się w grze najwyżej raz.', preset ? T('Zestaw „{0}”: ', preset.name.replace(/^\S+\s/, '')) : '', pool.length, pl, pool.length - pl, artists, Math.min(...years), Math.max(...years), decades);
 }
 
 $('#btn-start').addEventListener('click', startGame);
@@ -833,7 +834,7 @@ $('#btn-home').addEventListener('click', () => showScreen('home'));
 /* ---------- przebieg gry ---------- */
 function startGame() {
   const teams = !!MODES[state.mode].teams;
-  const rows = readSetupRows().map((r, i) => ({ name: r.name.trim() || `${teams ? 'Drużyna' : 'Gracz'} ${i + 1}`, members: r.members }));
+  const rows = readSetupRows().map((r, i) => ({ name: r.name.trim() || `${teams ? T('Drużyna') : T('Gracz')} ${i + 1}`, members: r.members }));
   const names = rows.map((r) => r.name);
   if (teams) store.set('teams', rows); else store.set('players', names);
   const startTokens = clampInt($('#start-tokens').value, 0, MAX_TOKENS, 2);
@@ -862,7 +863,7 @@ function startGame() {
   prefetched = null;
   const artists = new Set(pool.map((s) => artistKeys(s)[0])).size;
   if (state.deck.size < needed || artists < needed) {
-    alert('Za mało piosenek w wybranej puli dla tych ustawień.');
+    alert(T('Za mało piosenek w wybranej puli dla tych ustawień.'));
     return;
   }
   state.timeLimit = filterState.timeLimit || 120;
@@ -983,7 +984,7 @@ async function drawSong() {
   for (;;) {
     let song;
     let preview;
-    $('#mystery-status').textContent = 'Szukam fragmentu piosenki…';
+    $('#mystery-status').textContent = T('Szukam fragmentu piosenki…');
     if (prefetched && prefetched.deck === state.deck) {
       ({ song } = prefetched);
       preview = await prefetched.promise;
@@ -991,7 +992,7 @@ async function drawSong() {
     } else {
       song = state.deck.draw(nearYearsFor(state.turn));
       if (!song) break;
-      $('#mystery-status').textContent = 'Szukam fragmentu piosenki…';
+      $('#mystery-status').textContent = T('Szukam fragmentu piosenki…');
       preview = await withAudio(await findPreview(song));
     }
     if (myDraw !== state.drawId) return; // gra została przerwana
@@ -1021,7 +1022,7 @@ async function drawSong() {
         state.special = state.specials[Math.floor(Math.random() * state.specials.length)];
       }
       if (isMelody() && filterState.hint) {
-        $('#mystery-status').append(' ', el('span', { class: 'decade-hint' }, `Podpowiedź: ${decadeRange(decadeOf(song))}`));
+        $('#mystery-status').append(' ', el('span', { class: 'decade-hint' }, T('Podpowiedź: {0}', decadeRange(decadeOf(song)))));
       }
       $('#btn-play').disabled = false;
       render();
@@ -1032,7 +1033,7 @@ async function drawSong() {
     if (!previewCache.has(songKey(song))) {
       // błąd sieci – oddajemy piosenkę do talii i próbujemy ponownie za chwilę
       state.deck.release(song, true);
-      $('#mystery-status').textContent = 'Nie mogę połączyć się z serwerem fragmentów. Ponawiam za 10 s…';
+      $('#mystery-status').textContent = T('Nie mogę połączyć się z serwerem fragmentów. Ponawiam za 10 s…');
       await new Promise((r) => setTimeout(r, 10000));
       if (myDraw !== state.drawId) return;
       continue;
@@ -1040,7 +1041,7 @@ async function drawSong() {
     console.warn('Brak fragmentu:', song.a, song.t);
     state.deck.release(song, false);
   }
-  $('#mystery-status').textContent = 'Talia się skończyła!';
+  $('#mystery-status').textContent = T('Talia się skończyła!');
   endGame();
 }
 
@@ -1081,7 +1082,7 @@ function timelineAnswers(song) {
     year: { guess: yRaw, ok: yRaw !== '' && parseInt(yRaw, 10) === song.y },
   };
 }
-const PART_LABELS = { title: 'Tytuł', artist: 'Wykonawca', year: 'Rok' };
+const PART_LABELS = { title: T('Tytuł'), artist: T('Wykonawca'), year: T('Rok') };
 
 function revealTimeline() {
   const song = state.current;
@@ -1108,32 +1109,32 @@ function revealTimeline() {
   const expertLines = state.expert.map((part) => el('div', { class: 'verdict small-verdict ' + (answers[part].ok ? 'ok' : 'bad') },
     `${answers[part].ok ? '✔' : '✘'} ${PART_LABELS[part]}: ${answers[part].guess.trim() ? `„${answers[part].guess.trim()}”` : '—'}`));
   const yearInfo = yearMode && !challengeOk
-    ? el('div', { class: 'muted' }, `${state.players[state.challenger].name} podał(a) rok ${state.challengeYear} – pudło.`) : null;
-  const why = placedOk && !expertOk ? ' Miejsce dobre, ale brakuje poprawnych danych (tryb ekspert).' : '';
+    ? el('div', { class: 'muted' }, T('{0} podał(a) rok {1} – pudło.', state.players[state.challenger].name, state.challengeYear)) : null;
+  const why = placedOk && !expertOk ? T(' Miejsce dobre, ale brakuje poprawnych danych (tryb ekspert).') : '';
   if (yearMode && challengeOk) {
     // dokładny rok wygrywa niezależnie od ruchu gracza
     const ch = state.players[state.challenger];
     addToTimeline(ch, song);
     verdict = el('div', { class: 'verdict ' + (ok ? 'bad' : 'ok') },
-      `🎯 ${ch.name} podał(a) dokładny rok – karta trafia do: ${ch.name}!`);
-    note = `🎯 kartę zdobył(a) ${ch.name} (dokładny rok)`;
+      T('🎯 {0} podał(a) dokładny rok – karta trafia do: {1}!', ch.name, ch.name));
+    note = T('🎯 kartę zdobył(a) {0} (dokładny rok)', ch.name);
   } else if (ok) {
     p.timeline.splice(state.slot, 0, song);
     specialLine = applySpecial(p);
     verdict = el('div', { class: 'verdict ok' }, isSoloLike()
-      ? '✔ Dobrze! Karta trafia na Twoją oś.'
-      : `✔ Dobrze! Karta trafia do: ${p.name}.`);
+      ? T('✔ Dobrze! Karta trafia na Twoją oś.')
+      : T('✔ Dobrze! Karta trafia do: {0}.', p.name));
     note = `✔ ${p.name}`;
   } else if (challengeOk) {
     const ch = state.players[state.challenger];
     addToTimeline(ch, song);
-    verdict = el('div', { class: 'verdict bad' }, `✘ Pudło – kartę przejmuje ${ch.name}!${why}`);
-    note = `✘ ${p.name}, kartę przejął(a) ${ch.name}`;
+    verdict = el('div', { class: 'verdict bad' }, T('✘ Pudło – kartę przejmuje {0}!{1}', ch.name, why));
+    note = T('✘ {0}, kartę przejął(a) {1}', p.name, ch.name);
   } else {
     if (state.mode === 'solo') p.lives -= 1;
     verdict = el('div', { class: 'verdict bad' }, (state.mode === 'solo'
       ? T('✘ Pudło – karta przepada. Pozostałe pomyłki: {0}.', p.lives)
-      : '✘ Pudło – karta przepada.') + why);
+      : T('✘ Pudło – karta przepada.')) + why);
     note = `✘ ${p.name}`;
   }
   // żeton za poprawny tytuł i wykonawcę (gdy pola były na ekranie)
@@ -1147,8 +1148,8 @@ function revealTimeline() {
     const added = both && p.tokens < MAX_TOKENS;
     if (added) p.tokens += 1;
     tokenLine = el('div', { class: 'verdict small-verdict ' + (both ? 'ok' : 'bad') }, both
-      ? (added ? '🪙 Tytuł i wykonawca poprawne: +1 żeton' : `🪙 Tytuł i wykonawca poprawne (masz już ${MAX_TOKENS} żetonów)`)
-      : '✘ Tytuł lub wykonawca niepoprawne – bez żetonu');
+      ? (added ? T('🪙 Tytuł i wykonawca poprawne: +1 żeton') : T('🪙 Tytuł i wykonawca poprawne (masz już {0} żetonów)', MAX_TOKENS))
+      : T('✘ Tytuł lub wykonawca niepoprawne – bez żetonu'));
     state.awarded = true;
   }
   state.history.push({ song, preview: state.preview, player: p.name, ok: ok || challengeOk, note });
@@ -1239,7 +1240,7 @@ function stepsGuess() {
   }
   if (stepParts().every((part) => state.solved[part] != null)) return revealSteps(false);
   if (anyNew) fx('good');
-  stepsExtend(anyNew ? 'Dobrze – ta część zaliczona! Zgaduj dalej.' : '✘ Jeszcze nie.');
+  stepsExtend(anyNew ? T('Dobrze – ta część zaliczona! Zgaduj dalej.') : T('✘ Jeszcze nie.'));
 }
 
 // dłuższy fragment (albo koniec, gdy to był ostatni krok)
@@ -1248,7 +1249,7 @@ function stepsExtend(msg) {
   if (msg && msg.startsWith('✘')) fx('bad');
   state.step += 1;
   state.clipLen = STEPS[state.step].len;
-  $('#mystery-status').textContent = `${msg ? msg + ' ' : ''}Teraz słuchasz ${STEPS[state.step].len} s.`;
+  $('#mystery-status').textContent = T('{0}Teraz słuchasz {1} s.', msg ? msg + ' ' : '', STEPS[state.step].len);
   render();
   // od razu odtwarzamy dłuższy fragment (kliknięcie gracza pozwala na start dźwięku)
   audio.currentTime = state.clipStart;
@@ -1267,18 +1268,18 @@ function revealSteps(gaveUp) {
   const all = parts.every((part) => state.solved[part] != null);
   recordAnswer(song, all);
   state.history.push({
-    song, preview: state.preview, player: p.name, ok: all, note: `${p.name}: ${points} pkt`,
+    song, preview: state.preview, player: p.name, ok: all, note: T('{0}: {1} pkt', p.name, points),
   });
   const inputs = { title: $('#guess-title').value, artist: $('#guess-artist').value };
   const lines = parts.map((part) => {
     const pts = state.solved[part];
     const at = pts != null ? STEPS.find((x) => x.pts === pts).len : null;
     return el('div', { class: 'verdict ' + (pts != null ? 'ok' : 'bad') }, pts != null
-      ? `✔ ${PART_LABELS[part]} – odgadnięty przy ${at} s (+${pts} pkt)`
+      ? T('✔ {0} – odgadnięty przy {1} s (+{2} pkt)', PART_LABELS[part], at, pts)
       : `✘ ${PART_LABELS[part]}: ${!gaveUp && inputs[part].trim() ? `„${inputs[part].trim()}”` : '—'}`);
   });
-  if (raw && state.hintCost) lines.push(el('div', { class: 'muted' }, `Podpowiedź z pierwszą literą: −${state.hintCost} pkt`));
-  lines.push(el('div', { class: 'muted' }, state.players.length > 1 ? `+${points} pkt dla: ${p.name}` : `+${points} pkt`));
+  if (raw && state.hintCost) lines.push(el('div', { class: 'muted' }, T('Podpowiedź z pierwszą literą: −{0} pkt', state.hintCost)));
+  lines.push(el('div', { class: 'muted' }, state.players.length > 1 ? T('+{0} pkt dla: {1}', points, p.name) : T('+{0} pkt', points)));
   fx(all ? 'good' : 'bad');
   showReveal(...lines);
 }
@@ -1287,13 +1288,13 @@ function stepsActions() {
   const btns = [];
   if (state.step < STEPS.length - 1) {
     const next = STEPS[state.step + 1];
-    btns.push(el('button', { class: 'gold', onclick: () => stepsExtend('') }, `⏩ Wydłuż do ${next.len} s (za ${next.pts} pkt)`));
+    btns.push(el('button', { class: 'gold', onclick: () => stepsExtend('') }, T('⏩ Wydłuż do {0} s (za {1} pkt)', next.len, next.pts)));
   }
   const needHint = stepParts().some((part) => state.solved[part] == null);
   if (state.letterHint && !state.hintCost && needHint) {
-    btns.push(el('button', { class: 'ghost', onclick: () => { state.hintCost = 1; render(); } }, '💡 Pierwsza litera (−1 pkt)'));
+    btns.push(el('button', { class: 'ghost', onclick: () => { state.hintCost = 1; render(); } }, T('💡 Pierwsza litera (−1 pkt)')));
   }
-  btns.push(el('button', { class: 'ghost', onclick: () => revealSteps(true) }, '🏳 Nie wiem'));
+  btns.push(el('button', { class: 'ghost', onclick: () => revealSteps(true) }, T('🏳 Nie wiem')));
   return btns;
 }
 
@@ -1305,7 +1306,7 @@ function renderStepsBar() {
   if (!show) return;
   bar.replaceChildren(...STEPS.map((st, i) => el('span', {
     class: 'step' + (i < state.step ? ' done' : '') + (i === state.step ? ' current' : ''),
-  }, el('b', {}, `${st.len} s`), el('small', {}, `${st.pts} pkt`))));
+  }, el('b', {}, `${st.len} s`), el('small', {}, T('{0} pkt', st.pts)))));
 }
 
 function renderStepsGuess() {
@@ -1322,7 +1323,7 @@ function renderStepsGuess() {
   hint.classList.toggle('hidden', !state.hintCost || !parts.length);
   if (state.hintCost) {
     hint.textContent = '💡 ' + parts.map((part) => (part === 'title'
-      ? `tytuł zaczyna się na „${firstLetter(song.t)}”` : `wykonawca na „${firstLetter(mainArtist(song))}”`)).join(', ');
+      ? T('tytuł zaczyna się na „{0}”', firstLetter(song.t)) : T('wykonawca na „{0}”', firstLetter(mainArtist(song))))).join(', ');
   }
 }
 
@@ -1332,11 +1333,11 @@ function revealMelody(gaveUp) {
   const parts = [];
   if (state.guessType !== 'artist') {
     const guess = $('#guess-title').value;
-    parts.push({ label: 'Tytuł', guess, ok: !gaveUp && checkTitle(guess, song) });
+    parts.push({ label: T('Tytuł'), guess, ok: !gaveUp && checkTitle(guess, song) });
   }
   if (state.guessType !== 'title') {
     const guess = $('#guess-artist').value;
-    parts.push({ label: 'Wykonawca', guess, ok: !gaveUp && checkArtist(guess, song) });
+    parts.push({ label: T('Wykonawca'), guess, ok: !gaveUp && checkArtist(guess, song) });
   }
   const points = parts.filter((x) => x.ok).length;
   p.score += points;
@@ -1344,11 +1345,11 @@ function revealMelody(gaveUp) {
   state.turnsPlayed += 1;
   state.history.push({
     song, preview: state.preview, player: p.name, ok: points === parts.length,
-    note: `${p.name}: ${points}/${parts.length} pkt`,
+    note: T('{0}: {1}/{2} pkt', p.name, points, parts.length),
   });
   const lines = parts.map((x) => el('div', { class: 'verdict ' + (x.ok ? 'ok' : 'bad') },
     `${x.ok ? '✔' : '✘'} ${x.label}: ${x.guess.trim() ? `„${x.guess.trim()}”` : '—'}`));
-  lines.push(el('div', { class: 'muted' }, state.players.length > 1 ? `+${points} pkt dla: ${p.name}` : `+${points} pkt`));
+  lines.push(el('div', { class: 'muted' }, state.players.length > 1 ? T('+{0} pkt dla: {1}', points, p.name) : T('+{0} pkt', points)));
   fx(points === parts.length ? 'good' : 'bad');
   showReveal(...lines);
 }
@@ -1588,11 +1589,11 @@ function nextTurn() {
 function cardsLabel(n) {
   const mod10 = n % 10;
   const mod100 = n % 100;
-  if (n === 1) return '1 karta';
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${n} karty`;
-  return `${n} kart`;
+  if (n === 1) return T('1 karta');
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return T('{0} karty', n);
+  return T('{0} kart', n);
 }
-const pointsLabel = (n) => `${n} pkt`;
+const pointsLabel = (n) => T('{0} pkt', n);
 
 // zapis rekordu (najlepszy wynik) i historii rekordów do statystyk gracza
 function saveRecord(key, value, label) {
@@ -1682,7 +1683,7 @@ function endGame() {
 function renderPlayedList() {
   const list = $('#played-list');
   if (!state.history.length) {
-    list.replaceChildren(el('li', { class: 'muted' }, 'W tej grze nie zagrała żadna piosenka.'));
+    list.replaceChildren(el('li', { class: 'muted' }, T('W tej grze nie zagrała żadna piosenka.')));
     return;
   }
   list.replaceChildren(...state.history.map((h) => el('li', { class: h.ok ? 'ok' : 'bad' },
@@ -1697,7 +1698,7 @@ const audio = $('#audio');
 function stopAudio() {
   audio.pause();
   $('#vinyl').classList.remove('spinning');
-  $('#btn-play').textContent = '▶ Odtwórz';
+  $('#btn-play').textContent = T('▶ Odtwórz');
 }
 const clipEnd = () => state.clipStart + (state.phase === 'revealed' ? 30 : state.clipLen);
 $('#btn-play').addEventListener('click', () => {
@@ -1708,15 +1709,15 @@ $('#btn-play').addEventListener('click', () => {
     }
     audio.play().catch((e) => {
       $('#mystery-status').textContent = e.name === 'NotSupportedError'
-        ? 'Ta przeglądarka nie obsługuje formatu AAC (.m4a) – spróbuj w innej przeglądarce.'
-        : 'Nie udało się odtworzyć: ' + e.message;
+        ? T('Ta przeglądarka nie obsługuje formatu AAC (.m4a) – spróbuj w innej przeglądarce.')
+        : T('Nie udało się odtworzyć: ') + e.message;
     });
   } else {
     audio.pause();
   }
 });
 audio.addEventListener('play', () => {
-  $('#vinyl').classList.add('spinning'); $('#btn-play').textContent = '⏸ Pauza';
+  $('#vinyl').classList.add('spinning'); $('#btn-play').textContent = T('⏸ Pauza');
   const tick = () => {
     if (audio.paused) return;
     if (state.phase !== 'revealed' && audio.currentTime >= state.clipStart + state.clipLen) {
@@ -1728,7 +1729,7 @@ audio.addEventListener('play', () => {
   };
   requestAnimationFrame(tick);
 });
-audio.addEventListener('pause', () => { $('#vinyl').classList.remove('spinning'); $('#btn-play').textContent = '▶ Odtwórz'; });
+audio.addEventListener('pause', () => { $('#vinyl').classList.remove('spinning'); $('#btn-play').textContent = T('▶ Odtwórz'); });
 audio.addEventListener('ended', () => { audio.currentTime = 0; });
 audio.addEventListener('timeupdate', () => {
   if (state.phase !== 'revealed' && audio.currentTime >= state.clipStart + state.clipLen) {
@@ -1783,7 +1784,7 @@ function render() {
   renderHeader(p, timeline);
 
   const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !['steps', 'buzz', 'hilo', 'duel'].includes(state.mode);
-  $('#btn-skip').textContent = timeline ? `⏭ Pomiń (${SKIP_COST} żeton)` : '⏭ Inna piosenka';
+  $('#btn-skip').textContent = timeline ? T('⏭ Pomiń ({0} żeton)', SKIP_COST) : T('⏭ Inna piosenka');
   $('#btn-skip').disabled = !canSkip || (timeline && p.tokens < SKIP_COST);
   $('#btn-skip').classList.toggle('hidden', ['steps', 'buzz', 'hilo', 'duel'].includes(state.mode));
 
@@ -1797,13 +1798,13 @@ function render() {
   if (showGuess) {
     const ex = state.expert || [];
     const label = (part, name) => (isMelody() ? name
-      : `${name} (${ex.includes(part) ? 'wymagany' : 'opcjonalnie – za żeton'})`);
+      : `${name} (${ex.includes(part) ? T('wymagany') : T('opcjonalnie – za żeton')})`);
     $('#guess-title').classList.toggle('hidden', !fields.title);
     $('#guess-artist').classList.toggle('hidden', !fields.artist);
     $('#guess-year').classList.toggle('hidden', !fields.year);
-    $('#guess-title').placeholder = label('title', 'Tytuł');
-    $('#guess-artist').placeholder = label('artist', 'Wykonawca');
-    $('#guess-year').placeholder = 'Dokładny rok wydania (wymagany)';
+    $('#guess-title').placeholder = label('title', T('Tytuł'));
+    $('#guess-artist').placeholder = label('artist', T('Wykonawca'));
+    $('#guess-year').placeholder = T('Dokładny rok wydania (wymagany)');
     $('#btn-guess').classList.toggle('hidden', !isMelody());
     $('#btn-giveup').classList.toggle('hidden', state.mode !== 'melody');
     if (state.mode === 'steps') renderStepsGuess();
@@ -1814,17 +1815,17 @@ function render() {
 
   const hints = {
     listen: timeline ? (state.mode === 'solo'
-      ? 'Przeciągnij kartę na oś albo kliknij miejsce (＋), gdzie pasuje ta piosenka.'
-      : `${answering(p) || p.name}, przeciągnij kartę na oś albo kliknij miejsce (＋), gdzie pasuje ta piosenka.`) : '',
-    placed: isMulti() ? 'Zatwierdź wybór albo pozwól innym rzucić wyzwanie.' : 'Zatwierdź wybór.',
+      ? T('Przeciągnij kartę na oś albo kliknij miejsce (＋), gdzie pasuje ta piosenka.')
+      : T('{0}, przeciągnij kartę na oś albo kliknij miejsce (＋), gdzie pasuje ta piosenka.', answering(p) || p.name)) : '',
+    placed: isMulti() ? T('Zatwierdź wybór albo pozwól innym rzucić wyzwanie.') : T('Zatwierdź wybór.'),
     challenge: state.challenger == null
-      ? 'Kto rzuca wyzwanie? (koszt: 1 żeton)'
+      ? T('Kto rzuca wyzwanie? (koszt: 1 żeton)')
       : (state.challengeMode === 'year'
-        ? `${state.players[state.challenger]?.name}, wpisz dokładny rok wydania tej piosenki.`
-        : `${state.players[state.challenger]?.name}, wybierz INNE miejsce na osi gracza ${p.name}.`),
+        ? T('{0}, wpisz dokładny rok wydania tej piosenki.', state.players[state.challenger]?.name)
+        : T('{0}, wybierz INNE miejsce na osi gracza {1}.', state.players[state.challenger]?.name, p.name)),
     revealed: isMulti() && !state.awarded && !(guessFields().title && guessFields().artist)
-      ? (state.mode === 'teams' ? 'Czy drużyna podała poprawnie wykonawcę i tytuł? Decydują pozostali.'
-        : 'Czy gracz podał poprawnie wykonawcę i tytuł? Decyduje reszta stołu.') : '',
+      ? (state.mode === 'teams' ? T('Czy drużyna podała poprawnie wykonawcę i tytuł? Decydują pozostali.')
+        : T('Czy gracz podał poprawnie wykonawcę i tytuł? Decyduje reszta stołu.')) : '',
   };
   $('#hint').textContent = (state.current || state.phase === 'revealed') ? (hints[state.phase] || '') : '';
 
@@ -1898,8 +1899,8 @@ function renderDragCard() {
   card.classList.toggle('hidden', !ok);
   if (!ok) return;
   card.lastChild.textContent = state.phase === 'challenge'
-    ? ` ${state.players[state.challenger].name}: przeciągnij kartę na inne miejsce`
-    : ' Przeciągnij kartę na oś';
+    ? T(' {0}: przeciągnij kartę na inne miejsce', state.players[state.challenger].name)
+    : T(' Przeciągnij kartę na oś');
 }
 {
   const card = $('#drag-card');
@@ -1961,12 +1962,12 @@ function renderOthers() {
   box.classList.toggle('hidden', !show);
   if (!show) return;
   const fresh = state.phase === 'revealed' ? state.current : null;
-  box.replaceChildren(el('h2', {}, state.mode === 'teams' ? 'Osie pozostałych drużyn' : 'Osie pozostałych graczy'), ...state.players.map((pl, i) => (i === state.turn ? null
+  box.replaceChildren(el('h2', {}, state.mode === 'teams' ? T('Osie pozostałych drużyn') : T('Osie pozostałych graczy')), ...state.players.map((pl, i) => (i === state.turn ? null
     : el('div', { class: 'other' },
       el('div', { class: 'other-head' }, el('b', {}, pl.name), ` · ${cardsLabel(pl.timeline.length)} · `,
-        el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || 'brak żetonów')),
+        el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || T('brak żetonów'))),
       el('div', { class: 'mini-timeline' }, pl.timeline.map((s) => el('div', { class: 'mini' + (s === fresh ? ' new' : '') + (s.start ? ' start' : '') },
-        el('b', {}, String(s.y)), el('span', { class: 'mt' }, s.start ? 'start' : s.t), el('span', { class: 'ma' }, s.start ? '' : s.a)))))))
+        el('b', {}, String(s.y)), el('span', { class: 'mt' }, s.start ? T('start') : s.t), el('span', { class: 'ma' }, s.start ? '' : s.a)))))))
     .filter(Boolean));
 }
 
@@ -1975,7 +1976,7 @@ function renderTimeline(container, timeline, interactive, marks) {
   const revealedSong = state.phase === 'revealed' ? state.current : null;
   for (let i = 0; i <= timeline.length; i++) {
     if (marks) {
-      const who = state.mode === 'solo' ? 'Twój wybór' : activePlayer().name;
+      const who = state.mode === 'solo' ? T('Twój wybór') : activePlayer().name;
       if (marks.slot === i) items.push(el('div', { class: 'mark bad' }, `✘ ${who}`));
       if (marks.challengeSlot === i) items.push(el('div', { class: 'mark challenge' }, `✘ ${state.players[state.challenger].name}`));
       if (marks.correct === i) items.push(el('div', { class: 'mark ok' }, `✔ ${state.current.y}`));
@@ -1984,20 +1985,20 @@ function renderTimeline(container, timeline, interactive, marks) {
       let cls = 'slot';
       let label = '＋';
       // przy jednej karcie na osi same plusy bywają mylące – podpisujemy kierunek
-      if (timeline.length === 1) { cls += ' labeled'; label = i === 0 ? '＋ Wcześniej' : '＋ Później'; }
-      if (state.slot === i) { cls += ' chosen'; label = state.mode === 'solo' ? 'tutaj' : activePlayer().name; }
+      if (timeline.length === 1) { cls += ' labeled'; label = i === 0 ? T('＋ Wcześniej') : T('＋ Później'); }
+      if (state.slot === i) { cls += ' chosen'; label = state.mode === 'solo' ? T('tutaj') : activePlayer().name; }
       if (state.challengeSlot === i) { cls += ' challenge'; label = state.players[state.challenger].name; }
       const disabled = !state.current
         || (state.phase === 'challenge' && (state.challenger == null || i === state.slot || state.challengeMode === 'year'));
       items.push(el('button', {
-        class: cls, disabled, onclick: () => onSlotClick(i), 'aria-label': `Miejsce ${i + 1}`, 'data-slot': String(i),
+        class: cls, disabled, onclick: () => onSlotClick(i), 'aria-label': T('Miejsce {0}', i + 1), 'data-slot': String(i),
       }, label));
     }
     if (i < timeline.length) {
       const s = timeline[i];
       items.push(s.start
-        ? el('div', { class: 'tcard start', title: 'Karta startowa – sam rok' },
-          el('div', { class: 'a' }, 'karta startowa'),
+        ? el('div', { class: 'tcard start', title: T('Karta startowa – sam rok') },
+          el('div', { class: 'a' }, T('karta startowa')),
           el('div', { class: 'y' }, String(s.y)),
           el('div', { class: 't' }, ''),
           el('div', { class: 'flag' }, '📅'))
@@ -2024,22 +2025,22 @@ function renderActions() {
     }
     if (state.phase === 'revealed') {
       const last = state.turnsPlayed >= state.rounds * state.players.length;
-      btns.push(el('button', { class: 'primary', onclick: nextTurn }, last ? 'Zobacz wyniki →' : (state.players.length > 1 ? 'Następny gracz →' : 'Następna piosenka →')));
+      btns.push(el('button', { class: 'primary', onclick: nextTurn }, last ? T('Zobacz wyniki →') : (state.players.length > 1 ? T('Następny gracz →') : T('Następna piosenka →'))));
     }
   } else if (state.phase === 'listen' || state.phase === 'placed') {
-    btns.push(el('button', { class: 'primary', disabled: state.slot == null, onclick: onConfirmPlacement }, '✔ Zatwierdź i odkryj'));
+    btns.push(el('button', { class: 'primary', disabled: state.slot == null, onclick: onConfirmPlacement }, T('✔ Zatwierdź i odkryj')));
     if (isMulti()) {
       const canChallenge = state.players.some((pl, i) => i !== state.turn && pl.tokens >= 1);
       btns.push(el('button', {
         class: 'gold', disabled: state.slot == null || !canChallenge,
         onclick: () => { state.phase = 'challenge'; render(); },
-      }, '⚔ Wyzwanie'));
+      }, T('⚔ Wyzwanie')));
     }
     btns.push(el('button', {
       class: 'ghost', disabled: p.tokens < BUY_COST || !state.deck.size,
-      title: 'Za 3 żetony dobierasz kartę, która od razu trafia na właściwe miejsce osi',
+      title: T('Za 3 żetony dobierasz kartę, która od razu trafia na właściwe miejsce osi'),
       onclick: buyCard,
-    }, `Kup kartę (${BUY_COST} żetony)`));
+    }, T('Kup kartę ({0} żetony)', BUY_COST)));
   } else if (state.phase === 'challenge') {
     if (state.challenger == null) {
       state.players.forEach((pl, i) => {
@@ -2049,13 +2050,13 @@ function renderActions() {
           } }, pl.name));
         }
       });
-      btns.push(el('button', { class: 'ghost', onclick: () => { state.phase = 'placed'; render(); } }, 'Anuluj'));
+      btns.push(el('button', { class: 'ghost', onclick: () => { state.phase = 'placed'; render(); } }, T('Anuluj')));
     } else {
       if (state.challengeMode === 'year') {
-        const go = el('button', { class: 'primary', disabled: state.challengeYear == null, onclick: revealTimeline }, '✔ Odkryj kartę');
+        const go = el('button', { class: 'primary', disabled: state.challengeYear == null, onclick: revealTimeline }, T('✔ Odkryj kartę'));
         const input = el('input', {
           type: 'number', id: 'challenge-year', min: '1900', max: String(new Date().getFullYear()), inputmode: 'numeric',
-          placeholder: 'Rok, np. 1984', 'aria-label': 'Rok wydania', value: state.challengeYear ?? '',
+          placeholder: T('Rok, np. 1984'), 'aria-label': T('Rok wydania'), value: state.challengeYear ?? '',
           oninput: (e) => {
             const y = parseInt(e.target.value, 10);
             state.challengeYear = y >= 1900 && y <= new Date().getFullYear() ? y : null;
@@ -2066,7 +2067,7 @@ function renderActions() {
         btns.push(input, go);
         setTimeout(() => input.focus(), 0);
       } else {
-        btns.push(el('button', { class: 'primary', disabled: state.challengeSlot == null, onclick: revealTimeline }, '✔ Odkryj kartę'));
+        btns.push(el('button', { class: 'primary', disabled: state.challengeSlot == null, onclick: revealTimeline }, T('✔ Odkryj kartę')));
       }
     }
   } else if (state.phase === 'revealed') {
@@ -2075,14 +2076,14 @@ function renderActions() {
       btns.push(el('button', {
         class: 'ok', disabled: state.awarded || p.tokens >= MAX_TOKENS,
         onclick: () => { p.tokens += 1; state.awarded = true; render(); },
-      }, state.awarded ? '+1 żeton przyznany'
-        : (state.mode === 'teams' ? '🪙 Drużyna odgadła wykonawcę i tytuł' : '🪙 Odgadł(a) wykonawcę i tytuł')));
+      }, state.awarded ? T('+1 żeton przyznany')
+        : (state.mode === 'teams' ? T('🪙 Drużyna odgadła wykonawcę i tytuł') : T('🪙 Odgadł(a) wykonawcę i tytuł'))));
     }
     if (state.swapOffer) btns.push(...swapButtons(p));
     const over = state.mode === 'solo' && (p.lives <= 0 || (!state.endless && p.timeline.length >= state.winTarget));
     btns.push(el('button', { class: 'primary', onclick: nextTurn },
-      over ? 'Zobacz podsumowanie →' : (isSoloLike() ? 'Następna piosenka →'
-        : (state.mode === 'teams' ? 'Następna drużyna →' : 'Następny gracz →'))));
+      over ? T('Zobacz podsumowanie →') : (isSoloLike() ? T('Następna piosenka →')
+        : (state.mode === 'teams' ? T('Następna drużyna →') : T('Następny gracz →')))));
   }
   $('#actions').replaceChildren(...btns);
 }
@@ -2090,6 +2091,16 @@ function renderActions() {
 function onConfirmPlacement() {
   revealTimeline();
 }
+
+/* ---------- ustawienia: język ---------- */
+$$('input[name=lang]').forEach((r) => {
+  r.checked = r.value === LANG;
+  r.addEventListener('change', () => {
+    store.set('lang', r.value);
+    window.track && window.track('jezyk', { jezyk: r.value });
+    location.reload();
+  });
+});
 
 /* ---------- ustawienia: efekty ---------- */
 $('#sounds').checked = store.get('sounds', true);
@@ -2131,7 +2142,7 @@ $('#song-search').addEventListener('input', () => {
   searchTimer = setTimeout(renderSongEditor, 150);
 });
 $('#btn-reset-years').addEventListener('click', () => {
-  if (!confirm('Przywrócić oryginalne daty i kraje wszystkich piosenek?')) return;
+  if (!confirm(T('Przywrócić oryginalne daty i kraje wszystkich piosenek?'))) return;
   store.set('yearOverrides', {});
   store.set('countryOverrides', {});
   applyOverrides();
@@ -2166,14 +2177,14 @@ function renderSongEditor() {
   if (!q) matches = matches.filter((s) => overrides[songKey(s)] != null || cOverrides[songKey(s)] != null);
   const shown = matches.slice(0, 50);
   $('#song-search-info').textContent = q
-    ? `Znaleziono: ${matches.length}${matches.length > shown.length ? ` (pokazuję ${shown.length} – zawęź wyszukiwanie)` : ''}`
-    : `Poprawione piosenki: ${edited}. Wpisz wykonawcę lub tytuł, aby znaleźć piosenkę.`;
+    ? T('Znaleziono: {0}', matches.length) + (matches.length > shown.length ? T(' (pokazuję {0} – zawęź wyszukiwanie)', shown.length) : '')
+    : T('Poprawione piosenki: {0}. Wpisz wykonawcę lub tytuł, aby znaleźć piosenkę.', edited);
   $('#song-editor').replaceChildren(...shown.map((s) => {
     const key = songKey(s);
     const orig = ORIGINAL_YEAR.get(key);
     const input = el('input', {
       type: 'number', min: '1900', max: String(new Date().getFullYear()), value: String(s.y),
-      'aria-label': `Rok: ${s.t}`, class: s.y !== orig ? 'edited' : '',
+      'aria-label': T('Rok: {0}', s.t), class: s.y !== orig ? 'edited' : '',
       onchange: (e) => {
         const y = clampInt(e.target.value, 1900, new Date().getFullYear(), orig);
         const ov = store.get('yearOverrides', {});
@@ -2199,8 +2210,8 @@ function renderSongEditor() {
     const changed = s.y !== orig || s.cc !== origC.cc;
     return el('div', { class: 'song-row' + (changed ? ' edited' : '') },
       el('div', { class: 'song-meta' }, el('b', {}, s.t), el('span', { class: 'muted' }, ` — ${s.a} `), flagEl(s),
-        el('div', { class: 'muted small' }, `Źródło daty: ${s.src || '—'}${s.y !== orig ? ` · oryginalnie ${orig}` : ''}`
-          + `${s.cc !== origC.cc ? ` · kraj oryginalnie: ${countryName(origC)}` : ''}`)),
+        el('div', { class: 'muted small' }, T('Źródło daty: {0}{1}', s.src || '—', s.y !== orig ? T(' · oryginalnie {0}', orig) : '')
+          + (s.cc !== origC.cc ? T(' · kraj oryginalnie: {0}', countryName(origC)) : ''))),
       el('div', { class: 'song-edit' }, input, country));
   }));
 }
