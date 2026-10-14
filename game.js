@@ -733,18 +733,8 @@ const PRESETS = [
     set: () => ({ pool: 'PL', tag: 'opole', decade: [], genre: [], country: [] }) },
   { id: 'eurowizja', name: T('🌍 Eurowizja'), desc: T('Piosenki z Konkursu Piosenki Eurowizji (wg kategorii „Eurovision songs” angielskiej Wikipedii).'),
     set: () => ({ pool: 'ALL', tag: 'eurowizja', decade: [], genre: [], country: [] }) },
-  { id: 'discopolo', name: T('🕺 Disco polo'), desc: T('Piosenki z gatunku disco polo.'),
-    set: () => ({ pool: 'ALL', tag: null, decade: [], genre: only('genre', ['disco polo']), country: [] }) },
   { id: 'film', name: T('🎬 Muzyka filmowa'), desc: T('Piosenki i motywy z filmów (gatunek „muzyka filmowa”).'),
     set: () => ({ pool: 'ALL', tag: null, decade: [], genre: only('genre', ['muzyka filmowa']), country: [] }) },
-  { id: 'oldies', name: T('📀 Złote przeboje (do 1979)'), desc: T('Piosenki wydane do 1979 roku.'),
-    set: () => ({ pool: 'ALL', tag: null, decade: only('decade', [String(OLDEST_DECADE), '1970']), genre: [], country: [] }) },
-  { id: 'pl80', name: T('🇵🇱 Polskie lata 80.'), desc: T('Polskie piosenki z lat 1980–1989.'),
-    set: () => ({ pool: 'PL', tag: null, decade: only('decade', ['1980']), genre: [], country: [] }) },
-  { id: 'pl90', name: T('🇵🇱 Polskie lata 90.'), desc: T('Polskie piosenki z lat 1990–1999.'),
-    set: () => ({ pool: 'PL', tag: null, decade: only('decade', ['1990']), genre: [], country: [] }) },
-  { id: 'new', name: T('🆕 Nowości (od 2020)'), desc: T('Piosenki wydane od 2020 roku.'),
-    set: () => ({ pool: 'ALL', tag: null, decade: only('decade', ['2020']), genre: [], country: [] }) },
 ];
 const currentSettings = () => ({
   pool: poolValue(), tag: filterState.tag || null,

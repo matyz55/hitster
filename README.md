@@ -53,8 +53,8 @@ wybrane dane – tytuł, wykonawcę i/lub dokładny rok (do wyboru w ustawieniac
 **Zestawy tematyczne** – gotowe ustawienia puli: Przeboje Trójki (1. miejsca Listy Przebojów
 Programu Trzeciego wg polskiej Wikipedii i plebiscyty „Polski Top Wszech Czasów”), Opole
 (piosenki z artykułów o Krajowym Festiwalu Piosenki Polskiej w Opolu), Eurowizja (kategorie
-„Eurovision songs” angielskiej Wikipedii), disco polo, muzyka filmowa, złote przeboje, polskie
-lata 80. i 90., nowości. Własne ustawienia można zapisać jako zestaw.
+„Eurovision songs” angielskiej Wikipedii) i muzyka filmowa. Własne ustawienia można zapisać
+jako zestaw.
 
 Kartę można **przeciągnąć palcem lub myszą** na oś (albo kliknąć „＋”). Gra ma proste
 animacje i dźwięki efektów (do wyłączenia w ustawieniach) i działa jako **aplikacja (PWA)**:
