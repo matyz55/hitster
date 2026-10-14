@@ -168,15 +168,14 @@ function streamUrl(song, preview, platform) {
   return `https://www.youtube.com/results?search_query=${q}`;
 }
 const PLATFORM_NAMES = { youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple Music' };
-// Android: link „intent://” otwiera od razu aplikację, a gdy jej nie ma – stronę WWW (S.browser_fallback_url).
-// iPhone i komputer: zwykłe linki https (na iPhonie z zainstalowaną aplikacją otwierają ją same).
+// Android: kliknięcie ikonki otwiera od razu aplikację linkiem „intent://” – w tej samej karcie i bezpośrednio
+// po kliknięciu (w nowej karcie przeglądarki, np. Brave, nie przekazują go do aplikacji). Bez adresu zastępczego:
+// gdy aplikacji nie ma, Android proponuje Sklep Play, a gra zostaje otwarta. iPhone i komputer: zwykłe linki https.
 const APP_PACKAGES = { youtube: 'com.google.android.youtube', spotify: 'com.spotify.music', apple: 'com.apple.android.music' };
 const IS_ANDROID = /Android/i.test(navigator.userAgent);
-function appUrl(url, platform) {
-  const pkg = APP_PACKAGES[platform];
-  if (!IS_ANDROID || !pkg) return url;
+function intentUrl(url, platform) {
   const u = new URL(url);
-  return `intent://${u.host}${u.pathname}${u.search}#Intent;scheme=https;package=${pkg};S.browser_fallback_url=${encodeURIComponent(url)};end`;
+  return `intent://${u.host}${u.pathname}${u.search}#Intent;scheme=https;package=${APP_PACKAGES[platform]};end`;
 }
 // proste ikonki serwisów (SVG w kodzie – bez zewnętrznych plików)
 const PLATFORM_ICONS = {
@@ -188,11 +187,13 @@ const PLATFORM_ICONS = {
 function listenLinks(song, preview, withLabel = true) {
   const box = el('span', { class: 'listen' }, withLabel ? el('span', { class: 'listen-label' }, T('Posłuchaj całości:')) : null);
   for (const platform of ['youtube', 'spotify', 'apple']) {
+    const url = streamUrl(song, preview, platform);
     const a = el('a', {
-      href: appUrl(streamUrl(song, preview, platform), platform), target: '_blank', rel: 'noopener', class: 'listen-icon',
+      href: url, target: '_blank', rel: 'noopener', class: 'listen-icon',
       title: T('Posłuchaj w: {0}', PLATFORM_NAMES[platform]), 'aria-label': T('Posłuchaj w: {0}', PLATFORM_NAMES[platform]),
     });
     a.innerHTML = PLATFORM_ICONS[platform];
+    if (IS_ANDROID) a.addEventListener('click', (e) => { e.preventDefault(); window.location.href = intentUrl(url, platform); });
     box.append(a);
   }
   return box;
