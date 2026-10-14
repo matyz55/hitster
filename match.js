@@ -44,6 +44,17 @@
     return BAD_VERSION.test(track.replace(OK_VERSION, ''));
   }
 
+  // wykonawca musi się zgadzać dokładnie – w całości albo jako jeden z wymienionych
+  // („Prince” w „Prince & The Revolution”), a nie jako fragment nazwy („Magma” w „Magical Magma”)
+  // „&” i „and” traktujemy jednakowo („Dick & Dee Dee” = „Dick and Dee Dee”)
+  const artistKey = (s) => norm(s.replace(/^the /i, '').replace(/&|\band\b/gi, ' '));
+  function artistMatches(name, wantArtist) {
+    const want = artistKey(wantArtist);
+    if (artistKey(name) === want) return true;
+    return name.split(/\s*(?:&|,|\+|\/|\bfeat\.?|\bft\.|\bfeaturing\b|\bwith\b|\bvs\.?|\bx\b|\band\b|\bi\b)\s*/i)
+      .some((part) => artistKey(part) === want);
+  }
+
   function isLaterDuet(r, song) {
     const year = parseInt((r.releaseDate || '').slice(0, 4), 10);
     if (!song.y || !year || year <= song.y + 10) return false;
@@ -66,7 +77,7 @@
     for (const r of results) {
       if (!r.previewUrl || isUnwanted(r, song)) continue;
       const artist = norm((r.artistName || '').replace(/^the /i, ''));
-      if (!artist.includes(wantArtist)) continue;
+      if (!artistMatches(r.artistName || '', mainArtist(song))) continue;
       // nowe nagranie z gościem (np. „Maryla Rodowicz & Lanberry” 2025 zamiast „Małgośki” z 1973 r.):
       // dodatkowy wykonawca spoza piosenki + wydanie ponad 10 lat po roku piosenki → pomijamy
       if (isLaterDuet(r, song)) continue;

@@ -394,10 +394,12 @@ const POP_MEDIAN = (() => {
 })();
 const LEVELS = [
   { name: 'Łatwy', desc: 'Znane piosenki (popularniejsza połowa w Spotify), równomiernie z różnych dekad.',
-    ok: (s) => s.p == null || s.p >= POP_MEDIAN[s.c] },
+    // bez danych o popularności: klasyki z pierwotnej listy i przeboje z list przebojów są „znane”,
+    // piosenki dodane z Wikipedii dla uzupełnienia roku (w) – już nie
+    ok: (s) => (s.p == null ? !s.w : s.p >= POP_MEDIAN[s.c]) },
   { name: 'Średni', desc: 'Wszystkie piosenki, równomiernie z różnych dekad.', ok: () => true },
   { name: 'Trudny', desc: 'Mniej znane piosenki. Na osi czasu częściej trafiają się utwory wydane blisko lat Twoich kart – ale dekady wciąż są wymieszane.',
-    // piosenki bez danych o popularności to klasyki z pierwotnej listy – nie są „mniej znane”
+    // piosenki bez danych o popularności to klasyki i przeboje z list – nie są „mniej znane”
     ok: (s) => s.p != null && s.p < POP_MEDIAN[s.c] },
 ];
 

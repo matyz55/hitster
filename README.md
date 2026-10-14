@@ -53,12 +53,16 @@ nie ma fragmentu, są w grze automatycznie pomijane.
 
 Piosenki są w pliku [`songs.js`](songs.js) (`a` – wykonawca, `t` – tytuł,
 `y` – rok, `c` – `PL`/`INT`, `cc` – kraj artysty, `g` – gatunki, `p` – popularność
-w Spotify, `src` – źródło daty).
+w Spotify, `src` – źródło daty, `w` – piosenka dodana z Wikipedii dla uzupełnienia roku,
+bez danych o popularności – nie trafia na poziom łatwy).
 Rok oznacza **rok pierwszego wydania nagrania** danego wykonawcy.
 
 Źródła: [Discogs](https://www.discogs.com/) (wydanie sprawdzane po trackliście),
 [MusicBrainz](https://musicbrainz.org/), Wikipedia oraz daty wydań ze Spotify
 (z eksportu playlist). Piosenka trafia do gry, jeśli rok podaje choć jedno źródło.
+Oprócz przesłanych playlist lista jest uzupełniona o piosenki z list przebojów
+(Billboard Year-End Hot 100, numery jeden w Polsce) i z artykułów polskiej Wikipedii o
+piosenkach – tam, gdzie w danym roku brakowało polskich lub zagranicznych utworów.
 Szczegóły, reguła wyboru roku i pełna tabela: [`VERIFICATION.md`](VERIFICATION.md).
 
 Flagi to obrazki SVG z pakietu [flag-icons](https://github.com/lipis/flag-icons) 7.5.0
