@@ -172,7 +172,10 @@ const PLATFORM_NAMES = { youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple M
 // po kliknięciu (w nowej karcie przeglądarki, np. Brave, nie przekazują go do aplikacji). Bez adresu zastępczego:
 // gdy aplikacji nie ma, Android proponuje Sklep Play, a gra zostaje otwarta. iPhone i komputer: zwykłe linki https.
 const APP_PACKAGES = { youtube: 'com.google.android.youtube', spotify: 'com.spotify.music', apple: 'com.apple.android.music' };
-const IS_ANDROID = /Android/i.test(navigator.userAgent);
+// Brave na Androidzie ma błąd: nie przekazuje linków „intent://” do aplikacji (ERR_UNKNOWN_URL_SCHEME,
+// github.com/brave/brave-browser/issues/46614) – tam zostają zwykłe linki https
+const IS_BRAVE = !!navigator.brave;
+const IS_ANDROID = /Android/i.test(navigator.userAgent) && !IS_BRAVE;
 function intentUrl(url, platform) {
   const u = new URL(url);
   return `intent://${u.host}${u.pathname}${u.search}#Intent;scheme=https;package=${APP_PACKAGES[platform]};end`;
