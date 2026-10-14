@@ -2,8 +2,17 @@
 <html lang="pl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Songster – muzyczna gra</title>
+  <meta name="description" content="Muzyczna gra w przeglądarce: układaj piosenki na osi czasu, zgaduj tytuły i wykonawców.">
+  <meta name="theme-color" content="#12101a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Songster">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,13 +38,27 @@
         <b>Oś czasu – multiplayer</b>
         <span class="muted">2–8 graczy przy jednym urządzeniu, z wyzwaniami i żetonami.</span>
       </button>
+      <button class="mode" data-mode="teams">
+        <span class="mode-icon">🎉</span>
+        <b>Oś czasu – drużyny</b>
+        <span class="muted">2–4 drużyny, każda ze wspólną osią czasu. Członkowie drużyny odpowiadają na zmianę – w sam raz na imprezę.</span>
+      </button>
       <button class="mode" data-mode="melody">
         <span class="mode-icon">🎤</span>
         <b>Jaka to melodia</b>
         <span class="muted">Odgadnij tytuł, wykonawcę albo oba. 1–8 graczy, drobne literówki są wybaczane.</span>
       </button>
+      <button class="mode" data-mode="steps">
+        <span class="mode-icon">⏱️</span>
+        <b>Melodia krok po kroku</b>
+        <span class="muted">Najpierw tylko 1 sekunda, potem 2, 4 i 8 s. Im szybciej zgadniesz, tym więcej punktów.</span>
+      </button>
     </div>
     <p class="muted center" id="home-info"></p>
+    <div class="center install-box">
+      <button id="btn-install" class="ghost hidden">📲 Zainstaluj Songstera na tym urządzeniu</button>
+      <p class="muted small hidden" id="ios-install">Na iPhonie: przycisk „Udostępnij” → „Do ekranu początkowego”, aby dodać Songstera jako aplikację.</p>
+    </div>
   </main>
 
   <!-- EKRAN USTAWIEŃ ROZGRYWKI -->
@@ -50,6 +73,9 @@
 
     <section class="card">
       <h2>Piosenki</h2>
+      <p class="label">Zestaw</p>
+      <div class="chips presets" id="presets"></div>
+      <p class="muted small" id="preset-desc"></p>
       <div class="seg">
         <label><input type="radio" name="pool" value="ALL" checked> Mieszane</label>
         <label><input type="radio" name="pool" value="PL"> Polskie</label>
@@ -76,11 +102,12 @@
         </div>
       </details>
       <p class="muted" id="pool-info"></p>
+      <button type="button" id="btn-save-preset" class="ghost">💾 Zapisz te ustawienia jako własny zestaw</button>
     </section>
 
     <section class="card">
       <h2>Odtwarzanie</h2>
-      <label class="row">Długość fragmentu
+      <label class="row" data-for="solo multi teams melody">Długość fragmentu
         <select id="clip-length">
           <option value="30">30 s (cały)</option>
           <option value="15">15 s</option>
@@ -89,7 +116,9 @@
         </select>
       </label>
       <label class="check"><input type="checkbox" id="clip-random"> Fragment z losowego miejsca (zamiast od początku)</label>
-      <label class="check" data-for="melody"><input type="checkbox" id="hint-decade"> Podpowiedź: pokazuj dekadę piosenki</label>
+      <label class="check" data-for="melody steps"><input type="checkbox" id="hint-decade"> Podpowiedź: pokazuj dekadę piosenki</label>
+      <label class="check" data-for="steps"><input type="checkbox" id="hint-letter"> Podpowiedź z pierwszą literą (kosztuje 1 punkt)</label>
+      <p class="muted small" data-for="steps">Kroki: 1 s → 2 s → 4 s → 8 s. Odgadnięcie przy 1 s daje 4 pkt, przy 2 s – 3 pkt, przy 4 s – 2 pkt, przy 8 s – 1 pkt (za każdą zgadywaną część). Błędna odpowiedź od razu wydłuża fragment.</p>
     </section>
 
     <section class="card">
@@ -105,7 +134,7 @@
 
     <section class="card">
       <h2>Zasady tej gry</h2>
-      <div data-for="solo multi">
+      <div data-for="solo multi teams">
         <label class="row">Karty potrzebne do wygranej
           <input type="number" id="win-target" min="3" max="30" value="10">
         </label>
@@ -113,7 +142,16 @@
           <input type="number" id="start-tokens" min="0" max="5" value="2">
         </label>
       </div>
-      <div data-for="multi">
+      <div data-for="solo multi teams">
+        <label class="check"><input type="checkbox" id="expert"> Tryb ekspert – żeby zatrzymać kartę, trzeba też podać:</label>
+        <div class="seg expert-opts" id="expert-opts">
+          <label><input type="checkbox" id="exp-title"> Tytuł</label>
+          <label><input type="checkbox" id="exp-artist"> Wykonawcę</label>
+          <label><input type="checkbox" id="exp-year"> Dokładny rok</label>
+        </div>
+        <p class="muted small" id="expert-desc"></p>
+      </div>
+      <div data-for="multi teams">
         <label class="check"><input type="checkbox" id="show-all"> Pokazuj przez cały czas osie wszystkich graczy</label>
         <p class="label" style="margin-top:12px">Wyzwanie (1 żeton)</p>
         <div class="seg">
@@ -129,14 +167,14 @@
         <label class="check"><input type="checkbox" id="endless"> Gra bez końca – bez celu kart, grasz do wyczerpania pomyłek i bijesz swój rekord</label>
         <p class="muted small" id="record-info"></p>
       </div>
-      <div data-for="melody">
+      <div data-for="melody steps">
         <p class="label">Co zgadujemy?</p>
         <div class="seg">
           <label><input type="radio" name="guess" value="title" checked> Tytuł</label>
           <label><input type="radio" name="guess" value="artist"> Wykonawcę</label>
           <label><input type="radio" name="guess" value="both"> Tytuł i wykonawcę</label>
         </div>
-        <label class="row" style="margin-top:12px">Piosenek na gracza
+        <label class="row" style="margin-top:12px"><span id="rounds-label">Piosenek na gracza</span>
           <input type="number" id="rounds" min="1" max="30" value="5">
         </label>
       </div>
@@ -167,6 +205,7 @@
             <button id="btn-skip" class="ghost">⏭ Pomiń</button>
           </div>
           <div class="progress"><div id="progress-bar"></div></div>
+          <div id="steps-bar" class="steps hidden"></div>
           <div id="reveal" class="reveal hidden"></div>
         </div>
       </div>
@@ -174,6 +213,8 @@
       <form id="guess-form" class="guess hidden" autocomplete="off">
         <input type="text" id="guess-title" placeholder="Tytuł" aria-label="Tytuł">
         <input type="text" id="guess-artist" placeholder="Wykonawca" aria-label="Wykonawca">
+        <input type="number" id="guess-year" placeholder="Rok wydania" aria-label="Rok wydania" inputmode="numeric" min="1900" max="2100">
+        <p id="letter-hint" class="letter-hint hidden"></p>
         <div class="actions">
           <button type="submit" class="primary" id="btn-guess">Sprawdź</button>
           <button type="button" class="ghost" id="btn-giveup">Nie wiem</button>
@@ -181,6 +222,7 @@
       </form>
 
       <p id="hint" class="hint"></p>
+      <div id="drag-card" class="drag-card hidden" role="button" tabindex="-1" aria-hidden="true"><span class="dc-vinyl"></span> Przeciągnij kartę na oś</div>
       <div id="timeline" class="timeline"></div>
       <div id="actions" class="actions sticky-actions"></div>
     </section>
@@ -217,6 +259,11 @@
       </div>
     </section>
     <section class="card">
+      <h2>Efekty</h2>
+      <label class="check"><input type="checkbox" id="sounds"> Dźwięki efektów (dobra/zła odpowiedź, położenie karty, wygrana)</label>
+      <label class="check"><input type="checkbox" id="animations"> Animacje</label>
+    </section>
+    <section class="card">
       <h2>Rok i kraj piosenek</h2>
       <p class="muted">Znalazłeś błąd? Popraw rok albo kraj wykonawcy – zmiana zapisze się w tej przeglądarce i będzie używana w kolejnych grach. Kraj decyduje też, czy piosenka jest polska, czy zagraniczna.</p>
       <input type="search" id="song-search" placeholder="Szukaj wykonawcy lub tytułu…" aria-label="Szukaj piosenki">
@@ -236,6 +283,9 @@
       <li>Multiplayer: inni gracze mogą rzucić <b>wyzwanie</b> (1 żeton). W wariancie „inne miejsce” pretendent wskazuje inne miejsce na Twojej osi – jeśli Ty się pomylisz, a on trafi, zabiera kartę. W wariancie „dokładny rok” pretendent podaje rok wydania – jeśli trafi co do roku, zabiera kartę niezależnie od Twojego ruchu.</li>
       <li>Za odgadnięcie wykonawcy i tytułu dostajesz żeton (maks. 5). 1 żeton = pominięcie piosenki, 3 żetony = kupienie karty.</li>
       <li>Wygrywa pierwsza osoba z ustaloną liczbą kart. W trybie 1 gracza masz ograniczoną liczbę pomyłek; w grze bez końca grasz do ich wyczerpania i bijesz swój rekord.</li>
+      <li><b>Tryb ekspert</b>: oprócz miejsca na osi trzeba podać wybrane dane – tytuł, wykonawcę i/lub dokładny rok. Bez tego karta przepada.</li>
+      <li><b>Drużyny</b>: każda drużyna ma wspólną oś czasu, a jej członkowie odpowiadają po kolei. Zasady jak w trybie multiplayer.</li>
+      <li>Kartę można przeciągnąć palcem lub myszą na oś albo kliknąć miejsce oznaczone „＋”.</li>
     </ol>
     <h3>Jaka to melodia</h3>
     <ol>
@@ -243,9 +293,17 @@
       <li>Za każdą poprawną część jest punkt. Drobne literówki, wielkość liter i polskie znaki nie mają znaczenia.</li>
       <li>Przy duetach i utworach kilku wykonawców wystarczy podać jednego z nich.</li>
     </ol>
+    <h3>Melodia krok po kroku</h3>
+    <ol>
+      <li>Najpierw słyszysz 1 sekundę piosenki. Możesz od razu zgadywać albo wydłużyć fragment do 2, 4 i 8 sekund.</li>
+      <li>Punkty za każdą odgadniętą część: 4 (1 s), 3 (2 s), 2 (4 s), 1 (8 s). Błędna odpowiedź wydłuża fragment.</li>
+      <li>Odgadnięta część (np. sam tytuł) zostaje zaliczona – dalej zgadujesz tylko resztę.</li>
+      <li>Podpowiedź z pierwszą literą kosztuje 1 punkt.</li>
+    </ol>
     <h3>Losowanie piosenek</h3>
     <ul>
-      <li>Każdy wykonawca pojawia się w jednej grze najwyżej raz.</li>
+      <li>Każdy wykonawca pojawia się w jednej grze najwyżej raz, a w kolejnych grach (w tej samej karcie przeglądarki) piosenki się nie powtarzają.</li>
+      <li>Zestawy tematyczne (np. Eurowizja, Opole, Trójka, disco polo) zawężają losowanie do wybranej grupy piosenek.</li>
       <li>Poziom trudności: <b>Bardzo łatwy</b> – ok. 1000 największych przebojów; <b>Łatwy</b> – znane piosenki; <b>Średni</b> – wszystkie piosenki; <b>Trudny</b> – mniej znane piosenki, a na osi czasu częściej utwory wydane blisko lat Twoich kart.</li>
       <li>Na każdym poziomie piosenki losowane są z różnych dekad – żadna dekada nie dominuje.</li>
       <li>Przy mieszanych piosenkach gra pilnuje ustawionego udziału polskich i zagranicznych.</li>
@@ -259,5 +317,10 @@
   <script src="flags/codes.js"></script>
   <script src="match.js"></script>
   <script src="game.js"></script>
+  <script>
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch((e) => console.warn('SW', e)));
+    }
+  </script>
 </body>
 </html>

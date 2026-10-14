@@ -323,3 +323,76 @@ select {
 .slot.labeled { width: auto; padding: 0 12px; font-size: .9rem; white-space: nowrap; }
 #challenge-year { width: 140px; font-size: 1.1rem; }
 @media (max-width: 640px) { #challenge-year { flex: 1; width: auto; } }
+
+/* --- zestawy tematyczne --- */
+.presets { margin-bottom: 6px; }
+.preset { display: inline-flex; align-items: center; gap: 2px; }
+.preset-del { font-size: .8rem; padding: 0 4px; text-decoration: none; }
+#btn-save-preset { margin-top: 8px; }
+
+/* --- drużyny: nazwa + członkowie --- */
+.team-row { flex-wrap: wrap; }
+.team-row .p-name { flex: 0 1 180px; }
+.team-row .p-members { flex: 1 1 220px; min-width: 0; }
+
+/* --- tryb ekspert --- */
+.expert-opts { margin: 8px 0 0 26px; }
+#guess-year { width: 100%; font-size: 1.05rem; padding: 10px 12px; }
+.reveal .small-verdict { font-weight: 600; font-size: .92rem; }
+
+/* --- melodia krok po kroku --- */
+.steps { display: flex; gap: 6px; margin-top: 8px; }
+.step {
+  flex: 1; display: flex; flex-direction: column; align-items: center; padding: 6px 4px; border-radius: 8px;
+  background: var(--panel-2); border: 1px solid #3d3755; color: var(--muted); line-height: 1.2;
+}
+.step b { color: var(--text); font-size: .95rem; }
+.step small { font-size: .72rem; }
+.step.done { opacity: .5; }
+.step.current { border-color: var(--gold); background: rgba(255,201,60,.12); }
+.step.current b { color: var(--gold); }
+.guess input.solved { border-color: var(--ok); color: var(--ok); background: rgba(60,220,140,.08); }
+.letter-hint { margin: 0; color: var(--gold); font-weight: 600; }
+
+/* --- karta do przeciągania --- */
+.drag-card {
+  display: inline-flex; align-items: center; gap: 10px; margin: 4px 0 2px; padding: 10px 16px 10px 10px;
+  border-radius: 12px; background: linear-gradient(160deg, #3a2d63, #2a2244); border: 2px dashed var(--accent);
+  cursor: grab; user-select: none; -webkit-user-select: none; touch-action: none; font-weight: 600;
+}
+.drag-card.dragging { opacity: .4; cursor: grabbing; }
+.dc-vinyl {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  background: radial-gradient(circle, var(--accent) 0 28%, #111 30% 100%);
+  box-shadow: 0 0 0 2px #000;
+}
+.drag-ghost {
+  position: fixed; left: 0; top: 0; z-index: 50; pointer-events: none; margin: -24px 0 0 -40px;
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px 8px 8px; border-radius: 12px;
+  background: linear-gradient(160deg, #4a3a80, #2a2244); border: 2px solid var(--accent);
+  box-shadow: 0 12px 30px rgba(0,0,0,.5); font-weight: 800; font-size: 1.2rem;
+}
+.slot.drop-over { border-color: var(--accent); border-style: solid; background: rgba(255,61,127,.25); }
+@media (max-width: 640px) {
+  .drag-card { display: flex; justify-content: center; width: 100%; }
+  .slot.drop-over { height: 48px; }
+}
+
+/* --- instalacja --- */
+.install-box { margin-top: 8px; }
+
+/* --- animacje --- */
+@keyframes pop { 0% { transform: scale(.6); opacity: 0; } 70% { transform: scale(1.06); opacity: 1; } 100% { transform: scale(1); } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+@keyframes flipIn { from { transform: perspective(600px) rotateX(-80deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,61,127,.5); } 50% { box-shadow: 0 0 0 6px rgba(255,61,127,0); } }
+@keyframes fall { from { transform: translateY(-10vh) rotate(0); opacity: 1; } to { transform: translateY(105vh) rotate(540deg); opacity: .8; } }
+.tcard.new, .mini.new { animation: pop .45s ease-out; }
+.mark.bad { animation: shake .45s ease-in-out; }
+.mark.ok { animation: pop .45s ease-out .15s both; }
+.reveal.flip { animation: flipIn .45s ease-out; transform-origin: top; }
+.slot.chosen { animation: pulse 1.6s ease-in-out infinite; }
+.drag-card:not(.dragging) { animation: pulse 2.2s ease-in-out infinite; }
+.confetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
+.confetti span { position: absolute; top: 0; animation: fall 2.6s ease-in forwards; }
+body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none !important; transition: none !important; }

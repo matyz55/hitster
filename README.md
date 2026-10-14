@@ -11,9 +11,27 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
   masz ograniczoną liczbę pomyłek. Wpisanie poprawnego tytułu i wykonawcy daje żeton.
 - **Oś czasu – multiplayer** – 2–8 graczy przy jednym urządzeniu, z wyzwaniami
   i żetonami jak w planszówce.
+- **Oś czasu – drużyny** – 2–4 drużyny, każda ze wspólną osią czasu; członkowie drużyny
+  odpowiadają po kolei (gra pokazuje, kto teraz zgaduje). Zasady jak w multiplayerze.
 - **Jaka to melodia** – 1–8 graczy po kolei odgadują tytuł, wykonawcę albo oba.
   Wielkość liter, polskie znaki i drobne literówki nie mają znaczenia. Przy duetach
   i utworach kilku wykonawców wystarczy podać jednego z nich.
+- **Melodia krok po kroku** – najpierw 1 s fragmentu, potem 2, 4 i 8 s. Odgadnięcie
+  daje 4/3/2/1 pkt (za każdą zgadywaną część), błędna odpowiedź wydłuża fragment,
+  a podpowiedź z pierwszą literą kosztuje 1 punkt.
+
+**Tryb ekspert** (osie czasu): żeby zatrzymać kartę, oprócz miejsca na osi trzeba podać
+wybrane dane – tytuł, wykonawcę i/lub dokładny rok (do wyboru w ustawieniach gry).
+
+**Zestawy tematyczne** – gotowe ustawienia puli: Przeboje Trójki (1. miejsca Listy Przebojów
+Programu Trzeciego wg polskiej Wikipedii i plebiscyty „Polski Top Wszech Czasów”), Opole
+(piosenki z artykułów o Krajowym Festiwalu Piosenki Polskiej w Opolu), Eurowizja (kategorie
+„Eurovision songs” angielskiej Wikipedii), disco polo, muzyka filmowa, złote przeboje, polskie
+lata 80. i 90., nowości. Własne ustawienia można zapisać jako zestaw.
+
+Kartę można **przeciągnąć palcem lub myszą** na oś (albo kliknąć „＋”). Gra ma proste
+animacje i dźwięki efektów (do wyłączenia w ustawieniach) i działa jako **aplikacja (PWA)**:
+na Androidzie przycisk „Zainstaluj”, na iPhonie „Udostępnij → Do ekranu początkowego”.
 
 Każdy wykonawca pojawia się w jednej grze najwyżej raz, a piosenki nie powtarzają się
 między kolejnymi rozgrywkami w tej samej karcie przeglądarki (dopóki w wybranej puli
@@ -36,6 +54,8 @@ wszystkich piosenek, które padły, z linkami do serwisu streamingowego.
 ## Ustawienia (⚙)
 
 - serwis dla przycisku „Posłuchaj całości”: YouTube, Spotify albo Apple Music,
+- dźwięki efektów i animacje (włączone domyślnie; animacje wyłączają się też przy
+  systemowym ustawieniu „ogranicz ruch”),
 - poprawianie roku wydania i kraju wykonawcy dowolnej piosenki (zapisywane w przeglądarce;
   kraj decyduje też, czy piosenka jest polska, czy zagraniczna).
 
