@@ -85,14 +85,65 @@
     .waiting b { color: var(--text); font-size: 1.6em; display: block; margin-bottom: .5em; }
     button { font: inherit; font-size: .7em; border: calc(1 * var(--u)) solid #3d3755; background: transparent; color: var(--text); border-radius: calc(10 * var(--u)); padding: .4em .9em; cursor: pointer; }
     .hidden { display: none !important; }
+    /* płyta kręci się, gdy gra muzyka; pasek postępu fragmentu */
+    .vinyl.spinning { animation: spin 3s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .progress { height: .35em; background: var(--panel-2); border-radius: 1em; overflow: hidden; margin-bottom: .5em; max-width: 30em; }
+    .progress .bar { height: 100%; width: 0; background: var(--accent-2); transition: width .25s linear; }
+    /* Melodia krok po kroku */
+    .steps { display: flex; gap: .5em; flex-shrink: 0; }
+    .step { flex: 1; display: flex; flex-direction: column; align-items: center; padding: .3em; border-radius: .5em; background: var(--panel-2);
+      border: calc(1 * var(--u)) solid #3d3755; color: var(--muted); line-height: 1.2; }
+    .step b { color: var(--text); }
+    .step small { font-size: .7em; }
+    .step.done { opacity: .45; }
+    .step.current { border-color: var(--gold); background: rgba(255, 201, 60, .14); }
+    .step.current b { color: var(--gold); }
+    /* Kto pierwszy? */
+    .buzzers { display: flex; flex-wrap: wrap; gap: .5em; flex-shrink: 0; align-items: center; }
+    .buzzer { font: inherit; font-size: .9em; border: calc(3 * var(--u)) solid var(--c); background: color-mix(in srgb, var(--c) 18%, transparent); color: var(--text);
+      border-radius: .6em; padding: .4em .8em; display: flex; gap: .5em; align-items: center; cursor: pointer; }
+    .buzzer kbd { background: var(--c); color: #12101a; border-radius: .3em; padding: 0 .35em; font-weight: 800; }
+    .buzzer.locked { opacity: .35; }
+    .buzzer.answering { background: var(--c); color: #12101a; }
+    .buzzers.mine .buzzer { flex: 1; justify-content: center; font-size: 1.6em; padding: .8em; }
+    .buzz-who { font-weight: 800; color: var(--gold); }
+    /* połączenie z innym urządzeniem */
+    .net-box { margin: 1em auto 0; width: 14em; background: #fff; border-radius: .6em; padding: .5em; color: #12101a; }
+    .net-box svg { width: 100%; height: auto; display: block; }
+    .net-code { font-size: 1.3em; margin-bottom: .3em; }
+    .net-code b { letter-spacing: .15em; }
+    .net-box .muted { color: #555; font-size: .6em; }
+    /* telefon gracza */
+    .gap { flex: 0 0 auto; width: calc(var(--cw, 11vw) * .4); height: var(--ch, 14vh); border-radius: .6em; border: 2px dashed var(--accent-2);
+      background: rgba(45, 226, 230, .08); color: var(--accent-2); font: inherit; font-size: calc(var(--fs, 1em) * 1.6); cursor: pointer; padding: 0; }
+    .me-bar { color: var(--muted); font-size: .8em; flex-shrink: 0; }
+    .link { background: none; border: 0; color: var(--accent-2); text-decoration: underline; padding: 0; font-size: 1em; }
+    .picker { margin: 1em auto; text-align: center; }
+    .picker-list { display: flex; flex-wrap: wrap; gap: .5em; justify-content: center; }
+    .picker-list button { font-size: 1em; padding: .6em 1em; background: var(--panel-2); border: 0; }
+    .picker-list button.primary { background: var(--accent); }
+    .guess-form { display: flex; gap: .5em; flex-wrap: wrap; flex-shrink: 0; }
+    .guess-form input { font: inherit; padding: .4em .6em; border-radius: .5em; border: 1px solid #3d3755; background: var(--panel); color: var(--text); flex: 1; min-width: 8em; }
+    .guess-form button { font-size: .9em; }
+    .guess-form .suggest-wrap { position: relative; flex: 1 1 100%; display: flex; }
+    .suggest { position: absolute; left: 0; right: 0; bottom: calc(100% + 4px); z-index: 5; margin: 0; padding: 4px; list-style: none; max-height: 40vh; overflow-y: auto;
+      background: var(--panel-2); border: 1px solid #3d3755; border-radius: .6em; font-size: .9em; }
+    .suggest li { padding: .4em .5em; border-radius: .4em; cursor: pointer; }
+    .suggest li span { color: var(--muted); }
+    .suggest li:hover { background: rgba(255, 61, 127, .18); }
+    .actions button.primary, .guess-form button.primary { background: var(--accent); border: 0; color: var(--text); font-weight: 600; }
+    body.player { overflow: auto; }
+    body.player .wrap { height: auto; min-height: 100%; }
   </style>
 </head>
 <body>
   <div class="wrap" id="app">
-    <div class="waiting" id="waiting"><b>📺 Songster – duży ekran</b><span id="waiting-text">Czekam na grę… Rozpocznij grę w oknie Songstera na tym urządzeniu – ono jest pilotem.</span><br><br><button id="fs">⛶ Pełny ekran</button></div>
+    <div class="waiting" id="waiting"><b>📺 Songster – duży ekran</b><span id="waiting-text">Czekam na grę… Rozpocznij grę w oknie Songstera na tym urządzeniu – ono jest pilotem.</span><br><br><button id="fs">⛶ Pełny ekran</button> <button id="net">📶 Połącz z innym urządzeniem</button><div id="net-box" class="net-box hidden"></div></div>
   </div>
   <script src="i18n-en.js"></script>
   <script src="i18n.js"></script>
+  <script src="net.js"></script>
   <script src="tv.js"></script>
 </body>
 </html>

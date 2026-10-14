@@ -346,6 +346,7 @@
     <section class="card">
       <h2>Efekty</h2>
       <label class="check"><input type="checkbox" id="sounds"> Dźwięki efektów (dobra/zła odpowiedź, położenie karty, wygrana)</label>
+      <label class="check"><input type="checkbox" id="autoplay"> Automatycznie odtwarzaj nową piosenkę (w trybie „Na czas” zawsze)</label>
       <label class="check"><input type="checkbox" id="animations"> Animacje</label>
     </section>
     <section class="card">
@@ -428,12 +429,35 @@
     <form method="dialog"><button class="primary">OK</button></form>
   </dialog>
 
+  <dialog id="dlg-connect">
+    <h2>📺 Duży ekran i telefony graczy</h2>
+    <h3>Duży ekran na tym urządzeniu</h3>
+    <p class="muted">Drugie okno dla telewizora lub rzutnika podłączonego do tego komputera. To okno zostaje pilotem.</p>
+    <button type="button" id="btn-open-tv-window" class="ghost">Otwórz okno dużego ekranu</button>
+    <h3>Telewizor lub inny komputer</h3>
+    <p class="muted" id="tv-instructions">Na telewizorze otwórz duży ekran Songstera, kliknij „Połącz z innym urządzeniem” i zeskanuj kod QR telefonem – albo wpisz tutaj kod z ekranu.</p>
+    <div class="connect-row">
+      <input type="text" id="tv-code" maxlength="4" placeholder="Kod" aria-label="Kod z telewizora" autocomplete="off" spellcheck="false">
+      <button type="button" id="btn-tv-connect" class="ghost">Połącz</button>
+    </div>
+    <p id="tv-status" class="muted"></p>
+    <h3>Gracze na własnych telefonach</h3>
+    <p class="muted">Muzyka gra na tym urządzeniu, a gracze skanują kod QR i sterują swoją turą na swoich telefonach.</p>
+    <button type="button" id="btn-room" class="ghost">Utwórz pokój dla graczy</button>
+    <div id="room-box" class="room-box hidden">
+      <div id="room-qr" class="room-qr"></div>
+      <div><div class="room-code">Kod: <b id="room-code"></b></div><p class="muted" id="room-link"></p><ul id="room-list"></ul></div>
+    </div>
+    <form method="dialog"><button class="primary">OK</button></form>
+  </dialog>
+
   <audio id="audio" preload="auto"></audio>
   <script src="i18n-en.js"></script>
   <script src="i18n.js"></script>
   <script src="songs.js"></script>
   <script src="flags/codes.js"></script>
   <script src="match.js"></script>
+  <script src="net.js"></script>
   <script src="game.js"></script>
   <script src="stats.js"></script>
   <script>

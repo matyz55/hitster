@@ -37,7 +37,7 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 - bez żadnej daty (pominięte): 59
 - covery zamiast oryginałów (pominięte): 47
 - usunięte duplikaty: 35
-- bez ustalonego kraju artysty: 97
+- bez ustalonego kraju artysty: 94
 
 | Źródło roku | Piosenek |
 |---|---|
@@ -45,14 +45,14 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 | Discogs | 1772 |
 | Discogs + Wikipedia | 316 |
 | Spotify + MusicBrainz | 290 |
-| Spotify | 253 |
+| Spotify | 252 |
 | MusicBrainz | 233 |
 | Wikipedia | 222 |
 | Discogs + MusicBrainz+Wikipedia + Spotify | 94 |
 | Spotify + Discogs + MusicBrainz | 68 |
 | Discogs + MusicBrainz+Wikipedia | 56 |
 | Wikipedia + Discogs | 55 |
-| Ręczna poprawka (opis niżej) | 38 |
+| Ręczna poprawka (opis niżej) | 39 |
 | Discogs + MusicBrainz | 37 |
 | Spotify – playlista eurowizja.csv | 23 |
 | Spotify + Discogs | 19 |
@@ -239,6 +239,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Tina Turner | What's Love Got to Do with It | 1984 | Discogs – album „Private Dancer” (1984), utwór na trackliście; wynik automatyczny (box set 1990) był błędny |
 | Jacek Stachursky | Z Kazdym Twym Oddechem | 2006 | Discogs – singiel „Stachursky – Z każdym twym oddechem” (2006) |
 | Anna Wyszkoni | Z Ciszą Pośród Czterech Ścian | 2009 | MusicBrainz – oficjalny album „Pan i pani” (29.06.2009); 2021 to data reedycji w Spotify (zgłoszenie użytkownika) |
+| Anna Wyszkoni | Czy Ten Pan I Pani | 2009 | Wikipedia – album „Pan i Pani” (29.06.2009), utwór nr 1 i 1. singel; 2021 to składanka „Nieznośna lekkość hitu” (zgłoszenie użytkownika) |
 | Anna Jurksztowicz | Hej, man! | 1987 | Discogs (ponowne sprawdzenie) – Anna Jurksztowicz - Dziękuję, Nie Tańczę / „Hej, Man!” |
 | Elżbieta Mielczarek | Poczekalnia PKP | 1982 | Discogs – singiel „Blues” (1982): „Poczekalnia PKP” / „Trouble in Mind” |
 | Zespół Dziecięcy Fasolki | Mydło lubi zabawę | 1988 | Discogs – „Fasolki – Fasola 1. Przeboje z telewizyjnego teatrzyku piosenki dla dzieci” (1988) |
@@ -691,7 +692,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Anna Naklab & Alle Farben | Supergirl | 2015 | Discogs | 2015 | – | – | DE |
 | Anna Rusowicz & Adam Nowak | Trudne życzenia | 2016 | Spotify | – | – | 2016 | ? |
 | Anna Szałapak | Grajmy Panu | 1999 | Discogs | 1999 | – | 2014 | PL |
-| Anna Wyszkoni | Czy Ten Pan I Pani | 2021 | Spotify | – | – | 2021 | ? |
+| Anna Wyszkoni | Czy Ten Pan I Pani | 2009 | Wikipedia – album „Pan i Pani” (29.06.2009), utwór nr 1 i 1. singel; 2021 to składanka „Nieznośna lekkość hitu” (zgłoszenie użytkownika) | – | – | 2021 | ? |
 | Anna Wyszkoni | Wiem, że jesteś tam | 2011 | Spotify | – | – | 2011 | ? |
 | Anna Wyszkoni | Z Ciszą Pośród Czterech Ścian | 2009 | MusicBrainz – oficjalny album „Pan i pani” (29.06.2009); 2021 to data reedycji w Spotify (zgłoszenie użytkownika) | – | – | 2021 | ? |
 | Anne-Marie David | Tu te reconnaîtras | 1973 | Wikipedia – artykuł o piosence; Eurowizja 1973 (Luxembourg, zwycięstwo) | 1973 | – | – | FR |
@@ -4747,10 +4748,10 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Roxette | Spending My Time | 1991 | Discogs + Spotify | 1991 | – | 1991 | SE |
 | Roxette | The Centre of the Heart | 2001 | Discogs + Wikipedia | 2001 | – | – | SE |
 | Roxette | The Look | 1988 | Discogs + MusicBrainz+Wikipedia + Spotify | 1988 | 1988 | 1988 | SE |
+| Roxie | Anyone I Want To Be | 2018 | Wikipedia – „Anyone I Want to Be”, wydana 6 listopada 2018 – playlista eurowizja.csv | 2018 | – | – | PL |
 | Roxie | Błękit | 2025 | Wikipedia | – | – | – | PL |
 | Roxie | Jesień trwa (bez końca) | 2026 | Spotify | – | – | 2026 | PL |
 | Roxie & White 2115 | Chciałam Ciebie więcej | 2026 | Spotify | – | – | 2026 | PL |
-| Roxie Węgiel | Anyone I Want To Be | 2018 | Wikipedia – „Anyone I Want to Be”, wydana 6 listopada 2018 – playlista eurowizja.csv | 2018 | – | – | PL |
 | Roxy Music | Avalon | 1982 | Discogs + Spotify | 1982 | – | 1982 | GB |
 | Roxy Music | Love Is The Drug | 1975 | Discogs + Spotify | 1975 | – | 1975 | GB |
 | Roxy Music | More Than This | 1982 | Discogs + Spotify | 1982 | – | 1982 | GB |

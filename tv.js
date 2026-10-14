@@ -1,7 +1,20 @@
 'use strict';
-// Duży ekran: odbiera stan gry z okna-pilota (to samo urządzenie, BroadcastChannel) i pokazuje go w dużym formacie.
+// Duży ekran: odbiera stan gry z okna-pilota i pokazuje go w dużym formacie. Trzy sposoby połączenia:
+// • okno na tym samym urządzeniu (BroadcastChannel),
+// • telewizor / inny komputer – „Połącz z innym urządzeniem”: kod i QR, telefon-pilot łączy się przez WebRTC (net.js),
+// • telefon gracza – tv.html?join=KOD: widok gracza, który steruje swoją turą (gra i muzyka są u gospodarza).
 const app = document.getElementById('app');
 const waiting = document.getElementById('waiting');
+const JOIN = new URLSearchParams(window.location.search).get('join');
+const PLAYER = !!JOIN;
+let sendFn = null; // wysyłanie poleceń do gry (pilot / gospodarz)
+const send = (msg) => { if (sendFn) sendFn(msg); };
+// gracz na tym telefonie (zapamiętany dla kodu pokoju)
+const meKey = 'songster.me.' + (JOIN || '');
+let me = (() => { try { return localStorage.getItem(meKey) || ''; } catch (e) { return ''; } })();
+const setMe = (name) => { me = name; try { localStorage.setItem(meKey, name); } catch (e) { /* bez zapisu */ } send({ iam: name }); if (last) render(last); };
+let audioState = { playing: false, progress: 0 };
+if (PLAYER) document.body.classList.add('player');
 const h = (tag, cls, ...kids) => {
   const n = document.createElement(tag);
   if (cls) n.className = cls;
@@ -31,9 +44,15 @@ function card(c) {
 const mystery = (who, ch) => h('div', 'card mystery' + (ch ? ' ch' : ''), h('div', 'q', '?'), h('div', 'who', who));
 
 // elementy jednej osi: karty + wybrane miejsca / znaczniki pomyłki między nimi
-function rowItems(t) {
+function rowItems(t, pick) {
   const items = [];
   for (let i = 0; i <= t.cards.length; i++) {
+    if (pick && t.slot !== i && t.challengeSlot !== i) {
+      const gap = h('button', 'gap', '+');
+      gap.setAttribute('aria-label', T('Miejsce {0}', i + 1));
+      gap.addEventListener('click', () => send({ slot: i }));
+      items.push(gap);
+    }
     if (t.slot === i) items.push(mystery(t.slotLabel));
     if (t.challengeSlot === i) items.push(mystery(t.challengeLabel, true));
     if (t.marks) {
@@ -47,10 +66,27 @@ function rowItems(t) {
 }
 
 let last = null;
+// czy ten telefon gracza może teraz działać: jego tura, wyzwanie albo jego odpowiedź w „Kto pierwszy?”
+const myTurn = (s) => PLAYER && me && (s.turnName === me || s.challenger === me);
+function playerPicker(s) {
+  const names = s.players || [];
+  return h('div', 'picker', h('h2', '', T('Kim jesteś?')),
+    names.length ? h('div', 'picker-list', names.map((n) => {
+      const b = h('button', n === me ? 'primary' : '', n);
+      b.addEventListener('click', () => setMe(n));
+      return b;
+    })) : h('p', 'muted', T('Gospodarz jeszcze nie rozpoczął gry – lista graczy pojawi się po starcie.')));
+}
 function render(s) {
   last = s;
+  if (s && s.screen === 'game' && PLAYER && (!me || !(s.players || []).includes(me))) {
+    app.replaceChildren(playerPicker(s));
+    return;
+  }
   if (!s || s.screen === 'home' || s.screen === 'setup' || s.screen === 'settings' || s.screen === 'stats') {
     app.replaceChildren(waiting);
+    waiting.querySelectorAll('.picker').forEach((n) => n.remove());
+    if (PLAYER && s) waiting.append(playerPicker(s));
     return;
   }
   if (s.screen === 'end') {
@@ -64,7 +100,7 @@ function render(s) {
   const head = h('header', '', h('div', '', h('h1', '', s.title || ''), rows.length > 1 ? null : h('div', 'info', s.info || '')),
     // przy osiach czasu stan graczy jest przy każdej osi – górnej tablicy wyników nie dublujemy
     rows.length > 1 ? null : h('div', 'scores', (s.scores || []).map((x) => h('div', 'score' + (x.active ? ' active' : ''), x.text))));
-  const vinyl = h('div', 'vinyl' + (s.art ? ' cover' : ''), h('div', 'lbl', '?'));
+  const vinyl = h('div', 'vinyl' + (s.art ? ' cover' : '') + (audioState.playing ? ' spinning' : ''), h('div', 'lbl', '?'));
   if (s.art) vinyl.style.backgroundImage = `url("${sharpArt(s.art)}")`;
   const body = h('div', '', h('div', 'status', s.status || ''));
   if (s.reveal) {
@@ -72,21 +108,131 @@ function render(s) {
       h('div', 'song', h('b', '', s.reveal.t), ' — ', s.reveal.a, ' ', flag(s.reveal.cc)),
       h('div', 'lines', (s.reveal.lines || []).map((l) => h('div', '', l)))));
   }
+  const progress = h('div', 'progress', h('div', 'bar'));
+  progress.firstChild.style.width = `${Math.round(audioState.progress * 100)}%`;
+  if (!s.hasSong) progress.classList.add('hidden');
+  body.prepend(progress);
   const main = h('div', 'main', vinyl, body);
   const hint = h('div', 'hint', s.hint || '');
+  // Melodia krok po kroku: 1 s · 2 s · 4 s · 8 s
+  const steps = s.steps ? h('div', 'steps', s.steps.items.map((x, i) => h('div', 'step' + (i < s.steps.current ? ' done' : '') + (i === s.steps.current ? ' current' : ''),
+    h('b', '', `${x.len} s`), h('small', '', T('{0} pkt', x.pts))))) : null;
+  // Kto pierwszy?: przyciski graczy (na telefonie gracza – jeden duży przycisk „swój”)
+  let buzzers = null;
+  if (s.buzzers) {
+    const b = s.buzzers;
+    const items = PLAYER && me ? b.items.filter((x) => x.name === me) : b.items;
+    buzzers = h('div', 'buzzers' + (PLAYER ? ' mine' : ''), items.map((x) => {
+      const btn = h('button', 'buzzer' + (x.locked ? ' locked' : '') + (b.answering === x.name ? ' answering' : ''),
+        h('b', '', PLAYER ? `🔔 ${x.name}` : x.name), PLAYER ? null : h('kbd', '', x.key));
+      btn.style.setProperty('--c', x.color);
+      btn.disabled = !b.open || x.locked;
+      btn.addEventListener('click', () => send({ buzz: b.items.findIndex((y) => y.name === x.name) }));
+      return btn;
+    }));
+    if (b.answering) buzzers.append(h('div', 'buzz-who', T('🔔 Odpowiada: {0}', b.answering)));
+  }
   // przyciski z okna gry; kliknięcie wysyła polecenie do pilota
+  // na telefonie gracza: wszystko w jego turze; poza nią – wyzwanie (złote), wybór wyzywającego (jego imię)
+  // i żeton „przy stole” (zielony – decyduje reszta graczy)
+  const allowed = (b) => !PLAYER || myTurn(s) || /\b(gold|ok)\b/.test(b.cls) || b.text === me;
   const actions = h('div', 'actions', (s.buttons || []).map((b, i) => {
     const btn = h('button', b.cls, b.text);
-    btn.disabled = b.disabled;
+    btn.disabled = b.disabled || !allowed(b);
     if (b.title) btn.title = b.title;
-    btn.addEventListener('click', () => channel && channel.postMessage({ click: { i, text: b.text } }));
+    btn.addEventListener('click', () => send({ click: { i, text: b.text } }));
     return btn;
   }), s.challenge ? h('span', 'note', s.challenge) : null);
+  const guess = PLAYER && s.guess && s.guess.who === me ? guessForm(s.guess) : null;
+  const pick = PLAYER && s.slots && myTurn(s) && (s.phase !== 'challenge' || s.challenger === me);
   const tls = h('div', 'timelines', rows.map((t) => h('div', 'tl-row' + (t.active ? ' active' : ''),
     (rows.length > 1 ? h('div', 'tl-name', t.name, t.sub ? h('small', '', t.sub) : null) : null),
-    h('div', 'tl', rowItems(t)))));
-  app.replaceChildren(head, main, hint, actions, tls);
+    h('div', 'tl', rowItems(t, pick && t.active)))));
+  const who = PLAYER ? h('div', 'me-bar', T('Grasz jako: {0}', me), ' ', (() => {
+    const b = h('button', 'link', T('zmień'));
+    b.addEventListener('click', () => { me = ''; render(s); });
+    return b;
+  })()) : null;
+  // pole odpowiedzi nie może zniknąć w trakcie pisania – zachowujemy wpisany tekst między odświeżeniami
+  const keep = app.querySelector('.guess-form');
+  app.replaceChildren(...[who, head, main, steps, buzzers, hint, guess, actions, tls].filter(Boolean));
+  if (guess && keep) restoreGuess(keep, guess);
   fit();
+}
+
+/* --- odpowiedź wpisywana na telefonie gracza (z podpowiedziami z bazy piosenek) --- */
+let db = null;
+function loadDb() {
+  if (db) return db;
+  db = new Promise((resolve) => {
+    let n = 0;
+    for (const src of ['match.js', 'songs.js']) {
+      const sc = document.createElement('script');
+      sc.src = src;
+      sc.onload = () => { if (++n === 2) resolve(); };
+      document.head.append(sc);
+    }
+  });
+  return db;
+}
+function suggestions(raw, kind) {
+  if (!window.SONGS || !window.SongMatch) return [];
+  const { norm } = window.SongMatch;
+  const words = raw.split(/\s+/).map(norm).filter(Boolean);
+  const q = words.join('');
+  if (q.length < 3) return [];
+  const seen = new Set();
+  const out = [];
+  for (const x of window.SONGS) {
+    const nt = norm(x.t); const na = norm(x.a);
+    let item = null;
+    if (kind === 'artist') { if (na.includes(q)) item = { t: '', a: x.a, label: x.a, score: (na.startsWith(q) ? 4 : 1) + (x.p || 0) / 100 }; }
+    else if (kind === 'title') { if (words.every((w) => nt.includes(w))) item = { t: x.t, a: '', label: x.t, score: (nt.startsWith(words[0]) ? 4 : 1) + (x.p || 0) / 100 }; }
+    else if (words.every((w) => (nt + '|' + na).includes(w))) item = { t: x.t, a: x.a, label: `${x.t} — ${x.a}`, score: (nt.startsWith(words[0]) ? 3 : 1) + (x.p || 0) / 100 };
+    if (item && !seen.has(item.label)) { seen.add(item.label); out.push(item); }
+  }
+  return out.sort((a, b) => b.score - a.score).slice(0, 8);
+}
+function guessForm(g) {
+  loadDb();
+  const input = h('input', 'guess-input');
+  input.type = 'text'; input.placeholder = g.placeholder || ''; input.autocomplete = 'off'; input.spellcheck = false;
+  const year = g.year ? h('input', 'guess-year') : null;
+  if (year) { year.type = 'number'; year.inputMode = 'numeric'; year.placeholder = T('Dokładny rok wydania (wymagany)'); }
+  const list = h('ul', 'suggest hidden');
+  let pickItem = null;
+  input.addEventListener('input', () => {
+    pickItem = null;
+    const items = suggestions(input.value, g.kind || 'both');
+    list.replaceChildren(...items.map((x) => {
+      const li = h('li', '', h('b', '', x.kind === 'artist' || !x.t ? x.a : x.t), x.t && x.a ? h('span', '', ` — ${x.a}`) : null);
+      li.addEventListener('click', () => { pickItem = x; input.value = x.label; list.classList.add('hidden'); input.blur(); });
+      return li;
+    }));
+    list.classList.toggle('hidden', !items.length);
+  });
+  const go = h('button', 'primary', g.submit ? T('Sprawdź') : T('Zapisz odpowiedź'));
+  const form = h('form', 'guess-form', h('div', 'suggest-wrap', list, input), year, go);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    send({ guess: { text: input.value, pick: pickItem && input.value === pickItem.label ? { t: pickItem.t, a: pickItem.a } : null, year: year ? year.value : null, submit: g.submit } });
+    if (!g.submit) go.textContent = T('✔ Zapisano');
+  });
+  form._get = () => ({ v: input.value, y: year ? year.value : '', p: pickItem, focus: document.activeElement === input });
+  form._set = (st) => { input.value = st.v; if (year) year.value = st.y; pickItem = st.p; if (st.focus) input.focus(); };
+  return form;
+}
+function restoreGuess(oldForm, newForm) { if (oldForm._get) newForm._set(oldForm._get()); }
+function updateAudio() {
+  const v = app.querySelector('.vinyl');
+  if (v) v.classList.toggle('spinning', audioState.playing);
+  const bar = app.querySelector('.progress .bar');
+  if (bar) bar.style.width = `${Math.round(audioState.progress * 100)}%`;
+}
+function onMessage(m) {
+  if (!m) return;
+  if (m.audio) { audioState = m.audio; updateAudio(); return; }
+  render(m);
 }
 
 // wszystkie osie na ekranie bez przewijania (fitTimelines): oś aktywnego gracza na całą szerokość u góry, pozostałe
@@ -117,9 +263,9 @@ function fitTimelines() {
     const rowH = r.clientHeight;
     const tl = r.querySelector('.tl');
     const items = [...tl.children];
-    const units = items.reduce((a, n) => a + (n.classList.contains('mark') ? 0.55 : 1), 0) || 1;
+    const units = items.reduce((a, n) => a + (n.classList.contains('mark') ? 0.55 : n.classList.contains('gap') ? 0.4 : 1), 0) || 1;
     const gap = Math.max(3, window.innerWidth * 0.004);
-    const cw = Math.max(20 * u, Math.min(window.innerWidth * 0.12, rowH * 1.4, (tl.clientWidth - gap * (items.length - 1)) / units));
+    const cw = Math.max(20 * u, Math.min(window.innerWidth * (PLAYER ? 0.26 : 0.12), rowH * 1.4, (tl.clientWidth - gap * (items.length - 1)) / units));
     const ch = Math.max(20 * u, Math.min(rowH - 6 * u, cw * 1.35));
     tl.style.setProperty('--cw', `${cw}px`);
     tl.style.setProperty('--ch', `${ch}px`);
@@ -140,7 +286,8 @@ function fit() {
   const rows = box ? box.children.length : 0;
   // do 4K: czcionka rośnie z szerokością okna (1920 px → 30 px, 3840 px → 60 px)
   let fs = Math.max(12, Math.min(64, window.innerWidth * 0.0157));
-  let minH = rows > 4 ? 0.5 : (rows ? 0.4 : 0);
+  // telefon gracza: strona się przewija, więc osie nie muszą zajmować połowy ekranu
+  let minH = PLAYER ? (rows ? Math.min(0.6, 0.12 * rows + 0.1) : 0) : (rows > 4 ? 0.5 : (rows ? 0.4 : 0));
   for (let k = 0; k < 20; k++) {
     app.style.fontSize = `${fs}px`;
     if (box) box.style.minHeight = `${Math.round(window.innerHeight * minH)}px`;
@@ -151,11 +298,50 @@ function fit() {
 }
 window.addEventListener('resize', () => last && render(last));
 
-let channel = null;
-try {
-  channel = new BroadcastChannel('songster-tv');
-  channel.onmessage = (e) => render(e.data);
-  channel.postMessage({ hello: true });
-} catch (e) {
-  document.getElementById('waiting-text').textContent = T('Ta przeglądarka nie obsługuje dużego ekranu (BroadcastChannel).');
+// połączenie z grą
+if (PLAYER) {
+  document.getElementById('waiting-text').textContent = T('Łączenie z pokojem {0}…', JOIN.toUpperCase());
+  window.SongsterNet.connect('room', JOIN).then(({ conn }) => {
+    sendFn = (m) => { try { conn.send(m); } catch (e) { /* zerwane */ } };
+    conn.on('data', onMessage);
+    conn.on('close', () => { app.replaceChildren(waiting); document.getElementById('waiting-text').textContent = T('Rozłączono z pokojem. Odśwież stronę, aby dołączyć ponownie.'); });
+    document.getElementById('waiting-text').textContent = T('Połączono z pokojem {0}. Czekaj na start gry.', JOIN.toUpperCase());
+    send({ hello: true, role: 'player', name: me });
+  }).catch(() => {
+    document.getElementById('waiting-text').textContent = T('Nie udało się dołączyć – sprawdź kod pokoju i czy gospodarz ma otwartą grę.');
+  });
+} else {
+  try {
+    const channel = new BroadcastChannel('songster-tv');
+    channel.onmessage = (e) => onMessage(e.data);
+    sendFn = (m) => channel.postMessage(m);
+    channel.postMessage({ hello: true });
+  } catch (e) {
+    document.getElementById('waiting-text').textContent = T('Ta przeglądarka nie obsługuje dużego ekranu (BroadcastChannel).');
+  }
+  // telewizor / inny komputer: kod i QR dla telefonu-pilota (PeerJS ładowany dopiero po kliknięciu)
+  const btn = document.getElementById('net');
+  btn.textContent = T('📶 Połącz z innym urządzeniem');
+  btn.addEventListener('click', async () => {
+    btn.disabled = true;
+    btn.textContent = T('Łączenie z serwerem…');
+    try {
+      const { code } = await window.SongsterNet.host('tv', (conn) => {
+        sendFn = (m) => { try { conn.send(m); } catch (e) { /* zerwane */ } };
+        conn.on('data', onMessage);
+        conn.send({ hello: true, role: 'tv' });
+      });
+      const url = window.SongsterNet.pageUrl('index.html', { tv: code });
+      const box = document.getElementById('net-box');
+      box.innerHTML = await window.SongsterNet.qrSvg(url);
+      box.prepend(h('div', 'net-code', T('Kod: '), h('b', '', code)));
+      box.append(h('p', 'muted', T('Zeskanuj kod telefonem albo w Songsterze na telefonie wybierz 📺 i wpisz kod.')));
+      box.classList.remove('hidden');
+      btn.classList.add('hidden');
+    } catch (e) {
+      btn.disabled = false;
+      btn.textContent = T('📶 Połącz z innym urządzeniem');
+      document.getElementById('waiting-text').textContent = T('Nie udało się połączyć z serwerem pośredniczącym. Spróbuj ponownie.');
+    }
+  });
 }

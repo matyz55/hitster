@@ -47,6 +47,19 @@ rzucić, kupno karty, pominięcie…) są też na dużym ekranie i można je tam
 na bieżąco do rozmiaru okna – także w 2K i 4K (czcionki, ramki i odstępy rosną z rozdzielczością,
 okładki pobierane są w jakości dopasowanej do ekranu).
 
+**Telewizor przez sieć**: na telewizorze (np. Google TV) lub innym komputerze otwórz `tv.html` i kliknij
+„📶 Połącz z innym urządzeniem” – pojawi się 4-znakowy kod i kod QR. Telefon, na którym toczy się gra, skanuje
+QR (albo w oknie 📺 wpisuje kod) i od tej chwili steruje dużym ekranem. Połączenie: WebRTC przez PeerJS
+(biblioteka i serwer pośredniczący ładowane dopiero po kliknięciu).
+
+**Gracze na własnych telefonach**: gospodarz (też gra, u niego gra muzyka) w oknie 📺 tworzy pokój – gracze
+skanują QR (`tv.html?join=KOD`), wybierają, kim są, i w swojej turze wybierają miejsce na osi, wpisują
+odpowiedź (z podpowiedziami), naciskają przyciski (wyzwanie, kupno karty…) albo swój przycisk w „Kto pierwszy?”.
+
+Na dużym ekranie widać też pasek kroków (Melodia krok po kroku), przyciski graczy (Kto pierwszy?), kręcącą
+się płytę i postęp fragmentu. W trakcie gry ekran telefonu nie gaśnie (Screen Wake Lock), a fragmenty
+wchodzą i kończą się płynnie (150 ms).
+
 **Wersja angielska**: język wybiera się w Ustawieniach (domyślnie wg języka przeglądarki).
 Teksty interfejsu przechodzą przez `T()` (`i18n.js`), słownik jest w `i18n-en.js`; tytuły
 piosenek i nazwy wykonawców się nie zmieniają.

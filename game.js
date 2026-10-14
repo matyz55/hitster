@@ -437,33 +437,93 @@ let screenBeforeSettings = 'home';
 function showScreen(name) {
   for (const s of SCREENS) $('#screen-' + s).classList.toggle('hidden', s !== name);
   if (name !== 'game') stopAudio();
+  updateWakeLock();
   window.scrollTo(0, 0);
   tvSync();
 }
+
+/* ---------- ekran nie gaśnie w trakcie gry (Screen Wake Lock API) ---------- */
+// przy grze imprezowej telefon często leży bez dotykania – bez blokady ekran gaśnie, a przeglądarka zatrzymuje muzykę
+let wakeLock = null;
+async function updateWakeLock() {
+  const inGame = !$('#screen-game').classList.contains('hidden');
+  if (inGame && document.visibilityState === 'visible' && !wakeLock && navigator.wakeLock) {
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    } catch (e) { /* np. tryb oszczędzania baterii – gramy bez blokady */ }
+  } else if (!inGame && wakeLock) {
+    wakeLock.release().catch(() => {});
+    wakeLock = null;
+  }
+}
+// system zwalnia blokadę po zminimalizowaniu karty – po powrocie zakładamy ją ponownie
+document.addEventListener('visibilitychange', updateWakeLock);
 
 /* ---------- duży ekran (TV / rzutnik): drugie okno na tym samym urządzeniu, to okno jest pilotem ---------- */
 let tvChannel = null;
 try {
   tvChannel = new BroadcastChannel('songster-tv');
-  tvChannel.onmessage = (e) => {
-    if (!e.data) return;
-    if (e.data.hello) tvSync();
-    // przycisk kliknięty na dużym ekranie – klikamy ten sam w oknie gry (sprawdzamy też napis, gdyby stan zdążył się zmienić)
-    if (e.data.click) {
-      const b = tvButtons()[e.data.click.i];
-      if (b && !b.disabled && b.textContent.trim() === e.data.click.text) b.click();
-    }
-  };
+  tvChannel.onmessage = (e) => handleRemote(e.data);
 } catch (e) { /* stara przeglądarka – bez dużego ekranu */ }
+
+// połączenia sieciowe (net.js): telewizor z kodem i telefony graczy – { conn, role: 'tv' | 'player', name }
+const remotes = new Set();
+let roomCode = null; // kod pokoju dla telefonów graczy (gdy utworzony)
+const hasRemotes = () => !!tvChannel || remotes.size > 0;
+function remoteSend(msg) {
+  try { if (tvChannel) tvChannel.postMessage(msg); } catch (e) { /* okno TV zamknięte */ }
+  for (const r of remotes) {
+    try { if (r.conn.open) r.conn.send(msg); } catch (e) { /* połączenie zerwane */ }
+  }
+}
+// polecenia z dużego ekranu i z telefonów graczy
+function handleRemote(msg, from) {
+  if (!msg) return;
+  if (msg.hello) {
+    if (from) { from.role = msg.role || from.role; from.name = msg.name || from.name; renderRemoteList(); }
+    tvSync();
+  }
+  if (msg.iam && from) { from.name = msg.iam; renderRemoteList(); }
+  // przycisk kliknięty na innym ekranie – klikamy ten sam w oknie gry (sprawdzamy też napis, gdyby stan zdążył się zmienić)
+  if (msg.click) {
+    const b = tvButtons()[msg.click.i];
+    if (b && !b.disabled && b.textContent.trim() === msg.click.text) b.click();
+  }
+  if (msg.slot != null && remoteSlotsAllowed()) onSlotClick(msg.slot);
+  if (msg.buzz != null) buzz(msg.buzz);
+  if (msg.guess) {
+    $('#guess-song').value = msg.guess.text || '';
+    guessPick = msg.guess.pick ? { ...msg.guess.pick, label: msg.guess.text } : null;
+    if (msg.guess.year != null && $('#guess-year')) $('#guess-year').value = msg.guess.year;
+    if (msg.guess.submit && isMelody() && state.phase === 'listen' && state.current) $('#guess-form').requestSubmit();
+    else render();
+  }
+}
+// wybór miejsca na osi z innego urządzenia: gracz w swojej turze albo wyzywający (wariant „inne miejsce”)
+const remoteSlotsAllowed = () => isTimeline() && !!state.current
+  && (['listen', 'placed'].includes(state.phase) || (state.phase === 'challenge' && state.challenger != null && state.challengeMode === 'place'));
+// stan odtwarzania na duży ekran / telefony – najwyżej 4 razy na sekundę
+let tvAudioLast = 0;
+function tvAudio(force) {
+  if (!hasRemotes()) return;
+  const now = Date.now();
+  if (!force && !audio.paused && now - tvAudioLast < 250) return;
+  tvAudioLast = now;
+  const revealed = state.phase === 'revealed';
+  const start = revealed ? 0 : state.clipStart;
+  const len = revealed ? (audio.duration || 30) : state.clipLen;
+  remoteSend({ audio: { playing: !audio.paused, progress: len ? Math.min(1, Math.max(0, (audio.currentTime - start) / len)) : 0 } });
+}
 // przyciski gry widoczne też na dużym ekranie: akcje tury (wyzwanie, kupno karty, dalej…) i pominięcie
 function tvButtons() {
   return [...$$('#actions button'), $('#btn-skip')].filter((b) => b && !b.closest('.hidden') && !b.classList.contains('hidden'));
 }
 function tvSync() {
-  if (!tvChannel) return;
+  if (!hasRemotes()) return;
   const screen = SCREENS.find((x) => !$('#screen-' + x).classList.contains('hidden'));
   const txt = (sel) => ($(sel) ? $(sel).textContent.trim() : '');
-  const snap = { screen };
+  const snap = { screen, mode: state.mode, players: state.players.map((pl) => pl.name), room: roomCode };
   if (screen === 'end') {
     snap.winner = txt('#winner-title');
     snap.ranking = $$('#ranking li').map((li) => li.textContent);
@@ -478,6 +538,22 @@ function tvSync() {
       reveal: revealed ? {
         y: state.current.y, t: state.current.t, a: artistLine(state.current), cc: state.current.cc,
         lines: $$('#reveal .verdict, #reveal .fact').map((n) => n.textContent),
+      } : null,
+      phase: state.phase, turnName: activePlayer().name, playing: !audio.paused, hasSong: !!state.current,
+      challenger: state.challenger != null ? state.players[state.challenger].name : null,
+      slots: remoteSlotsAllowed(),
+      // pasek kroków (Melodia krok po kroku): 1 s · 2 s · 4 s · 8 s
+      steps: state.mode === 'steps' && state.current ? { current: state.step, items: STEPS.map((x) => ({ len: x.len, pts: x.pts })) } : null,
+      // przyciski graczy (Kto pierwszy?)
+      buzzers: state.mode === 'buzz' && state.buzz ? {
+        open: !!state.current && state.phase === 'listen' && state.buzz.answering == null,
+        answering: state.buzz.answering != null ? state.players[state.buzz.answering].name : null,
+        items: state.players.map((pl, i) => ({ name: pl.name, key: keyLabel((state.buzzKeys || BUZZ_KEYS)[i]), color: BUZZ_COLORS[i], locked: state.buzz.locked.has(i) })),
+      } : null,
+      // pole odpowiedzi (dla telefonów graczy)
+      guess: !$('#guess-form').classList.contains('hidden') ? {
+        kind: suggestKind(), placeholder: $('#guess-song').placeholder, year: !$('#guess-year').classList.contains('hidden'),
+        submit: isMelody(), who: state.mode === 'buzz' && state.buzz && state.buzz.answering != null ? state.players[state.buzz.answering].name : activePlayer().name,
       } : null,
     });
     const card = (c) => (c.start ? { y: c.y, start: true } : { y: c.y, t: c.t, a: c.a, cc: c.cc, new: revealed && c === state.current });
@@ -517,12 +593,83 @@ function tvSync() {
       snap.timelines = [{ name: '', active: true, cards }];
     }
   }
-  try { tvChannel.postMessage(snap); } catch (e) { /* okno TV zamknięte */ }
+  remoteSend(snap);
 }
-function openTv() {
+function openTvWindow() {
   window.open('tv.html', 'songster-tv', 'width=1280,height=720');
   window.track && window.track('duzy-ekran');
   setTimeout(tvSync, 800);
+}
+function openTv() { $('#dlg-connect').showModal(); }
+$('#btn-open-tv-window').addEventListener('click', () => { $('#dlg-connect').close(); openTvWindow(); });
+
+// nowe połączenie (telewizor albo telefon gracza): stan gry → urządzenie, polecenia ← urządzenie
+function addRemote(conn, role) {
+  const r = { conn, role, name: '' };
+  remotes.add(r);
+  conn.on('data', (msg) => handleRemote(msg, r));
+  conn.on('close', () => { remotes.delete(r); renderRemoteList(); });
+  conn.on('error', () => { remotes.delete(r); renderRemoteList(); });
+  renderRemoteList();
+  tvSync();
+  return r;
+}
+// telewizor pokazuje kod – telefon (pilot) łączy się z nim (także z kodu QR: index.html?tv=KOD)
+async function connectTv(code) {
+  code = window.SongsterNet.normCode(code);
+  if (code.length !== 4) { $('#tv-status').textContent = T('Kod ma 4 znaki.'); return; }
+  $('#tv-status').textContent = T('Łączenie z telewizorem…');
+  try {
+    const { conn } = await window.SongsterNet.connect('tv', code);
+    addRemote(conn, 'tv');
+    $('#tv-status').textContent = T('✔ Połączono z dużym ekranem ({0}).', code);
+    window.track && window.track('tv-siec');
+  } catch (e) {
+    $('#tv-status').textContent = T('Nie udało się połączyć – sprawdź kod i czy duży ekran jest otwarty.');
+  }
+}
+$('#btn-tv-connect').addEventListener('click', () => connectTv($('#tv-code').value));
+$('#tv-code').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); connectTv($('#tv-code').value); } });
+
+// pokój dla telefonów graczy: kod + QR prowadzący do tv.html?join=KOD
+async function openRoom() {
+  if (roomCode) return;
+  $('#btn-room').disabled = true;
+  $('#btn-room').textContent = T('Tworzenie pokoju…');
+  try {
+    const { code } = await window.SongsterNet.host('room', (conn) => addRemote(conn, 'player'), store.get('roomCode', ''));
+    roomCode = code;
+    store.set('roomCode', code);
+    const url = window.SongsterNet.pageUrl('tv.html', { join: code });
+    $('#room-code').textContent = code;
+    $('#room-link').textContent = url;
+    $('#room-qr').innerHTML = await window.SongsterNet.qrSvg(url);
+    $('#room-box').classList.remove('hidden');
+    $('#btn-room').classList.add('hidden');
+    renderRemoteList();
+    tvSync();
+    window.track && window.track('pokoj-graczy');
+  } catch (e) {
+    $('#btn-room').disabled = false;
+    $('#btn-room').textContent = T('Utwórz pokój dla graczy');
+    alert(T('Nie udało się utworzyć pokoju (brak połączenia z serwerem pośredniczącym). Spróbuj ponownie.'));
+  }
+}
+$('#btn-room').addEventListener('click', openRoom);
+function renderRemoteList() {
+  const list = $('#room-list');
+  if (!list) return;
+  const players = [...remotes].filter((r) => r.role === 'player');
+  list.replaceChildren(...(players.length ? players.map((r) => el('li', {}, '📱 ', r.name || T('(jeszcze nie wybrano gracza)')))
+    : [el('li', { class: 'muted' }, T('Nikt jeszcze nie dołączył.'))]));
+}
+// adres z kodu QR telewizora: index.html?tv=KOD
+{
+  const tvParam = new URLSearchParams(window.location.search).get('tv');
+  if (tvParam) {
+    $('#tv-code').value = tvParam;
+    connectTv(tvParam).then(() => { if (remotes.size) { $('#dlg-connect').showModal(); } });
+  }
 }
 
 $('#logo').addEventListener('click', () => {
@@ -1032,7 +1179,7 @@ async function startTurn() {
   stopAudio();
   Object.assign(state, {
     phase: 'listen', slot: null, challenger: null, challengeSlot: null, challengeYear: null, awarded: false,
-    current: null, preview: null, marks: null, special: null, swapOffer: false, hiloLost: false, skipped: false,
+    current: null, preview: null, marks: null, special: null, swapOffer: false, hiloLost: false, skipped: false, heard: false,
     buzz: state.mode === 'buzz' ? { answering: null, locked: new Set() } : null,
   });
   $('#reveal').classList.add('hidden');
@@ -1132,6 +1279,9 @@ async function drawSong() {
       }
       $('#btn-play').disabled = false;
       render();
+      // autoodtwarzanie (zawsze w trybie na czas, w innych – opcja w ustawieniach); przeglądarka może je zablokować,
+      // wtedy gracz po prostu klika ▶
+      if (state.mode === 'timed' || store.get('autoplay', false)) playClip();
       if (!prefetchAfterReveal()) prefetchNext();
       if (isMelody() && state.mode !== 'buzz') $('#guess-song').focus({ preventScroll: true });
       return;
@@ -1535,7 +1685,7 @@ function stepsExtend(msg) {
   render();
   // od razu odtwarzamy dłuższy fragment (kliknięcie gracza pozwala na start dźwięku)
   audio.currentTime = state.clipStart;
-  audio.play().catch(() => {});
+  playClip();
 }
 
 function revealSteps(gaveUp) {
@@ -1637,7 +1787,8 @@ setInterval(() => {
   const dt = now - (timerLast || now);
   timerLast = now;
   if (state.mode !== 'timed' || $('#screen-game').classList.contains('hidden') || state.phase === 'ended') return;
-  if (!state.current || !['listen', 'placed'].includes(state.phase)) return;
+  // zegar rusza dopiero, gdy w tej turze zabrzmi muzyka (nie podczas wczytywania ani czekania na ▶)
+  if (!state.current || !state.heard || !['listen', 'placed'].includes(state.phase)) return;
   state.timeLeft -= dt;
   renderTimer();
   if (state.timeLeft <= 0) {
@@ -1721,7 +1872,7 @@ function buzz(i) {
   const b = state.buzz;
   if (state.mode !== 'buzz' || !state.current || state.phase !== 'listen' || !b || b.answering != null || b.locked.has(i) || i >= state.players.length) return;
   b.answering = i;
-  audio.pause();
+  softPause(false);
   fx('place');
   $('#guess-form').reset();
   render();
@@ -1756,7 +1907,7 @@ function buzzGuess() {
   if (b.locked.size >= state.players.length) return revealBuzz(null, false, who);
   $('#mystery-status').textContent = T('✘ {0} – źle, −1 pkt. Pozostali mogą odpowiadać.', who);
   render();
-  audio.play().catch(() => {});
+  playClip();
 }
 function revealBuzz(winner, ok, lastWrong) {
   const song = state.current;
@@ -1980,46 +2131,90 @@ function stopAudio() {
   $('#btn-play').textContent = T('▶ Odtwórz');
 }
 const clipEnd = () => state.clipStart + (state.phase === 'revealed' ? 30 : state.clipLen);
-$('#btn-play').addEventListener('click', () => {
-  if (audio.paused) {
-    // przed odkryciem odtwarzamy tylko wybrany fragment; po odkryciu – cały podgląd
-    if (audio.currentTime < state.clipStart || audio.currentTime >= clipEnd() - 0.2) {
-      audio.currentTime = state.phase === 'revealed' ? 0 : state.clipStart;
-    }
-    audio.play().catch((e) => {
-      $('#mystery-status').textContent = e.name === 'NotSupportedError'
-        ? T('Ta przeglądarka nie obsługuje formatu AAC (.m4a) – spróbuj w innej przeglądarce.')
-        : T('Nie udało się odtworzyć: ') + e.message;
-    });
-  } else {
-    audio.pause();
+
+// Płynne wejście i wyjście dźwięku (150 ms): <audio> podpięte pod Web Audio (GainNode). Fragmenty są blobami
+// z tej samej domeny albo plikami iTunes z nagłówkiem CORS „*”, więc dźwięk nie jest wyciszany przez przeglądarkę.
+const FADE = 0.15;
+audio.crossOrigin = 'anonymous';
+let musicGain = null;
+function musicGraph() {
+  if (musicGain) return musicGain;
+  try {
+    sfxCtx = sfxCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const src = sfxCtx.createMediaElementSource(audio);
+    musicGain = sfxCtx.createGain();
+    src.connect(musicGain).connect(sfxCtx.destination);
+  } catch (e) { musicGain = null; }
+  return musicGain;
+}
+function rampGain(to, dur) {
+  if (!musicGain) return;
+  const t = sfxCtx.currentTime;
+  musicGain.gain.cancelScheduledValues(t);
+  musicGain.gain.setValueAtTime(musicGain.gain.value, t);
+  musicGain.gain.linearRampToValueAtTime(to, t + dur);
+}
+// odtwarzanie od początku fragmentu (albo od miejsca pauzy) z wejściem 150 ms
+function playClip() {
+  // przed odkryciem odtwarzamy tylko wybrany fragment; po odkryciu – cały podgląd
+  if (audio.currentTime < state.clipStart || audio.currentTime >= clipEnd() - 0.2) {
+    audio.currentTime = state.phase === 'revealed' ? 0 : state.clipStart;
   }
+  if (musicGraph()) {
+    if (sfxCtx.state === 'suspended') sfxCtx.resume();
+    musicGain.gain.setValueAtTime(0, sfxCtx.currentTime);
+  }
+  return audio.play().then(() => rampGain(1, FADE)).catch((e) => {
+    if (e.name === 'NotAllowedError') return; // autoodtwarzanie zablokowane – gracz kliknie ▶
+    $('#mystery-status').textContent = e.name === 'NotSupportedError'
+      ? T('Ta przeglądarka nie obsługuje formatu AAC (.m4a) – spróbuj w innej przeglądarce.')
+      : T('Nie udało się odtworzyć: ') + e.message;
+  });
+}
+// pauza z wyciszeniem 150 ms (rewind – powrót na początek fragmentu, gdy fragment się skończył)
+let fadingOut = false;
+function softPause(rewind) {
+  if (audio.paused || fadingOut) return;
+  if (!musicGain) { audio.pause(); if (rewind) audio.currentTime = state.clipStart; return; }
+  fadingOut = true;
+  rampGain(0, FADE);
+  setTimeout(() => {
+    fadingOut = false;
+    audio.pause();
+    if (rewind) audio.currentTime = state.clipStart;
+  }, FADE * 1000);
+}
+$('#btn-play').addEventListener('click', () => {
+  if (audio.paused) playClip();
+  else softPause(false);
 });
 audio.addEventListener('play', () => {
+  state.heard = true;
   $('#vinyl').classList.add('spinning'); $('#btn-play').textContent = T('⏸ Pauza');
+  tvAudio();
   const tick = () => {
     if (audio.paused) return;
-    if (state.phase !== 'revealed' && audio.currentTime >= state.clipStart + state.clipLen) {
-      audio.pause();
-      audio.currentTime = state.clipStart;
+    // wyciszanie zaczyna się 150 ms przed końcem wycinka
+    if (state.phase !== 'revealed' && audio.currentTime >= state.clipStart + state.clipLen - FADE) {
+      softPause(true);
       return;
     }
     requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
 });
-audio.addEventListener('pause', () => { $('#vinyl').classList.remove('spinning'); $('#btn-play').textContent = T('▶ Odtwórz'); });
+audio.addEventListener('pause', () => { $('#vinyl').classList.remove('spinning'); $('#btn-play').textContent = T('▶ Odtwórz'); tvAudio(); });
 audio.addEventListener('ended', () => { audio.currentTime = 0; });
 audio.addEventListener('timeupdate', () => {
   if (state.phase !== 'revealed' && audio.currentTime >= state.clipStart + state.clipLen) {
-    audio.pause();
-    audio.currentTime = state.clipStart;
+    softPause(true);
   }
   const revealed = state.phase === 'revealed';
   const start = revealed ? 0 : state.clipStart;
   const len = revealed ? (audio.duration || 30) : state.clipLen;
   const pct = Math.min(100, Math.max(0, ((audio.currentTime - start) / len) * 100));
   $('#progress-bar').style.width = pct + '%';
+  tvAudio();
 });
 
 $('#btn-skip').addEventListener('click', () => {
@@ -2398,6 +2593,8 @@ $$('input[name=lang]').forEach((r) => {
 });
 
 /* ---------- ustawienia: efekty ---------- */
+$('#autoplay').checked = store.get('autoplay', false);
+$('#autoplay').addEventListener('change', (e) => store.set('autoplay', e.target.checked));
 $('#sounds').checked = store.get('sounds', true);
 $('#sounds').addEventListener('change', (e) => { store.set('sounds', e.target.checked); if (e.target.checked) fx('good'); });
 $('#animations').checked = store.get('animations', true);
