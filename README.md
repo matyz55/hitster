@@ -9,12 +9,12 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
 
 - **Oś czasu – 1 gracz** – układasz piosenki na osi czasu wg roku wydania;
   masz ograniczoną liczbę pomyłek. Wpisanie poprawnego tytułu i wykonawcy daje żeton.
-- **Oś czasu – multiplayer** – 2–8 graczy przy jednym urządzeniu, z wyzwaniami
+- **Oś czasu – multiplayer** – 2–16 graczy przy jednym urządzeniu (lub na własnych telefonach – przycisk „📱 Dołącz przez telefon” przy liście graczy), z wyzwaniami
   i żetonami jak w planszówce. Żetony: 1 = pominięcie piosenki (gra najpierw pokazuje, co to było),
   3 = kupno karty – przed odkryciem na oś trafia grana piosenka, po odkryciu losowa karta z talii.
 - **Oś czasu – drużyny** – 2–4 drużyny, każda ze wspólną osią czasu; członkowie drużyny
   odpowiadają po kolei (gra pokazuje, kto teraz zgaduje). Zasady jak w multiplayerze.
-- **Jaka to melodia** – 1–8 graczy po kolei odgadują tytuł, wykonawcę albo oba. Odpowiedź wpisuje się
+- **Jaka to melodia** – 1–16 graczy po kolei odgadują tytuł, wykonawcę albo oba. Odpowiedź wpisuje się
   w jedno pole – od 3 liter pojawiają się podpowiedzi ze wszystkich piosenek w bazie (także przy osi czasu).
   Wielkość liter, polskie znaki i drobne literówki nie mają znaczenia. Przy duetach
   i utworach kilku wykonawców wystarczy podać jednego z nich.
@@ -27,7 +27,7 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
 - **Starsza czy nowsza?** – czy piosenka jest starsza, czy nowsza od poprzedniej karty;
   seria bez pomyłki i rekord.
 - **Pojedynek dekad** – dwie dekady (losowe lub wybrane), trzeba wskazać, z której jest piosenka.
-- **Kto pierwszy?** – 2–8 osób przy jednym urządzeniu, każda ma przycisk i klawisz (domyślnie 1–8, w ustawieniach każdy gracz może przypisać własny);
+- **Kto pierwszy?** – 2–16 osób przy jednym urządzeniu, każda ma przycisk i klawisz (domyślnie 1–8, w ustawieniach każdy gracz może przypisać własny);
   kto pierwszy naciśnie, ten odpowiada: +1 pkt za dobrą odpowiedź, −1 za złą.
 
 **Karty specjalne** (modyfikatory osi czasu, do wyboru): podwójna, kradzież żetonu, zamiana osi.

@@ -41,7 +41,7 @@ translatePage();
 const MAX_TOKENS = 5;
 const SKIP_COST = 1;
 const BUY_COST = 3;
-const MAX_PLAYERS = 8;
+const MAX_PLAYERS = 16;
 
 /* ---------- efekty: dźwięki (Web Audio, bez plików) i animacje ---------- */
 let sfxCtx = null;
@@ -380,8 +380,9 @@ function keyLabel(code) {
   return code;
 }
 // pierwszy wolny klawisz dla nowego gracza
-const freeBuzzKey = (used) => [...BUZZ_KEYS, 'Digit9', 'Digit0', 'KeyQ', 'KeyP', 'KeyZ', 'KeyM'].find((k) => !used.includes(k));
-const BUZZ_COLORS = ['#ff3d7f', '#2de2e6', '#ffc93c', '#3ddc84', '#a78bfa', '#ff8a3d', '#60a5fa', '#f472b6'];
+const freeBuzzKey = (used) => [...BUZZ_KEYS, 'Digit9', 'Digit0', 'KeyQ', 'KeyP', 'KeyZ', 'KeyM', 'KeyA', 'KeyL', 'KeyW', 'KeyO'].find((k) => !used.includes(k));
+const BUZZ_COLORS = ['#ff3d7f', '#2de2e6', '#ffc93c', '#3ddc84', '#a78bfa', '#ff8a3d', '#60a5fa', '#f472b6',
+  '#e11d48', '#14b8a6', '#eab308', '#22c55e', '#8b5cf6', '#f97316', '#0ea5e9', '#ec4899'];
 // karty specjalne (modyfikatory osi czasu)
 const SPECIAL_CHANCE = 0.2;
 const SPECIALS = {
@@ -488,6 +489,7 @@ function handleRemote(msg, from) {
     tvSync();
   }
   if (msg.iam && from) { from.name = msg.iam; renderRemoteList(); }
+  if (msg.join && from) joinFromPhone(msg.join, from);
   // przycisk kliknięty na innym ekranie – klikamy ten sam w oknie gry (sprawdzamy też napis, gdyby stan zdążył się zmienić)
   if (msg.click) {
     const b = tvButtons()[msg.click.i];
@@ -527,6 +529,11 @@ function tvSync() {
   const screen = SCREENS.find((x) => !$('#screen-' + x).classList.contains('hidden'));
   const txt = (sel) => ($(sel) ? $(sel).textContent.trim() : '');
   const snap = { screen, mode: state.mode, players: state.players.map((pl) => pl.name), room: roomCode };
+  if (screen === 'setup' && MODES[state.mode]) {
+    const cfg = MODES[state.mode];
+    const names = readSetupRows().map((r) => r.name.trim()).filter(Boolean);
+    snap.setup = { title: cfg.title, teams: !!cfg.teams, names, full: names.length >= cfg.maxPlayers, multi: cfg.maxPlayers > 1 };
+  }
   if (screen === 'end') {
     snap.winner = txt('#winner-title');
     snap.ranking = $$('#ranking li').map((li) => li.textContent);
@@ -587,7 +594,10 @@ function tvSync() {
         if (state.phase === 'challenge') {
           snap.challenge = challenger ? '' : T('⚔ Kto rzuca wyzwanie? (koszt: 1 żeton)');
         } else if (can.length) {
-          snap.challenge = T('⚔ Wyzwanie (1 żeton) mogą rzucić: {0}', can.join(', '));
+          // przy wielu graczach krócej: „wszyscy pozostali” albo kilka imion i liczba pozostałych
+          const who = can.length === state.players.length - 1 && can.length > 2 ? T('wszyscy pozostali gracze')
+            : (can.length > 5 ? `${can.slice(0, 4).join(', ')} ${T('i {0} innych', can.length - 4)}` : can.join(', '));
+          snap.challenge = T('⚔ Wyzwanie (1 żeton) mogą rzucić: {0}', who);
         }
       }
     } else if (state.mode === 'hilo' && state.ref) {
@@ -713,12 +723,15 @@ function openSetup(mode) {
   $('#setup-title').textContent = cfg.title;
   $$('[data-for]').forEach((n) => n.classList.toggle('hidden', !n.dataset.for.split(' ').includes(mode)));
   if (cfg.teams) {
-    let teams = store.get('teams', [{ name: T('Drużyna {0}', 1), members: '' }, { name: T('Drużyna {0}', 2), members: '' }]);
-    while (teams.length < cfg.minPlayers) teams.push({ name: T('Drużyna {0}', teams.length + 1), members: '' });
+    // domyślnie tylko drużyna właściciela telefonu – kolejne dodaje się przyciskiem albo dołączają telefonem
+    let teams = store.get('teams', [{ name: T('Drużyna {0}', 1), members: '' }]);
+    if (teams.every((t) => /^(Drużyna|Team) \d+$/.test(t.name) && !t.members)) teams = teams.slice(0, 1);
     renderSetupPlayers(teams.slice(0, cfg.maxPlayers));
   } else {
-    let names = store.get('players', [T('Gracz {0}', 1), T('Gracz {0}', 2)]);
-    if (names.length < cfg.minPlayers) names = names.concat([T('Gracz 2')]).slice(0, cfg.minPlayers);
+    // domyślnie jeden gracz – ten, czyj jest telefon; zapamiętane własne imiona zostają
+    let names = store.get('players', [T('Gracz {0}', 1)]);
+    if (names.every((n) => /^(Gracz|Player) \d+$/.test(n))) names = names.slice(0, 1);
+    if (!names.length) names = [T('Gracz {0}', 1)];
     if (names.length > cfg.maxPlayers) names = names.slice(0, cfg.maxPlayers);
     const keys = store.get('buzzKeys', BUZZ_KEYS);
     renderSetupPlayers(names.map((name, i) => ({ name, key: keys[i] })));
@@ -749,7 +762,8 @@ function renderSetupPlayers(rows) {
       type: 'text', value: r.members || '', maxlength: '120', class: 'p-members',
       placeholder: T('Członkowie, np. Ania, Bartek, Ola'), 'aria-label': T('Członkowie drużyny {0}', i + 1),
     }) : null,
-    rows.length > cfg.minPlayers
+    remoteNames().has(r.name) ? el('span', { class: 'p-phone', title: T('Dołączył(a) przez telefon') }, '📱') : null,
+    rows.length > 1
       ? el('button', { class: 'ghost', title: T('Usuń'), onclick: () => {
         const cur = readSetupRows(); cur.splice(i, 1); renderSetupPlayers(cur);
       } }, '✕')
@@ -757,7 +771,37 @@ function renderSetupPlayers(rows) {
   )));
   $('#btn-add-player').textContent = cfg.teams ? T('+ Dodaj drużynę') : T('+ Dodaj gracza');
   $('#btn-add-player').classList.toggle('hidden', rows.length >= cfg.maxPlayers);
+  // dołączanie przez telefon – w trybach, w których gra więcej niż jedna osoba
+  $('#btn-join-phone').classList.toggle('hidden', cfg.maxPlayers === 1 || rows.length >= cfg.maxPlayers);
+  $('#players-min').textContent = rows.length < cfg.minPlayers
+    ? T('W tym trybie potrzeba co najmniej {0} – dodaj kolejnego gracza albo dołącz go przez telefon.', cfg.minPlayers) : '';
+  tvSync();
 }
+const remoteNames = () => new Set([...remotes].filter((r) => r.role === 'player' && r.name).map((r) => r.name));
+// gracz dołącza telefonem w trakcie ustawiania gry: jego imię trafia na listę graczy (albo drużyn)
+function joinFromPhone(name, from) {
+  name = String(name || '').trim().slice(0, 20);
+  if (!name) return;
+  const onSetup = !$('#screen-setup').classList.contains('hidden');
+  const rows = onSetup ? readSetupRows() : [];
+  const cfg = MODES[state.mode] || {};
+  if (onSetup && !rows.some((r) => r.name.trim().toLowerCase() === name.toLowerCase())) {
+    if (rows.length >= cfg.maxPlayers) { from.conn.send({ joinError: 'full' }); return; }
+    rows.push({ name, members: '', key: undefined });
+  }
+  from.name = name;
+  from.conn.send({ joined: name });
+  if (onSetup) renderSetupPlayers(rows);
+  renderRemoteList();
+  fx('place');
+}
+$('#btn-join-phone').addEventListener('click', () => {
+  $('#dlg-connect').classList.add('join-only');
+  $('#dlg-connect').showModal();
+  openRoom();
+});
+$('#dlg-connect').addEventListener('close', () => $('#dlg-connect').classList.remove('join-only'));
+$('#players-list').addEventListener('change', () => tvSync());
 const readSetupRows = () => $$('#players-list .player-row').map((row) => ({
   name: row.querySelector('.p-name').value,
   members: row.querySelector('.p-members') ? row.querySelector('.p-members').value : '',
@@ -1088,6 +1132,10 @@ $('#btn-home').addEventListener('click', () => showScreen('home'));
 /* ---------- przebieg gry ---------- */
 function startGame() {
   const teams = !!MODES[state.mode].teams;
+  if (readSetupRows().length < MODES[state.mode].minPlayers) {
+    alert(T('W tym trybie potrzeba co najmniej {0} – dodaj kolejnego gracza albo dołącz go przez telefon.', MODES[state.mode].minPlayers));
+    return;
+  }
   const rows = readSetupRows().map((r, i) => ({ name: r.name.trim() || `${teams ? T('Drużyna') : T('Gracz')} ${i + 1}`, members: r.members }));
   const names = rows.map((r) => r.name);
   if (teams) store.set('teams', rows); else store.set('players', names);

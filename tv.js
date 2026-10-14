@@ -77,8 +77,31 @@ function playerPicker(s) {
       return b;
     })) : h('p', 'muted', T('Gospodarz jeszcze nie rozpoczął gry – lista graczy pojawi się po starcie.')));
 }
+// telefon gracza w trakcie ustawiania gry: wpisuje imię i trafia na listę graczy u gospodarza
+function joinView(s) {
+  const st = s.setup;
+  const joined = me && st.names.includes(me);
+  if (joined) {
+    return h('div', 'picker', h('h2', '', T('✔ Jesteś na liście jako: {0}', me)), h('p', 'muted', T('Czekaj, aż gospodarz rozpocznie grę ({0}).', st.title)),
+      h('p', 'muted', T('Na liście: {0}', st.names.join(', '))));
+  }
+  const input = h('input', 'join-name');
+  input.type = 'text'; input.maxLength = 20; input.value = me || ''; input.placeholder = st.teams ? T('Nazwa drużyny') : T('Twoje imię');
+  const go = h('button', 'primary', T('Dołącz do gry'));
+  const form = h('form', 'join-form', input, go);
+  form.addEventListener('submit', (e) => { e.preventDefault(); if (input.value.trim()) send({ join: input.value.trim() }); });
+  return h('div', 'picker', h('h2', '', st.teams ? T('Dołącz drużynę do gry') : T('Dołącz do gry')), h('p', 'muted', st.title),
+    st.full ? h('p', 'muted', T('Lista graczy jest pełna.')) : form,
+    st.names.length ? h('p', 'muted', T('Na liście: {0}', st.names.join(', '))) : null);
+}
 function render(s) {
   last = s;
+  if (s && s.screen === 'setup' && PLAYER && s.setup) {
+    const keep = document.activeElement && document.activeElement.classList.contains('join-name') ? document.activeElement.value : null;
+    app.replaceChildren(joinView(s));
+    if (keep != null && app.querySelector('.join-name')) { app.querySelector('.join-name').value = keep; app.querySelector('.join-name').focus(); }
+    return;
+  }
   if (s && s.screen === 'game' && PLAYER && (!me || !(s.players || []).includes(me))) {
     app.replaceChildren(playerPicker(s));
     return;
@@ -94,7 +117,11 @@ function render(s) {
     fit();
     return;
   }
-  const rows = s.timelines || [];
+  const allRows = s.timelines || [];
+  // telefon gracza: oś gracza, który ma turę, i własna – pozostałe tylko jako krótka lista
+  const rows = PLAYER ? allRows.filter((t) => t.active || t.name === me) : allRows;
+  const others = PLAYER && allRows.length > rows.length
+    ? h('div', 'others', allRows.filter((t) => !rows.includes(t)).map((t) => h('span', '', h('b', '', t.name), t.sub ? ` ${t.sub}` : ''))) : null;
   app.classList.toggle('compact', rows.length > 2);
   app.classList.toggle('many', rows.length <= 1 && (s.scores || []).length > 4);
   const head = h('header', '', h('div', '', h('h1', '', s.title || ''), rows.length > 1 ? null : h('div', 'info', s.info || '')),
@@ -155,7 +182,7 @@ function render(s) {
   })()) : null;
   // pole odpowiedzi nie może zniknąć w trakcie pisania – zachowujemy wpisany tekst między odświeżeniami
   const keep = app.querySelector('.guess-form');
-  app.replaceChildren(...[who, head, main, steps, buzzers, hint, guess, actions, tls].filter(Boolean));
+  app.replaceChildren(...[who, head, main, steps, buzzers, hint, guess, actions, tls, others].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
   fit();
 }
@@ -231,6 +258,8 @@ function updateAudio() {
 }
 function onMessage(m) {
   if (!m) return;
+  if (m.joined) { setMe(m.joined); return; }
+  if (m.joinError) { alert(T('Lista graczy jest pełna.')); return; }
   if (m.audio) { audioState = m.audio; updateAudio(); return; }
   render(m);
 }
@@ -251,6 +280,28 @@ function fitTimelines() {
   if (!box) return;
   const rows = [...box.children];
   if (!rows.length) return;
+  if (PLAYER) {
+    // telefon gracza: strona się przewija – wysokość osi wynika z wielkości kart (bez pustego miejsca)
+    box.style.gridTemplateColumns = '1fr';
+    box.style.gridTemplateRows = 'auto';
+    box.style.minHeight = '0';
+    for (const r of rows) {
+      const tl = r.querySelector('.tl');
+      const items = [...tl.children];
+      const units = items.reduce((a, n) => a + (n.classList.contains('mark') ? 0.55 : n.classList.contains('gap') ? 0.4 : 1), 0) || 1;
+      const gap = 4;
+      const cw = Math.max(26, Math.min(window.innerWidth * 0.26, (tl.clientWidth - gap * (items.length - 1)) / units));
+      const ch = Math.min(cw * 1.35, window.innerHeight * 0.22);
+      r.style.height = `${ch + 12}px`;
+      tl.style.setProperty('--cw', `${cw}px`);
+      tl.style.setProperty('--ch', `${ch}px`);
+      tl.style.setProperty('--gap', `${gap}px`);
+      const tiny = ch < 85;
+      tl.style.setProperty('--fs', `${Math.max(7, Math.min(cw / 5.8, ch / (tiny ? 3.9 : 7.4)))}px`);
+      r.classList.toggle('tiny', tiny);
+    }
+    return;
+  }
   const others = rows.filter((r) => !r.classList.contains('active')).length;
   const cols = others >= 3 ? 2 : 1;
   const lines = (rows.length - others) + Math.ceil(others / cols);

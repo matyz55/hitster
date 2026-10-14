@@ -44,7 +44,7 @@
       <button class="mode" data-mode="multi">
         <span class="mode-icon">👥</span>
         <b>Oś czasu – multiplayer</b>
-        <span class="muted">2–8 graczy przy jednym urządzeniu, z wyzwaniami i żetonami.</span>
+        <span class="muted">2–16 graczy przy jednym urządzeniu lub na własnych telefonach, z wyzwaniami i żetonami.</span>
       </button>
       <button class="mode" data-mode="teams">
         <span class="mode-icon">🎉</span>
@@ -70,7 +70,7 @@
       <button class="mode" data-mode="melody">
         <span class="mode-icon">🎤</span>
         <b>Jaka to melodia</b>
-        <span class="muted">Odgadnij tytuł, wykonawcę albo oba. 1–8 graczy, drobne literówki są wybaczane.</span>
+        <span class="muted">Odgadnij tytuł, wykonawcę albo oba. 1–16 graczy, drobne literówki są wybaczane.</span>
       </button>
       <button class="mode" data-mode="steps">
         <span class="mode-icon">⏱️</span>
@@ -80,7 +80,7 @@
       <button class="mode" data-mode="buzz">
         <span class="mode-icon">🔔</span>
         <b>Kto pierwszy?</b>
-        <span class="muted">2–8 osób przy jednym urządzeniu, każda ma swój przycisk. Kto pierwszy naciśnie, ten odpowiada – za błąd traci punkt.</span>
+        <span class="muted">2–16 osób przy jednym urządzeniu lub na własnych telefonach, każda ma swój przycisk. Kto pierwszy naciśnie, ten odpowiada – za błąd traci punkt.</span>
       </button>
     </div>
     <div class="center home-links">
@@ -101,7 +101,11 @@
     <section class="card" id="sec-players">
       <h2>Gracze</h2>
       <div id="players-list"></div>
-      <button id="btn-add-player" class="ghost">+ Dodaj gracza</button>
+      <div class="player-btns">
+        <button id="btn-add-player" class="ghost">+ Dodaj gracza</button>
+        <button id="btn-join-phone" class="ghost">📱 Dołącz przez telefon</button>
+      </div>
+      <p id="players-min" class="muted small"></p>
     </section>
 
     <section class="card">
@@ -441,9 +445,9 @@
       <button type="button" id="btn-tv-connect" class="ghost">Połącz</button>
     </div>
     <p id="tv-status" class="muted"></p>
-    <h3>Gracze na własnych telefonach</h3>
-    <p class="muted">Muzyka gra na tym urządzeniu, a gracze skanują kod QR i sterują swoją turą na swoich telefonach.</p>
-    <button type="button" id="btn-room" class="ghost">Utwórz pokój dla graczy</button>
+    <h3 class="join-part">Gracze na własnych telefonach</h3>
+    <p class="muted join-part">Muzyka gra na tym urządzeniu, a gracze skanują kod QR, wpisują swoje imię i sterują swoją turą na swoich telefonach.</p>
+    <button type="button" id="btn-room" class="ghost join-part">Utwórz pokój dla graczy</button>
     <div id="room-box" class="room-box hidden">
       <div id="room-qr" class="room-qr"></div>
       <div><div class="room-code">Kod: <b id="room-code"></b></div><p class="muted" id="room-link"></p><ul id="room-list"></ul></div>

@@ -117,12 +117,17 @@
     /* telefon gracza */
     .gap { flex: 0 0 auto; width: calc(var(--cw, 11vw) * .4); height: var(--ch, 14vh); border-radius: .6em; border: 2px dashed var(--accent-2);
       background: rgba(45, 226, 230, .08); color: var(--accent-2); font: inherit; font-size: calc(var(--fs, 1em) * 1.6); cursor: pointer; padding: 0; }
+    .others { display: flex; flex-wrap: wrap; gap: .3em .9em; font-size: .8em; color: var(--muted); flex-shrink: 0; }
+    .others b { color: var(--text); }
     .me-bar { color: var(--muted); font-size: .8em; flex-shrink: 0; }
     .link { background: none; border: 0; color: var(--accent-2); text-decoration: underline; padding: 0; font-size: 1em; }
     .picker { margin: 1em auto; text-align: center; }
     .picker-list { display: flex; flex-wrap: wrap; gap: .5em; justify-content: center; }
     .picker-list button { font-size: 1em; padding: .6em 1em; background: var(--panel-2); border: 0; }
     .picker-list button.primary { background: var(--accent); }
+    .join-form { display: flex; gap: .5em; justify-content: center; flex-wrap: wrap; margin: .6em 0; }
+    .join-form input { font: inherit; padding: .5em .7em; border-radius: .5em; border: 1px solid #3d3755; background: var(--panel); color: var(--text); min-width: 10em; }
+    .join-form button { font-size: 1em; padding: .5em 1em; }
     .guess-form { display: flex; gap: .5em; flex-wrap: wrap; flex-shrink: 0; }
     .guess-form input { font: inherit; padding: .4em .6em; border-radius: .5em; border: 1px solid #3d3755; background: var(--panel); color: var(--text); flex: 1; min-width: 8em; }
     .guess-form button { font-size: .9em; }
@@ -134,6 +139,8 @@
     .suggest li:hover { background: rgba(255, 61, 127, .18); }
     .actions button.primary, .guess-form button.primary { background: var(--accent); border: 0; color: var(--text); font-weight: 600; }
     body.player { overflow: auto; }
+    body.player .timelines { flex: none; align-content: start; }
+    body.player .tl-name { width: 20vw; }
     body.player .wrap { height: auto; min-height: 100%; }
   </style>
 </head>

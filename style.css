@@ -506,3 +506,9 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .room-code b { letter-spacing: .15em; color: var(--gold); }
 #room-link { word-break: break-all; font-size: .8rem; }
 #room-list { margin: 6px 0 0; padding-left: 18px; }
+
+.player-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.p-phone { align-self: center; }
+/* okno połączeń otwarte przyciskiem „Dołącz przez telefon” – tylko część dla graczy */
+#dlg-connect.join-only > :is(h3, p, button, .connect-row):not(.join-part) { display: none; }
+#dlg-connect.join-only .join-part { display: revert; }
