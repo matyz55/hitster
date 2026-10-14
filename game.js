@@ -44,6 +44,23 @@ const MAX_PLAYERS = 8;
 
 /* ---------- piosenki, flagi, poprawki dat ---------- */
 const songKey = (s) => s.a + '|' + s.t;
+
+// piosenki zagrane w tej sesji (do zamknięcia karty) – kolejne rozgrywki losują najpierw spośród pozostałych
+const played = (() => {
+  try { return new Set(JSON.parse(sessionStorage.getItem('songster.played') || '[]')); } catch (e) { return new Set(); }
+})();
+function markPlayed(song) {
+  played.add(songKey(song));
+  try { sessionStorage.setItem('songster.played', JSON.stringify([...played])); } catch (e) { /* tryb prywatny */ }
+}
+// pula bez zagranych piosenek; gdy zostało ich za mało, zaczynamy od nowa (tylko dla tej puli)
+function freshPool(pool, needed) {
+  const fresh = pool.filter((s) => !played.has(songKey(s)));
+  if (fresh.length >= Math.max(needed * 4, 150)) return fresh;
+  for (const s of pool) played.delete(songKey(s));
+  try { sessionStorage.setItem('songster.played', JSON.stringify([...played])); } catch (e) { /* tryb prywatny */ }
+  return pool;
+}
 // wszyscy wykonawcy (a – pierwszych dwóch, x – kolejni)
 const artistLine = (s) => [s.a, ...(s.x || [])].join(' & ');
 const ORIGINAL_YEAR = new Map(window.SONGS.map((s) => [songKey(s), s.y]));
@@ -527,10 +544,11 @@ function startGame() {
   state.challengeYear = null;
   state.recordLevel = recordKey();
   const plShare = poolValue() === 'ALL' ? filterState.plShare / 100 : (poolValue() === 'PL' ? 1 : 0);
-  state.deck = new Deck(songPool(), { level: state.difficulty, plShare });
-  prefetched = null;
   const needed = isTimeline() ? names.length * 3 : names.length * state.rounds;
-  const artists = new Set(songPool().map((s) => artistKeys(s)[0])).size;
+  const pool = freshPool(songPool(), needed);
+  state.deck = new Deck(pool, { level: state.difficulty, plShare });
+  prefetched = null;
+  const artists = new Set(pool.map((s) => artistKeys(s)[0])).size;
   if (state.deck.size < needed || artists < needed) {
     alert('Za mało piosenek w wybranej puli dla tych ustawień.');
     return;
@@ -566,7 +584,7 @@ async function startTurn() {
   stopAudio();
   Object.assign(state, {
     phase: 'listen', slot: null, challenger: null, challengeSlot: null, challengeYear: null, awarded: false,
-    current: null, preview: null,
+    current: null, preview: null, marks: null,
   });
   $('#reveal').classList.add('hidden');
   $('#guess-form').reset();
@@ -633,6 +651,7 @@ async function drawSong() {
     }
     if (myDraw !== state.drawId) return; // gra została przerwana
     if (preview) {
+      markPlayed(song);
       state.current = song;
       state.preview = preview;
       state.clipLen = filterState.clip;
@@ -698,6 +717,12 @@ function revealTimeline() {
   const challengeOk = state.challenger != null && (yearMode
     ? state.challengeYear === song.y
     : state.challengeSlot != null && placeIsCorrect(p.timeline, state.challengeSlot, song.y));
+  // po pomyłce oś gracza zostaje bez zmian – pokazujemy na niej, gdzie wskazał, a gdzie było miejsce
+  state.marks = ok ? null : {
+    slot: state.slot,
+    correct: correctSlot(p.timeline, song.y),
+    challengeSlot: !yearMode && state.challengeSlot != null && !challengeOk ? state.challengeSlot : null,
+  };
   let verdict;
   let note;
   const yearInfo = yearMode && !challengeOk
@@ -750,7 +775,9 @@ function buyCard() {
   const p = activePlayer();
   if (p.tokens < BUY_COST || !state.deck.size) return;
   p.tokens -= BUY_COST;
-  addToTimeline(p, state.deck.draw());
+  const bought = state.deck.draw();
+  markPlayed(bought);
+  addToTimeline(p, bought);
   // zakupiona karta mogła przesunąć indeksy – resetujemy wybór miejsca
   state.slot = null;
   state.phase = 'listen';
@@ -982,7 +1009,8 @@ function render() {
 
   const tl = $('#timeline');
   tl.classList.toggle('hidden', !timeline);
-  if (timeline) renderTimeline(tl, p.timeline, ['listen', 'placed', 'challenge'].includes(state.phase));
+  if (timeline) renderTimeline(tl, p.timeline, ['listen', 'placed', 'challenge'].includes(state.phase),
+    state.phase === 'revealed' ? state.marks : null);
   renderOthers();
   renderActions();
 }
@@ -1003,10 +1031,16 @@ function renderOthers() {
     .filter(Boolean));
 }
 
-function renderTimeline(container, timeline, interactive) {
+function renderTimeline(container, timeline, interactive, marks) {
   const items = [];
   const revealedSong = state.phase === 'revealed' ? state.current : null;
   for (let i = 0; i <= timeline.length; i++) {
+    if (marks) {
+      const who = state.mode === 'solo' ? 'Twój wybór' : activePlayer().name;
+      if (marks.slot === i) items.push(el('div', { class: 'mark bad' }, `✘ ${who}`));
+      if (marks.challengeSlot === i) items.push(el('div', { class: 'mark challenge' }, `✘ ${state.players[state.challenger].name}`));
+      if (marks.correct === i) items.push(el('div', { class: 'mark ok' }, `✔ ${state.current.y}`));
+    }
     if (interactive) {
       let cls = 'slot';
       let label = '＋';
@@ -1036,7 +1070,7 @@ function renderTimeline(container, timeline, interactive) {
     }
   }
   container.replaceChildren(...items);
-  const chosen = container.querySelector('.chosen, .new');
+  const chosen = container.querySelector('.chosen, .new, .mark.bad');
   if (chosen) chosen.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
 }
 

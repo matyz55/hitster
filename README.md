@@ -15,7 +15,10 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
   Wielkość liter, polskie znaki i drobne literówki nie mają znaczenia. Przy duetach
   i utworach kilku wykonawców wystarczy podać jednego z nich.
 
-Każdy wykonawca pojawia się w jednej grze najwyżej raz. **Poziom trudności**:
+Każdy wykonawca pojawia się w jednej grze najwyżej raz, a piosenki nie powtarzają się
+między kolejnymi rozgrywkami w tej samej karcie przeglądarki (dopóki w wybranej puli
+nie zabraknie nowych). Po pomyłce oś pokazuje, gdzie gracz położył kartę i gdzie było
+właściwe miejsce. **Poziom trudności**:
 łatwy (znane piosenki), średni – domyślny (wszystkie piosenki) i trudny (mniej znane;
 na osi czasu częściej trafiają się utwory wydane blisko lat Twoich kart). Na każdym
 poziomie piosenki są losowane równomiernie z różnych dekad, a przy mieszanych piosenkach
