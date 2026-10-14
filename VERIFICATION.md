@@ -7,6 +7,8 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 - **[Discogs](https://www.discogs.com/)** – wyszukiwanie wydań głównych (*master releases*) wykonawcy zawierających utwór, bez wydań nieoficjalnych (*Unofficial Release*), koncertowych (*live*, *koncert*, *unplugged*), wideo (VHS/DVD) i radiowych transkrypcji – rok na karcie dotyczy nagrania studyjnego. Wyszukiwarka Discogs bywa nieprecyzyjna, dlatego wydanie, które dawałoby wcześniejszy rok, jest dodatkowo sprawdzane **po trackliście** (czy naprawdę zawiera ten utwór tego wykonawcy).
 - **Discogs (singiel)** – dodatkowo pojedyncze wydania (nie tylko *master releases*): najwcześniejsze oficjalne wydanie tego wykonawcy zatytułowane tytułem piosenki (singiel, EP, np. „Zielono mi / …”), bez wydań koncertowych, wideo i remiksów. Dzięki temu starsze piosenki znane z późniejszych składanek dostały rok pierwszego singla (np. „Jesienny pan” – 1963, „Dwudziestolatki” – 1964).
 - **MusicBrainz + Wikipedia** – ręczna weryfikacja piosenek z pierwszej wersji gry.
+- **Eurowizja** – zwycięzcy konkursu (tabela „List of Eurovision Song Contest winners”), polskie występy i najbardziej znane pozostałe piosenki (po 2 z każdego roku i 60 ogólnie – wg liczby krajowych list przebojów w artykule angielskiej Wikipedii, potem długości artykułu); rok z infoboksu artykułu (data wydania, a gdy brak – rok konkursu), kraj z MusicBrainz (gdy jednoznaczny) lub kraj, który wykonawca reprezentował. Dodane tylko te z fragmentem w iTunes.
+- **Zestawy tematyczne** – Eurowizja: kategorie „Eurovision songs of RRRR” angielskiej Wikipedii; Opole: tytuł i wykonawca w tym samym fragmencie artykułu o danym Krajowym Festiwalu Piosenki Polskiej w Opolu (polska Wikipedia); Trójka: kategoria „Pierwsze miejsce na Liście Przebojów Programu Trzeciego” (polska Wikipedia) i plebiscyty „Polski Top Wszech Czasów” Trójki.
 - **[MusicBrainz](https://musicbrainz.org/)** – daty oficjalnych wydań nagrania (bez bootlegów); rozstrzyga, gdy rok podaje tylko Spotify.
 - **Wikipedia (artykuł o piosence)** – rok wydania z infoboksu; dotyczy piosenek dodanych z kategorii polskiej Wikipedii („Piosenki powstałe w roku…”, „Single wydane w roku…”, „Pierwsze miejsce na Liście Przebojów Programu Trzeciego”, „Single numer jeden w Polsce”).
 - **Listy przebojów** (angielska Wikipedia) – Billboard Year-End Hot 100 (top 40) i numery jeden w Polsce (OLiA, OLiS, Billboard Poland) posłużyły tylko do wyboru znanych piosenek; rok wydania ustalają pozostałe źródła.
@@ -31,7 +33,7 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 
 ## Podsumowanie
 
-- piosenek w grze: **5449** (polskich: 1890, zagranicznych: 3559)
+- piosenek w grze: **5685** (polskich: 1896, zagranicznych: 3789)
 - bez żadnej daty (pominięte): 59
 - covery zamiast oryginałów (pominięte): 47
 - usunięte duplikaty: 35
@@ -53,13 +55,90 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 | Ręczna poprawka (opis niżej) | 38 |
 | Discogs + MusicBrainz | 37 |
 | Spotify + Discogs | 19 |
+| Wikipedia – artykuł o piosence; Eurowizja 2021 | 10 |
+| Wikipedia – artykuł o piosence; Eurowizja 2024 | 9 |
 | MusicBrainz+Wikipedia | 8 |
+| Wikipedia – artykuł o piosence; Eurowizja 2017 | 8 |
+| Wikipedia – artykuł o piosence; Eurowizja 2025 | 8 |
+| Wikipedia – artykuł o piosence; Eurowizja 2014 | 8 |
+| Wikipedia – artykuł o piosence; Eurowizja 2018 | 7 |
+| Wikipedia – artykuł o piosence; Eurowizja 2013 | 6 |
+| Wikipedia – artykuł o piosence; Eurowizja 2022 | 6 |
+| Wikipedia – artykuł o piosence; Eurowizja 2015 | 6 |
 | MusicBrainz+Wikipedia + Spotify + Discogs | 5 |
+| Wikipedia – artykuł o piosence; Eurowizja 2016 | 5 |
+| Wikipedia – artykuł o piosence; Eurowizja 2019 | 5 |
+| Wikipedia – artykuł o piosence; Eurowizja 1969 | 5 |
+| Wikipedia – artykuł o piosence; Eurowizja 2011 | 5 |
 | MusicBrainz+Wikipedia + Discogs | 4 |
+| Wikipedia – artykuł o piosence; Eurowizja 2010 | 4 |
+| Wikipedia – artykuł o piosence; Eurowizja 2023 | 4 |
 | MusicBrainz+Wikipedia + Spotify | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1959 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1962 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1961 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 2009 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1991 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1990 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 2008 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1993 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1987 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 2004 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1988 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1963 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1984 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 2003 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1975 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1966 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1998 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 2000 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1964 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 2020 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1971 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1973 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1965 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 2002 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1996 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1960 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1999 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 1989 | 3 |
+| Wikipedia – artykuł o piosence; Eurowizja 2001 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1970 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1956 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1972 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1978 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1957 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1982 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 2007 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1958 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1997 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1983 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1981 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1979 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1967 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1968 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 2012 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1985 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 2005 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1995 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1992 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 1980 | 2 |
+| Wikipedia – artykuł o piosence; Eurowizja 2026 | 2 |
 | Discogs – album „Niemen Enigmatic”, utwór na trackliście; zamiast coveru Ewy Bem & Bemibek | 1 |
 | Discogs – „Skaldowie i Łucja Prus – W żółtych płomieniach liści”; zamiast coveru The Dumplings | 1 |
 | Discogs – „Przeboje polskiego rocka – Nie będę Julią”, utwór na trackliście; zamiast nagrania Agnieszki Chylińskiej z 2019 r. | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 1985; wydana w 1984 | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 2025; wydana w 2024 | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 2006 | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 2014; wydana w 2013 | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 1974 | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 2005; wydana w 2004 | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 1986 | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 2013; wydana w 2012 | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 1977 | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 1994 | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 1976 | 1 |
+| Wikipedia – artykuł o piosence; Eurowizja 2021; wydana w 2020 | 1 |
 
 ## Rozbieżności Discogs ↔ wcześniejsza weryfikacja (MusicBrainz + Wikipedia)
 
@@ -332,6 +411,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | 50 Cent | In Da Club | 2002 | Discogs (singiel) | 2003 | – | 2003 | US |
 | ? and the Mysterians | 96 Tears | 1966 | MusicBrainz | 1966 | 1966 | – | US |
 | A Flock Of Seagulls | I Ran (So Far Away) | 1982 | Spotify + Discogs (singiel) + MusicBrainz | 1988 | 1982 | 1982 | GB |
+| A Friend in London | New Tomorrow | 2011 | Wikipedia – artykuł o piosence; Eurowizja 2011 (Denmark, miejsce: 5th) | 2011 | – | – | DK |
 | A Great Big World & Christina Aguilera | Say Something | 2013 | Discogs | 2013 | – | – | US |
 | A Perfect Circle | Judith | 2000 | Discogs + Spotify | 2000 | – | 2000 | US |
 | A Tribe Called Quest | Can I Kick It? | 1990 | Discogs + Spotify | 1990 | – | 1990 | US |
@@ -360,6 +440,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | ABBA | Waterloo | 1974 | Discogs + MusicBrainz+Wikipedia + Spotify | 1974 | 1974 | 1974 | SE |
 | ABC | The Look Of Love, Pt.1 | 1982 | Spotify (MusicBrainz: 2023) | – | 2023 | 1982 | GB |
 | ABC & Halina Frackowiak | Napisz proszę | 1969 | Discogs – singiel „Grupa ABC Andrzeja Nebeskiego – Napisz proszę” (1969); 2021 to reedycja w Spotify | 1969 | – | 2021 | PL |
+| Abor & Tynna | Baller | 2025 | Wikipedia – artykuł o piosence; Eurowizja 2025 (Germany, miejsce: 15th) | 2025 | – | – | DE |
 | Abradab & Gutek | Rapowe ziarno 2 (Szyderap) | 2004 | Discogs + Spotify | 2004 | – | 2004 | PL |
 | AC/DC | Back In Black | 1980 | Discogs + Spotify | 1980 | – | 1980 | AU |
 | AC/DC | For Those About to Rock (We Salute You) | 1981 | Discogs + Spotify | 1981 | – | 1981 | AU |
@@ -421,6 +502,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Al Stewart | Year of the Cat | 1976 | Discogs | 1976 | – | 2003 | GB |
 | Alabama 3 | Woke Up This Morning | 1997 | Discogs | 1997 | – | 2008 | GB |
 | Alabama Shakes | Don't Wanna Fight | 2015 | Spotify + MusicBrainz | – | 2015 | 2015 | US |
+| Alain Barrière | Elle était si jolie | 1963 | Wikipedia – artykuł o piosence; Eurowizja 1963 (France, miejsce: 5th) | 1963 | – | – | FR |
 | Alan Price | O Lucky Man! | 1973 | Discogs (singiel) | 1975 | – | 2005 | GB |
 | Alan Walker | Dancing in Love | 2024 | MusicBrainz (Discogs (singiel): 2025) | – | 2024 | – | NO |
 | Alan Walker | Faded | 2015 | Discogs (singiel) | 2016 | – | – | NO |
@@ -428,11 +510,15 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Alanis Morissette | Thank U | 1998 | Discogs + Spotify | 1998 | – | 1998 | CA |
 | Alanis Morissette | You Oughta Know | 1995 | Discogs + Spotify | 1995 | – | 1995 | CA |
 | Alannah Myles | Black Velvet | 1989 | Discogs + Spotify | 1989 | – | 1989 | CA |
+| Alessandra | Queen of Kings | 2023 | Wikipedia – artykuł o piosence; Eurowizja 2023 (Norway, miejsce: 5th) | 2023 | – | – | NO |
 | Alesso & Nate Smith | I Like It | 2024 | Discogs | 2024 | – | – | SE |
 | Alex Warren | Ordinary | 2025 | Discogs + Spotify | 2025 | – | 2025 | US |
+| Alexander Rybak | Fairytale | 2009 | Wikipedia – artykuł o piosence; Eurowizja 2009 (Norway, zwycięstwo) | 2009 | – | – | NO |
 | Alexandra Căpitănescu | Choke Me | 2026 | Wikipedia | – | – | – | RO |
 | Alexandra Stan | Mr. Saxobeat | 2010 | Discogs | 2010 | – | 2011 | RO |
 | Alibabki | Kwiat jednej nocy | 1969 | Discogs | 1994 | – | 2014 | PL |
+| Alice & Battiato | I treni di Tozeur | 1984 | Wikipedia – artykuł o piosence; Eurowizja 1984 (Italy, miejsce: 5th) | 1984 | – | – | IT |
+| Alice Babs | Lilla stjärna | 1958 | Wikipedia – artykuł o piosence; Eurowizja 1958 (Sweden, miejsce: 4th) | 1958 | – | – | SE |
 | Alice Cooper | Poison | 1989 | Discogs + Spotify | 1989 | – | 1989 | US |
 | Alice Cooper | School's Out | 1972 | Spotify + Discogs (singiel) | 2006 | 1990 | 1972 | US |
 | Alice In Chains | I Stay Away | 1994 | Discogs + Spotify | 1994 | – | 1994 | US |
@@ -446,8 +532,10 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Alicia Keys | Girl on Fire | 2012 | Discogs + Spotify | 2012 | – | 2012 | US |
 | Alicia Keys | If I Ain't Got You | 2003 | MusicBrainz | – | 2003 | – | US |
 | Alicia Keys | No One | 2007 | Discogs | 2007 | – | – | US |
+| Alicja | Pray | 2026 | Wikipedia – artykuł o piosence; Eurowizja 2026 (Poland, miejsce: 12th) | 2026 | – | – | PL |
 | Alicja Majewska | Jeszcze się tam żagiel bieli | 1980 | Discogs (singiel) | 1987 | – | 2014 | PL |
 | Alicja Majewska | Odkryjemy miłość nieznaną | 1987 | Discogs | 1987 | – | 2016 | PL |
+| Alicja Szemplińska | Empires | 2020 | Wikipedia – artykuł o piosence; Eurowizja 2020 (Poland, udział) | 2020 | – | – | PL |
 | All Saints | Pure Shores | 2000 | Discogs + Spotify | 2000 | – | 2000 | GB |
 | Allman Brothers Band | Jessica | 1973 | Discogs | 1973 | – | 1989 | US |
 | Aloe Blacc | I Need A Dollar | 2010 | Discogs + Spotify | 2010 | – | 2010 | US |
@@ -456,10 +544,12 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Alphaville | Forever Young | 1984 | Discogs + Spotify | 1984 | – | 1984 | DE |
 | Alphaville | Sounds Like A Melody | 1984 | Discogs + Spotify | 1984 | – | 1984 | DE |
 | Alphaville | The Jet Set | 1984 | Discogs + Spotify | 1984 | – | 1984 | DE |
+| Alyona Alyona & Jerry Heil | Teresa & Maria | 2024 | Wikipedia – artykuł o piosence; Eurowizja 2024 (Ukraine, miejsce: 3rd) | 2024 | – | – | UA |
 | Amel Bent | Ma philosophie | 2004 | Discogs + Wikipedia | 2004 | – | – | FR |
 | America & George Martin | A Horse with No Name | 1971 | Discogs | 1971 | – | 1972 | US |
 | America & George Martin | Ventura Highway | 1972 | Discogs + Spotify | 1972 | – | 1972 | US |
 | Amii Stewart | Knock on Wood | 1978 | Discogs | 1978 | – | 2024 | US |
+| Amina | Le Dernier qui a parlé... | 1991 | Wikipedia – artykuł o piosence; Eurowizja 1991 (France, miejsce: 2nd) | 1991 | – | – | FR |
 | Amy Macdonald | This Is The Life | 2007 | Discogs + Spotify | 2007 | – | 2007 | GB |
 | Amy Winehouse | Back To Black | 2006 | Discogs + Spotify | 2006 | – | 2006 | GB |
 | Amy Winehouse | Rehab | 2006 | Discogs + MusicBrainz+Wikipedia + Spotify | 2006 | 2006 | 2006 | GB |
@@ -492,11 +582,13 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Andrzej Zaucha & Anawa | Abyś czuł | 2004 | MusicBrainz (Spotify: 2014) | – | 2004 | 2014 | PL |
 | Andrzej Zaucha & Anawa | Ta wiara | 2004 | MusicBrainz (Spotify: 2014) | – | 2004 | 2014 | PL |
 | Andrzej Zaucha & Anawa | Tańcząc w powietrzu | 2004 | MusicBrainz (Spotify: 2014) | – | 2004 | 2014 | PL |
+| André Claveau | Dors, mon amour | 1958 | Wikipedia – artykuł o piosence; Eurowizja 1958 (France, zwycięstwo) | 1958 | – | – | FR |
 | Andy Gibb | Shadow Dancing | 1977 | Discogs (singiel) | 1978 | – | 1991 | AU |
 | Andy Williams | Butterfly | 1957 | Discogs | 1957 | – | – | US |
 | Andy Williams | Can't Get Used to Losing You | 1981 | Discogs | 1981 | – | – | US |
 | Andy Williams | Where Do I Begin | 1971 | Discogs + Spotify | 1971 | – | 1971 | US |
 | Aneka | Japanese Boy | 1981 | Discogs + Spotify | 1981 | – | 1981 | GB |
+| Angelina Mango | La noia | 2024 | Wikipedia – artykuł o piosence; Eurowizja 2024 (Italy, miejsce: 7th) | 2024 | – | – | IT |
 | Angie Stone | Wish I Didn't Miss You | 2001 | Spotify + MusicBrainz | – | 2001 | 2001 | US |
 | Ania Dąbrowska | Bawię się świetnie | 2012 | Discogs + Wikipedia | 2012 | – | – | PL |
 | Ania Dąbrowska | Charlie, Charlie | 2004 | Discogs + Spotify | 2004 | – | 2004 | PL |
@@ -529,6 +621,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Anita Lipnicka & John Porter | Bones of Love | 2003 | Discogs + Spotify | 2003 | – | 2003 | PL |
 | Anita Lipnicka & The Hats | Ptasiek | 2016 | Spotify | 2019 | – | 2016 | PL |
 | Anita Ward | Ring My Bell | 1979 | Discogs | 1979 | – | 2005 | US |
+| Anna Bergendahl | This Is My Life | 2010 | Wikipedia – artykuł o piosence; Eurowizja 2010 (Sweden, udział) | 2010 | – | – | SE |
 | Anna German & Marta Majek | Człowieczy Los | 1970 | Discogs | 1983 | – | 2021 | PL |
 | Anna Jantar | Moje jedyne marzenie | 1980 | Discogs + Spotify | 1980 | – | 1980 | PL |
 | Anna Jantar | Najtrudniejszy pierwszy krok | 1973 | Discogs + MusicBrainz | 1973 | 1973 | 1974 | PL |
@@ -554,11 +647,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Anna Wyszkoni | Czy Ten Pan I Pani | 2021 | Spotify | – | – | 2021 | ? |
 | Anna Wyszkoni | Wiem, że jesteś tam | 2011 | Spotify | – | – | 2011 | ? |
 | Anna Wyszkoni | Z Ciszą Pośród Czterech Ścian | 2009 | MusicBrainz – oficjalny album „Pan i pani” (29.06.2009); 2021 to data reedycji w Spotify (zgłoszenie użytkownika) | – | – | 2021 | ? |
+| Anne-Marie David | Tu te reconnaîtras | 1973 | Wikipedia – artykuł o piosence; Eurowizja 1973 (Luxembourg, zwycięstwo) | 1973 | – | – | FR |
 | Annie Lennox | No More "I Love You's" | 1995 | Discogs + Spotify | 1995 | – | 1995 | GB |
 | Annie Lennox | Walking on Broken Glass | 1992 | Discogs + Spotify | 1992 | – | 1992 | GB |
 | Annie Lennox | Why | 1992 | Discogs + Spotify | 1992 | – | 1992 | GB |
+| Anouk | Birds | 2013 | Wikipedia – artykuł o piosence; Eurowizja 2013 (Netherlands, miejsce: 9th) | 2013 | – | – | NL |
 | Antek Smykiewicz | Fotografie | 2026 | Spotify | – | – | 2026 | ? |
 | Antek Smykiewicz | Pomimo Burz | 2016 | Discogs + Spotify | 2016 | – | 2016 | ? |
+| Antique | (I Would) Die for You | 2001 | Wikipedia – artykuł o piosence; Eurowizja 2001 (Greece, miejsce: 3rd) | 2001 | – | – | GR |
 | Antonina Krzyszton | Perłowa łódź | 1993 | Discogs | 1993 | – | 2013 | PL |
 | Antony and the Johnsons & ANOHNI | Hope There's Someone | 2005 | Spotify (MusicBrainz: 2006) | – | 2006 | 2005 | US |
 | Aphex Twin | Windowlicker | 1999 | Discogs + Spotify | 1999 | – | 1999 | GB |
@@ -566,6 +662,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Apollo 440 | Ain't Talkin' 'Bout Dub | 1996 | MusicBrainz (Spotify: 1997) | – | 1996 | 1997 | GB |
 | Apollo 440 | Stop the Rock | 1998 | Spotify (MusicBrainz: 1999) | 1999 | 1999 | 1998 | GB |
 | Arab Strap | The First Big Weekend | 1996 | Discogs + Spotify | 1996 | – | 1996 | GB |
+| Aram Mp3 | Not Alone | 2014 | Wikipedia – artykuł o piosence; Eurowizja 2014 (Armenia, miejsce: 4th) | 2014 | – | – | AM |
 | Arcade Fire | Everything Now | 2017 | Discogs + Spotify | 2017 | – | 2017 | CA |
 | Arcade Fire | Rebellion (Lies) | 2004 | Discogs + Spotify | 2004 | – | 2004 | CA |
 | Arcade Fire | Reflektor | 2013 | Discogs + Spotify | 2013 | – | 2013 | CA |
@@ -618,6 +715,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Artur Rojek | Mirafiori | 2026 | Discogs + Spotify | 2026 | – | 2026 | PL |
 | Artur Rojek | Prosta rzecz | 2005 | Wikipedia | – | – | – | PL |
 | Artur Rojek | Syreny | 2014 | Discogs + Spotify | 2014 | – | 2014 | PL |
+| Arvingarna | Eloise | 1993 | Wikipedia – artykuł o piosence; Eurowizja 1993 (Sweden, miejsce: 7th) | 1993 | – | – | SE |
 | Asaf Avidan | One Day / Reckoning Song (Wankelmut Rmx) | 2012 | MusicBrainz | – | 2012 | – | IL |
 | Ascetoholix & Doniu | Suczki | 2003 | Discogs | 2003 | – | 2009 | PL |
 | Asia | Heat Of The Moment | 1982 | Discogs + Spotify | 1982 | – | 1982 | GB |
@@ -644,14 +742,18 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Aya RL | Ameryka | 1996 | Discogs + Wikipedia | 1996 | – | – | PL |
 | Aya RL | Księżycowy Krok | 1986 | Discogs | 1986 | – | 1991 | PL |
 | Aya RL | Skóra | 1985 | Spotify (MusicBrainz: 1991) | – | 1991 | 1985 | PL |
+| Aysel & Arash | Always | 2009 | Wikipedia – artykuł o piosence; Eurowizja 2009 (Azerbaijan, miejsce: 3rd) | 2009 | – | – | AZ |
 | Azyl P | Mała Maggie | 1985 | Discogs + MusicBrainz | 1985 | 1985 | 2014 | PL |
+| Azúcar Moreno | Bandido | 1990 | Wikipedia – artykuł o piosence; Eurowizja 1990 (Spain, miejsce: 5th) | 1990 | – | – | ES |
 | B.B. King | The Thrill Is Gone | 1969 | Discogs + Spotify | 1969 | – | 1969 | US |
 | B.J. Thomas | Rain Drops Keep Falling on My Head | 1969 | Discogs (ponowne sprawdzenie) | 1969 | – | 2019 | US |
 | B.o.B & Bruno Mars | Nothin' on You | 2010 | Discogs | 2010 | – | – | US |
 | B.o.B & Hayley Williams | Airplanes | 2010 | Discogs | 2010 | – | – | US |
 | B.R.O | Jeszcze będzie pięknie | 2022 | Wikipedia | – | – | – | PL |
 | Baauer | Harlem Shake | 2012 | Discogs | 2012 | – | – | US |
+| Baby Lasagna | Rim Tim Tagi Dim | 2024 | Wikipedia – artykuł o piosence; Eurowizja 2024 (Croatia, miejsce: 2nd) | 2024 | – | – | HR |
 | Babylon Zoo | Spaceman | 1995 | Discogs | 1995 | 1995 | 1996 | GB |
+| Baccara | Parlez-vous français? | 1978 | Wikipedia – artykuł o piosence; Eurowizja 1978 (Luxembourg, miejsce: 7th) | 1978 | – | – | ES |
 | Baccara | Yes Sir, I Can Boogie | 1977 | Discogs | 1977 | – | 1998 | ES |
 | Bachman-Turner Overdrive | You Ain't Seen Nothing Yet | 1974 | Spotify + MusicBrainz | – | 1974 | 1974 | CA |
 | Backstreet Boys | Everybody (Backstreet's Back) | 1997 | Spotify + MusicBrainz | – | 1997 | 1997 | US |
@@ -680,12 +782,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Bajm | Szklanka wody | 2000 | Discogs + Spotify | 2000 | – | 2000 | PL |
 | Bajm | Ta sama chwila | 1993 | Discogs + Spotify | 1993 | – | 1993 | PL |
 | bambi & Young Leosia | BFF | 2023 | Spotify + MusicBrainz | – | 2023 | 2023 | PL |
+| Bambie Thug | Doomsday Blue | 2024 | Wikipedia – artykuł o piosence; Eurowizja 2024 (Ireland, miejsce: 6th) | 2024 | – | – | IE |
 | Bananarama | Cruel Summer | 1983 | Discogs | 1983 | – | 1984 | GB |
 | Bananarama | Venus | 1986 | Discogs + Spotify | 1986 | – | 1986 | GB |
 | Banco De Gaia | Last Train to Lhasa | 1995 | Discogs + Spotify | 1995 | – | 1995 | GB |
 | Band of Horses | The Funeral | 2006 | Spotify + MusicBrainz | – | 2006 | 2006 | US |
 | Banda i Wanda | Hi-Fi / Nie będę Julią | 1983 | Wikipedia | – | – | – | PL |
 | Bandolier Kings | Zoom Club | 2019 | Spotify + MusicBrainz | 2020 | 2019 | 2019 | SE |
+| Barbara Pravi | Voilà | 2020 | Wikipedia – artykuł o piosence; Eurowizja 2021 (France, miejsce: 2nd); wydana w 2020 | 2020 | – | – | FR |
 | Barbara Wrońska | Nie czekaj | 2018 | Spotify + MusicBrainz | – | 2018 | 2018 | PL |
 | Barbra Streisand | Evergreen | 1976 | Discogs + Spotify | 1976 | – | 1976 | US |
 | Barbra Streisand | People | 1964 | Discogs | 1964 | – | – | US |
@@ -738,11 +842,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Bemibem | Podaruj mi trochę słońca | 1974 | Discogs + Spotify | 1974 | – | 1974 | PL |
 | Ben E. King | Stand by Me | 1961 | Discogs + MusicBrainz+Wikipedia | 1961 | 1962 | 1962 | US |
 | BENEE & Gus Dapperton | Supalonely | 2019 | Spotify + MusicBrainz | 2020 | 2019 | 2019 | NZ |
+| Benjamin Ingrosso | Dance You Off | 2018 | Wikipedia – artykuł o piosence; Eurowizja 2018 (Sweden, miejsce: 7th) | 2018 | – | – | SE |
 | Benny Blanco & Halsey | Eastside | 2018 | Discogs | 2018 | – | – | US |
 | Benson Boone | Beautiful Things | 2024 | Discogs + Spotify | 2024 | – | 2024 | US |
 | Benson Boone | Mystical Magical | 2025 | Discogs + Spotify | 2025 | – | 2025 | US |
 | Benson Boone | Sorry I'm Here for Someone Else | 2025 | Discogs | 2025 | – | – | US |
 | Berlin | Take My Breath Away | 1986 | Discogs | 1986 | – | 1999 | US |
+| Beth | Dime | 2003 | Wikipedia – artykuł o piosence; Eurowizja 2003 (Spain, miejsce: 8th) | 2003 | – | – | ES |
+| Betty Curtis | Al di là | 1961 | Wikipedia – artykuł o piosence; Eurowizja 1961 (Italy, miejsce: 5th) | 1961 | – | – | IT |
 | Betty Everett | It's In The Kiss (The Shoop Shoop Song) | 2010 | Spotify | – | – | 2010 | US |
 | Beverley Craven | Promise Me | 1990 | Discogs + Spotify | 1990 | – | 1990 | GB |
 | Beyoncé | Crazy in Love | 2003 | Discogs + MusicBrainz+Wikipedia + Spotify | 2003 | 2003 | 2003 | US |
@@ -804,12 +911,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Billy Vaughn | Melody of Love | 1954 | Discogs | 1954 | – | – | US |
 | Billy Vaughn | Sail Along, Silv'ry Moon | 1958 | MusicBrainz | – | 1958 | – | US |
 | Bing Crosby & Ken Darby Singers | White Christmas | 1942 | Discogs + Spotify | 1942 | – | 1942 | US |
+| Birthe Kjær | Vi maler byen rød | 1989 | Wikipedia – artykuł o piosence; Eurowizja 1989 (Denmark, miejsce: 3rd) | 1989 | – | – | DK |
 | Bitamina | Dom | 2017 | Discogs + Spotify | 2017 | – | 2017 | PL |
 | Bitamina | Pytanie do Niej | 2017 | Discogs + Spotify | 2017 | – | 2017 | PL |
 | Björk | All Is Full Of Love | 1997 | Discogs | 1997 | – | 2002 | IS |
 | Björk | Human Behaviour | 1993 | Discogs + Spotify | 1993 | – | 1993 | IS |
 | Björk | It's Oh So Quiet | 1995 | Spotify + MusicBrainz | 2001 | 1995 | 1995 | IS |
 | Björk | I’ve Seen It All | 2000 | Spotify + MusicBrainz | – | 2000 | 2000 | IS |
+| Björn Skifs | Fångad i en dröm | 1981 | Wikipedia – artykuł o piosence; Eurowizja 1981 (Sweden, miejsce: 10th) | 1981 | – | – | SE |
 | Black | Wonderful Life | 1986 | Discogs | 1986 | – | 1987 | ? |
 | Black Box | Ride on Time | 1989 | Discogs | 1989 | – | 2006 | IT |
 | Black Eyed Peas | Meet Me Halfway | 2009 | Discogs + Spotify | 2009 | – | 2009 | US |
@@ -827,12 +936,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | blackbear | hot girl bummer | 2019 | Discogs | 2019 | – | 2020 | US |
 | Blackfield | Blackfield | 2004 | Discogs + Spotify | 2004 | – | 2004 | GB |
 | Blackfield | End of the World | 2007 | Discogs + Spotify | 2007 | – | 2007 | GB |
+| Blanche | City Lights | 2017 | Wikipedia – artykuł o piosence; Eurowizja 2017 (Belgium, miejsce: 4th) | 2017 | – | – | BE |
 | Blanka | Solo | 2022 | Discogs | 2022 | – | – | PL |
 | Blenders | Astropunk | 2010 | Wikipedia | – | – | – | PL |
 | Blenders | Biribomba | 1996 | Discogs + Spotify | 1996 | – | 1996 | PL |
 | Blenders | Ciągnik | 1996 | Discogs + Spotify | 1996 | – | 1996 | PL |
 | Bletka | Dwa dni | 2026 | Spotify + MusicBrainz | – | 2026 | 2026 | PL |
 | Bletka | Komu miałabym powiedzieć? | 2025 | Spotify + MusicBrainz | – | 2025 | 2025 | PL |
+| Blind Channel | Dark Side | 2021 | Wikipedia – artykuł o piosence; Eurowizja 2021 (Finland, miejsce: 6th) | 2021 | – | – | FI |
 | blink-182 | All The Small Things | 1999 | Discogs + Spotify | 1999 | – | 1999 | US |
 | Bloc Party | Banquet | 2004 | Discogs | 2004 | – | 2005 | GB |
 | BlocBoy JB & Drake | Look Alive | 2018 | Discogs | 2018 | – | – | US |
@@ -882,10 +993,12 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Bobby Lewis | Tossin' and Turnin' | 1961 | Discogs | 1961 | – | – | US |
 | Bobby McFerrin | Don't Worry Be Happy | 1988 | MusicBrainz (Spotify: 1997) | – | 1988 | 1997 | US |
 | Bobby Rydell | Wild One | 1960 | Discogs | 1960 | – | – | US |
+| Bobby Solo | Se piangi, se ridi | 1965 | Wikipedia – artykuł o piosence; Eurowizja 1965 (Italy, miejsce: 5th) | 1965 | – | – | IT |
 | Bobby Vee | Take Good Care of My Baby | 1961 | Discogs | 1961 | – | – | US |
 | Bobby Vinton | Blue Velvet | 1963 | Discogs | 1963 | – | 2004 | US |
 | Bobby Vinton | My Melody Of Love | 1974 | Discogs | 1974 | – | 2006 | US |
 | Bobby Vinton | Roses Are Red (My Love) | 1962 | Discogs | 1962 | – | – | US |
+| Bobbysocks! | La det swinge | 1985 | Wikipedia – artykuł o piosence; Eurowizja 1985 (Norway, zwycięstwo) | 1985 | – | – | NO |
 | Bogusław Mec | Jej portret | 1979 | Discogs | 1979 | – | 2004 | PL |
 | Bohdan Lazuka | Bo to się zwykle tak zaczyna | 1965 | Discogs | 1965 | – | 2016 | PL |
 | Bomfunk MC's | Freestyler | 1999 | Discogs + Spotify | 1999 | – | 1999 | FI |
@@ -950,6 +1063,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Bronski Beat | Smalltown Boy | 1984 | Discogs + Spotify | 1984 | – | 1984 | GB |
 | Brook Benton | It's Just a Matter of Time | 1982 | Discogs | 1982 | – | – | US |
 | Brook Benton | The Boll Weevil Song | 1961 | Discogs | 1961 | – | – | US |
+| Brotherhood of Man | Save Your Kisses for Me | 1976 | Wikipedia – artykuł o piosence; Eurowizja 1976 (United Kingdom, zwycięstwo) | 1976 | – | – | GB |
 | Bruce Channel | Hey! Baby | 1962 | Discogs | 1962 | – | 2017 | US |
 | Bruce Hornsby and the Range | The Way It Is | 1986 | Discogs + Spotify | 1986 | – | 1986 | US |
 | Bruce Springsteen | Born in the U.S.A. | 1984 | Spotify (MusicBrainz: 2019) | – | 2019 | 1984 | US |
@@ -976,6 +1090,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Bryan Adams & Sting | All For Love | 1993 | Discogs | 1993 | – | 2017 | CA |
 | Bryan Ferry | Don't Stop The Dance | 1985 | Spotify + MusicBrainz | – | 1985 | 1985 | GB |
 | Bryan Ferry | Slave To Love | 1985 | Discogs + Spotify | 1985 | – | 1985 | GB |
+| Bryan Johnson | Looking High, High, High | 1960 | Wikipedia – artykuł o piosence; Eurowizja 1960 (United Kingdom, miejsce: 2nd) | 1960 | – | – | GB |
 | Brygada Kryzys | Centrala | 1982 | Discogs | 1982 | – | 1999 | PL |
 | Brygada Kryzys | To co czujesz, to co wiesz | 2000 | Spotify (MusicBrainz: 2004) | – | 2004 | 2000 | PL |
 | Bryska | Kraksa | 2022 | Wikipedia + Discogs (singiel) | – | – | – | PL |
@@ -985,6 +1100,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | BTS | Butter | 2021 | Discogs | 2021 | – | – | KR |
 | BTS | Dynamite | 2020 | Discogs + Spotify | 2020 | – | 2020 | KR |
 | Buchanan & Goodman | The Flying Saucer | 1956 | Discogs (singiel) + MusicBrainz | 1957 | 1956 | – | AU |
+| Bucks Fizz | Making Your Mind Up | 1981 | Wikipedia – artykuł o piosence; Eurowizja 1981 (United Kingdom, zwycięstwo) | 1981 | – | – | GB |
 | Buddy Holly & The Crickets | That'll Be The Day | 1956 | Discogs (singiel) | 2009 | 1969 | 1957 | US |
 | Buddy Knox | Party Doll | 1956 | Discogs | 1956 | – | – | US |
 | Budgie | I Turned To Stone | 1981 | Discogs | 1981 | – | 2019 | GB |
@@ -1017,6 +1133,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Burial | Archangel | 2007 | Discogs + Spotify | 2007 | – | 2007 | GB |
 | Busta Rhymes | Break Ya Neck | 2001 | Discogs + Spotify | 2001 | – | 2001 | US |
 | Buzu Squat | Przebudzenie | 1993 | Discogs | 1993 | – | 1995 | PL |
+| ByeAlex | Kedvesem | 2012 | Wikipedia – artykuł o piosence; Eurowizja 2013 (Hungary, miejsce: 10); wydana w 2012 | 2012 | – | – | HU |
 | Bóm Wakacje w Rzymie | Pierwszy | 1986 | Wikipedia | – | – | – | PL |
 | BØRNS | Electric Love | 2015 | Discogs + Spotify | 2015 | – | 2015 | US |
 | Błażej Król | Głos wewnętrzny | 2020 | Spotify | – | – | 2020 | PL |
@@ -1049,20 +1166,26 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Caribou | Can't Do Without You | 2014 | Spotify + MusicBrainz | – | 2014 | 2014 | CA |
 | Carl Dobkins Jr. | My Heart Is an Open Book | 1958 | Discogs (singiel) | 1959 | – | – | US |
 | Carl Douglas | Kung Fu Fighting | 1974 | Discogs + Spotify | 1974 | – | 1974 | JM |
+| Carl Espen | Silent Storm | 2014 | Wikipedia – artykuł o piosence; Eurowizja 2014 (Norway, miejsce: 8th) | 2014 | – | – | NO |
 | Carl Perkins | Blue Suede Shoes | 1956 | Discogs | 1956 | – | – | US |
 | Carla Fernandes | A2 | 2026 | Spotify | – | – | 2026 | PL |
 | Carla Fernandes | Co, jeśli? | 2025 | Wikipedia | – | – | – | PL |
 | Carly Rae Jepsen | Call Me Maybe | 2011 | Discogs (singiel) | 2012 | – | – | CA |
 | Carly Simon | You're So Vain | 1972 | Spotify + MusicBrainz | 2023 | 1972 | 1972 | US |
+| Carola | Fångad av en stormvind | 1991 | Wikipedia – artykuł o piosence; Eurowizja 1991 (Sweden, zwycięstwo) | 1991 | – | – | SE |
+| Carola Häggkvist | Främling | 1983 | Wikipedia – artykuł o piosence; Eurowizja 1983 (Sweden, miejsce: 3rd) | 1983 | – | – | SE |
 | Carole King | It's Too Late | 1971 | Spotify + MusicBrainz | 1985 | 1971 | 1971 | US |
 | Carpenters | (They Long To Be) Close To You | 1970 | Discogs + Spotify | 1970 | – | 1970 | US |
 | Carpenters | Solitaire | 1975 | Discogs + Spotify | 1975 | – | 1975 | US |
 | Carpenters | This Masquerade | 1973 | Discogs + Spotify | 1973 | – | 1973 | US |
 | Carrie Underwood | Before He Cheats | 2005 | Discogs | 2005 | – | – | US |
+| Cascada | Glorious | 2013 | Wikipedia – artykuł o piosence; Eurowizja 2013 (Germany, miejsce: 21st) | 2013 | – | – | DE |
 | Cass Elliot | Make Your Own Kind Of Music | 1969 | Discogs + MusicBrainz | 1969 | 1969 | 1973 | US |
 | Cathy Carr | Ivory Tower | 1955 | Discogs | 1955 | – | – | US |
 | CeeLo Green | Fuck You (Forget You) | 2010 | MusicBrainz | – | 2010 | – | US |
 | Celine Dion | My Heart Will Go On | 1997 | Discogs + MusicBrainz+Wikipedia + Spotify | 1997 | 1997 | 1997 | CA |
+| Celine Dion | Ne partez pas sans moi | 1988 | Wikipedia – artykuł o piosence; Eurowizja 1988 (, zwycięstwo) | 1988 | – | – | CA |
+| Cesár Sampson | Nobody but You | 2018 | Wikipedia – artykuł o piosence; Eurowizja 2018 (Austria, miejsce: 3rd) | 2018 | – | – | AT |
 | Chad Kroeger & Josey Scott | Hero | 2002 | Discogs | 2002 | – | 2003 | CA |
 | Chaka Khan | Ain't Nobody | 1989 | MusicBrainz (Spotify: 1996) | – | 1989 | 1996 | US |
 | Chaka Khan | I'm Every Woman | 1978 | Spotify + MusicBrainz | – | 1978 | 1978 | US |
@@ -1076,6 +1199,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Charli XCX | Rock Music | 2026 | Discogs + Wikipedia | 2026 | – | – | GB |
 | Charli xcx & Billie Eilish | Guess featuring billie eilish | 2024 | Spotify | – | – | 2024 | GB |
 | Charlie Gracie | Butterfly | 1957 | Discogs | 1957 | – | – | US |
+| Charlotte Nilsson | Take Me to Your Heaven | 1999 | Wikipedia – artykuł o piosence; Eurowizja 1999 (Sweden, zwycięstwo) | 1999 | – | – | SE |
 | Chemia | Send Me The Ravens | 2015 | Discogs + Spotify | 2015 | – | 2015 | PL |
 | Cher | Believe | 1998 | MusicBrainz+Wikipedia + Spotify | – | 1998 | 1998 | US |
 | Cher | If I Could Turn Back Time | 1989 | Discogs + Spotify | 1989 | – | 1989 | US |
@@ -1092,6 +1216,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Childish Gambino | Redbone | 2016 | Discogs + Spotify | 2016 | – | 2016 | US |
 | Childish Gambino | This Is America | 2018 | Discogs + Spotify | 2018 | – | 2018 | US |
 | Chingy | Right Thurr | 2002 | Discogs (singiel) | 2003 | – | – | US |
+| Chips | Dag efter dag | 1982 | Wikipedia – artykuł o piosence; Eurowizja 1982 (Sweden, miejsce: 8th) | 1982 | – | – | SE |
 | Chivas | Prawie straciłem głos | 2024 | Wikipedia | – | – | – | PL |
 | Chris Brown | Under the Influence | 2019 | MusicBrainz (Discogs (singiel): 2022) | – | 2019 | – | US |
 | Chris Brown & Drake | No Guidance | 2019 | Discogs | 2019 | – | – | US |
@@ -1135,7 +1260,9 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Clannad & Bono | In a Lifetime | 1985 | Discogs | 1985 | – | 1996 | IE |
 | Classic | To nie przyjaźń tylko miłość | 2013 | Wikipedia | – | – | – | PL |
 | Classix Nouveaux | Never Never Comes | 1983 | Discogs + Spotify | 1983 | – | 1983 | GB |
+| Claude | C'est la vie | 2025 | Wikipedia – artykuł o piosence; Eurowizja 2025 (Netherlands, miejsce: 12th) | 2025 | – | – | NL |
 | Claude King | Wolverton Mountain | 1962 | Discogs | 1962 | – | – | US |
+| Claudio Villa | Addio, addio | 1962 | Wikipedia – artykuł o piosence; Eurowizja 1962 (Italy, miejsce: 9th) | 1962 | – | – | IT |
 | Clean Bandit & Demi Lovato | Solo | 2018 | Discogs | 2018 | – | – | GB |
 | Clean Bandit & Jess Glynne | Rather Be | 2013 | Discogs (singiel) | 2014 | – | 2014 | GB |
 | Clean Bandit & Zara Larsson | Symphony | 2017 | Discogs | 2017 | – | – | GB |
@@ -1144,9 +1271,11 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Cleo | Zabiorę nas | 2015 | Discogs + Wikipedia | 2015 | – | – | PL |
 | Cleo & Skolim | LUBIMY | 2026 | Spotify | – | – | 2026 | PL |
 | Cliff Richard | Congratulations | 1968 | Discogs | 1968 | – | 1989 | GB |
+| Cliff Richard | Power to All Our Friends | 1973 | Wikipedia – artykuł o piosence; Eurowizja 1973 (United Kingdom, miejsce: 3rd) | 1973 | – | – | GB |
 | Cliff Richard | We Don't Talk Anymore | 1979 | Spotify + MusicBrainz | 1982 | 1979 | 1979 | GB |
 | Cliff Richard & The Shadows | The Young Ones | 1961 | Discogs | 1961 | – | 2015 | GB |
 | Clock Machine | Morphine | 2015 | Discogs | 2015 | – | 2016 | PL |
+| Clodagh Rodgers | Jack in the Box | 1971 | Wikipedia – artykuł o piosence; Eurowizja 1971 (United Kingdom, miejsce: 4th) | 1971 | – | – | GB |
 | Closterkeller | 12 dni | 2009 | Wikipedia | – | – | – | PL |
 | Closterkeller | Czas komety | 1999 | Discogs + Wikipedia | 1999 | – | – | PL |
 | Closterkeller | Na krawędzi | 1999 | Discogs + Wikipedia | 1999 | – | – | PL |
@@ -1183,6 +1312,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Coma | Zero Osiem Wojna | 2008 | Discogs + Wikipedia | 2008 | – | – | PL |
 | Commodores | Easy | 1976 | Discogs (singiel) | 1977 | – | 1995 | US |
 | Conan Gray | Heather | 2020 | Discogs + Spotify | 2020 | – | 2020 | US |
+| Conchita Bautista | Estando contigo | 1961 | Wikipedia – artykuł o piosence; Eurowizja 1961 (Spain, miejsce: 9th) | 1961 | – | – | ES |
+| Conchita Wurst | Rise Like a Phoenix | 2014 | Wikipedia – artykuł o piosence; Eurowizja 2014 (Austria, zwycięstwo) | 2014 | – | – | AT |
 | Connie Francis | Everybody's Somebody's Fool | 1992 | Discogs | 1992 | – | – | US |
 | Connie Francis | Lipstick on Your Collar | 1959 | Discogs | 1959 | – | – | US |
 | Connie Francis | My Heart Has a Mind of Its Own | 1960 | Discogs | 1960 | – | – | US |
@@ -1191,8 +1322,11 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Conway Twitty | It's Only Make Believe | 1961 | Discogs | 1961 | – | – | US |
 | Cool Kids Of Death | Butelki z benzyna i kamienie | 2002 | Discogs + Spotify | 2002 | – | 2002 | PL |
 | Coolio | Gangsta's Paradise | 1995 | Discogs + MusicBrainz+Wikipedia + Spotify | 1995 | 1995 | 1995 | US |
+| Corinne Hermès | Si la vie est cadeau | 1983 | Wikipedia – artykuł o piosence; Eurowizja 1983 (Luxembourg, zwycięstwo) | 1983 | – | – | FR |
+| Cornelia Jakobs | Hold Me Closer | 2022 | Wikipedia – artykuł o piosence; Eurowizja 2022 (Sweden, miejsce: 4th) | 2022 | – | – | SE |
 | Cornershop & Norman Cook | Brimful of Asha | 1997 | Discogs + Spotify | 1997 | – | 1997 | GB |
 | Corona | The Rhythm Of The Night | 1993 | Discogs | 1993 | – | 1995 | IT |
+| Corry Brokken | Net als toen | 1957 | Wikipedia – artykuł o piosence; Eurowizja 1957 (Netherlands, zwycięstwo) | 1957 | – | – | NL |
 | Counting Crows | Mr. Jones | 1993 | Discogs + Spotify | 1993 | – | 1993 | US |
 | Coverdale/Page | Take Me for a Little While | 1993 | Discogs + Spotify | 1993 | – | 1993 | GB |
 | Cozy Cole | Topsy II | 1958 | Discogs | 1958 | – | – | US |
@@ -1263,12 +1397,15 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Daft Punk | Get Lucky | 2013 | Discogs + MusicBrainz+Wikipedia + Spotify | 2013 | 2013 | 2013 | FR |
 | Daft Punk | One More Time | 2000 | Discogs | 2000 | – | 2001 | FR |
 | Dalida & Alain Delon | Paroles… paroles… | 1973 | Discogs | 1973 | – | 1997 | FR |
+| Dami Im | Sound of Silence | 2016 | Wikipedia – artykuł o piosence; Eurowizja 2016 (Australia, miejsce: 2nd) | 2016 | – | – | AU |
 | Damian Marley | Welcome To Jamrock | 2005 | Discogs + Spotify | 2005 | – | 2005 | JM |
 | Damiano David | Next Summer | 2025 | Discogs | 2025 | – | – | IT |
 | Damiano David | Zombie Lady | 2025 | Discogs | 2025 | – | – | IT |
 | Damien Rice | 9 Crimes | 2006 | Discogs + Spotify | 2006 | – | 2006 | IE |
 | Damien Rice | The Blower's Daughter | 2001 | Discogs (ponowne sprawdzenie) | 2001 | 2002 | 2002 | IE |
 | Damn Yankees | High Enough | 1990 | Discogs + Spotify | 1990 | – | 1990 | US |
+| Dana | All Kinds of Everything | 1970 | Wikipedia – artykuł o piosence; Eurowizja 1970 (Ireland, zwycięstwo) | 1970 | – | – | IE |
+| Dana International | Diva | 1998 | Wikipedia – artykuł o piosence; Eurowizja 1998 (Israel, zwycięstwo) | 1998 | – | – | IL |
 | Daniel Powter | Bad Day | 2004 | Discogs (singiel) | 2005 | – | – | CA |
 | Danny & the Juniors | At the Hop | 1957 | Discogs | 1968 | – | – | US |
 | Danny Saucedo | If Only You | 2007 | Discogs + Wikipedia | 2007 | – | – | SE |
@@ -1351,6 +1488,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Dawid Podsiadło | Trójkąty i kwadraty | 2013 | Discogs + MusicBrainz+Wikipedia + Spotify | 2013 | 2013 | 2013 | PL |
 | Dawid Podsiadło | W Dobrą Stronę | 2015 | Discogs + Spotify | 2015 | – | 2015 | PL |
 | Dawid Podsiadło | W kilometrach | 2025 | Discogs + Wikipedia | 2025 | – | – | PL |
+| Daði & Gagnamagnið | Think About Things | 2020 | Wikipedia – artykuł o piosence; Eurowizja 2020 (Iceland, udział) | 2020 | – | – | IS |
+| Daði og Gagnamagnið | 10 Years | 2021 | Wikipedia – artykuł o piosence; Eurowizja 2021 (Iceland, miejsce: 4th) | 2021 | – | – | IS |
 | De La Soul | Me Myself and I | 1989 | Discogs + Spotify | 1989 | – | 1989 | US |
 | De Mono | Kochać inaczej | 1989 | Discogs | 1989 | – | 2013 | PL |
 | De Mono | Moje miasto nocą | 1990 | Discogs | 1990 | – | 2017 | PL |
@@ -1419,6 +1558,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Derek & The Dominos | Layla | 1970 | Discogs + Spotify | 1970 | – | 1970 | US |
 | Dermot Kennedy | Power Over Me | 2018 | Discogs (singiel) | 2019 | – | 2019 | IE |
 | Desiigner | Panda | 2015 | Discogs (singiel) | 2016 | – | – | US |
+| Destiny | Je me casse | 2021 | Wikipedia – artykuł o piosence; Eurowizja 2021 (Malta, miejsce: 7th) | 2021 | – | – | MT |
 | Destiny's Child | Say My Name | 1999 | Discogs + Spotify | 1999 | – | 1999 | US |
 | Dexys Midnight Runners | Come On Eileen | 1982 | Discogs + MusicBrainz+Wikipedia + Spotify | 1982 | 1982 | 1982 | GB |
 | Dezerter | Dezerter | 1993 | Wikipedia | 1994 | – | – | PL |
@@ -1436,6 +1576,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Dido | White Flag | 2003 | Discogs + Spotify | 2003 | – | 2003 | GB |
 | Die Antwoord & G.O.D. | I FINK YOU FREEKY | 2016 | Discogs + Spotify | 2016 | – | 2016 | ZA |
 | Diiya | Czerwone Jagody Drill | 2026 | Spotify | – | – | 2026 | PL |
+| Dima Bilan | Believe | 2008 | Wikipedia – artykuł o piosence; Eurowizja 2008 (Russia, zwycięstwo) | 2008 | – | – | RU |
 | Dinosaur Jr. | Freak Scene | 1988 | Discogs + Spotify | 1988 | – | 1988 | US |
 | Dio | Holy Diver | 1983 | Discogs + Spotify | 1983 | – | 1983 | US |
 | Dio | Rainbow In The Dark | 1983 | Discogs + Spotify | 1983 | – | 1983 | US |
@@ -1492,7 +1633,9 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Dolly Parton | 9 to 5 | 1980 | Discogs + Spotify | 1980 | – | 1980 | US |
 | Dolly Parton | I Will Always Love You | 1974 | Spotify + Discogs (singiel) + MusicBrainz | – | 1974 | 1974 | US |
 | Dolly Parton | Jolene | 1973 | Discogs | 1973 | – | 1974 | US |
+| Domenico Modugno | Dio, come ti amo | 1966 | Wikipedia – artykuł o piosence; Eurowizja 1966 (Italy, miejsce: 17th) | 1966 | – | – | IT |
 | Domenico Modugno | Nel blu dipinto di blu' (Volare) | 1958 | Discogs | 1958 | – | 2014 | IT |
+| Domenico Modugno | Piove | 1959 | Wikipedia – artykuł o piosence; Eurowizja 1959 (Italy, miejsce: 6th) | 1959 | – | – | IT |
 | Domenico Modugno | Volare (Nel blu dipinto di blu) | 1958 | Discogs | 1972 | – | – | IT |
 | Dominic Fike | 3 Nights | 2018 | Discogs + Spotify | 2018 | – | 2018 | US |
 | Dominika Płonka | będziesz tu tylko raz | 2026 | Spotify | – | – | 2026 | PL |
@@ -1511,6 +1654,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Donna Summer | I Feel Love | 1977 | Discogs + MusicBrainz+Wikipedia + Spotify | 1977 | 1977 | 1977 | US |
 | Donna Summer | MacArthur Park | 1978 | Discogs | 1978 | 1978 | 1979 | US |
 | Doris Day | Que Sera, Sera (Whatever Will Be, Will Be) | 1956 | Discogs | 1956 | 1987 | – | US |
+| Doris Dragović | Marija Magdalena | 1999 | Wikipedia – artykuł o piosence; Eurowizja 1999 (Croatia, miejsce: 4th) | 1999 | – | – | HR |
 | Dorota Miskiewicz | Nuce, gwizdze sobie | 2008 | Discogs + Spotify | 2008 | – | 2008 | PL |
 | Dorota Miskiewicz | Poza Czasem | 2005 | Discogs + Spotify | 2005 | – | 2005 | PL |
 | Dotan | Numb | 2020 | Discogs | 2020 | – | – | NL |
@@ -1545,6 +1689,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Duffy | Stepping Stone | 2008 | Discogs + Spotify | 2008 | – | 2008 | GB |
 | Duffy | Warwick Avenue | 2007 | Discogs | 2007 | – | – | GB |
 | Duke Dumont | Ocean Drive | 2015 | Discogs | 2015 | – | – | GB |
+| Duncan Laurence | Arcade | 2019 | Wikipedia – artykuł o piosence; Eurowizja 2019 (Netherlands, zwycięstwo) | 2019 | – | – | NL |
 | Duran Duran | A View to a Kill | 1985 | Discogs | 1985 | – | 1989 | GB |
 | Duran Duran | Come Undone | 1993 | Discogs + Spotify | 1993 | – | 1993 | GB |
 | Duran Duran | Ordinary World | 1992 | Discogs (singiel) | 1993 | – | 1993 | GB |
@@ -1653,6 +1798,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Edyta Górniak | Your High | 2014 | Discogs + Wikipedia | 2014 | – | – | PL |
 | Edyta Górniak & Mietek Szczesniak | Dumka na dwa serca | 1998 | Discogs (singiel) | 2004 | – | 2004 | PL |
 | Eiffel 65 | Blue (Da Ba Dee) | 1998 | Discogs + MusicBrainz+Wikipedia | 1998 | 1998 | – | IT |
+| Eimear Quinn | The Voice | 1996 | Wikipedia – artykuł o piosence; Eurowizja 1996 (Ireland, zwycięstwo) | 1996 | – | – | IE |
 | Ekipa & Hi Hania | Arigato | 2026 | MusicBrainz | – | 2026 | – | PL |
 | Elaiza | Is it Right | 2014 | Discogs | 2014 | – | – | DE |
 | Elbow | One Day Like This | 2008 | Discogs + Spotify | 2008 | – | 2008 | GB |
@@ -1672,6 +1818,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Elektryczne Gitary | Jestem z miasta | 1992 | Discogs | 1992 | – | 2014 | PL |
 | Elektryczne Gitary | Kiler | 1997 | Wikipedia + Discogs (singiel) | 1998 | – | – | PL |
 | Elektryczne Gitary | Ucieczka 5:55 | 2009 | Wikipedia + Discogs (singiel) | – | – | – | PL |
+| Eleni Foureira | Fuego | 2018 | Wikipedia – artykuł o piosence; Eurowizja 2018 (Cyprus, miejsce: 2nd) | 2018 | – | – | CY |
+| Elina Born & Stig Rästa | Goodbye to Yesterday | 2015 | Wikipedia – artykuł o piosence; Eurowizja 2015 (Estonia, miejsce: 7th) | 2015 | – | – | EE |
 | Ella Fitzgerald | Manhattan | 1956 | Discogs + Spotify | 1956 | – | 1956 | US |
 | Ella Fitzgerald & Louis Armstrong | Dream A Little Dream Of Me | 1952 | Discogs | 1952 | – | 1990 | US |
 | Ella Langley | Choosin' Texas | 2025 | Spotify + MusicBrainz | 2026 | 2025 | 2025 | US |
@@ -1738,6 +1886,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Eminem & Dido | Stan | 2000 | Discogs + Spotify | 2000 | – | 2000 | US |
 | Eminem & Rihanna | Love the Way You Lie | 2010 | Discogs | 2010 | – | – | US |
 | Eminem & Rihanna | The Monster | 2013 | Discogs + Spotify | 2013 | – | 2013 | US |
+| Emmelie de Forest | Only Teardrops | 2013 | Wikipedia – artykuł o piosence; Eurowizja 2013 (Denmark, zwycięstwo) | 2013 | – | – | DK |
 | Empire Of The Sun | Walking On A Dream | 2008 | Discogs + Spotify | 2008 | – | 2008 | AU |
 | Empire of the Sun | We Are the People | 2008 | Discogs + Wikipedia | 2008 | – | – | AU |
 | En Vogue | Don't Let Go (Love) | 1996 | MusicBrainz | – | 1996 | – | US |
@@ -1767,6 +1916,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Eric Clapton | Tears in Heaven | 1991 | Discogs | 1991 | – | 1999 | GB |
 | Eric Clapton | Wonderful Tonight | 1977 | Discogs + Spotify | 1977 | – | 1977 | GB |
 | Eric Prydz | Call on Me | 2004 | Discogs + Spotify | 2004 | – | 2004 | SE |
+| Eric Saade | Popular | 2011 | Wikipedia – artykuł o piosence; Eurowizja 2011 (Sweden, miejsce: 3rd) | 2011 | – | – | SE |
 | Erma Franklin | Piece of My Heart | 1967 | Discogs | 1967 | – | 2009 | US |
 | Ernie K-Doe | Mother-in-Law | 1960 | Discogs (singiel) | 1961 | – | – | US |
 | Eros Ramazzotti | Se bastasse una canzone | 1990 | Discogs | 1990 | – | 1997 | IT |
@@ -1846,6 +1996,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Feel | Jak anioła głos | 2007 | Discogs + Spotify | 2007 | – | 2007 | PL |
 | Feel | No pokaż na co cię stać | 2007 | Discogs + Spotify | 2007 | – | 2007 | PL |
 | Feel & Lanberry | Gotowi na wszystko | 2017 | Discogs (singiel) | – | 2018 | – | PL |
+| Felicia | My System | 2026 | Wikipedia – artykuł o piosence; Eurowizja 2026 (Sweden, miejsce: 20th) | 2026 | – | – | SE |
 | felix jaehn & Jasmine Thompson | Ain't Nobody (Loves Me Better) | 2015 | MusicBrainz – oficjalny singiel „Ain’t Nobody (Loves Me Better)” (2015); Discogs zna tylko album „I” (2018) | 2018 | – | 2018 | DE |
 | Felix Jaehn & Shouse | Walk with Me | 2024 | MusicBrainz | – | 2024 | – | DE |
 | Felix Jaehn & Sophie Ellis-Bextor | Ready for Your Love | 2024 | Discogs | 2024 | – | – | DE |
@@ -1920,6 +2071,9 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Foster The People | Pumped Up Kicks | 2010 | Discogs | 2010 | – | 2011 | US |
 | Four Tops | I Can't Help Myself (Sugar Pie Honey Bunch) | 1967 | MusicBrainz | – | 1967 | – | US |
 | Four Tops | Reach Out I'll Be There | 1966 | Discogs (ponowne sprawdzenie) | 1966 | 1967 | 1967 | US |
+| Franca Raimondi | Aprite le finestre | 1956 | Wikipedia – artykuł o piosence; Eurowizja 1956 (Italy, miejsce: 2nd) | 1956 | – | – | IT |
+| France Gall | Poupée de cire, poupée de son | 1965 | Wikipedia – artykuł o piosence; Eurowizja 1965 (Luxembourg, zwycięstwo) | 1965 | – | – | FR |
+| Francesco Gabbani | Occidentali's Karma | 2017 | Wikipedia – artykuł o piosence; Eurowizja 2017 (Italy, miejsce: 6th) | 2017 | – | – | IT |
 | Francis Lai | Theme From Love Story | 1970 | Discogs + Spotify | 1970 | – | 1970 | FR |
 | Franek Kimono | King Bruce Lee Karate Mistrz | 1984 | Discogs | 1984 | – | 2008 | PL |
 | Frank Ocean | Lost | 2012 | Discogs + Spotify | 2012 | – | 2012 | US |
@@ -1947,6 +2101,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Frankie Valli | My Eyes Adored You | 1974 | Discogs | 1974 | – | 1975 | US |
 | Frans | If I Were Sorry | 2016 | Discogs | 2016 | – | – | SE |
 | Franz Ferdinand | Take Me Out | 2003 | Discogs | 2003 | 2003 | 2004 | GB |
+| Françoise Hardy | L'amour s'en va | 1963 | Wikipedia – artykuł o piosence; Eurowizja 1963 (Monaco, miejsce: 5th) | 1963 | – | – | FR |
 | Freddie Mercury | I Was Born to Love You | 1985 | Discogs | 1985 | – | 2016 | GB |
 | Freddie Mercury | In My Defence | 1986 | Wikipedia | 1992 | – | – | GB |
 | Freddie Mercury & Serge Ramaekers | Living On My Own | 1985 | Discogs | 1985 | – | 2016 | GB |
@@ -1955,6 +2110,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Free | Wishing Well | 1972 | Discogs (singiel) | 1973 | – | 1973 | GB |
 | French Montana & Swae Lee | Unforgettable | 2017 | Discogs | 2017 | – | – | US |
 | Frida | I Know There's Something Going On | 1982 | Spotify + MusicBrainz | 1994 | 1982 | 1982 | SE |
+| Frida Boccara | Un jour, un enfant | 1969 | Wikipedia – artykuł o piosence; Eurowizja 1969 (France, zwycięstwo) | 1969 | – | – | FR |
 | Fryderyk Chopin & Natalia Kukulska | Czułe struny [Polonez As-dur] | 2020 | Spotify | – | – | 2020 | PL |
 | Fugazi | Waiting Room | 1988 | Discogs | 1988 | – | 1989 | US |
 | Fugees & Ms. Lauryn Hill | Killing Me Softly With His Song | 1996 | Discogs + Spotify | 1996 | – | 1996 | US |
@@ -2038,11 +2194,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Gibson Brothers | Que Sera Mi Vida | 1979 | Discogs | 1979 | – | 2011 | FR |
 | GIGI D'AGOSTINO | L'Amour Toujours | 1999 | Discogs (singiel) + MusicBrainz | – | 1999 | 2001 | IT |
 | Gigi Perez | Sailor Song | 2024 | Discogs (singiel) | 2025 | – | 2025 | US |
+| Gigliola Cinquetti | Non ho l'età | 1964 | Wikipedia – artykuł o piosence; Eurowizja 1964 (Italy, zwycięstwo) | 1964 | – | – | IT |
 | Gilbert Bécaud | Nathalie | 1964 | Discogs | 1964 | – | 2011 | FR |
 | Gilbert O'Sullivan | Alone Again (Naturally) | 1972 | Discogs + Spotify | 1972 | – | 1972 | IE |
 | Gilbert O'Sullivan | Clair | 1972 | Discogs + Spotify | 1972 | – | 1972 | IE |
+| Gina G | Ooh Aah... Just a Little Bit | 1996 | Wikipedia – artykuł o piosence; Eurowizja 1996 (United Kingdom, miejsce: 8th) | 1996 | – | – | AU |
 | Gipsy Kings | Bamboléo | 1987 | Discogs + Spotify | 1987 | – | 1987 | FR |
 | Gisele MacKenzie | Hard to Get | 1955 | Discogs | 1955 | – | – | CA |
+| Gjon's Tears | Tout l'univers | 2021 | Wikipedia – artykuł o piosence; Eurowizja 2021 (Switzerland, miejsce: 3rd) | 2021 | – | – | CH |
 | Gladys Knight | Licence To Kill | 1989 | Discogs | 1989 | – | 2001 | US |
 | Glass Animals | Heat Waves | 2020 | Discogs + Spotify | 2020 | – | 2020 | GB |
 | Glen Hansard & Marketa Irglova | Falling Slowly | 2006 | Discogs | 2006 | – | 2008 | ? |
@@ -2051,6 +2210,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Glenn Miller | In the Mood | 1939 | Discogs (singiel) | 1953 | – | 1996 | US |
 | Gloria Gaynor | I Will Survive | 1978 | Discogs + MusicBrainz+Wikipedia + Spotify | 1978 | 1978 | 1978 | US |
 | Gnarls Barkley | Crazy | 2005 | Discogs (singiel) | 2006 | 2006 | 2007 | US |
+| Go_A | Shum | 2021 | Wikipedia – artykuł o piosence; Eurowizja 2021 (Ukraine, miejsce: 5th) | 2021 | – | – | UA |
 | Gogi Grant | The Wayward Wind | 1955 | Discogs (singiel) | 1956 | – | – | US |
 | Golden Earring | Radar Love | 1973 | Discogs | 1973 | – | 2008 | NL |
 | Golden Life | 24.11.94 | 2004 | MusicBrainz (Spotify: 2012) | – | 2004 | 2012 | PL |
@@ -2095,6 +2255,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Green Day | Wake Me up When September Ends | 2004 | Discogs + Spotify | 2004 | – | 2004 | US |
 | Greta Van Fleet | Age of Machine | 2020 | Discogs (singiel) | 2021 | – | 2021 | US |
 | Greta Van Fleet | Highway Tune | 2013 | Discogs (singiel) | 2017 | – | 2017 | US |
+| Grethe & Jørgen Ingmann | Dansevise | 1963 | Wikipedia – artykuł o piosence; Eurowizja 1963 (Denmark, zwycięstwo) | 1963 | – | – | DK |
 | Grimes | Oblivion | 2012 | Discogs + Spotify | 2012 | – | 2012 | CA |
 | Grizzly Bear | Two Weeks | 2009 | Discogs + Spotify | 2009 | – | 2009 | US |
 | Gromee & Lukas Meijer | Light Me Up | 2018 | Discogs | 2018 | – | – | PL |
@@ -2119,6 +2280,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Grzegorz Turnau | Znów wędrujemy | 1991 | Discogs | 1991 | – | 1994 | PL |
 | Grzegorz Turnau & Andrzej Sikorowski | Nie przenoście nam stolicy do Krakowa | 1994 | Discogs + Spotify | 1994 | – | 1994 | PL |
 | Grzegorz Z Ciechowa | Piejo kury piejo | 1996 | Discogs | 1996 | – | 2004 | ? |
+| Guildo Horn & Die Orthopädischen Strümpfe | Guildo hat euch lieb! | 1998 | Wikipedia – artykuł o piosence; Eurowizja 1998 (Germany, miejsce: 7th) | 1998 | – | – | DE |
 | Guns N' Roses | Civil War | 1990 | Discogs (singiel) | 1991 | – | 1991 | US |
 | Guns N' Roses | Don't Cry | 1991 | Discogs (ponowne sprawdzenie) – album „Use Your Illusion I” (1991); wpis z 1986 r. to kaseta demo (zgłoszenie użytkownika) | 1986 | 1991 | 1991 | US |
 | Guns N' Roses | Knockin' On Heaven's Door | 1991 | Spotify (MusicBrainz: 1992) | – | 1992 | 1991 | US |
@@ -2131,9 +2293,11 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | GusGus | Over | 2011 | Discogs | 2011 | – | 2014 | IS |
 | GusGus | Polyesterday | 1996 | Discogs | 1996 | – | 1997 | IS |
 | Guus Meeuwis | Brabant | 2002 | Discogs | 2002 | – | 2006 | NL |
+| Guy Sebastian | Tonight Again | 2015 | Wikipedia – artykuł o piosence; Eurowizja 2015 (Australia, miejsce: 5th) | 2015 | – | – | AU |
 | Gwen Stefani | Hollaback Girl | 2004 | Discogs | 2004 | – | – | US |
 | Gwen Stefani & Akon | The Sweet Escape | 2006 | Discogs + Spotify | 2006 | – | 2006 | US |
 | Haddaway | What Is Love | 1992 | Discogs (singiel) | 1993 | – | 1993 | DE |
+| Hadise | Düm Tek Tek | 2009 | Wikipedia – artykuł o piosence; Eurowizja 2009 (Turkey, miejsce: 4th) | 2009 | – | – | TR |
 | Halina Frackowiak | Bądź gotowy do drogi | 1974 | Discogs + Spotify | 1974 | – | 1974 | PL |
 | Halina Frackowiak | Idę dalej | 1974 | Discogs + Spotify | 1974 | – | 1974 | PL |
 | Halina Frackowiak | Papierowy księżyc | 1985 | Discogs (singiel) | 1987 | – | 1987 | PL |
@@ -2165,6 +2329,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Harry Styles | Watermelon Sugar | 2019 | Discogs + Spotify | 2019 | – | 2019 | GB |
 | Heart | Barracuda | 1977 | Discogs + Spotify | 1977 | – | 1977 | US |
 | Hedone | Wiem czego dziś chcę | 2005 | Wikipedia + Discogs (singiel) | – | – | – | PL |
+| Helena Paparizou | My Number One | 2005 | Wikipedia – artykuł o piosence; Eurowizja 2005 (Greece, zwycięstwo) | 2005 | – | – | GR |
 | Herbie Hancock | Chameleon | 1973 | Discogs + Spotify | 1973 | – | 1973 | US |
 | Hercules & Love Affair | Blind | 2008 | Discogs + Spotify | 2008 | – | 2008 | US |
 | Herman's Hermits | Can't You Hear My Heartbeat | 1965 | MusicBrainz | – | 1965 | – | GB |
@@ -2173,6 +2338,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Herman's Hermits | No Milk Today | 1966 | Discogs | 1966 | – | 1996 | GB |
 | Herman's Hermits | Silhouettes | 1965 | Discogs | 1965 | – | – | GB |
 | Heroes Del Silencio | Entre dos tierras | 1990 | Discogs + Spotify | 1990 | – | 1990 | ES |
+| Herreys | Diggi-Loo Diggi-Ley | 1984 | Wikipedia – artykuł o piosence; Eurowizja 1984 (Sweden, zwycięstwo) | 1984 | – | – | SE |
 | Hey | Do Rycerzy, do Szlachty, do Mieszczan | 2012 | Discogs + Spotify | 2012 | – | 2012 | PL |
 | Hey | Gdzie jesteś, gdzie jestem? | 2017 | Discogs + Wikipedia | 2017 | – | – | PL |
 | Hey | Historie | 2016 | Discogs + Spotify | 2016 | – | 2016 | PL |
@@ -2198,6 +2364,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | House Of Pain | Jump Around | 1992 | Discogs + Spotify | 1992 | – | 1992 | US |
 | Hozier | Take Me To Church | 2013 | Discogs | 2013 | – | 2014 | IE |
 | Hozier | Too Sweet | 2024 | Discogs + Spotify | 2024 | – | 2024 | IE |
+| Hugues Aufray | Dès que le printemps revient | 1964 | Wikipedia – artykuł o piosence; Eurowizja 1964 (Luxembourg, miejsce: 4th) | 1964 | – | – | FR |
 | Human | Polski | 1993 | Discogs | 1993 | – | 2013 | PL |
 | Human | Słońce Moje | 2005 | MusicBrainz (Spotify: 2013) | – | 2005 | 2013 | PL |
 | HUNTR/X & EJAE | Golden | 2025 | Discogs + Spotify | 2025 | – | 2025 | US |
@@ -2228,6 +2395,9 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Igor Herbut | Jasny | 2020 | Discogs + Spotify | 2020 | – | 2020 | PL |
 | Igor Herbut | Wkręceni nie ufaj mi | 2013 | Spotify + MusicBrainz | – | 2013 | 2013 | PL |
 | Ike & Tina Turner | Nutbush City Limits | 1973 | Discogs | 1973 | 1978 | 2003 | US |
+| Il Volo | Grande amore | 2015 | Wikipedia – artykuł o piosence; Eurowizja 2015 (Italy, miejsce: 3rd) | 2015 | – | – | IT |
+| Ilinca & Alex Florea | Yodel It! | 2017 | Wikipedia – artykuł o piosence; Eurowizja 2017 (Romania, miejsce: 7th) | 2017 | – | – | RO |
+| Imaani | Where Are You? | 1998 | Wikipedia – artykuł o piosence; Eurowizja 1998 (United Kingdom, miejsce: 2nd) | 1998 | – | – | GB |
 | Imagine Dragons | Bad Liar | 2018 | Discogs + Spotify | 2018 | – | 2018 | US |
 | Imagine Dragons | Believer | 2017 | Discogs + Spotify | 2017 | – | 2017 | US |
 | Imagine Dragons | Demons | 2012 | Discogs + Spotify | 2012 | – | 2012 | US |
@@ -2267,6 +2437,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Iron Maiden | Run to the Hills | 1982 | Discogs + Spotify | 1982 | – | 1982 | GB |
 | Iron Maiden | The Number of the Beast | 1982 | Discogs + Spotify | 1982 | – | 1982 | GB |
 | Iron Maiden | The Trooper | 1983 | Discogs + Spotify | 1983 | – | 1983 | GB |
+| Isabelle Aubret | Un premier amour | 1962 | Wikipedia – artykuł o piosence; Eurowizja 1962 (France, zwycięstwo) | 1962 | – | – | FR |
+| Ivi Adamou | La La Love | 2012 | Wikipedia – artykuł o piosence; Eurowizja 2012 (Cyprus, miejsce: 16th) | 2012 | – | – | CY |
 | Izabela Trojanowska | Jestem Twoim grzechem | 1981 | Discogs | 1981 | – | 2006 | PL |
 | Izabela Trojanowska | Tyle samo prawd ile kłamstw | 1980 | Discogs | 1980 | – | 2006 | PL |
 | Izabela Trojanowska | Wszystko czego dziś chcę | 1980 | Discogs | 1980 | – | 2006 | PL |
@@ -2293,8 +2465,11 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Jack Savoretti | You Don't Have To Say You Love Me / Io che non vivo senza te - Medley | 2022 | Spotify | – | – | 2022 | GB |
 | Jack Scott | What in the World's Come Over You | 1960 | Discogs | 1960 | – | – | US |
 | Jack White & Alicia Keys | Another Way to Die | 2007 | Spotify (MusicBrainz: 2008) | 2008 | 2008 | 2007 | US |
+| Jacqueline Boyer | Tom Pillibi | 1960 | Wikipedia – artykuł o piosence; Eurowizja 1960 (France, zwycięstwo) | 1960 | – | – | FR |
+| Jalisse | Fiumi di parole | 1997 | Wikipedia – artykuł o piosence; Eurowizja 1997 (Italy, miejsce: 4th) | 1997 | – | – | IT |
 | Jamal | Peron | 2013 | Discogs + Spotify | 2013 | – | 2013 | PL |
 | Jamal & Jambojet | Policeman | 2005 | Discogs + Spotify | 2005 | – | 2005 | PL |
+| Jamala | 1944 | 2016 | Wikipedia – artykuł o piosence; Eurowizja 2016 (Ukraine, zwycięstwo) | 2016 | – | – | UA |
 | Jamelia | Superstar | 2003 | Discogs + Spotify | 2003 | – | 2003 | GB |
 | James | Getting Away With It (All Messed Up) | 2001 | Discogs + Spotify | 2001 | – | 2001 | GB |
 | James | Laid | 1993 | Discogs | 1993 | – | 1998 | GB |
@@ -2309,6 +2484,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | James Brown & The Famous Flames | I Got You (I Feel Good) | 1965 | Discogs | 1965 | – | 1966 | US |
 | James Hype & Miggy Dela Rosa | Ferrari | 2022 | Discogs + Spotify | 2022 | – | 2022 | GB |
 | James Morrison & Nelly Furtado | Broken Strings | 2008 | Discogs + Spotify | 2008 | – | 2008 | GB |
+| James Newman | Embers | 2021 | Wikipedia – artykuł o piosence; Eurowizja 2021 (United Kingdom, miejsce: 26th (last)) | 2021 | – | – | GB |
 | Jamie Lidell | Another Day | 2008 | Discogs + Spotify | 2008 | – | 2008 | GB |
 | Jamie Scott | You Can't Stop the Beat | 2013 | MusicBrainz | – | 2013 | – | GB |
 | Jamie xx & Romy | Loud Places | 2015 | Discogs + Spotify | 2015 | – | 2015 | GB |
@@ -2319,6 +2495,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Jan and Dean | Dead Man's Curve | 1996 | MusicBrainz | – | 1996 | – | US |
 | Jan and Dean | Surf City | 1963 | Discogs | 1963 | – | – | US |
 | Jan Hammer | Crockett's Theme | 1986 | MusicBrainz (Spotify: 1991) | – | 1986 | 1991 | US |
+| Jan Johansen | Se på mig | 1995 | Wikipedia – artykuł o piosence; Eurowizja 1995 (Sweden, miejsce: 3rd) | 1995 | – | – | SE |
 | Jan Kaczmarek | Do Serca Przytul Psa | 2004 | MusicBrainz (Spotify: 2008) | – | 2004 | 2008 | PL |
 | Jan Kanty Pawluskiewicz & Chorek | Jak kania dzdzu | 2003 | Spotify (MusicBrainz: 2012) | – | 2012 | 2003 | PL |
 | Jan Marczewski | Dotyk | 2023 | Spotify | – | – | 2023 | PL |
@@ -2345,6 +2522,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Jason Derulo & 2 Chainz | Talk Dirty | 2013 | Discogs | 2013 | – | – | US |
 | Jason Derulo & Nuka | Love Not War (The Tampa Beat) | 2020 | Discogs (singiel) | 2024 | – | – | US |
 | Jason Mraz | Life Is Wonderful | 2005 | Discogs + Spotify | 2005 | – | 2005 | US |
+| Javine | Touch My Fire | 2005 | Wikipedia – artykuł o piosence; Eurowizja 2005 (United Kingdom, miejsce: 22nd) | 2005 | – | – | GB |
 | Jax Jones & Ina Wroldsen | Breathe | 2017 | Discogs | 2017 | – | – | GB |
 | Jax Jones & MNEK | Where Did You Go? | 2022 | Discogs | 2022 | – | – | GB |
 | Jax Jones & RAYE | You Don't Know Me | 2016 | Spotify + MusicBrainz | – | 2016 | 2016 | GB |
@@ -2357,9 +2535,11 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | JAŸ-Z | Izzo (H.O.V.A.) | 2001 | Spotify + MusicBrainz | – | 2001 | 2001 | US |
 | JAŸ-Z & Alicia Keys | Empire State Of Mind | 2009 | Discogs + Spotify | 2009 | – | 2009 | US |
 | JAŸ-Z & Linkin Park | Numb / Encore | 2004 | Discogs + Spotify | 2004 | – | 2004 | US |
+| Jean-Claude Pascal | Nous les amoureux | 1961 | Wikipedia – artykuł o piosence; Eurowizja 1961 (Luxembourg, zwycięstwo) | 1961 | – | – | FR |
 | Jean-Michel Jarre | Oxygene, Pt. 4 | 1976 | Spotify | 1980 | – | 1976 | FR |
 | Jeanette | ¿Por Qué Te Vas? | 1974 | Discogs (singiel) | 1982 | – | 2016 | ES |
 | Jeden Osiem L | Jak Zapomnieć | 2003 | Discogs + Spotify | 2003 | – | 2003 | PL |
+| Jedward | Lipstick | 2011 | Wikipedia – artykuł o piosence; Eurowizja 2011 (Ireland, miejsce: 8th) | 2011 | – | – | IE |
 | Jeff Beck | Hi Ho Silver Lining | 1967 | Discogs | 1967 | – | 2003 | GB |
 | Jeff Beck & Rod Stewart | People Get Ready | 1985 | Discogs + Spotify | 1985 | – | 1985 | GB |
 | Jeff Buckley | Grace | 1994 | Discogs + Spotify | 1994 | – | 1994 | US |
@@ -2384,6 +2564,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Jerzy Połomski | Moja młodość | 1990 | Wikipedia | 1998 | – | – | PL |
 | Jerzy Połomski | To ostatnia niedziela | 1999 | Discogs | 1999 | – | 2006 | PL |
 | Jess Glynne | Hold My Hand | 2015 | Discogs + Spotify | 2015 | – | 2015 | GB |
+| Jessica Mauboy | We Got Love | 2018 | Wikipedia – artykuł o piosence; Eurowizja 2018 (Australia, miejsce: 20th) | 2018 | – | – | AU |
 | Jessie Murph & Jelly Roll | Wild Ones | 2024 | Discogs | 2024 | – | – | US |
 | Jessie Ware | Say You Love Me | 2014 | Discogs + Spotify | 2014 | – | 2014 | GB |
 | Jessie Ware | Wildest Moments | 2012 | Discogs | 2012 | – | 2013 | GB |
@@ -2415,6 +2596,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Jimmy Jones | Good Timin' | 1960 | Discogs | 1960 | – | – | US |
 | Jimmy Jones | Handy Man | 1959 | Discogs | 1959 | – | – | US |
 | Jimmy Ruffin | What Becomes of the Brokenhearted | 1966 | Discogs (singiel) | 1967 | – | – | US |
+| JJ | Wasted Love | 2025 | Wikipedia – artykuł o piosence; Eurowizja 2025 (Austria, miejsce: 1st) | 2025 | – | – | AT |
 | Joan Baez | Diamonds And Rust | 1975 | Discogs + Spotify | 1975 | – | 1975 | US |
 | Joan Baez | The Night They Drove Old Dixie Down | 1971 | Discogs + Spotify | 1971 | – | 1971 | US |
 | Joan Jett & the Blackhearts | I Hate Myself for Loving You | 1988 | Discogs + Spotify | 1988 | – | 1988 | US |
@@ -2444,6 +2626,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | John Lennon | Working Class Hero | 1970 | Discogs + Spotify | 1970 | – | 1970 | GB |
 | John Lennon & Yoko Ono | Give Peace A Chance | 1981 | Discogs | 1981 | – | 2010 | GB |
 | John Lennon & Yoko Ono | Happy Xmas (War Is Over) | 1971 | Discogs | 1981 | – | 2010 | GB |
+| John Lundvik | Too Late for Love | 2019 | Wikipedia – artykuł o piosence; Eurowizja 2019 (Sweden, miejsce: 5th) | 2019 | – | – | SE |
 | John Mayer | Belief | 2006 | Discogs + Spotify | 2006 | – | 2006 | US |
 | John Mayer | Gravity | 2005 | Discogs + MusicBrainz | 2005 | 2005 | 2006 | US |
 | John Miles | Music | 1976 | Discogs | 1976 | – | 2012 | GB |
@@ -2461,6 +2644,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Johnny Cash | Ring of Fire | 1963 | Discogs + Spotify | 1963 | – | 1963 | US |
 | Johnny Horton | Sink the Bismarck | 1960 | Discogs | 1960 | – | – | US |
 | Johnny Horton | The Battle of New Orleans | 1959 | Discogs | 1959 | – | – | US |
+| Johnny Logan | Hold Me Now | 1987 | Wikipedia – artykuł o piosence; Eurowizja 1987 (Ireland, zwycięstwo) | 1987 | – | – | IE |
+| Johnny Logan | What's Another Year | 1980 | Wikipedia – artykuł o piosence; Eurowizja 1980 (Ireland, zwycięstwo) | 1980 | – | – | IE |
 | Johnny Maddox | The Crazy Otto Medley | 1955 | Discogs | 1955 | – | – | US |
 | Johnny Mathis | Chances Are | 1957 | Discogs | 1957 | – | – | US |
 | Johnny Mathis | It's Not for Me to Say | 1974 | Discogs | 1974 | – | – | US |
@@ -2484,6 +2669,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Joni Mitchell | Big Yellow Taxi | 1970 | Discogs + Spotify | 1970 | – | 1970 | CA |
 | Joni Mitchell | Both Sides Now | 1969 | Discogs | 1969 | – | 2017 | CA |
 | Joni Mitchell | River - Blue Sessions | 2021 | Discogs + Spotify | 2021 | – | 2021 | CA |
+| Joost | Europapa | 2024 | Wikipedia – artykuł o piosence; Eurowizja 2024 (Netherlands, udział) | 2024 | – | – | NL |
 | Jordin Sparks & Chris Brown | No Air | 2007 | Discogs | 2007 | – | – | US |
 | José González | Heartbeats | 2003 | Discogs + Spotify | 2003 | – | 2003 | SE |
 | Journey | Don't Stop Believin' | 1981 | Spotify + Discogs (singiel) + MusicBrainz | 2014 | 1981 | 1981 | US |
@@ -2492,6 +2678,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Joy | Touch By Touch | 1985 | Discogs | 1985 | – | 2012 | AT |
 | Joy Division | Love Will Tear Us Apart | 1980 | Discogs + Spotify | 1980 | – | 1980 | GB |
 | Joy Division | Transmission | 1979 | Discogs | 1979 | – | 2008 | GB |
+| Joëlle Ursull | White and Black Blues | 1990 | Wikipedia – artykuł o piosence; Eurowizja 1990 (France, miejsce: 2nd) | 1990 | – | – | GP |
 | Juanes | La Camisa Negra | 2004 | Discogs + Spotify | 2004 | – | 2004 | CO |
 | Jubël | On the Beach | 2019 | Discogs (singiel) | – | 2020 | – | SE |
 | Judas Priest | Breaking the Law | 1980 | Discogs + Spotify | 1980 | – | 1980 | GB |
@@ -2508,6 +2695,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Julia Wieniawa | Nie muszę | 2018 | Spotify + MusicBrainz | – | 2018 | 2018 | PL |
 | Julia Wieniawa | Sobą tak | 2024 | Wikipedia | 2025 | – | – | PL |
 | Julia Wieniawa & Kuba Karaś | Nie mam dla Ciebie miłości - Kayax XX Rework | 2022 | Spotify | – | – | 2022 | PL |
+| Julio Iglesias | Gwendolyne | 1970 | Wikipedia – artykuł o piosence; Eurowizja 1970 (Spain, miejsce: 4th) | 1970 | – | – | ES |
 | Jung Kook | Standing Next to You | 2023 | Spotify + MusicBrainz | – | 2023 | 2023 | KR |
 | Jungle | Back On 74 | 2023 | Discogs + Spotify | 2023 | – | 2023 | GB |
 | Junior Boys | In The Morning | 2006 | Discogs | 2006 | – | 2007 | CA |
@@ -2557,6 +2745,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kacperczyk & Vito Bambino | MAM TALENT | 2025 | Spotify + MusicBrainz | – | 2025 | 2025 | PL |
 | Kaeyra | na moje nieszczęście | 2026 | Spotify | – | – | 2026 | US |
 | Kaiser Chiefs | Ruby | 2007 | Discogs + Spotify | 2007 | – | 2007 | GB |
+| KAJ | Bara bada bastu | 2025 | Wikipedia – artykuł o piosence; Eurowizja 2025 (Sweden, miejsce: 4th) | 2025 | – | – | SE |
 | Kajagoogoo | Too Shy | 1982 | Discogs (singiel) | 1983 | – | 1983 | GB |
 | Kali Uchis | telepatía | 2020 | Discogs + Spotify | 2020 | – | 2020 | US |
 | Kaliber 44 | Film | 1997 | Discogs (singiel) | 1998 | – | 1998 | PL |
@@ -2566,6 +2755,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kaliber 44 | Plus i minus | 1996 | Discogs + Spotify | 1996 | – | 1996 | PL |
 | Kalina Jedrusik | Bo we mnie jest seks | 1992 | Discogs (ponowne sprawdzenie) | 1992 | 2008 | 2012 | PL |
 | Kalina Jedrusik | Ja nie chcę spać | 1999 | Discogs | 1999 | – | 2015 | PL |
+| Kalomira | Secret Combination | 2008 | Wikipedia – artykuł o piosence; Eurowizja 2008 (Greece, miejsce: 3rd) | 2008 | – | – | GR |
+| Kalush Orchestra | Stefania | 2022 | Wikipedia – artykuł o piosence; Eurowizja 2022 (Ukraine, zwycięstwo) | 2022 | – | – | UA |
 | Kalwi & Remi | Explosion | 2003 | Wikipedia | 2006 | – | – | PL |
 | Kalwi & Remi | You And I | 2011 | Wikipedia | – | – | – | PL |
 | Kamil Bednarek | Chodź Ucieknijmy… | 2012 | Spotify + MusicBrainz | – | 2012 | 2012 | PL |
@@ -2585,6 +2776,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Karel Fialka | Hey Matthew | 1987 | Discogs | 1987 | – | 1988 | GB |
 | Karin Stanek | Chłopiec z gitarą | 1963 | Discogs | 1963 | – | 2009 | PL |
 | Karin Stanek & Czerwono Czarni | Jedziemy Autostopem | 2002 | Discogs (singiel) | 2003 | – | 2015 | PL |
+| Karina | En un mundo nuevo | 1971 | Wikipedia – artykuł o piosence; Eurowizja 1971 (Spain, miejsce: 2nd) | 1971 | – | – | ES |
 | Karl Jenkins & Adiemus Symphony Orchestra Of Europe | Adiemus | 1999 | Discogs | 1999 | – | 2017 | GB |
 | KAROL G | Si Antes Te Hubiera Conocido | 2024 | Discogs + Spotify | 2024 | – | 2024 | CO |
 | Kasa Chorych | Blues chorego | 1980 | Wikipedia + Discogs (singiel) | 1994 | – | – | PL |
@@ -2623,6 +2815,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kasia Lins | Rób Tak Dalej | 2020 | Discogs + Spotify | 2020 | – | 2020 | PL |
 | Kasia Lins | Sto żyć | 2023 | Discogs + Spotify | 2023 | – | 2023 | PL |
 | Kasia Lins | Wiersz Ostatni | 2018 | Spotify + Discogs (singiel) + MusicBrainz | – | 2018 | 2018 | PL |
+| Kasia Moś | Flashlight | 2017 | Wikipedia – artykuł o piosence; Eurowizja 2017 (Poland, miejsce: 22nd) | 2017 | – | – | PL |
 | Kasia Popowska | Przyjdzie taki dzień | 2014 | Discogs | 2014 | – | – | PL |
 | Kasia Wilk | Pierwszy raz | 2008 | Spotify + MusicBrainz | – | 2008 | 2008 | PL |
 | Kat | Metal and Hell / Oracle | 1986 | Discogs + Wikipedia | 1986 | – | – | PL |
@@ -2643,10 +2836,12 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kate Bush | This Woman's Work | 1989 | Discogs + Spotify | 1989 | – | 1989 | GB |
 | Kate Bush | Wuthering Heights | 1978 | Discogs + Spotify | 1978 | – | 1978 | GB |
 | Kate Ryan | Je t'adore | 2006 | Wikipedia | – | – | – | BE |
+| Kathy Kirby | I Belong | 1965 | Wikipedia – artykuł o piosence; Eurowizja 1965 (United Kingdom, miejsce: 2nd) | 1965 | – | – | GB |
 | Katie Melua | If You Were a Sailboat | 2007 | Discogs + Wikipedia | 2007 | – | – | GB |
 | Katie Melua | Nine Million Bicycles | 2005 | Discogs + Spotify | 2005 | – | 2005 | GB |
 | Katie Melua | Spider's Web | 2005 | Spotify + MusicBrainz | – | 2005 | 2005 | GB |
 | Katie Melua | The Flood | 2010 | Discogs + Wikipedia | 2010 | – | – | GB |
+| Katrina & the Waves | Love Shine a Light | 1997 | Wikipedia – artykuł o piosence; Eurowizja 1997 (United Kingdom, zwycięstwo) | 1997 | – | – | GB |
 | Katrina & The Waves | Walking On Sunshine | 1983 | Discogs | 1983 | – | 1985 | GB |
 | KATSEYE | Gabriela | 2025 | Discogs + Spotify | 2025 | – | 2025 | US |
 | KATSEYE | Gnarly | 2025 | Discogs + Spotify | 2025 | – | 2025 | US |
@@ -2714,6 +2909,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | KC & The Sunshine Band | That's the Way (I Like It) | 1975 | Spotify (MusicBrainz: 1976) | 1986 | 1976 | 1975 | US |
 | Keane | Everybody's Changing | 2003 | MusicBrainz (Spotify: 2004) | – | 2003 | 2004 | GB |
 | Keane | Somewhere Only We Know | 2004 | Discogs + Spotify | 2004 | – | 2004 | GB |
+| Keiino | Spirit in the Sky | 2019 | Wikipedia – artykuł o piosence; Eurowizja 2019 (Norway, miejsce: 6th) | 2019 | – | – | NO |
 | Keith L. Anderson | We All Must Change | 2020 | Spotify | – | – | 2020 | ? |
 | Kelis | Milkshake | 2003 | Discogs + Spotify | 2003 | – | 2003 | US |
 | Kelis | Trick Me | 2003 | Discogs + Spotify | 2003 | – | 2003 | US |
@@ -2741,6 +2937,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kid Rock | All Summer Long | 2007 | Discogs + Spotify | 2007 | – | 2007 | US |
 | Kid Rock & Sheryl Crow | Picture | 2001 | Discogs | 2001 | – | – | US |
 | Kiesza | Hideaway | 2014 | Discogs + Spotify | 2014 | – | 2014 | CA |
+| Kikki Danielsson | Bra vibrationer | 1984 | Wikipedia – artykuł o piosence; Eurowizja 1985 (Sweden, miejsce: 3rd); wydana w 1984 | 1984 | – | – | SE |
 | Killaz Group | Zjednoczone Emiraty Poznańskie | 2001 | Wikipedia + Discogs (singiel) | 2002 | – | – | PL |
 | Kim Carnes | Bette Davis Eyes | 1981 | Discogs + Spotify | 1981 | – | 1981 | US |
 | Kim Nowak | Mokry Pies | 2012 | Spotify + MusicBrainz | – | 2012 | 2012 | ? |
@@ -2817,6 +3014,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kraftwerk | Das Model | 1978 | Discogs | 1978 | – | 2017 | DE |
 | Kraftwerk | The Model | 1978 | Discogs + Spotify | 1978 | – | 1978 | DE |
 | Kris Kross | Jump | 1992 | Discogs + Spotify | 1992 | – | 1992 | US |
+| Kristian Kostov | Beautiful Mess | 2017 | Wikipedia – artykuł o piosence; Eurowizja 2017 (Bulgaria, miejsce: 2nd) | 2017 | – | – | BG |
 | Krystyna Janda | Na Zakręcie | 1992 | Discogs | 1992 | – | 2014 | PL |
 | Krystyna Konarska | Doliny w kwiatach | 1966 | Spotify | – | – | 1966 | PL |
 | Krystyna Konarska | Jesienny pan | 1963 | Discogs (singiel) | – | 2010 | 2015 | PL |
@@ -2909,6 +3107,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kygo & Parson James | Stole the Show | 2014 | Discogs (singiel) | 2015 | – | 2016 | NO |
 | Kygo & Tina Turner | What's Love Got to Do with It | 2020 | MusicBrainz | – | 2020 | – | NO |
 | Kygo & Whitney Houston | Higher Love | 2019 | Discogs + Spotify | 2019 | – | 2019 | NO |
+| Kyle Alessandro | Lighter | 2025 | Wikipedia – artykuł o piosence; Eurowizja 2025 (Norway, miejsce: 18th) | 2025 | – | – | NO |
 | Kylie Minogue | Can't Get You Out of My Head | 2001 | MusicBrainz+Wikipedia | – | 2001 | 2002 | AU |
 | Kylie Minogue | In My Arms | 2007 | Discogs | 2007 | – | – | AU |
 | Kylie Minogue | The Loco-Motion | 1988 | Discogs + Spotify | 1988 | – | 1988 | AU |
@@ -2987,6 +3186,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Lao Che | Urodziła mnie ciotka | 2010 | Discogs + Spotify | 2010 | – | 2010 | PL |
 | Lao Che | Wojenka | 2015 | Discogs + Spotify | 2015 | – | 2015 | PL |
 | Lao Che | Zombi! | 2012 | Wikipedia | – | – | – | PL |
+| Lara Fabian | Croire | 1988 | Wikipedia – artykuł o piosence; Eurowizja 1988 (Luxembourg, miejsce: 4th) | 1988 | – | – | BE |
 | Latto | Big Energy | 2021 | Discogs | 2021 | – | 2022 | US |
 | Latto & Lu Kala | Lottery | 2023 | Discogs | 2023 | – | – | US |
 | Laufey | From The Start | 2023 | Discogs + Spotify | 2023 | – | 2023 | IS |
@@ -3027,6 +3227,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | LemON | Napraw | 2012 | Discogs + Spotify | 2012 | – | 2012 | PL |
 | LemON | Nice | 2013 | Spotify + MusicBrainz | – | 2013 | 2013 | PL |
 | LemON | Scarlett | 2014 | Discogs + Spotify | 2014 | – | 2014 | PL |
+| Lena | Taken by a Stranger | 2011 | Wikipedia – artykuł o piosence; Eurowizja 2011 (Germany, miejsce: 10th) | 2011 | – | – | DE |
+| Lena Meyer-Landrut | Satellite | 2010 | Wikipedia – artykuł o piosence; Eurowizja 2010 (Germany, zwycięstwo) | 2010 | – | – | DE |
 | Lenny Kravitz | Are You Gonna Go My Way | 1993 | Discogs + Spotify | 1993 | – | 1993 | US |
 | Lenny Kravitz | Fly Away | 1998 | Discogs + Spotify | 1998 | – | 1998 | US |
 | Lenny Kravitz | I Belong To You | 1998 | Discogs | 1998 | – | 2000 | US |
@@ -3067,6 +3269,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Limboski | W Trawie | 2016 | Spotify | – | – | 2016 | PL |
 | Limp Bizkit | Behind Blue Eyes | 2003 | Discogs + Spotify | 2003 | – | 2003 | US |
 | Limp Bizkit | Take A Look Around | 1999 | Discogs (singiel) | 2000 | – | 2000 | US |
+| Linda Martin | Terminal 3 | 1984 | Wikipedia – artykuł o piosence; Eurowizja 1984 (Ireland, miejsce: 2nd) | 1984 | – | – | IE |
+| Linda Martin | Why Me? | 1992 | Wikipedia – artykuł o piosence; Eurowizja 1992 (Ireland, zwycięstwo) | 1992 | – | – | IE |
 | Linkin Park | Breaking the Habit | 2003 | Discogs + Spotify | 2003 | – | 2003 | US |
 | Linkin Park | Burn It Down | 2012 | Discogs | 2012 | – | – | US |
 | Linkin Park | In the End | 2000 | Discogs + MusicBrainz+Wikipedia + Spotify | 2000 | 2000 | 2000 | US |
@@ -3081,11 +3285,13 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Lipali | Ludzie 1.2 | 2015 | Spotify + MusicBrainz | – | 2015 | 2015 | PL |
 | Lipali | Wschód | 2015 | Spotify + MusicBrainz | – | 2015 | 2015 | PL |
 | Liquido | Narcotic | 1997 | Discogs (singiel) | 1998 | – | 2026 | DE |
+| Lisa del Bo | Liefde is een kaartspel | 1996 | Wikipedia – artykuł o piosence; Eurowizja 1996 (Belgium, miejsce: 16th) | 1996 | – | – | BE |
 | Lisa Stansfield | All Around the World | 1989 | Discogs + Spotify | 1989 | – | 1989 | GB |
 | Lisa Stansfield | Change | 1991 | Discogs | 1991 | – | 2001 | GB |
 | Lita Ford | Kiss Me Deadly | 1988 | Discogs + Spotify | 1988 | – | 1988 | US |
 | Lita Ford & Ozzy Osbourne | Close My Eyes Forever | 1988 | Discogs + Spotify | 1988 | – | 1988 | US |
 | Little Anthony and the Imperials | Tears on My Pillow | 1958 | Discogs | 1958 | – | – | US |
+| Little Big | Uno | 2020 | Wikipedia – artykuł o piosence; Eurowizja 2020 (Russia, udział) | 2020 | – | – | RU |
 | Little Eva | The Loco-Motion | 1962 | Discogs | 1962 | – | – | US |
 | Little Peggy March | I Will Follow Him | 1963 | MusicBrainz | – | 1963 | – | ? |
 | Little Richard | Tutti Frutti | 1955 | Discogs | 1955 | – | 1957 | US |
@@ -3120,30 +3326,39 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Lorde | Royals | 2012 | Discogs | 2012 | – | 2013 | NZ |
 | Lorde | Supercut | 2017 | Discogs + Spotify | 2017 | – | 2017 | NZ |
 | Lorde | Team | 2013 | Discogs + Spotify | 2013 | – | 2013 | NZ |
+| Lordi | Hard Rock Hallelujah | 2006 | Wikipedia – artykuł o piosence; Eurowizja 2006 (Finland, zwycięstwo) | 2006 | – | – | FI |
 | Loreen | Euphoria | 2012 | Discogs | 2012 | – | – | SE |
+| Loreen | Tattoo | 2023 | Wikipedia – artykuł o piosence; Eurowizja 2023 (Sweden, zwycięstwo) | 2023 | – | – | SE |
 | Los Lobos | La Bamba | 1987 | Discogs + Spotify | 1987 | – | 1987 | US |
 | Lost Frequencies | Are You With Me | 2014 | Discogs | 2014 | – | 2016 | BE |
 | Lost Frequencies & Calum Scott | Where Are You Now | 2021 | Discogs + Spotify | 2021 | – | 2021 | BE |
 | Lost Frequencies & Janieck Devy | Reality | 2015 | Discogs | 2015 | – | – | BE |
 | Lost Frequencies & Zonderling | Crazy | 2017 | Discogs | 2017 | – | – | BE |
+| Lotta Engberg | Boogaloo | 1987 | Wikipedia – artykuł o piosence; Eurowizja 1987 (Sweden, miejsce: 12th) | 1987 | – | – | SE |
 | Lou Bega | Mambo No. 5 (A Little Bit of...) | 1999 | Discogs + MusicBrainz+Wikipedia | 1999 | 1999 | – | DE |
 | Lou Christie | Lightnin' Strikes | 1965 | Discogs | 1965 | – | – | US |
 | Lou Reed | Perfect Day | 1972 | Discogs + Spotify | 1972 | – | 1972 | US |
 | Lou Reed | Satellite of Love | 1972 | Discogs + Spotify | 1972 | – | 1972 | US |
 | Lou Reed | Walk On the Wild Side | 1972 | Discogs + Spotify | 1972 | – | 1972 | US |
+| Louane | Maman | 2025 | Wikipedia – artykuł o piosence; Eurowizja 2025 (France, miejsce: 7th) | 2025 | – | – | FR |
 | Louis Armstrong | Hello, Dolly! | 1964 | Discogs | 1964 | – | – | US |
 | Louis Armstrong | We Have all The Time in the World | 1969 | Discogs | 1969 | – | 2010 | US |
 | Louis Armstrong | What a Wonderful World | 1967 | Discogs + MusicBrainz+Wikipedia | 1967 | 1967 | 1968 | US |
 | Love Affair | Everlasting Love | 1967 | Discogs | 1967 | – | 1968 | GB |
 | Love Unlimited Orchestra | Love's Theme | 1974 | Discogs | 1974 | – | – | US |
 | Loverboy | Working for the Weekend | 1981 | Discogs + Spotify | 1981 | – | 1981 | CA |
+| Loïc Nottet | Rhythm Inside | 2015 | Wikipedia – artykuł o piosence; Eurowizja 2015 (Belgium, miejsce: 4th) | 2015 | – | – | BE |
 | LP | Lost on You | 2015 | Discogs (singiel) | 2016 | – | – | US |
+| Luca Hänni | She Got Me | 2019 | Wikipedia – artykuł o piosence; Eurowizja 2019 (Switzerland, miejsce: 4th) | 2019 | – | – | CH |
+| Lucio Corsi | Volevo essere un duro | 2025 | Wikipedia – artykuł o piosence; Eurowizja 2025 (Italy, miejsce: 5th) | 2025 | – | – | IT |
 | Luis Fonsi | Despacito | 2017 | Discogs + MusicBrainz+Wikipedia | 2017 | 2017 | – | PR |
 | Lukas Graham | 7 Years | 2015 | Discogs | 2015 | – | – | DK |
 | Luke Combs | Ain't No Love in Oklahoma | 2024 | MusicBrainz | – | 2024 | – | US |
 | Luke Combs | Fast Car | 2023 | Discogs | 2023 | – | – | US |
 | Luke Combs | Forever After All | 2020 | MusicBrainz (Discogs (singiel): 2021) | – | 2020 | – | US |
+| Lulu | Boom Bang-a-Bang | 1969 | Wikipedia – artykuł o piosence; Eurowizja 1969 (United Kingdom, zwycięstwo) | 1969 | – | – | GB |
 | Lulu | To Sir With Love | 1967 | Discogs | 1967 | – | – | GB |
+| Luna | The Tower | 2024 | Wikipedia – artykuł o piosence; Eurowizja 2024 (Poland, udział) | 2024 | – | – | PL |
 | Luther Vandross | Never Too Much | 1981 | Discogs + Spotify | 1981 | – | 1981 | US |
 | Luxtorpeda | AUTYSTYCZNY | 2011 | Discogs + Spotify | 2011 | – | 2011 | PL |
 | Luxtorpeda | HYMN | 2012 | Discogs + Spotify | 2012 | – | 2012 | PL |
@@ -3152,6 +3367,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Lykke Li & The Magician | I Follow Rivers | 2011 | Discogs + Spotify | 2011 | – | 2011 | SE |
 | Lynyrd Skynyrd | Free Bird | 1973 | Discogs + Spotify | 1973 | – | 1973 | US |
 | Lynyrd Skynyrd | Sweet Home Alabama | 1974 | Discogs + Spotify | 1974 | – | 1974 | US |
+| Lys Assia | Refrain | 1956 | Wikipedia – artykuł o piosence; Eurowizja 1956 (Switzerland, zwycięstwo) | 1956 | – | – | CH |
 | M / Robin Scott & Nick Launay | Pop Muzik | 1979 | Spotify (MusicBrainz: 2026) | – | 2026 | 1979 | ? |
 | M.I.A. | Paper Planes | 2007 | Discogs + Spotify | 2007 | – | 2007 | GB |
 | M83 | Midnight City | 2011 | Discogs + Spotify | 2011 | – | 2011 | FR |
@@ -3199,6 +3415,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Maanam | Wyjątkowo Zimny Maj | 1991 | Discogs + Spotify | 1991 | – | 1991 | PL |
 | Maanam | Zapatrzenie | 1994 | Discogs | 1994 | – | 2015 | PL |
 | Maanam | Łóżko | 1996 | Discogs + Wikipedia | 1996 | – | – | PL |
+| Mabel | Boom Boom | 1978 | Wikipedia – artykuł o piosence; Eurowizja 1978 (Denmark, miejsce: 16th) | 1978 | – | – | DK |
 | Maciej Kossowski | Dwudziestolatki | 1964 | Discogs | 1996 | – | 2016 | PL |
 | Maciej Malenczuk z zespolem Psychodancing | Dawna dziewczyno | 2010 | Spotify | – | – | 2010 | ? |
 | Maciej Maleńczuk | Ach Proszę Pani | 1998 | Discogs | 1998 | – | 2016 | PL |
@@ -3253,6 +3470,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Magda Umer | Oczy Tej Małej | 1995 | Discogs | 1995 | – | 2014 | PL |
 | Magda Umer & Bogdan Hołownia | Pejzaż Bez Ciebie | 2016 | Spotify | – | – | 2016 | PL |
 | Magic! | Rude | 2013 | MusicBrainz | – | 2013 | – | CA |
+| Mahmood | Soldi | 2019 | Wikipedia – artykuł o piosence; Eurowizja 2019 (Italy, miejsce: 2nd) | 2019 | – | – | IT |
+| Mahmood & Blanco | Brividi | 2022 | Wikipedia – artykuł o piosence; Eurowizja 2022 (Italy, miejsce: 6th) | 2022 | – | – | IT |
 | Majestic & Boney M. | Rasputin | 2021 | Discogs + Spotify | 2021 | – | 2021 | GB |
 | Majka Jeżowska | A Ja Wolę Moją Mamę | 1986 | Discogs | 1986 | – | 2020 | PL |
 | Majka Jeżowska | Laleczka z Saskiej Porcelany | 1996 | Discogs | 1996 | – | 2020 | PL |
@@ -3280,6 +3499,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Marcin Rozynek | Najlepsze | 2003 | Discogs + Spotify | 2003 | – | 2003 | PL |
 | Marcin Rozynek | Silacz | 2003 | Discogs + Spotify | 2003 | – | 2003 | PL |
 | Marcin Sójka | Zaskakuj mnie | 2019 | MusicBrainz | – | 2019 | – | PL |
+| Marco Mengoni | L'essenziale | 2013 | Wikipedia – artykuł o piosence; Eurowizja 2013 (Italy, miejsce: 7th) | 2013 | – | – | IT |
+| Marcus & Martinus | Unforgettable | 2024 | Wikipedia – artykuł o piosence; Eurowizja 2024 (Sweden, miejsce: 9th) | 2024 | – | – | SE |
 | Marek Bilinski | Dom w dolinie mgieł | 1983 | Discogs | 1983 | – | 2019 | PL |
 | Marek Bilinski | Ucieczka z tropiku | 1983 | Discogs | 1983 | – | 2019 | PL |
 | Marek Dyjak | Człowiek (Złota Ryba) | 2004 | MusicBrainz (Spotify + Discogs (singiel): 2011) | – | 2004 | 2011 | PL |
@@ -3309,6 +3530,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Margaret | Thank You Very Much | 2013 | Discogs + MusicBrainz+Wikipedia | 2013 | 2013 | – | PL |
 | Margaret | Wasted | 2014 | Discogs + Wikipedia | 2014 | – | – | PL |
 | Margaret | What You Do | 1991 | Discogs | 1991 | – | – | PL |
+| Margaret Berger | I Feed You My Love | 2013 | Wikipedia – artykuł o piosence; Eurowizja 2013 (Norway, miejsce: 4th) | 2013 | – | – | NO |
 | Maria Koterbska | Augustowskie Noce | 1990 | Discogs | 1990 | – | 2015 | PL |
 | Maria McKee | Show Me Heaven | 1990 | Discogs | 1990 | – | 2002 | US |
 | Maria Peszek | Ludzie psy | 2012 | Discogs + Wikipedia | 2012 | – | – | PL |
@@ -3325,6 +3547,9 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Mariah Carey | We Belong Together | 2005 | Discogs | 2005 | – | – | US |
 | Mariah Carey | Without You | 1993 | Discogs + Spotify | 1993 | – | 1993 | US |
 | Marianne Faithfull | As Tears Go By | 1964 | Discogs + Spotify | 1964 | – | 1964 | GB |
+| Marie Myriam | L'Oiseau et l'Enfant | 1977 | Wikipedia – artykuł o piosence; Eurowizja 1977 (France, zwycięstwo) | 1977 | – | – | FR |
+| Marie N | I Wanna | 2002 | Wikipedia – artykuł o piosence; Eurowizja 2002 (Latvia, zwycięstwo) | 2002 | – | – | LV |
+| Marija Šerifović | Molitva | 2007 | Wikipedia – artykuł o piosence; Eurowizja 2007 (Serbia, zwycięstwo) | 2007 | – | – | RS |
 | Marika | Moje serce | 2007 | Discogs (singiel) | – | 2008 | 2008 | PL |
 | Marillion | Beautiful | 1995 | Discogs + Spotify | 1995 | – | 1995 | GB |
 | Marillion | Fugazi | 1984 | Discogs | 1984 | – | 1988 | GB |
@@ -3394,6 +3619,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Maryla Rodowicz | Wariatka Tańczy | 1979 | Discogs | 1979 | – | 2012 | PL |
 | Maryla Rodowicz & Alibabki | Wielka Woda | 1979 | Discogs | 1979 | – | 2014 | PL |
 | Maryla Rodowicz & Marek Grechuta | Gaj | 1978 | Discogs + Spotify | 1978 | – | 1978 | PL |
+| Massiel | La La La | 1968 | Wikipedia – artykuł o piosence; Eurowizja 1968 (Spain, zwycięstwo) | 1968 | – | – | ES |
 | Massive Attack | Karmacoma | 1994 | Discogs + Spotify | 1994 | – | 1994 | GB |
 | Massive Attack & Elizabeth Fraser | Teardrop | 1998 | Discogs + Spotify | 1998 | – | 1998 | GB |
 | Massive Attack & Shara Nelson | Unfinished Sympathy | 1991 | Discogs + Spotify | 1991 | – | 1991 | GB |
@@ -3410,6 +3636,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Maurice Chevalier | Arthur / Paris sera toujours Paris | 1939 | Wikipedia | 1988 | – | – | FR |
 | Maurice Williams | Stay | 1960 | Discogs | 1960 | – | 2008 | US |
 | Mawn's Gallery & Nicole Kulesza | Co się śni niewidomym | 2017 | Spotify | – | – | 2017 | ? |
+| Max Mutzke | Can't Wait Until Tonight | 2004 | Wikipedia – artykuł o piosence; Eurowizja 2004 (Germany, miejsce: 8th) | 2004 | – | – | DE |
 | Maxim & Skin | Carmen Queasy | 2000 | Discogs + Spotify | 2000 | – | 2000 | DE |
 | Maxine Nightingale | Right Back Where We Started From | 1975 | Discogs | 1975 | – | 2020 | GB |
 | Mazzy Star | Fade Into You | 1993 | Discogs + Spotify | 1993 | – | 1993 | US |
@@ -3473,6 +3700,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | MGMT | Kids | 2005 | Discogs + Spotify | 2005 | – | 2005 | US |
 | MGMT | Time to Pretend | 2005 | Discogs + Spotify | 2005 | – | 2005 | US |
 | Miami Sound Machine & Gloria Estefan | Conga! | 1985 | Discogs + Spotify | 1985 | – | 1985 | US |
+| Michael Ball | One Step Out of Time | 1992 | Wikipedia – artykuł o piosence; Eurowizja 1992 (United Kingdom, miejsce: 2nd) | 1992 | – | – | GB |
 | Michael Bolton | When a Man Loves a Woman | 1991 | Discogs + Spotify | 1991 | – | 1991 | US |
 | Michael Bublé | Cry Me a River | 2009 | Discogs + Spotify | 2009 | – | 2009 | CA |
 | Michael Bublé | Everything | 2007 | Discogs + Wikipedia | 2007 | – | – | CA |
@@ -3500,12 +3728,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Michael Kiwanuka | Cold Little Heart | 2016 | Discogs + Spotify | 2016 | – | 2016 | GB |
 | Michael Patrick Kelly | Beautiful Madness | 2020 | Discogs | 2020 | – | – | DE |
 | Michael Patrick Kelly & Rakim | Wonders | 2022 | MusicBrainz | 2023 | 2022 | – | DE |
+| Michael Schulte | You Let Me Walk Alone | 2018 | Wikipedia – artykuł o piosence; Eurowizja 2018 (Germany, miejsce: 4th) | 2018 | – | – | DE |
 | Michael Schulte & R3hab | Waterfall | 2023 | Discogs | 2023 | – | – | DE |
 | Michael Sembello | Maniac | 1983 | Discogs | 1983 | – | 2019 | US |
 | Michał Bajor | Nie chcę więcej | 1989 | Discogs | 1989 | – | 1995 | PL |
 | Michał Bajor | Ogrzej mnie | 1989 | Discogs | 1989 | – | 1990 | PL |
 | Michał Lorenc | Taniec Eleny | 1997 | Discogs | 1997 | – | 2017 | PL |
 | Michał Szczygieł | Adrenalina | 2022 | MusicBrainz | – | 2022 | – | PL |
+| Michał Szpak | Color of Your Life | 2016 | Wikipedia – artykuł o piosence; Eurowizja 2016 (Poland, miejsce: 8th) | 2016 | – | – | PL |
 | Michał Szpak | Kochanie! | 2026 | Spotify | – | – | 2026 | PL |
 | Michał Wiśniewski & Mandaryna | Będzie Było | 2026 | Spotify + Discogs (singiel) | – | – | 2026 | ? |
 | Michel Teló | Ai se eu te pego! | 2011 | Discogs | 2011 | – | – | BR |
@@ -3537,6 +3767,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Miley Cyrus | Angels Like You | 2020 | Discogs + Spotify | 2020 | – | 2020 | US |
 | Miley Cyrus | Flowers | 2023 | Discogs + MusicBrainz+Wikipedia + Spotify | 2023 | 2023 | 2023 | US |
 | Miley Cyrus | Wrecking Ball | 2013 | Discogs + Spotify | 2013 | – | 2013 | US |
+| Milk & Honey | Hallelujah | 1979 | Wikipedia – artykuł o piosence; Eurowizja 1979 (Israel, zwycięstwo) | 1979 | – | – | IL |
 | Milky Chance | Stolen Dance | 2013 | Discogs + Spotify | 2013 | – | 2013 | DE |
 | Mira Kubasinska | Do kogo idziesz | 1971 | Discogs | 1971 | – | 2018 | PL |
 | Mira Kubasinska | W co mam wierzyć | 1971 | Discogs | 1971 | – | 2018 | PL |
@@ -3555,6 +3786,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Moby | Lift Me Up | 2005 | Discogs + Spotify | 2005 | – | 2005 | US |
 | Moby | Porcelain | 1999 | Discogs + Spotify | 1999 | – | 1999 | US |
 | Moby | Why Does My Heart Feel so Bad? | 1999 | Discogs + Spotify | 1999 | – | 1999 | US |
+| Mocedades | Eres tú | 1973 | Wikipedia – artykuł o piosence; Eurowizja 1973 (Spain, miejsce: 2nd) | 1973 | – | – | ES |
 | Modelki | Chyba że z Tobą | 2024 | MusicBrainz | – | 2024 | – | PL |
 | Modelki | Czego chcesz? | 2025 | Wikipedia | – | – | – | PL |
 | Modelki | Miss Dior | 2025 | Wikipedia | – | – | – | PL |
@@ -3566,6 +3798,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Modern Talking | You're My Heart, You're My Soul | 1984 | MusicBrainz+Wikipedia | – | 1984 | 1985 | DE |
 | Modest Mouse | Float On | 2004 | Discogs + Spotify | 2004 | – | 2004 | US |
 | Modjo | Lady - Hear Me Tonight | 2000 | Discogs | 2000 | – | 2001 | FR |
+| Molly | Children of the Universe | 2014 | Wikipedia – artykuł o piosence; Eurowizja 2014 (United Kingdom, miejsce: 17th) | 2014 | – | – | GB |
 | Moloko | Sing It Back | 1998 | Discogs + Spotify | 1998 | – | 1998 | GB |
 | Moloko | The Time Is Now | 2000 | Discogs + Spotify | 2000 | – | 2000 | GB |
 | MoMo | Od dzisiaj | 2013 | Wikipedia | – | – | – | JP |
@@ -3593,6 +3826,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Mother Love Bone | Chloe Dancer/Crown Of Thorns | 1989 | Discogs | 1989 | – | 1992 | US |
 | Mott The Hoople | All the Young Dudes | 1972 | Discogs + Spotify | 1972 | – | 1972 | GB |
 | Motörhead | Ace of Spades | 1980 | Discogs + Spotify | 1980 | – | 1980 | GB |
+| Mouth & MacNeal | I See a Star | 1974 | Wikipedia – artykuł o piosence; Eurowizja 1974 (Netherlands, miejsce: 3rd) | 1974 | – | – | NL |
 | Mr Probz | Waves | 2013 | Discogs | 2013 | – | – | NL |
 | Mr. Big | To Be With You | 1991 | Discogs | 1991 | – | 1996 | US |
 | Mr. Mister | Broken Wings | 1985 | Discogs + Spotify | 1985 | – | 1985 | US |
@@ -3654,7 +3888,9 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Myslovitz | Zgon | 1995 | Discogs + Wikipedia | 1995 | – | – | PL |
 | Måneskin | Baby Said | 2023 | Discogs | 2023 | – | – | IT |
 | Måneskin | I WANNA BE YOUR SLAVE | 2021 | Discogs + Spotify | 2021 | – | 2021 | IT |
+| Måneskin | Zitti e buoni | 2021 | Wikipedia – artykuł o piosence; Eurowizja 2021 (Italy, zwycięstwo) | 2021 | – | – | IT |
 | Måneskin & Tom Morello | Gossip | 2023 | Discogs | 2023 | – | – | IT |
+| Måns Zelmerlöw | Heroes | 2015 | Wikipedia – artykuł o piosence; Eurowizja 2015 (Sweden, zwycięstwo) | 2015 | – | – | SE |
 | Mötley Crüe | Dr. Feelgood | 1989 | Discogs + Spotify | 1989 | – | 1989 | US |
 | Mötley Crüe | Girls, Girls, Girls | 1987 | Discogs + Spotify | 1987 | – | 1987 | US |
 | Mötley Crüe | Home Sweet Home | 1985 | Discogs + Spotify | 1985 | – | 1985 | US |
@@ -3673,6 +3909,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Męskie Granie Orkiestra & Obywatel G.C. 2.0 | Ciało | 2017 | Spotify | – | – | 2017 | PL |
 | Męskie Granie Orkiestra & Smolik | Elektryczny | 2014 | Spotify + MusicBrainz | – | 2014 | 2014 | PL |
 | N.E.R.D | She Wants To Move | 2004 | Spotify + MusicBrainz | – | 2004 | 2004 | FI |
+| Nadav Guedj | Golden Boy | 2015 | Wikipedia – artykuł o piosence; Eurowizja 2015 (Israel, miejsce: 9th) | 2015 | – | – | IL |
 | Nagły Atak Spawacza | Anty | 1995 | Wikipedia | 1996 | – | – | PL |
 | Nancy Sinatra | Bang Bang (My Baby Shot Me Down) | 1966 | Spotify + MusicBrainz | – | 1966 | 1966 | US |
 | Nancy Sinatra | These Boots Are Made for Walkin' | 1965 | Discogs + MusicBrainz+Wikipedia | 1965 | 1966 | 1987 | US |
@@ -3708,6 +3945,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Natalie Imbruglia | Torn | 1997 | Discogs + Spotify | 1997 | – | 1997 | AU |
 | Natasha Bedingfield | These Words | 2004 | Discogs + Wikipedia | 2004 | – | – | GB |
 | Natasha Bedingfield | Unwritten | 2004 | Discogs + Spotify | 2004 | – | 2004 | GB |
+| Natasha St-Pier | Je n'ai que mon âme | 2001 | Wikipedia – artykuł o piosence; Eurowizja 2001 (France, miejsce: 4th) | 2001 | – | – | CA |
 | Natasza Urbańska | All The Wrong Places | 2011 | Wikipedia | – | – | – | PL |
 | Nathan Dawe & Ella Henderson | 21 Reasons | 2022 | Spotify + Discogs (singiel) + MusicBrainz | – | 2022 | 2022 | GB |
 | Naughty Boy & Sam Smith | La La La | 2013 | Discogs + Spotify | 2013 | – | 2013 | GB |
@@ -3736,10 +3974,12 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Nelly Furtado | Say It Right | 2006 | Discogs + Spotify | 2006 | – | 2006 | CA |
 | Nelly Furtado & Timbaland | Promiscuous | 2006 | Discogs + Spotify | 2006 | – | 2006 | CA |
 | Nelson Riddle | Lisbon Antigua | 1955 | Discogs | 1955 | – | – | US |
+| Nemo | The Code | 2024 | Wikipedia – artykuł o piosence; Eurowizja 2024 (Switzerland, zwycięstwo) | 2024 | – | – | CH |
 | Nena | 99 Luftballons | 1983 | Discogs + MusicBrainz+Wikipedia + Spotify | 1983 | 1983 | 1983 | DE |
 | Nena | Irgendwie, Irgendwo, Irgendwann | 1984 | Discogs | 1984 | – | 1985 | DE |
 | Neneh Cherry | Buffalo Stance | 1988 | Discogs | 1988 | – | 1989 | SE |
 | Neneh Cherry | Woman | 1996 | Discogs + Spotify | 1996 | – | 1996 | SE |
+| Netta | Toy | 2018 | Wikipedia – artykuł o piosence; Eurowizja 2018 (Israel, zwycięstwo) | 2018 | – | – | IL |
 | New Model Army | Lullaby | 1998 | Discogs + Spotify | 1998 | – | 1998 | GB |
 | New Order | Blue Monday | 1983 | Discogs | 1983 | – | 1987 | GB |
 | New Order | Blue Monday '88 | 1994 | Discogs + Spotify | 1994 | – | 1994 | GB |
@@ -3747,6 +3987,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | New Order | True Faith | 1987 | Discogs + Spotify | 1987 | – | 1987 | GB |
 | New Radicals | You Get What You Give | 1998 | Discogs + Spotify | 1998 | – | 1998 | US |
 | Niall Horan | Heaven | 2023 | Discogs + Spotify | 2023 | – | 2023 | IE |
+| Niamh Kavanagh | In Your Eyes | 1993 | Wikipedia – artykuł o piosence; Eurowizja 1993 (Ireland, zwycięstwo) | 1993 | – | – | IE |
 | Nick Cave & The Bad Seeds | Do You Love Me? | 1994 | Discogs + Spotify | 1994 | – | 1994 | AU |
 | Nick Cave & The Bad Seeds | Into My Arms | 1997 | Discogs + Spotify | 1997 | – | 1997 | AU |
 | Nick Cave & The Bad Seeds | Jubilee Street | 2012 | Discogs | 2012 | – | 2013 | AU |
@@ -3757,12 +3998,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Nickelback | How You Remind Me | 2001 | Discogs + Spotify | 2001 | – | 2001 | CA |
 | Nickelback | Lullaby | 2011 | Discogs | 2011 | – | – | CA |
 | Nickelback | Someday | 2003 | Discogs | 2003 | – | – | CA |
+| Nicki French | Don't Play That Song Again | 2000 | Wikipedia – artykuł o piosence; Eurowizja 2000 (United Kingdom, miejsce: 16th) | 2000 | – | – | GB |
 | Nicki Minaj | Starships | 2012 | Discogs + Spotify | 2012 | – | 2012 | US |
 | Nicki Minaj | Super Bass | 2011 | Discogs | 2011 | – | – | US |
 | Nicky Jam & Enrique Iglesias | El Perdón | 2015 | Discogs | 2015 | – | – | PR |
 | Nicky Youre & hey daisy | Sunroof | 2021 | Discogs (singiel) + MusicBrainz | – | 2021 | 2023 | US |
 | Nico | These Days | 1967 | Discogs + Spotify | 1967 | – | 1967 | DE |
 | Nico & Vinz | Am I Wrong | 2013 | Discogs (singiel) | 2014 | – | – | NO |
+| Nicole | Ein bißchen Frieden | 1982 | Wikipedia – artykuł o piosence; Eurowizja 1982 (Germany, zwycięstwo) | 1982 | – | – | DE |
 | Niebiesko-Czarni | Niedziela będzie dla nas | 1965 | Discogs (singiel) | 1966 | – | – | PL |
 | Niemen | Bema pamięci żałobny rapsod | 1969 | Spotify (MusicBrainz: 2009) | 1970 | 2009 | 1969 | PL |
 | Niemen | Jednego serca | 1969 | Spotify (MusicBrainz: 1970) | 1970 | 1970 | 1969 | PL |
@@ -3777,6 +4020,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Night Ranger | Sister Christian | 1983 | Discogs + Spotify | 1983 | – | 1983 | US |
 | Nik Kershaw | The Riddle | 1984 | Discogs + Spotify | 1984 | – | 1984 | GB |
 | Nik Kershaw | Wouldn't It Be Good | 1984 | Spotify + MusicBrainz | – | 1984 | 1984 | GB |
+| Nina | Nacida para amar | 1989 | Wikipedia – artykuł o piosence; Eurowizja 1989 (Spain, miejsce: 6th) | 1989 | – | – | ES |
 | Nina Simone | Ain't Got No | 1992 | MusicBrainz (Spotify: 2015) | 2021 | 1992 | 2015 | US |
 | Nina Simone | Feeling Good | 1965 | Discogs + Spotify | 1965 | – | 1965 | US |
 | Nina Simone | I Put A Spell On You | 1965 | Discogs + Spotify | 1965 | – | 1965 | US |
@@ -3789,10 +4033,12 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Nirvana | Smells Like Teen Spirit | 1991 | Discogs + MusicBrainz+Wikipedia + Spotify | 1991 | 1991 | 1991 | US |
 | Nirvana | The Man Who Sold The World | 1994 | Discogs + Spotify | 1994 | – | 1994 | US |
 | Nita | To zabolało | 2026 | Spotify | – | – | 2026 | PL |
+| No Angels | Disappear | 2008 | Wikipedia – artykuł o piosence; Eurowizja 2008 (Germany, miejsce: 23rd) | 2008 | – | – | DE |
 | No Doubt | Don't Speak | 1995 | Spotify + MusicBrainz | – | 1995 | 1995 | US |
 | No Doubt | Hella Good | 2001 | Discogs + Spotify | 2001 | – | 2001 | US |
 | No Doubt | It's My Life | 2000 | MusicBrainz (Spotify: 2003) | 2001 | 2000 | 2003 | US |
 | No Doubt | Just A Girl | 1995 | Discogs + Spotify | 1995 | – | 1995 | US |
+| Noa Kirel | Unicorn | 2023 | Wikipedia – artykuł o piosence; Eurowizja 2023 (Israel, miejsce: 3rd) | 2023 | – | – | IL |
 | Noah Kahan | Stick Season | 2022 | Discogs + Spotify | 2022 | – | 2022 | US |
 | Noon & DJ Twister | Vision | 2002 | Wikipedia + Discogs (singiel) | – | – | – | PL |
 | Norah Jones | Come Away With Me | 2001 | Discogs | 2001 | – | 2002 | US |
@@ -3808,6 +4054,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Nosowska | O lesie | 2011 | Discogs + Wikipedia | 2011 | – | – | PL |
 | Nowator & LEREK | Moja Panienka | 2019 | Spotify | – | – | 2019 | PL |
 | Numer Raz & Pyskaty | A pamiętasz jak? | 2011 | Wikipedia | – | – | – | PL |
+| Nunzio Gallo | Corde della mia chitarra | 1957 | Wikipedia – artykuł o piosence; Eurowizja 1957 (Italy, miejsce: 6th) | 1957 | – | – | IT |
 | O$ka | Bezele Kochanie | 2017 | Spotify + MusicBrainz | – | 2017 | 2017 | PL |
 | O-Zone | Dragostea din tei | 2003 | Discogs | 2003 | – | 2004 | MD |
 | O.N.A. | Drzwi | 1995 | Discogs | 1995 | – | 2017 | PL |
@@ -3826,6 +4073,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Obywatel G.C. | Przyznaję się do winy | 1986 | Discogs + Spotify | 1986 | – | 1986 | PL |
 | Obywatel G.C. | Tak ... Tak ... To Ja | 1993 | Discogs | 1993 | – | 2004 | PL |
 | Oceana | Endless Summer | 2012 | Discogs | 2012 | – | – | DE |
+| Ochman | River | 2022 | Wikipedia – artykuł o piosence; Eurowizja 2022 (Poland, miejsce: 12th) | 2022 | – | – | PL |
 | Ochman & Wszystko Dobrze | Plastik | 2026 | Spotify | – | – | 2026 | PL |
 | Of Monsters and Men | Little Talks | 2011 | Discogs | 2011 | – | 2012 | IS |
 | Ofenbach | Wasted Love | 2021 | Discogs | 2021 | – | – | FR |
@@ -3847,6 +4095,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Olivia Rodrigo | vampire | 2023 | Discogs + Spotify | 2023 | – | 2023 | US |
 | Olly Alexander (Years & Years) | King | 2015 | Spotify | – | – | 2015 | ? |
 | Olly Murs & Rizzle Kicks | Heart Skips a Beat | 2011 | Discogs | 2011 | – | – | GB |
+| Olsen Brothers | Fly on the Wings of Love | 2000 | Wikipedia – artykuł o piosence; Eurowizja 2000 (Denmark, zwycięstwo) | 2000 | – | – | NO |
 | OMC | How Bizarre | 1995 | Discogs | 1995 | – | 1996 | NZ |
 | Omega | Gyöngyhajú lány | 1969 | Discogs + Spotify | 1969 | – | 1969 | HU |
 | OMI | Cheerleader | 2014 | Discogs (singiel) | 2015 | – | – | JM |
@@ -3905,6 +4154,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Paktofonika | Chwile Ulotne | 2000 | Discogs + Spotify | 2000 | – | 2000 | PL |
 | Paktofonika | Ja to ja | 2000 | Discogs + Wikipedia | 2000 | – | – | PL |
 | Paktofonika | Jestem Bogiem | 2000 | Discogs + MusicBrainz+Wikipedia + Spotify | 2000 | 2000 | 2000 | PL |
+| Paloma San Basilio | La fiesta terminó | 1985 | Wikipedia – artykuł o piosence; Eurowizja 1985 (Spain, miejsce: 14th) | 1985 | – | – | ES |
 | Panic! at the Disco | High Hopes | 2018 | MusicBrainz | – | 2018 | – | US |
 | Pantera | Walk | 1992 | Discogs + Spotify | 1992 | – | 1992 | US |
 | Paolo Nutini | Iron Sky | 2014 | Discogs + Spotify | 2014 | – | 2014 | GB |
@@ -3914,6 +4164,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Papa Roach | Last Resort | 1999 | Discogs | 1999 | – | 2000 | US |
 | Partita | Mamy tylko siebie | 1974 | Wikipedia | 1976 | – | – | PL |
 | Pascal Letoublon & Leony | Friendships (Lost My Love) | 2017 | MusicBrainz (Discogs (singiel): 2020) | – | 2017 | – | FR |
+| Pasha Parfeni | Soarele și luna | 2023 | Wikipedia – artykuł o piosence; Eurowizja 2023 (Moldova, miejsce: 18th) | 2023 | – | – | MD |
 | Passenger | Let Her Go | 2012 | Discogs + Spotify | 2012 | – | 2012 | GB |
 | Pat Boone | A Wonderful Time Up There | 1958 | Discogs | 1958 | – | – | US |
 | Pat Boone | Ain't That a Shame | 1980 | Discogs | 1980 | – | – | US |
@@ -3949,6 +4200,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Paul Anka | Puppy Love | 1959 | Discogs | 1959 | – | – | CA |
 | Paul Anka | Put Your Head On My Shoulder | 1959 | Discogs | 1959 | – | 2000 | CA |
 | Paul Anka & Odia Coates | (You're) Having My Baby | 1974 | Spotify + MusicBrainz | 1995 | 1974 | 1974 | CA |
+| Paul Harrington & Charlie McGettigan | Rock 'n' Roll Kids | 1994 | Wikipedia – artykuł o piosence; Eurowizja 1994 (Ireland, zwycięstwo) | 1994 | – | – | IE |
 | Paul McCartney & Linda McCartney | Monkberry Moon Delight | 1971 | Discogs + Spotify | 1971 | – | 1971 | GB |
 | Paul McCartney & Linda McCartney | Uncle Albert / Admiral Halsey | 1971 | Discogs + Spotify | 1971 | – | 1971 | GB |
 | Paul McCartney & Michael Jackson | Say Say Say | 1983 | Discogs + Spotify | 1983 | – | 1983 | GB |
@@ -3971,6 +4223,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Paweł Domagała | Weź nie pytaj | 2018 | Discogs + Spotify | 2018 | – | 2018 | PL |
 | Paweł Domagała | Wystarczę ja | 2018 | Discogs | 2018 | – | – | PL |
 | Peaches & Herb | Shake Your Groove Thing | 1978 | Discogs + Spotify | 1978 | – | 1978 | US |
+| Pearl Carr & Teddy Johnson | Sing, Little Birdie | 1959 | Wikipedia – artykuł o piosence; Eurowizja 1959 (United Kingdom, miejsce: 2nd) | 1959 | – | – | US |
 | Pearl Jam | Alive | 1991 | Discogs + Spotify | 1991 | – | 1991 | US |
 | Pearl Jam | Black | 1991 | Discogs + Spotify | 1991 | – | 1991 | US |
 | Pearl Jam | Crazy Mary | 1993 | Spotify (MusicBrainz: 2001) | 2001 | 2001 | 1993 | US |
@@ -4102,6 +4355,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Poison | Talk Dirty To Me | 1986 | Discogs | 1986 | – | 2011 | US |
 | Poison | Unskinny Bop | 1990 | Discogs + Spotify | 1990 | – | 1990 | US |
 | Pokahontaz | Za szybcy się wściekli | 2005 | Discogs + Wikipedia | 2005 | – | – | PL |
+| Poli Genova | If Love Was a Crime | 2016 | Wikipedia – artykuł o piosence; Eurowizja 2016 (Bulgaria, miejsce: 4th) | 2016 | – | – | BG |
 | Porcupine Tree | Anesthetize | 2007 | Discogs + Spotify | 2007 | – | 2007 | GB |
 | Porcupine Tree | Lazarus | 2005 | Discogs + Spotify | 2005 | – | 2005 | GB |
 | Porcupine Tree | Trains | 2002 | Discogs + Spotify | 2002 | – | 2002 | GB |
@@ -4118,6 +4372,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Post Malone & Swae Lee | Sunflower - Spider-Man: Into the Spider-Verse | 2018 | Discogs | 2018 | – | 2019 | US |
 | Post Malone & Ty Dolla Sign | Psycho | 2018 | Discogs | 2018 | – | – | US |
 | Powfu & beabadoobee | death bed (coffee for your head) | 2020 | Discogs + Spotify | 2020 | – | 2020 | CA |
+| Precious | Say It Again | 1999 | Wikipedia – artykuł o piosence; Eurowizja 1999 (United Kingdom, miejsce: 12th) | 1999 | – | – | GB |
 | Pretenders | Don't Get Me Wrong | 1986 | Spotify + MusicBrainz | 2003 | 1986 | 1986 | GB |
 | Pretenders | I'll Stand by You | 1994 | Spotify + MusicBrainz | – | 1994 | 1994 | GB |
 | Pretenders | Middle of the Road | 1983 | Discogs (singiel) | 1984 | – | 1987 | GB |
@@ -4226,9 +4481,12 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Randy & the Rainbows | Denise | 1963 | Discogs | 1963 | – | – | US |
 | Randy Crawford | Almaz | 1986 | Discogs + Spotify | 1986 | – | 1986 | US |
 | Randy Crawford | One Day I'll Fly Away | 1980 | Spotify + MusicBrainz | – | 1980 | 1980 | US |
+| Raphael | Yo soy aquél | 1966 | Wikipedia – artykuł o piosence; Eurowizja 1966 (Spain, miejsce: 7th) | 1966 | – | – | ES |
+| Raphael Gualazzi | Follia d'amore | 2011 | Wikipedia – artykuł o piosence; Eurowizja 2011 (Italy, miejsce: 2nd) | 2011 | – | – | IT |
 | Rare Bird | Sympathy | 1969 | Discogs | 1969 | – | 1970 | GB |
 | Rare Earth | I Just Want To Celebrate | 1971 | Discogs + Spotify | 1971 | – | 1971 | US |
 | Rasmentalism | Krajobrazy | 2020 | Discogs + Spotify | 2020 | – | 2020 | PL |
+| Rasmussen | Higher Ground | 2018 | Wikipedia – artykuł o piosence; Eurowizja 2018 (Denmark, miejsce: 9th) | 2018 | – | – | DK |
 | Raspberries | Go All The Way | 1972 | Discogs + Spotify | 1972 | – | 1972 | US |
 | Ratt | Lay It Down | 1984 | Spotify (MusicBrainz: 1985) | 1985 | 1985 | 1984 | US |
 | Ratt | Round and Round | 1984 | Discogs + Spotify | 1984 | – | 1984 | US |
@@ -4277,6 +4535,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Renata Przemyk | Odjazd | 2009 | Spotify + Discogs (singiel) + MusicBrainz | – | 2009 | 2009 | PL |
 | Renata Przemyk | Ten taniec | 1994 | Discogs | 1994 | – | 2013 | PL |
 | Renata Zarębska | Noc z Renatą | 1990 | Wikipedia | – | – | – | PL |
+| Renato Rascel | Romantica | 1960 | Wikipedia – artykuł o piosence; Eurowizja 1960 (Italy, miejsce: 8th) | 1960 | – | – | IT |
 | Rendez Vous | A Na Plaży Anna | 1986 | Discogs | 1986 | – | 2017 | PL |
 | Reni Jusis | A mogło być tak pięknie | 2009 | Discogs + Wikipedia | 2009 | – | – | PL |
 | Reni Jusis | Kiedyś Cię znajdę | 2003 | Discogs + Spotify | 2003 | – | 2003 | PL |
@@ -4342,6 +4601,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Ritchie Valens | Donna | 1958 | Discogs | 1958 | – | – | US |
 | Ritchie Valens | La Bamba | 1958 | Discogs | 1958 | – | 1959 | US |
 | Riton & Nightcrawlers | Friday (Dopamine Re-Edit) | 2021 | Discogs | 2021 | – | – | GB |
+| Riva | Rock Me | 1989 | Wikipedia – artykuł o piosence; Eurowizja 1989 (Yugoslavia, zwycięstwo) | 1989 | – | – | NL |
 | Riverside | 02 Panic Room | 2007 | Discogs + Wikipedia | 2007 | – | – | PL |
 | Riverside | Conceiving You | 2005 | Discogs + Spotify | 2005 | – | 2005 | PL |
 | Riverside | River Down Below | 2018 | Discogs + Spotify | 2018 | – | 2018 | PL |
@@ -4368,10 +4628,12 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Robert Plant | Moonlight in Samosa | 1982 | Discogs + Spotify | 1982 | – | 1982 | GB |
 | Roberta Flack | Killing Me Softly With His Song | 1973 | Discogs + Spotify | 1973 | – | 1973 | US |
 | Roberta Flack | The First Time Ever I Saw Your Face | 1969 | Discogs + Spotify | 1969 | – | 1969 | US |
+| Robin Bengtsson | I Can't Go On | 2017 | Wikipedia – artykuł o piosence; Eurowizja 2017 (Sweden, miejsce: 5th) | 2017 | – | – | SE |
 | Robin Schulz | All We Got | 2020 | Discogs | 2020 | – | – | DE |
 | Robin Schulz | Show Me Love | 2015 | Discogs | 2015 | – | – | DE |
 | Robin Schulz & Francesco Yates | Sugar | 2015 | Discogs + Spotify | 2015 | – | 2015 | DE |
 | Robin Schulz & James Blunt | OK | 2017 | Discogs | 2017 | – | – | DE |
+| Robin Stjernberg | You | 2013 | Wikipedia – artykuł o piosence; Eurowizja 2013 (Sweden, miejsce: 14th) | 2013 | – | – | SE |
 | Robin Thicke & T.I. | Blurred Lines | 2013 | Discogs + Spotify | 2013 | – | 2013 | US |
 | Robyn | Dancing On My Own | 2010 | Discogs + Spotify | 2010 | – | 2010 | SE |
 | Rockwell | Somebody's Watching Me | 1983 | MusicBrainz (Spotify: 2010) | – | 1983 | 2010 | US |
@@ -4385,6 +4647,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Roger Miller | King of the Road | 1965 | Discogs | 1965 | – | – | US |
 | Roger Waters | The Tide Is Turning | 1987 | Discogs + Spotify | 1987 | – | 1987 | GB |
 | Roger Williams | Autumn Leaves | 1955 | Discogs | 1955 | – | – | US |
+| Roman Lob | Standing Still | 2012 | Wikipedia – artykuł o piosence; Eurowizja 2012 (Germany, miejsce: 8th) | 2012 | – | – | DE |
+| Ronnie Carroll | Ring-A-Ding Girl | 1962 | Wikipedia – artykuł o piosence; Eurowizja 1962 (United Kingdom, miejsce: 4th) | 1962 | – | – | GB |
 | Rosa Linn | SNAP | 2022 | Discogs + Spotify | 2022 | – | 2022 | AM |
 | ROSALÍA | DESPECHÁ | 2022 | Spotify + Discogs (singiel) + MusicBrainz | – | 2022 | 2022 | ES |
 | Ross Bagdasarian | Witch Doctor | 1997 | MusicBrainz | – | 1997 | – | US |
@@ -4421,6 +4685,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Rush | Nobody's Hero | 1993 | Spotify + MusicBrainz | – | 1993 | 1993 | CA |
 | Rush | The Spirit Of Radio | 1979 | Discogs (singiel) | 1980 | – | 1980 | CA |
 | Rush | Tom Sawyer | 1981 | Discogs + Spotify | 1981 | – | 1981 | CA |
+| Ruslana | Wild Dances | 2004 | Wikipedia – artykuł o piosence; Eurowizja 2004 (Ukraine, zwycięstwo) | 2004 | – | – | ES |
+| Ruth Lorenzo | Dancing in the Rain | 2014 | Wikipedia – artykuł o piosence; Eurowizja 2014 (Spain, miejsce: 10th) | 2014 | – | – | ES |
 | Ryszard Rynkowski | Szczęśliwej drogi już czas | 1991 | Discogs | 1991 | – | 1996 | PL |
 | Ryszard Rynkowski | Wypijmy za błędy | 1991 | Discogs | 1991 | – | 1996 | PL |
 | Ryuichi Sakamoto & David Sylvian | Forbidden Colours | 1983 | Discogs + Spotify | 1983 | – | 1983 | JP |
@@ -4443,9 +4709,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Sade | Soldier of Love | 2009 | Discogs | 2009 | – | 2010 | GB |
 | Sade | The Sweetest Taboo | 1985 | Discogs | 1985 | – | 1994 | GB |
 | Sade | Your Love Is King | 1983 | Discogs (singiel) | 1984 | – | 1984 | GB |
+| Safura | Drip Drop | 2010 | Wikipedia – artykuł o piosence; Eurowizja 2010 (Azerbaijan, miejsce: 5th) | 2010 | – | – | AZ |
+| Sahlene | Runaway | 2002 | Wikipedia – artykuł o piosence; Eurowizja 2002 (Estonia, miejsce: 3rd (tie)) | 2002 | – | – | SE |
 | Saint Etienne | Only Love Can Break Your Heart | 1990 | Discogs | 1990 | – | 1991 | GB |
 | Saint Jhn | Roses (Imanbek remix) | 2020 | Discogs | 2020 | – | – | GY |
+| Sakis Rouvas | Shake It | 2004 | Wikipedia – artykuł o piosence; Eurowizja 2004 (Greece, miejsce: 3rd) | 2004 | – | – | GR |
 | Sal Solo | San Damiano | 1984 | Discogs | 1984 | – | 2006 | GB |
+| Salomé | Vivo cantando | 1969 | Wikipedia – artykuł o piosence; Eurowizja 1969 (Spain, zwycięstwo) | 1969 | – | – | ES |
+| Salvador Sobral | Amar pelos dois | 2017 | Wikipedia – artykuł o piosence; Eurowizja 2017 (Portugal, zwycięstwo) | 2017 | – | – | PT |
 | Sam & Dave | Hold On, I'm Comin' | 1966 | Spotify (MusicBrainz: 1981) | – | 1981 | 1966 | US |
 | Sam Brown & Pete Brown | Stop | 1988 | Spotify + Discogs (singiel) + MusicBrainz | – | 1988 | 1988 | GB |
 | Sam Cooke | (What A) Wonderful World | 1985 | Discogs | 1985 | – | 2000 | US |
@@ -4456,6 +4727,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Sam Fender | Seventeen Going Under | 2021 | Discogs + Spotify | 2021 | – | 2021 | GB |
 | Sam Fender & Olivia Dean | Rein Me In | 2025 | Discogs + Spotify | 2025 | – | 2025 | GB |
 | Sam Hunt | Body Like a Back Road | 2017 | Discogs (singiel) | 2020 | – | – | US |
+| Sam Ryder | Space Man | 2022 | Wikipedia – artykuł o piosence; Eurowizja 2022 (United Kingdom, miejsce: 2nd) | 2022 | – | – | GB |
 | Sam Smith | Promises | 2020 | Discogs | 2020 | – | – | GB |
 | Sam Smith | Stay with Me | 2014 | Discogs | 2014 | – | – | GB |
 | Sam Smith & Kim Petras | Unholy | 2022 | Discogs + Spotify | 2022 | – | 2022 | GB |
@@ -4492,10 +4764,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Sanah & Kwiat Jabłoni | Szary świat | 2022 | Discogs | 2022 | – | – | PL |
 | sanah & Vito Bambino | Ale jazz! | 2021 | Spotify + MusicBrainz | – | 2021 | 2021 | PL |
 | Sananda Maitreya | Sign Your Name | 1987 | Spotify (MusicBrainz: 2025) | – | 2025 | 1987 | US |
+| Sandie Shaw | Puppet on a String | 1967 | Wikipedia – artykuł o piosence; Eurowizja 1967 (United Kingdom, zwycięstwo) | 1967 | – | – | GB |
 | Sandra | (I'll Never Be) Maria Magdalena | 1985 | Discogs (singiel) + MusicBrainz | – | 1985 | 1987 | DE |
 | Sandra | Everlasting Love | 1987 | Discogs + Spotify | 1987 | – | 1987 | DE |
 | Sandra | In The Heat Of The Night | 1985 | Discogs | 1985 | – | 1992 | DE |
+| Sandra Kim | J'aime la vie | 1986 | Wikipedia – artykuł o piosence; Eurowizja 1986 (Belgium, zwycięstwo) | 1986 | – | – | BE |
+| Sandrine François | Il faut du temps | 2002 | Wikipedia – artykuł o piosence; Eurowizja 2002 (France, miejsce: 5th) | 2002 | – | – | FR |
 | Sandy Nelson | Teen Beat | 1959 | Discogs | 1959 | – | – | US |
+| Sanna Nielsen | Undo | 2014 | Wikipedia – artykuł o piosence; Eurowizja 2014 (Sweden, miejsce: 3rd) | 2014 | – | – | SE |
 | Santana | Black Magic Woman | 1970 | Discogs | 1970 | – | 2007 | US |
 | Santana | Europa (Earth's Cry Heaven's Smile) | 1998 | Discogs | 1998 | – | 2007 | US |
 | Santana | Samba Pa Ti | 1970 | Discogs + Spotify | 1970 | – | 1970 | US |
@@ -4527,6 +4803,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Scorpions | When the Smoke Is Going Down | 1982 | Discogs + Spotify | 1982 | – | 1982 | DE |
 | Scorpions | Wind of Change | 1990 | Discogs + MusicBrainz+Wikipedia + Spotify | 1990 | 1990 | 1990 | DE |
 | Scott English | Brandy | 1971 | Discogs + Wikipedia | 1971 | – | – | US |
+| Scott Fitzgerald | Go | 1988 | Wikipedia – artykuł o piosence; Eurowizja 1988 (United Kingdom, miejsce: 2nd) | 1988 | – | – | GB |
 | Scott Joplin | The Entertainer | 1970 | Discogs | 1970 | – | 2018 | US |
 | Scott McKenzie | San Francisco (Be Sure to Wear Flowers in Your Hair) | 1967 | Discogs + Spotify | 1967 | – | 1967 | US |
 | Screamin' Jay Hawkins | I Put a Spell On You | 1956 | Discogs | 1956 | – | 1958 | US |
@@ -4536,8 +4813,10 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Sean Paul | Get Busy | 1999 | Discogs (singiel) | 2002 | – | – | JM |
 | Sean Paul | I’m Still in Love with You | 2004 | Wikipedia | – | – | – | JM |
 | Sean Paul | Temperature | 2005 | Discogs | 2005 | – | – | JM |
+| Sebalter | Hunter of Stars | 2013 | Wikipedia – artykuł o piosence; Eurowizja 2014 (Switzerland, miejsce: 13th); wydana w 2013 | 2013 | – | – | CH |
 | Sebastian Riedel & Cree | Jestem tu dla ciebie | 2013 | Wikipedia | – | – | – | PL |
 | Sebastian Riedel & Cree | Na Dnie Twojego Serca | 2015 | Spotify + MusicBrainz | – | 2015 | 2015 | ? |
+| Secret Garden | Nocturne | 1995 | Wikipedia – artykuł o piosence; Eurowizja 1995 (Norway, zwycięstwo) | 1995 | – | – | NO |
 | Seether & Amy Lee | Broken | 2002 | Discogs | 2002 | – | 2004 | US |
 | Selena Gomez | Feel Me | 2020 | Discogs | 2020 | – | – | US |
 | Selena Gomez | Kill Em with Kindness | 2015 | Discogs | 2015 | – | – | US |
@@ -4545,6 +4824,10 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | September | Satellites | 2005 | Discogs + Wikipedia | 2005 | – | – | SE |
 | Sepultura | Roots Bloody Roots | 1996 | Discogs + Spotify | 1996 | – | 1996 | BR |
 | Serge Gainsbourg & Brigitte Bardot | Je t'aime moi non plus | 1969 | MusicBrainz (Spotify: 2006) | – | 1969 | 2006 | FR |
+| Sergey Lazarev | You Are the Only One | 2016 | Wikipedia – artykuł o piosence; Eurowizja 2016 (Russia, miejsce: 3rd) | 2016 | – | – | RU |
+| Sergio Dalma | Bailar pegados | 1991 | Wikipedia – artykuł o piosence; Eurowizja 1991 (Spain, miejsce: 4th) | 1991 | – | – | ES |
+| Sergio Endrigo | Marianne | 1968 | Wikipedia – artykuł o piosence; Eurowizja 1968 (Italy, miejsce: 10th) | 1968 | – | – | IT |
+| Sertab Erener | Everyway That I Can | 2003 | Wikipedia – artykuł o piosence; Eurowizja 2003 (Turkey, zwycięstwo) | 2003 | – | – | TR |
 | Seweryn Krajewski | Uciekaj moje serce | 1983 | Discogs | 1983 | – | – | PL |
 | Sex Pistols | Anarchy In The UK | 1976 | Discogs | 1976 | – | 1977 | GB |
 | Sex Pistols | God Save The Queen | 1977 | Discogs + Spotify | 1977 | – | 1977 | GB |
@@ -4593,6 +4876,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Simon & Garfunkel | Scarborough Fair / Canticle | 1966 | Discogs + Spotify | 1966 | – | 1966 | US |
 | Simon & Garfunkel | The Boxer | 1969 | Discogs | 1969 | – | 1970 | US |
 | Simon & Garfunkel | The Sound of Silence | 1964 | Spotify (MusicBrainz: 1965) | 1965 | 1965 | 1964 | US |
+| Simone de Oliveira | Desfolhada portuguesa | 1969 | Wikipedia – artykuł o piosence; Eurowizja 1969 (Portugal, miejsce: 15th) | 1969 | – | – | PT |
 | Simple Minds | Belfast Child | 1989 | Discogs | 1989 | – | 2008 | GB |
 | Simple Minds | Don't You (Forget About Me) | 1985 | MusicBrainz+Wikipedia + Spotify + Discogs (singiel) | 2013 | 1985 | 1985 | GB |
 | Simple Minds | Let There Be Love | 1991 | Discogs + Spotify | 1991 | – | 1991 | GB |
@@ -4613,6 +4897,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Sisters of Mercy | Lucretia My Reflection | 1987 | Discogs + Spotify | 1987 | – | 1987 | GB |
 | Sisters of Mercy | Temple of Love | 1983 | Discogs | 1983 | – | 1992 | GB |
 | Sisters of Mercy | This Corrosion | 1987 | Discogs | 1987 | – | 1993 | GB |
+| Siw Malmkvist | Primaballerina | 1969 | Wikipedia – artykuł o piosence; Eurowizja 1969 (Germany, miejsce: 9th) | 1969 | – | – | SE |
 | Sixpence None The Richer | Kiss Me | 1997 | Discogs + Spotify | 1997 | – | 1997 | US |
 | Sixteen | Obudź We Mnie Wenus | 1997 | Discogs | 1997 | – | 2009 | PL |
 | Sixteen | To takie proste | 1998 | Discogs + Wikipedia | 1998 | – | – | PL |
@@ -4648,6 +4933,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Slayer | Raining Blood | 1986 | Discogs + Spotify | 1986 | – | 1986 | US |
 | Slayer | Seasons In The Abyss | 1990 | Discogs + Spotify | 1990 | – | 1990 | US |
 | Slik | Forever And ever | 1975 | Discogs | 1975 | – | 2011 | GB |
+| Slimane | Mon amour | 2024 | Wikipedia – artykuł o piosence; Eurowizja 2024 (France, miejsce: 4th) | 2024 | – | – | FR |
 | Slipknot | Duality | 2004 | Discogs + Spotify | 2004 | – | 2004 | US |
 | Sly & The Family Stone | If You Want Me to Stay | 1973 | Discogs + Spotify | 1973 | – | 1973 | US |
 | Smith & Thell | Forgive Me Friend | 2021 | Discogs | 2021 | – | – | SE |
@@ -4679,10 +4965,12 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | sombr | 12 to 12 | 2025 | Discogs + Spotify | 2025 | – | 2025 | US |
 | sombr | back to friends | 2024 | Spotify + Discogs (singiel) | 2025 | 2025 | 2024 | US |
 | sombr | Homewrecker | 2026 | Discogs + Spotify | 2026 | – | 2026 | US |
+| Sonia | Better the Devil You Know | 1993 | Wikipedia – artykuł o piosence; Eurowizja 1993 (United Kingdom, miejsce: 2nd) | 1993 | – | – | GB |
 | Sonic Youth | Teen Age Riot | 1988 | Discogs + Spotify | 1988 | – | 1988 | US |
 | Sonny & Cher | I Got You Babe | 1965 | Discogs | 1965 | – | 1991 | US |
 | Sonny & Cher | Little Man | 1966 | Discogs | 1966 | – | 2019 | US |
 | Sonny James | Young Love | 1956 | Discogs | 1956 | – | – | US |
+| Sophie & Magaly | Papa Pingouin | 1980 | Wikipedia – artykuł o piosence; Eurowizja 1980 (Luxembourg, miejsce: 9th) | 1980 | – | – | LU |
 | Sophie B. Hawkins | Damn I Wish I Was Your Lover | 1992 | Discogs + Spotify | 1992 | – | 1992 | US |
 | Sophie Ellis-Bextor | Murder On The Dancefloor | 2001 | Discogs | 2001 | – | 2002 | GB |
 | Sorry Boys | Absolutnie, absolutnie | 2019 | Discogs + Spotify | 2019 | – | 2019 | PL |
@@ -4723,6 +5011,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Status Quo | Whatever You Want | 1979 | Discogs + Spotify | 1979 | – | 1979 | GB |
 | Stealers Wheel | Stuck In The Middle With You | 1972 | Discogs + Spotify | 1972 | – | 1972 | GB |
 | Steely Dan | Do It Again | 1972 | Discogs + Spotify | 1972 | – | 1972 | US |
+| Stefan Raab | Wadde hadde dudde da? | 2000 | Wikipedia – artykuł o piosence; Eurowizja 2000 (Germany, miejsce: 5th) | 2000 | – | – | DE |
 | Stenia Kozłowska | Czy to walc | 1969 | Wikipedia | 1993 | – | – | PL |
 | Stenia Kozłowska | Daj mi świat | 1969 | Discogs + Wikipedia | 1969 | – | – | PL |
 | Stenia Kozłowska | Do szczęścia blisko | 1972 | Discogs + Wikipedia | 1972 | – | – | PL |
@@ -4782,6 +5071,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Sugababes | Push The Button | 2005 | Discogs + Spotify | 2005 | – | 2005 | GB |
 | Sugababes | Round Round | 2002 | Discogs + Spotify | 2002 | – | 2002 | GB |
 | Sumptuastic | Kołysanka | 2002 | Discogs (singiel) | 2003 | – | 2003 | PL |
+| SunStroke Project | Hey Mamma | 2017 | Wikipedia – artykuł o piosence; Eurowizja 2017 (Moldova, miejsce: 3rd) | 2017 | – | – | MD |
 | Supergrass | Alright | 1995 | Discogs + Spotify | 1995 | – | 1995 | GB |
 | Supertramp | Breakfast In America | 1979 | Discogs + Spotify | 1979 | – | 1979 | GB |
 | Supertramp | The Logical Song | 1979 | Discogs + Spotify | 1979 | – | 1979 | GB |
@@ -4821,6 +5111,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Sztywny Pal Azji | Nieprzemakalni | 1988 | Discogs | 1988 | – | 2001 | PL |
 | Sztywny Pal Azji | Spotkanie z... | 1988 | Discogs | 1988 | – | 2001 | PL |
 | Sztywny Pal Azji | Wieża radości, wieża samotności | 1988 | Discogs | 1988 | – | 1998 | PL |
+| Séverine | Un banc, un arbre, une rue | 1971 | Wikipedia – artykuł o piosence; Eurowizja 1971 (Monaco, zwycięstwo) | 1971 | – | – | FR |
 | Sława Przybylska | Gdzie są kwiaty | 1965 | Discogs | 1965 | – | 2015 | PL |
 | Sława Przybylska | Okularnicy | 1999 | MusicBrainz (Spotify: 2009) | – | 1999 | 2009 | PL |
 | Sława Przybylska | Pamietasz Była Jesień | 1959 | Discogs | 1959 | – | 2015 | PL |
@@ -4900,11 +5191,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Taylor Swift | Shake It Off | 2014 | Discogs + MusicBrainz+Wikipedia + Spotify | 2014 | 2014 | 2014 | US |
 | Taylor Swift | The Fate of Ophelia | 2025 | Discogs + Spotify | 2025 | – | 2025 | US |
 | Taylor Swift & Post Malone | Fortnight | 2024 | Discogs + Spotify | 2024 | – | 2024 | US |
+| Teach-In | Ding-a-dong | 1975 | Wikipedia – artykuł o piosence; Eurowizja 1975 (Netherlands, zwycięstwo) | 1975 | – | – | NL |
 | Tears for Fears | Everybody Wants to Rule the World | 1985 | Discogs + MusicBrainz+Wikipedia + Spotify | 1985 | 1985 | 1985 | GB |
 | Tears For Fears | Mad World | 1982 | Discogs | 1982 | – | 1983 | GB |
 | Tears For Fears | Shout | 1984 | Discogs | 1984 | – | 1985 | GB |
 | Tears For Fears | Sowing The Seeds Of Love | 1989 | Discogs + Spotify | 1989 | – | 1989 | GB |
 | Tears For Fears & Oleta Adams | Woman In Chains | 1989 | Discogs + Spotify | 1989 | – | 1989 | GB |
+| Ted Gärdestad | Satellit | 1979 | Wikipedia – artykuł o piosence; Eurowizja 1979 (Sweden, miejsce: 17th) | 1979 | – | – | SE |
+| Teddy Scholten | 'n Beetje | 1959 | Wikipedia – artykuł o piosence; Eurowizja 1959 (Netherlands, zwycięstwo) | 1959 | – | – | NL |
 | Teddy Swims | Bad Dreams | 2025 | Discogs | 2025 | – | – | US |
 | Teddy Swims | Lose Control | 2023 | Discogs + Spotify | 2023 | – | 2023 | US |
 | Tede | Wyścig szczurów | 2001 | Discogs + Wikipedia | 2001 | – | – | PL |
@@ -5021,6 +5315,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | The Coasters | Charlie Brown | 1959 | Discogs | 1959 | – | – | US |
 | The Coasters | Searchin' | 1957 | Discogs | 1957 | – | – | US |
 | The Coasters | Yakety Yak | 1958 | Discogs | 1958 | – | – | US |
+| The Common Linnets | Calm After the Storm | 2014 | Wikipedia – artykuł o piosence; Eurowizja 2014 (Netherlands, miejsce: 2nd) | 2014 | – | – | NL |
 | The Connells | '74-'75 | 1993 | Discogs + Spotify | 1993 | – | 1993 | US |
 | The Contours | Do You Love Me | 1962 | Discogs + Spotify | 1962 | – | 1962 | US |
 | The Cranberries | Animal Instinct | 1999 | Discogs + Spotify | 1999 | – | 1999 | IE |
@@ -5169,6 +5464,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | The National | I Need My Girl | 2013 | Discogs + Spotify | 2013 | – | 2013 | US |
 | The Neighbourhood | Daddy Issues | 2015 | Discogs + Spotify | 2015 | – | 2015 | US |
 | The Neighbourhood | Sweater Weather | 2012 | Discogs | 2012 | – | 2013 | US |
+| The New Seekers | Beg, Steal or Borrow | 1972 | Wikipedia – artykuł o piosence; Eurowizja 1972 (United Kingdom, miejsce: 2nd) | 1972 | – | – | GB |
 | The Newbeats | Bread and Butter | 1964 | Discogs | 1964 | – | – | US |
 | The Notorious B.I.G. | Big Poppa | 1994 | MusicBrainz (Spotify: 2007) | – | 1994 | 2007 | US |
 | The Notorious B.I.G. | Hypnotize | 1997 | MusicBrainz (Spotify: 2007) | – | 1997 | 2007 | US |
@@ -5224,6 +5520,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | The Rolling Stones | You Can't Always Get What You Want | 1969 | Discogs + Spotify | 1969 | – | 1969 | GB |
 | The Ronettes | Be My Baby | 1963 | Discogs | 1963 | – | 1964 | US |
 | The Rooftop Singers | Walk Right In | 1962 | Discogs | 1962 | – | – | US |
+| the Roop | Discoteque | 2021 | Wikipedia – artykuł o piosence; Eurowizja 2021 (Lithuania, miejsce: 8th) | 2021 | – | – | LT |
 | The Roots & Cody Chesnutt | The Seed (2.0) | 2002 | Spotify + MusicBrainz | – | 2002 | 2002 | US |
 | The Roots & Tariq Trotter | You Got Me | 1998 | Discogs (singiel) | – | 1999 | 1999 | US |
 | The Royal Teens | Short Shorts | 1957 | Discogs | 1957 | – | – | NL |
@@ -5231,6 +5528,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | The Seekers | I'll Never Find Another You | 1965 | Discogs | 1965 | – | – | AU |
 | The Sensations | Let Me In | 1961 | Discogs | 1961 | – | – | JM |
 | The Shadows | Apache | 1960 | Discogs | 1960 | – | 1987 | GB |
+| The Shadows | Let Me Be the One | 1975 | Wikipedia – artykuł o piosence; Eurowizja 1975 (United Kingdom, miejsce: 2nd) | 1975 | – | – | GB |
 | The Shirelles | Dedicated to the One I Love | 1958 | Discogs (singiel) | 1959 | – | – | US |
 | The Shirelles | Soldier Boy | 1962 | Discogs | 1962 | – | – | US |
 | The Shirelles | Will You Love Me Tomorrow | 1960 | Discogs | 1960 | – | – | US |
@@ -5330,6 +5628,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Tina Turner | What's Love Got to Do with It | 1984 | Discogs – album „Private Dancer” (1984), utwór na trackliście; wynik automatyczny (box set 1990) był błędny | 1990 | – | 1993 | CH |
 | Tina Turner & David Bowie | Tonight | 1985 | MusicBrainz (Spotify: 1988) | – | 1985 | 1988 | CH |
 | Titiyo | Come Along | 2001 | Discogs + Spotify | 2001 | – | 2001 | SE |
+| Tix | Fallen Angel | 2021 | Wikipedia – artykuł o piosence; Eurowizja 2021 (Norway, miejsce: 18th) | 2021 | – | – | NO |
 | Tiësto | On My Way | 2017 | MusicBrainz | 2017 | 2017 | – | NL |
 | Tiësto & Ava Max | The Motto | 2021 | Discogs + MusicBrainz | 2021 | 2021 | 2023 | NL |
 | Tiësto & Jonas Blue | Ritual | 2019 | Discogs | 2019 | 2019 | 2020 | NL |
@@ -5337,6 +5636,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | TLC | Waterfalls | 1994 | Discogs + Spotify | 1994 | – | 1994 | US |
 | Toby Romeo & Felix Jaehn | Where the Lights Are Low | 2021 | Discogs | 2021 | – | – | AT |
 | Tom Boxer & Antonia | Morena | 2010 | Discogs (singiel) | 2011 | – | – | RO |
+| Tom Dice | Me and My Guitar | 2010 | Wikipedia – artykuł o piosence; Eurowizja 2010 (Belgium, miejsce: 6th) | 2010 | – | – | BE |
 | Tom Gregory | Never Let Me Down | 2020 | Discogs | 2020 | – | – | GB |
 | Tom Grennan | Little Bit of Love | 2021 | Discogs + Spotify | 2021 | – | 2021 | GB |
 | Tom Jones | Delilah | 1967 | Discogs (singiel) | 1968 | – | 1968 | GB |
@@ -5349,6 +5649,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Tom Waits | Hold On | 1999 | Discogs + Spotify | 1999 | – | 1999 | US |
 | Tom Walker | Leave a Light On | 2017 | Discogs + Spotify | 2017 | – | 2017 | GB |
 | Tomasz Apanasiuk | Księżycowa prośba | 2025 | Spotify | – | – | 2025 | ? |
+| Tommy Cash | Espresso Macchiato | 2024 | Wikipedia – artykuł o piosence; Eurowizja 2025 (Estonia, miejsce: 3rd); wydana w 2024 | 2024 | – | – | EE |
 | Tommy Dorsey Orchestra & Warren Covington | Tea for Two Cha Cha | 1958 | Discogs | 1958 | 1991 | – | US |
 | Tommy Edwards | It's All in the Game | 1958 | Discogs – singiel „It’s All in the Game / Please Love Me Forever” (1958); przebój to nagranie z 1958 r. (pierwsza wersja z 1951 r. to inne nagranie), 2012 to składanka | 2012 | – | – | US |
 | Tommy James & The Shondells | Crimson & Clover | 1968 | Discogs | 1968 | – | 1989 | US |
@@ -5370,6 +5671,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | TOTO | Georgy Porgy | 1978 | Discogs + Spotify | 1978 | – | 1978 | US |
 | TOTO | Hold the Line | 1978 | Discogs + Spotify | 1978 | – | 1978 | US |
 | TOTO | Rosanna | 1982 | Discogs + Spotify | 1982 | – | 1982 | US |
+| Toto Cutugno | Insieme: 1992 | 1990 | Wikipedia – artykuł o piosence; Eurowizja 1990 (Italy, zwycięstwo) | 1990 | – | – | IT |
 | Tove Lo | Habits (Stay High) | 2013 | Discogs | 2013 | – | 2014 | SE |
 | Tracy Chapman | Baby Can I Hold You | 1988 | Discogs + Spotify | 1988 | – | 1988 | US |
 | Tracy Chapman | Fast Car | 1988 | Discogs + Spotify | 1988 | – | 1988 | US |
@@ -5396,9 +5698,11 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Tulia | Pali się | 2018 | Wikipedia | – | – | – | PL |
 | Turbo | Dorosłe dzieci | 1983 | Discogs | 1983 | – | 2000 | PL |
 | Turbo | Smak ciszy | 1985 | Discogs (singiel) | 1986 | – | 2009 | PL |
+| Tusse | Voices | 2021 | Wikipedia – artykuł o piosence; Eurowizja 2021 (Sweden, miejsce: 14th) | 2021 | – | – | SE |
 | Twenty One Pilots | Heathens | 2016 | Discogs + Spotify | 2016 | – | 2016 | US |
 | Twenty One Pilots | Ride | 2015 | Discogs + Spotify | 2015 | – | 2015 | US |
 | Twenty One Pilots | Stressed Out | 2015 | Discogs + Spotify | 2015 | – | 2015 | US |
+| Twin Twin | Moustache | 2014 | Wikipedia – artykuł o piosence; Eurowizja 2014 (France, miejsce: 26th) | 2014 | – | – | FR |
 | Twista & Kanye West | Slow Jamz | 2003 | Discogs | 2003 | – | – | US |
 | Twisted Sister | We're Not Gonna Take It | 1984 | Spotify + Discogs (singiel) + MusicBrainz | 2005 | 1984 | 1984 | US |
 | Twocolors | Heavy Metal Love | 2022 | Discogs (singiel) + MusicBrainz | – | 2022 | – | DE |
@@ -5430,6 +5734,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | U2 | With or Without You | 1987 | Discogs + MusicBrainz+Wikipedia + Spotify | 1987 | 1987 | 1987 | IE |
 | UB40 | (I Can't Help) Falling In Love With You | 1993 | Spotify + MusicBrainz | – | 1993 | 1993 | GB |
 | UB40 | Red Red Wine | 1983 | Discogs | 1983 | – | 2000 | GB |
+| Udo Jürgens | Merci, Chérie | 1966 | Wikipedia – artykuł o piosence; Eurowizja 1966 (Austria, zwycięstwo) | 1966 | – | – | AT |
+| Udo Jürgens | Warum nur, warum? | 1964 | Wikipedia – artykuł o piosence; Eurowizja 1964 (Austria, miejsce: 6th) | 1964 | – | – | AT |
 | UFO | Belladonna | 1976 | Discogs + Spotify | 1976 | – | 1976 | GB |
 | Ugly Kid Joe | Cats In The Cradle | 1992 | Discogs + Spotify | 1992 | – | 1992 | US |
 | Ultravox | All Fall Down | 1986 | Discogs + Spotify | 1986 | – | 1986 | GB |
@@ -5437,10 +5743,12 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Ultravox | Lament | 1984 | Discogs + Spotify | 1984 | – | 1984 | GB |
 | Ultravox | Reap the Wild Wind | 1982 | Discogs + Spotify | 1982 | – | 1982 | GB |
 | Ultravox | Vienna | 1980 | Discogs | 1980 | – | 1984 | GB |
+| Umberto Tozzi & Raf | Gente di mare | 1987 | Wikipedia – artykuł o piosence; Eurowizja 1987 (Italy, miejsce: 3rd) | 1987 | – | – | IT |
 | Underworld | Born Slippy (Nuxx) | 1995 | Discogs | 1995 | – | 2014 | GB |
 | Uniatowski | 5 rano | 2018 | Discogs + Spotify | 2018 | – | 2018 | PL |
 | Uniatowski | Honolulu | 2018 | Discogs + Spotify | 2018 | – | 2018 | PL |
 | Universe | Mr. Lennon | 1991 | Wikipedia | 1992 | – | – | PL |
+| Urban Trad | Sanomi | 2003 | Wikipedia – artykuł o piosence; Eurowizja 2003 (Belgium, miejsce: 2nd) | 2003 | – | – | BE |
 | Urge Overkill | Girl, You'll Be a Woman Soon | 1992 | Spotify + MusicBrainz | – | 1992 | 1992 | US |
 | Uriah Heep | Easy Livin' | 1972 | Discogs | 1972 | – | 1989 | GB |
 | Uriah Heep | July Morning | 1971 | Discogs | 1971 | – | 2009 | GB |
@@ -5506,8 +5814,11 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Venus | Moje jedyne marzenie | 1999 | Discogs | 1999 | – | 2012 | PL |
 | Venus | Windą Do Nieba | 1999 | Discogs | 1999 | – | 2012 | PL |
 | Verba | Najważniejsza | 2015 | Wikipedia | – | – | – | PL |
+| Verka Serduchka | Dancing Lasha Tumbai | 2007 | Wikipedia – artykuł o piosence; Eurowizja 2007 (Ukraine, miejsce: 2nd) | 2007 | – | – | UA |
 | Vespa | To tyle dziś kosztuje | 2010 | Wikipedia + Discogs (singiel) | – | – | – | PL |
 | Vic Damone | On the Street Where You Live | 1956 | Discogs | 1956 | – | – | US |
+| Vicky Leandros | Après toi | 1972 | Wikipedia – artykuł o piosence; Eurowizja 1972 (Luxembourg, zwycięstwo) | 1972 | – | – | GR |
+| Vicky Leandros | L'amour est bleu | 1967 | Wikipedia – artykuł o piosence; Eurowizja 1967 (Luxembourg, miejsce: 4th) | 1967 | – | – | GR |
 | Video | Środa Czwartek | 2011 | Discogs + Spotify | 2011 | – | 2011 | PL |
 | Video & Anna Wyszkoni | Soft | 2008 | Discogs | 2008 | – | 2016 | PL |
 | Viki Gabor | Getaway | 2020 | Wikipedia | – | – | – | PL |
@@ -5557,6 +5868,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | VOX | A gdyby tak | 1980 | Discogs | 1980 | – | 2003 | PL |
 | VOX | Bananowy song | 1980 | Discogs | 1980 | – | 2003 | PL |
 | VOX | Masz w oczach dwa nieba | 1980 | Discogs | 1980 | – | 2003 | PL |
+| Væb | Róa | 2025 | Wikipedia – artykuł o piosence; Eurowizja 2025 (Iceland, miejsce: 25th) | 2025 | – | – | IS |
 | W.A.S.P. | Wild Child | 1985 | Discogs + Spotify | 1985 | – | 1985 | US |
 | Waglewski Fisz Emade | Ojciec | 2013 | Discogs + Spotify | 2013 | – | 2013 | ? |
 | WALK THE MOON | Shut Up and Dance | 2014 | Discogs + Spotify | 2014 | – | 2014 | US |
@@ -5579,6 +5891,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | We Five | You Were on My Mind | 1965 | Discogs | 1965 | – | – | US |
 | Weezer | Buddy Holly | 1994 | Spotify + Discogs (singiel) + MusicBrainz | 1995 | 1994 | 1994 | US |
 | Weezer | Island In The Sun | 2001 | Discogs + Spotify | 2001 | – | 2001 | US |
+| Wess & Dori Ghezzi | Era | 1975 | Wikipedia – artykuł o piosence; Eurowizja 1975 (Italy, miejsce: 3rd) | 1975 | – | – | IT |
 | Wet Wet Wet | Love Is All Around | 1994 | Discogs | 1994 | – | 1995 | GB |
 | Wham! | Last Christmas | 1984 | MusicBrainz (Spotify: 2019) | – | 1984 | 2019 | GB |
 | Wham! | Wake Me Up Before You Go-Go | 1984 | Spotify + MusicBrainz | – | 1984 | 1984 | GB |
@@ -5596,6 +5909,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Whitney Houston | I Will Always Love You | 1992 | Discogs + MusicBrainz+Wikipedia + Spotify | 1992 | 1992 | 1992 | US |
 | Whitney Houston | One Moment in Time | 1988 | Discogs | 1988 | – | 2021 | US |
 | Wiesław Gołas | W polskę idziemy | 1998 | MusicBrainz (Spotify: 2014) | – | 1998 | 2014 | PL |
+| Wig Wam | In My Dreams | 2004 | Wikipedia – artykuł o piosence; Eurowizja 2005 (Norway, miejsce: 9th); wydana w 2004 | 2004 | – | – | NO |
 | Wiktor Dyduła | Tam słońce, gdzie my | 2025 | Discogs | 2025 | – | – | PL |
 | Wiktor Dyduła & Kasia Sienkiewicz | Nie mówię tak, nie mówię nie | 2025 | Discogs | 2025 | – | – | PL |
 | Wiktor Waligóra | To jest to! | 2026 | Spotify + MusicBrainz | – | 2026 | 2026 | PL |
@@ -5639,6 +5953,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Wojciech Waglewski | Kobiety nam wybaczą | 2011 | Wikipedia | – | – | – | PL |
 | Wolna Grupa Bukowina | Majster Bieda | 1990 | Discogs | 1990 | – | 1999 | PL |
 | Wolna Grupa Bukowina | Sielanka o domu | 1990 | Discogs | 1990 | – | 1999 | PL |
+| Wrs | Llámame | 2022 | Wikipedia – artykuł o piosence; Eurowizja 2022 (Romania, miejsce: 18th) | 2022 | – | – | RO |
 | Wu-Tang Clan | C.R.E.A.M. (Cash Rules Everything Around Me) | 1993 | Spotify + MusicBrainz | – | 1993 | 1993 | US |
 | Wu-Tang Clan | Protect Ya Neck | 1992 | Discogs | 1992 | – | 1993 | US |
 | WWO | Moda | 2002 | Discogs + Wikipedia | 2002 | – | – | PL |
