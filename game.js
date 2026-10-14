@@ -1397,11 +1397,11 @@ function renderSuggest() {
       el('b', { class: 'notr' }, x.kind === 'artist' ? x.a : x.t),
       x.kind === 'song' ? el('span', { class: 'notr' }, ` — ${x.a}`) : null);
     // pointerdown, żeby wybór zadziałał przed utratą fokusu przez pole
-    li.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
+    // wybór dopiero po pełnym kliknięciu/stuknięciu – przesuwanie palcem przewija listę, a nie wybiera
+    li.addEventListener('click', () => {
       pickSuggestion(i);
       // na ekranie dotykowym po wyborze chowamy klawiaturę (zdejmujemy fokus z pola)
-      if (e.pointerType === 'touch' || e.pointerType === 'pen') $('#guess-song').blur();
+      if (lastSuggestPointer === 'touch' || lastSuggestPointer === 'pen') $('#guess-song').blur();
     });
     return li;
   }));
@@ -1454,6 +1454,10 @@ $('#guess-song').addEventListener('keydown', (e) => {
   else if (e.key === 'Enter' && open && suggestActive >= 0) { e.preventDefault(); pickSuggestion(suggestActive); }
   else if (e.key === 'Escape' && open) { e.preventDefault(); suggestItems = []; renderSuggest(); }
 });
+// kliknięcie w listę nie może zabrać fokusu polu (inaczej lista zniknęłaby przed wyborem); przewijanie działa normalnie
+let lastSuggestPointer = '';
+$('#guess-suggest').addEventListener('pointerdown', (e) => { lastSuggestPointer = e.pointerType; });
+$('#guess-suggest').addEventListener('mousedown', (e) => e.preventDefault());
 $('#guess-song').addEventListener('blur', () => { suggestItems = []; suggestActive = -1; renderSuggest(); });
 $('#guess-form').addEventListener('reset', () => { guessPick = null; suggestItems = []; suggestActive = -1; renderSuggest(); });
 

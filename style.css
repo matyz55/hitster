@@ -360,7 +360,7 @@ select {
 .suggest {
   /* nad polem: nie zasłania przycisków formularza i nie przesuwa ich przy zamykaniu */
   position: absolute; left: 0; right: 0; bottom: calc(100% + 4px); z-index: 30; margin: 0; padding: 4px; list-style: none;
-  max-height: min(320px, 40vh); overflow-y: auto; border-radius: 12px; background: var(--panel-2);
+  max-height: min(320px, 40vh); overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y; border-radius: 12px; background: var(--panel-2);
   border: 1px solid #3d3755; box-shadow: 0 12px 28px rgba(0,0,0,.45);
 }
 .suggest.below { bottom: auto; top: calc(100% + 4px); }
