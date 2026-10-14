@@ -14,12 +14,14 @@
   <link rel="icon" href="icons/icon-192.png" type="image/png">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
+  <script src="analytics.js"></script>
 </head>
 <body>
   <header class="topbar">
     <h1 id="logo" role="button" tabindex="0" title="Ekran startowy">🎵 Songster</h1>
     <div class="topbar-actions">
       <button id="btn-settings" class="ghost" title="Ustawienia">⚙ Ustawienia</button>
+      <button id="btn-tv" class="ghost" title="Duży ekran (TV / rzutnik)" aria-label="Duży ekran">📺</button>
       <button id="btn-rules" class="ghost">Zasady</button>
     </div>
   </header>
@@ -27,11 +29,17 @@
   <!-- EKRAN STARTOWY: WYBÓR TRYBU -->
   <main id="screen-home" class="screen">
     <p class="lead">Wybierz tryb gry</p>
+    <h3 class="mode-group">Oś czasu</h3>
     <div class="modes">
       <button class="mode" data-mode="solo">
         <span class="mode-icon">🎧</span>
         <b>Oś czasu – 1 gracz</b>
         <span class="muted">Układaj piosenki na osi czasu. Masz ograniczoną liczbę pomyłek.</span>
+      </button>
+      <button class="mode" data-mode="timed">
+        <span class="mode-icon">⏳</span>
+        <b>Na czas</b>
+        <span class="muted">Ułóż jak najwięcej kart w 2 minuty (lub inny limit). Osobny ranking rekordów.</span>
       </button>
       <button class="mode" data-mode="multi">
         <span class="mode-icon">👥</span>
@@ -43,6 +51,22 @@
         <b>Oś czasu – drużyny</b>
         <span class="muted">2–4 drużyny, każda ze wspólną osią czasu. Członkowie drużyny odpowiadają na zmianę – w sam raz na imprezę.</span>
       </button>
+    </div>
+    <h3 class="mode-group">Szybkie gry</h3>
+    <div class="modes">
+      <button class="mode" data-mode="hilo">
+        <span class="mode-icon">↕️</span>
+        <b>Starsza czy nowsza?</b>
+        <span class="muted">Czy ta piosenka jest starsza, czy nowsza od poprzedniej? Seria bez pomyłki – dobra na telefon w jednej ręce.</span>
+      </button>
+      <button class="mode" data-mode="duel">
+        <span class="mode-icon">🥊</span>
+        <b>Pojedynek dekad</b>
+        <span class="muted">Dwie dekady, jedna piosenka: z której jest? Łatwy tryb dla dzieci i osób spoza tematu.</span>
+      </button>
+    </div>
+    <h3 class="mode-group">Zgadywanie</h3>
+    <div class="modes">
       <button class="mode" data-mode="melody">
         <span class="mode-icon">🎤</span>
         <b>Jaka to melodia</b>
@@ -53,6 +77,15 @@
         <b>Melodia krok po kroku</b>
         <span class="muted">Najpierw tylko 1 sekunda, potem 2, 4 i 8 s. Im szybciej zgadniesz, tym więcej punktów.</span>
       </button>
+      <button class="mode" data-mode="buzz">
+        <span class="mode-icon">🔔</span>
+        <b>Kto pierwszy?</b>
+        <span class="muted">2–8 osób przy jednym urządzeniu, każda ma swój przycisk. Kto pierwszy naciśnie, ten odpowiada – za błąd traci punkt.</span>
+      </button>
+    </div>
+    <div class="center home-links">
+      <button id="btn-stats" class="ghost">📊 Moje statystyki</button>
+      <button id="btn-tv-home" class="ghost">📺 Duży ekran (TV / rzutnik)</button>
     </div>
     <p class="muted center" id="home-info"></p>
     <div class="center install-box">
@@ -107,7 +140,7 @@
 
     <section class="card">
       <h2>Odtwarzanie</h2>
-      <label class="row" data-for="solo multi teams melody">Długość fragmentu
+      <label class="row" data-for="solo multi teams melody timed hilo duel buzz">Długość fragmentu
         <select id="clip-length">
           <option value="30">30 s (cały)</option>
           <option value="15">15 s</option>
@@ -116,7 +149,7 @@
         </select>
       </label>
       <label class="check"><input type="checkbox" id="clip-random"> Fragment z losowego miejsca (zamiast od początku)</label>
-      <label class="check" data-for="melody steps"><input type="checkbox" id="hint-decade"> Podpowiedź: pokazuj dekadę piosenki</label>
+      <label class="check" data-for="melody steps buzz"><input type="checkbox" id="hint-decade"> Podpowiedź: pokazuj dekadę piosenki</label>
       <label class="check" data-for="steps"><input type="checkbox" id="hint-letter"> Podpowiedź z pierwszą literą (kosztuje 1 punkt)</label>
       <p class="muted small" data-for="steps">Kroki: 1 s → 2 s → 4 s → 8 s. Odgadnięcie przy 1 s daje 4 pkt, przy 2 s – 3 pkt, przy 4 s – 2 pkt, przy 8 s – 1 pkt (za każdą zgadywaną część). Błędna odpowiedź od razu wydłuża fragment.</p>
     </section>
@@ -134,6 +167,30 @@
 
     <section class="card">
       <h2>Zasady tej gry</h2>
+      <div data-for="timed">
+        <p class="label">Limit czasu</p>
+        <div class="seg">
+          <label><input type="radio" name="time-limit" value="60"> 1 min</label>
+          <label><input type="radio" name="time-limit" value="120" checked> 2 min</label>
+          <label><input type="radio" name="time-limit" value="180"> 3 min</label>
+          <label><input type="radio" name="time-limit" value="300"> 5 min</label>
+        </div>
+        <p class="muted small">Czas płynie tylko wtedy, gdy słuchasz i układasz kartę – nie podczas wczytywania fragmentu. Pomyłka nie kończy gry, ale karta przepada.</p>
+        <p class="muted small" id="timed-records"></p>
+      </div>
+      <div data-for="hilo">
+        <p class="muted small">Na start dostajesz odkrytą kartę. Każda kolejna piosenka: starsza czy nowsza? Piosenka z tego samego roku liczy się jako dobra odpowiedź. Jedna pomyłka kończy serię.</p>
+        <p class="muted small" id="hilo-record"></p>
+      </div>
+      <div data-for="duel">
+        <p class="label">Dekady w pojedynku</p>
+        <div class="duel-pick">
+          <select id="duel-a" aria-label="Pierwsza dekada"></select>
+          <span>kontra</span>
+          <select id="duel-b" aria-label="Druga dekada"></select>
+        </div>
+        <p class="muted small">„Losowo” – gra wybierze dekady sama. Piosenki są tylko z tych dwóch dekad.</p>
+      </div>
       <div data-for="solo multi teams">
         <label class="row">Karty potrzebne do wygranej
           <input type="number" id="win-target" min="3" max="30" value="10">
@@ -142,7 +199,7 @@
           <input type="number" id="start-tokens" min="0" max="5" value="2">
         </label>
       </div>
-      <div data-for="solo multi teams">
+      <div data-for="solo multi teams timed">
         <label class="check"><input type="checkbox" id="expert"> Tryb ekspert – żeby zatrzymać kartę, trzeba też podać:</label>
         <div class="seg expert-opts" id="expert-opts">
           <label><input type="checkbox" id="exp-title"> Tytuł</label>
@@ -150,6 +207,15 @@
           <label><input type="checkbox" id="exp-year"> Dokładny rok</label>
         </div>
         <p class="muted small" id="expert-desc"></p>
+      </div>
+      <div data-for="solo multi teams timed">
+        <p class="label" style="margin-top:12px">Karty specjalne (co ok. piąta karta)</p>
+        <div class="seg">
+          <label><input type="checkbox" id="sp-double"> ✨ Podwójna</label>
+          <label data-for="multi teams"><input type="checkbox" id="sp-steal"> 🪙 Kradzież żetonu</label>
+          <label data-for="multi teams"><input type="checkbox" id="sp-swap"> 🔄 Zamiana osi</label>
+        </div>
+        <p class="muted small" id="special-desc"></p>
       </div>
       <div data-for="multi teams">
         <label class="check"><input type="checkbox" id="show-all"> Pokazuj przez cały czas osie wszystkich graczy</label>
@@ -167,13 +233,15 @@
         <label class="check"><input type="checkbox" id="endless"> Gra bez końca – bez celu kart, grasz do wyczerpania pomyłek i bijesz swój rekord</label>
         <p class="muted small" id="record-info"></p>
       </div>
-      <div data-for="melody steps">
+      <div data-for="melody steps buzz">
         <p class="label">Co zgadujemy?</p>
         <div class="seg">
           <label><input type="radio" name="guess" value="title" checked> Tytuł</label>
           <label><input type="radio" name="guess" value="artist"> Wykonawcę</label>
           <label><input type="radio" name="guess" value="both"> Tytuł i wykonawcę</label>
         </div>
+      </div>
+      <div data-for="melody steps buzz duel">
         <label class="row" style="margin-top:12px"><span id="rounds-label">Piosenek na gracza</span>
           <input type="number" id="rounds" min="1" max="30" value="5">
         </label>
@@ -210,6 +278,9 @@
         </div>
       </div>
 
+      <p id="special-badge" class="special-badge hidden"></p>
+      <div id="buzzers" class="buzzers hidden"></div>
+      <p id="buzz-who" class="buzz-who hidden"></p>
       <form id="guess-form" class="guess hidden" autocomplete="off">
         <input type="text" id="guess-title" placeholder="Tytuł" aria-label="Tytuł">
         <input type="text" id="guess-artist" placeholder="Wykonawca" aria-label="Wykonawca">
@@ -247,6 +318,17 @@
     </div>
   </main>
 
+  <!-- STATYSTYKI GRACZA -->
+  <main id="screen-stats" class="screen hidden">
+    <h2 class="screen-title">Moje statystyki</h2>
+    <p class="muted">Statystyki zapisują się tylko na tym urządzeniu (w przeglądarce).</p>
+    <div id="stats-body"></div>
+    <div class="actions">
+      <button id="btn-stats-reset" class="ghost">Wyczyść statystyki</button>
+      <button id="btn-stats-back" class="primary grow">Gotowe</button>
+    </div>
+  </main>
+
   <!-- USTAWIENIA OGÓLNE -->
   <main id="screen-settings" class="screen hidden">
     <h2 class="screen-title">Ustawienia</h2>
@@ -256,6 +338,13 @@
         <label><input type="radio" name="platform" value="youtube" checked> YouTube</label>
         <label><input type="radio" name="platform" value="spotify"> Spotify</label>
         <label><input type="radio" name="platform" value="apple"> Apple Music</label>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Język / Language</h2>
+      <div class="seg">
+        <label><input type="radio" name="lang" value="pl"> Polski</label>
+        <label><input type="radio" name="lang" value="en"> English</label>
       </div>
     </section>
     <section class="card">
@@ -293,6 +382,29 @@
       <li>Za każdą poprawną część jest punkt. Drobne literówki, wielkość liter i polskie znaki nie mają znaczenia.</li>
       <li>Przy duetach i utworach kilku wykonawców wystarczy podać jednego z nich.</li>
     </ol>
+    <h3>Na czas</h3>
+    <ol>
+      <li>Masz wybrany limit czasu (np. 2 minuty) na ułożenie jak najwięcej kart. Czas płynie tylko wtedy, gdy słuchasz i układasz kartę.</li>
+      <li>Pomyłka nie kończy gry – karta po prostu przepada. Najlepsze wyniki trafiają do rankingu (osobno dla limitu czasu i poziomu).</li>
+    </ol>
+    <h3>Starsza czy nowsza?</h3>
+    <ol>
+      <li>Na start dostajesz odkrytą kartę. Słuchasz kolejnej piosenki i decydujesz: starsza czy nowsza od poprzedniej?</li>
+      <li>Ten sam rok liczy się jako dobra odpowiedź. Jedna pomyłka kończy serię – bij swój rekord.</li>
+    </ol>
+    <h3>Pojedynek dekad</h3>
+    <ol>
+      <li>Gra wybiera dwie dekady (albo Ty je wybierasz). Każda piosenka jest z jednej z nich – wskaż którą. Dobra odpowiedź = 1 punkt.</li>
+    </ol>
+    <h3>Kto pierwszy?</h3>
+    <ol>
+      <li>Każdy gracz ma swój przycisk na ekranie i klawisz (1–8). Kto pierwszy naciśnie, ten odpowiada – muzyka się zatrzymuje.</li>
+      <li>Dobra odpowiedź: +1 punkt. Zła: −1 punkt, a pozostali mogą odpowiadać dalej.</li>
+    </ol>
+    <h3>Karty specjalne</h3>
+    <ul>
+      <li>Do wyboru w ustawieniach gry osi czasu – co mniej więcej piąta karta jest specjalna: <b>podwójna</b> (dobre ułożenie daje dodatkową kartę), <b>kradzież żetonu</b> (zabierasz żeton graczowi, który ma ich najwięcej) albo <b>zamiana osi</b> (możesz zamienić się osią z innym graczem).</li>
+    </ul>
     <h3>Melodia krok po kroku</h3>
     <ol>
       <li>Najpierw słyszysz 1 sekundę piosenki. Możesz od razu zgadywać albo wydłużyć fragment do 2, 4 i 8 sekund.</li>
@@ -308,15 +420,24 @@
       <li>Na każdym poziomie piosenki losowane są z różnych dekad – żadna dekada nie dominuje.</li>
       <li>Przy mieszanych piosenkach gra pilnuje ustawionego udziału polskich i zagranicznych.</li>
     </ul>
+    <h3>Duży ekran i statystyki</h3>
+    <ul>
+      <li>📺 otwiera drugie okno dla telewizora lub rzutnika (przeciągnij je na drugi ekran i włącz pełny ekran). To okno służy wtedy za pilota.</li>
+      <li>📊 Moje statystyki: skuteczność w dekadach i gatunkach, najczęściej mylone piosenki, rekordy i postępy – zapisane tylko na tym urządzeniu.</li>
+      <li>Strona zbiera anonimowe statystyki odwiedzin (Umami – bez ciasteczek i bez danych osobowych).</li>
+    </ul>
     <p class="muted">Utwory z tego samego roku można układać w dowolnej kolejności. Rok na karcie to rok pierwszego wydania nagrania. Fragmenty (30 s) pochodzą z iTunes Search API.</p>
     <form method="dialog"><button class="primary">OK</button></form>
   </dialog>
 
   <audio id="audio" preload="auto"></audio>
+  <script src="i18n-en.js"></script>
+  <script src="i18n.js"></script>
   <script src="songs.js"></script>
   <script src="flags/codes.js"></script>
   <script src="match.js"></script>
   <script src="game.js"></script>
+  <script src="stats.js"></script>
   <script>
     if ('serviceWorker' in navigator && location.protocol !== 'file:') {
       window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch((e) => console.warn('SW', e)));

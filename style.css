@@ -396,3 +396,80 @@ select {
 .confetti { position: fixed; inset: 0; pointer-events: none; z-index: 60; overflow: hidden; }
 .confetti span { position: absolute; top: 0; animation: fall 2.6s ease-in forwards; }
 body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none !important; transition: none !important; }
+
+/* --- ekran startowy: grupy trybów --- */
+.mode-group { margin: 18px 0 8px; font-size: .95rem; color: var(--accent-2); text-transform: uppercase; letter-spacing: .6px; }
+.home-links { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 8px; }
+
+/* --- Na czas --- */
+#turn-title.hurry { color: var(--bad); animation: pulse 1s ease-in-out infinite; }
+
+/* --- Starsza czy nowsza? / Pojedynek dekad --- */
+.big-choice {
+  flex: 1 1 0; min-height: 72px; font-size: 1.25rem; font-weight: 800;
+  background: linear-gradient(160deg, #3a2d63, #2a2244); border: 2px solid var(--accent-2);
+}
+.big-choice:hover:not(:disabled) { background: rgba(45,226,230,.15); }
+.tcard.ref { outline: 2px solid var(--gold); }
+.tcard.mystery-card { justify-content: center; border: 2px dashed var(--accent); background: transparent; }
+.tcard.mystery-card .y { font-size: 2.4rem; color: var(--accent); }
+.duel-pick { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.duel-pick select { flex: 1 1 140px; }
+
+/* --- Kto pierwszy? --- */
+.buzzers { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin: 10px 0; }
+.buzzer {
+  min-height: 84px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  background: color-mix(in srgb, var(--c) 22%, var(--panel-2)); border: 3px solid var(--c); font-size: 1.1rem;
+}
+.buzzer kbd { font: inherit; font-size: .8rem; padding: 1px 8px; border-radius: 6px; background: rgba(0,0,0,.35); color: var(--muted); }
+.buzzer.locked { opacity: .3; }
+.buzz-who { margin: 8px 0; padding: 8px 12px; border-left: 4px solid var(--accent); background: var(--panel-2); border-radius: 8px; font-weight: 700; }
+
+/* --- karta specjalna --- */
+.special-badge {
+  margin: 6px 0; padding: 8px 12px; border-radius: 10px; font-weight: 700;
+  background: linear-gradient(90deg, rgba(255,201,60,.18), rgba(255,61,127,.12)); border: 1px solid var(--gold);
+}
+
+/* --- ranking rekordów --- */
+.ranking li.me { color: var(--gold); font-weight: 700; }
+
+/* --- statystyki gracza --- */
+.stat-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+.tile { display: flex; flex-direction: column; gap: 2px; }
+.tile b { font-size: 1.7rem; }
+.chart { margin: 8px 0 4px; }
+.chart figcaption { color: var(--muted); font-size: .9rem; margin-bottom: 8px; }
+.bars { display: flex; flex-direction: column; gap: 6px; }
+.bar-row { display: grid; grid-template-columns: 110px 1fr 44px 48px; align-items: center; gap: 8px; font-size: .88rem; }
+.bar-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-track { height: 16px; }
+.bar-fill { display: block; height: 16px; background: var(--accent-2); border-radius: 0 4px 4px 0; }
+.bar-row:hover .bar-fill { filter: brightness(1.15); }
+.bar-value { text-align: right; font-weight: 700; }
+.bar-n { font-size: .78rem; }
+.chart-box { position: relative; }
+.line-chart { width: 100%; height: auto; display: block; }
+.line-chart .grid { stroke: #2f2a44; stroke-width: 1; }
+.line-chart .tick { fill: var(--muted); font-size: 11px; }
+.line-chart .end-label { fill: var(--text); font-size: 12px; font-weight: 700; }
+.line-chart .line { fill: none; stroke: var(--accent-2); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.line-chart .area { fill: var(--accent-2); opacity: .1; }
+.line-chart .dot { fill: var(--accent-2); stroke: var(--panel); stroke-width: 2; }
+.line-chart .cross { stroke: var(--muted); stroke-width: 1; }
+.chart-tip {
+  position: absolute; top: 0; transform: translateX(-50%); pointer-events: none; white-space: nowrap;
+  background: var(--panel-2); border: 1px solid #3d3755; border-radius: 8px; padding: 4px 8px; font-size: .82rem;
+}
+.table-view { margin: 4px 0 14px; font-size: .85rem; }
+.table-view summary { cursor: pointer; color: var(--accent-2); }
+.table-view table { border-collapse: collapse; margin-top: 6px; }
+.table-view td, .table-view th { padding: 3px 10px; border-bottom: 1px solid #2f2a44; text-align: left; }
+.confused li, .record-log li { margin-bottom: 6px; }
+@media (max-width: 640px) {
+  .bar-row { grid-template-columns: 84px 1fr 40px; }
+  .bar-n { display: none; }
+  .big-choice { min-height: 64px; }
+}
+.reveal .fact { margin-top: 6px; color: var(--accent-2); font-size: .92rem; }

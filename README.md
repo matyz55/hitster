@@ -20,6 +20,29 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
   daje 4/3/2/1 pkt (za każdą zgadywaną część), błędna odpowiedź wydłuża fragment,
   a podpowiedź z pierwszą literą kosztuje 1 punkt.
 
+- **Na czas** – jak najwięcej poprawnie ułożonych kart w 1/2/3/5 minut (czas płynie tylko
+  podczas słuchania i układania); ranking 10 najlepszych wyników dla każdego limitu i poziomu.
+- **Starsza czy nowsza?** – czy piosenka jest starsza, czy nowsza od poprzedniej karty;
+  seria bez pomyłki i rekord.
+- **Pojedynek dekad** – dwie dekady (losowe lub wybrane), trzeba wskazać, z której jest piosenka.
+- **Kto pierwszy?** – 2–8 osób przy jednym urządzeniu, każda ma przycisk i klawisz (1–8);
+  kto pierwszy naciśnie, ten odpowiada: +1 pkt za dobrą odpowiedź, −1 za złą.
+
+**Karty specjalne** (modyfikatory osi czasu, do wyboru): podwójna, kradzież żetonu, zamiana osi.
+
+**Ciekawostki** po odkryciu karty: zwycięstwo lub miejsce na Eurowizji, 1. miejsce Listy
+Przebojów Trójki, festiwal w Opolu, miejsce na Billboard Year-End Hot 100, nr 1 w Polsce.
+
+**Moje statystyki** (📊, tylko na danym urządzeniu): skuteczność w dekadach i gatunkach,
+najczęściej mylone piosenki, historia rekordów i wykres postępów.
+
+**Duży ekran** (📺): drugie okno (`tv.html`) dla telewizora lub rzutnika, z dużymi kartami
+i osiami wszystkich graczy; okno gry na tym samym urządzeniu jest pilotem (BroadcastChannel).
+
+**Statystyki odwiedzin**: Umami Cloud (`analytics.js`) – bez ciasteczek; zdarzenia
+`start-gry` (tryb, poziom, zestaw, liczba graczy, język), `koniec-gry` (tryb, czas, wynik),
+`czas-wizyty`, `statystyki`, `duzy-ekran`. Dane wysyłane są tylko z matyz55.github.io.
+
 **Tryb ekspert** (osie czasu): żeby zatrzymać kartę, oprócz miejsca na osi trzeba podać
 wybrane dane – tytuł, wykonawcę i/lub dokładny rok (do wyboru w ustawieniach gry).
 

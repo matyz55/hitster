@@ -329,6 +329,20 @@ const MODES = {
   teams: { title: 'Oś czasu – drużyny', minPlayers: 2, maxPlayers: MAX_TEAMS, teams: true },
   melody: { title: 'Jaka to melodia', minPlayers: 1, maxPlayers: MAX_PLAYERS },
   steps: { title: 'Melodia krok po kroku', minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  timed: { title: 'Na czas', minPlayers: 1, maxPlayers: 1 },
+  hilo: { title: 'Starsza czy nowsza?', minPlayers: 1, maxPlayers: 1 },
+  duel: { title: 'Pojedynek dekad', minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  buzz: { title: 'Kto pierwszy?', minPlayers: 2, maxPlayers: MAX_PLAYERS },
+};
+// klawisze graczy w „Kto pierwszy?” (oprócz przycisków na ekranie)
+const BUZZ_KEYS = ['1', '2', '3', '4', '5', '6', '7', '8'];
+const BUZZ_COLORS = ['#ff3d7f', '#2de2e6', '#ffc93c', '#3ddc84', '#a78bfa', '#ff8a3d', '#60a5fa', '#f472b6'];
+// karty specjalne (modyfikatory osi czasu)
+const SPECIAL_CHANCE = 0.2;
+const SPECIALS = {
+  double: { icon: '✨', name: 'Karta podwójna', desc: 'dobre ułożenie daje dodatkową kartę' },
+  steal: { icon: '🪙', name: 'Kradzież żetonu', desc: 'dobre ułożenie zabiera żeton graczowi, który ma ich najwięcej' },
+  swap: { icon: '🔄', name: 'Zamiana osi', desc: 'po dobrym ułożeniu możesz zamienić się osią z innym graczem' },
 };
 // „Melodia krok po kroku”: długość fragmentu i punkty za odgadnięcie na danym kroku
 const STEPS = [{ len: 1, pts: 4 }, { len: 2, pts: 3 }, { len: 4, pts: 2 }, { len: 8, pts: 1 }];
@@ -360,10 +374,15 @@ const state = {
   clipLen: 30,
 };
 const activePlayer = () => state.players[state.turn];
-const isTimeline = () => state.mode === 'solo' || state.mode === 'multi' || state.mode === 'teams';
+const isTimeline = () => ['solo', 'multi', 'teams', 'timed'].includes(state.mode);
+// jedna osoba układa własną oś (bez wyzwań)
+const isSoloLike = () => state.mode === 'solo' || state.mode === 'timed';
+const isQuick = () => state.mode === 'hilo' || state.mode === 'duel';
 // multiplayer i drużyny mają te same zasady (wyzwania, żetony) – drużyna to „gracz” ze wspólną osią
-const isMulti = () => state.mode === 'multi' || state.mode === 'teams';
-const isMelody = () => state.mode === 'melody' || state.mode === 'steps';
+const isMultiMode = (m) => m === 'multi' || m === 'teams';
+const isMulti = () => isMultiMode(state.mode);
+const timeLabel = (sec) => (sec % 60 ? `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}` : T('{0} min', sec / 60));
+const isMelody = () => ['melody', 'steps', 'buzz'].includes(state.mode);
 // kto teraz odpowiada: w drużynach członkowie zmieniają się co turę drużyny
 function answering(p) {
   return state.mode === 'teams' && p.members && p.members.length ? p.members[p.member % p.members.length] : null;
@@ -371,12 +390,58 @@ function answering(p) {
 const turnName = (p) => (answering(p) ? `${p.name} (odpowiada: ${answering(p)})` : p.name);
 
 /* ---------- nawigacja między ekranami ---------- */
-const SCREENS = ['home', 'setup', 'game', 'end', 'settings'];
+const SCREENS = ['home', 'setup', 'game', 'end', 'settings', 'stats'];
 let screenBeforeSettings = 'home';
 function showScreen(name) {
   for (const s of SCREENS) $('#screen-' + s).classList.toggle('hidden', s !== name);
   if (name !== 'game') stopAudio();
   window.scrollTo(0, 0);
+  tvSync();
+}
+
+/* ---------- duży ekran (TV / rzutnik): drugie okno na tym samym urządzeniu, to okno jest pilotem ---------- */
+let tvChannel = null;
+try {
+  tvChannel = new BroadcastChannel('songster-tv');
+  tvChannel.onmessage = (e) => { if (e.data && e.data.hello) tvSync(); };
+} catch (e) { /* stara przeglądarka – bez dużego ekranu */ }
+function tvSync() {
+  if (!tvChannel) return;
+  const screen = SCREENS.find((x) => !$('#screen-' + x).classList.contains('hidden'));
+  const txt = (sel) => ($(sel) ? $(sel).textContent.trim() : '');
+  const snap = { screen };
+  if (screen === 'end') {
+    snap.winner = txt('#winner-title');
+    snap.ranking = $$('#ranking li').map((li) => li.textContent);
+  } else if (screen === 'game' && state.players.length) {
+    const revealed = state.phase === 'revealed' && state.current;
+    Object.assign(snap, {
+      title: txt('#turn-title'), info: txt('#turn-info'), hint: txt('#hint'),
+      status: revealed ? '' : txt('#mystery-status') + (state.special && SPECIALS[state.special] ? ` · ${txt('#special-badge')}` : ''),
+      scores: state.players.length > 1 ? $$('#scoreboard .score').map((n, i) => ({ text: n.textContent, active: n.classList.contains('active') || (state.buzz && state.buzz.answering === i) })) : [],
+      art: revealed && state.preview ? state.preview.art : null,
+      reveal: revealed ? {
+        y: state.current.y, t: state.current.t, a: artistLine(state.current), cc: state.current.cc,
+        lines: $$('#reveal .verdict, #reveal .fact').map((n) => n.textContent),
+      } : null,
+    });
+    const card = (c) => (c.start ? { y: c.y, start: true } : { y: c.y, t: c.t, a: c.a, cc: c.cc, new: revealed && c === state.current });
+    if (isTimeline()) {
+      // aktywny gracz na górze, potem pozostali
+      const order = state.players.map((p, i) => ({ p, i })).sort((x, y) => (y.i === state.turn) - (x.i === state.turn));
+      snap.timelines = order.map(({ p, i }) => ({ name: p.name, active: i === state.turn, cards: p.timeline.map(card) }));
+    } else if (state.mode === 'hilo' && state.ref) {
+      const cards = [card(state.ref)];
+      if (revealed) { const c = card(state.current); if (state.current.y < state.ref.y) cards.unshift(c); else cards.push(c); }
+      snap.timelines = [{ name: '', active: true, cards }];
+    }
+  }
+  try { tvChannel.postMessage(snap); } catch (e) { /* okno TV zamknięte */ }
+}
+function openTv() {
+  window.open('tv.html', 'songster-tv', 'width=1280,height=720');
+  window.track && window.track('duzy-ekran');
+  setTimeout(tvSync, 800);
 }
 
 $('#logo').addEventListener('click', () => {
@@ -386,6 +451,8 @@ $('#logo').addEventListener('click', () => {
   }
 });
 $('#btn-rules').addEventListener('click', () => $('#dlg-rules').showModal());
+$('#btn-tv').addEventListener('click', openTv);
+$('#btn-tv-home').addEventListener('click', openTv);
 $('#btn-settings').addEventListener('click', () => {
   const visible = SCREENS.find((s) => !$('#screen-' + s).classList.contains('hidden'));
   if (visible === 'settings') return;
@@ -424,7 +491,8 @@ function openSetup(mode) {
     if (names.length > cfg.maxPlayers) names = names.slice(0, cfg.maxPlayers);
     renderSetupPlayers(names.map((name) => ({ name })));
   }
-  $('#rounds-label').textContent = cfg.teams ? 'Piosenek na drużynę' : 'Piosenek na gracza';
+  $('#rounds-label').textContent = mode === 'buzz' ? T('Liczba piosenek') : (cfg.teams ? 'Piosenek na drużynę' : 'Piosenek na gracza');
+  if (mode === 'duel') renderDuelPick();
   updatePoolInfo();
   showScreen('setup');
 }
@@ -467,12 +535,13 @@ const poolValue = () => document.querySelector('input[name=pool]:checked').value
 
 /* --- filtry: dekady, gatunki, kraje, popularność --- */
 const NO_GENRE = 'bez gatunku';
+const genreName = (g) => T(g);
 const NO_COUNTRY = '?';
 const genresOf = (s) => (s.g && s.g.length ? s.g : [NO_GENRE]);
 const countryOf = (s) => (s.cc || NO_COUNTRY).toUpperCase();
 const FILTERS = {
   decade: { values: (s) => [decadeOf(s)], label: decadeLabel, sort: (a, b) => a - b },
-  genre: { values: genresOf, label: (g) => g, sort: (a, b) => (a === NO_GENRE) - (b === NO_GENRE) || a.localeCompare(b, 'pl') },
+  genre: { values: genresOf, label: genreName, sort: (a, b) => (a === NO_GENRE) - (b === NO_GENRE) || a.localeCompare(b, 'pl') },
   country: {
     values: (s) => [countryOf(s)],
     label: (c) => (c === NO_COUNTRY ? '🌍 nieznany' : [flagEl({ cc: c }), ' ', countryName({ cc: c })]),
@@ -510,6 +579,7 @@ const LEVELS = [
 const filterState = Object.assign(
   {
     decade: [], genre: [], country: [], level: 1, plShare: 50, clip: 30, random: false, hint: false, showAll: true, endless: false,
+    timeLimit: 120, specials: [], duelA: null, duelB: null,
     challenge: 'place', expert: false, expTitle: true, expArtist: true, expYear: true, letterHint: true, tag: null, preset: 'all',
   },
   store.get('filters', {}),
@@ -582,6 +652,14 @@ function updateModeOptions() {
     ? (rec ? `Twój rekord na poziomie „${(LEVELS[filterState.level] || LEVELS[1]).name}” – ułożone piosenki: ${rec}.` : 'Nie masz jeszcze rekordu na tym poziomie.')
     : '';
   $('#expert-opts').classList.toggle('hidden', !filterState.expert);
+  const sp = (filterState.specials || []).filter((k) => isMultiMode(state.mode) || k === 'double');
+  $('#special-desc').textContent = sp.length
+    ? sp.map((k) => `${SPECIALS[k].icon} ${T(SPECIALS[k].name)}: ${T(SPECIALS[k].desc)}`).join(' · ') : '';
+  const lvlName = (LEVELS[filterState.level] || LEVELS[1]).name;
+  const tr = (store.get('timedRecords', {})[`${filterState.timeLimit || 120}-${filterState.level}`] || [])[0];
+  $('#timed-records').textContent = tr ? T('Rekord ({0}, poziom „{1}”): {2}', timeLabel(filterState.timeLimit || 120), lvlName, cardsLabel(tr.score)) : '';
+  const hr = store.get('records', {})[`hilo${filterState.level}`];
+  $('#hilo-record').textContent = hr ? T('Twój rekord na poziomie „{0}”: seria {1}.', lvlName, hr) : '';
   const parts = expertParts();
   $('#expert-desc').textContent = parts.length
     ? `Kartę zatrzymujesz tylko wtedy, gdy ułożysz ją dobrze i podasz: ${parts.map((x) => PART_NAMES[x]).join(', ')}.`
@@ -613,6 +691,31 @@ for (const [id, key] of [['#exp-title', 'expTitle'], ['#exp-artist', 'expArtist'
     saveFilters(); updateModeOptions();
   });
 }
+// limit czasu (tryb „Na czas”), dekady pojedynku, karty specjalne
+$$('input[name=time-limit]').forEach((r) => {
+  r.checked = Number(r.value) === (filterState.timeLimit || 120);
+  r.addEventListener('change', () => { filterState.timeLimit = Number(r.value); saveFilters(); updateModeOptions(); });
+});
+for (const [id, key] of [['#sp-double', 'double'], ['#sp-steal', 'steal'], ['#sp-swap', 'swap']]) {
+  $(id).checked = !!(filterState.specials || []).includes(key);
+  $(id).addEventListener('change', (e) => {
+    const set = new Set(filterState.specials || []);
+    if (e.target.checked) set.add(key); else set.delete(key);
+    filterState.specials = [...set];
+    saveFilters(); updateModeOptions();
+  });
+}
+function renderDuelPick() {
+  const decades = [...new Set(songPool('decade').map(decadeOf))].sort((a, b) => a - b);
+  for (const [id, key] of [['#duel-a', 'duelA'], ['#duel-b', 'duelB']]) {
+    const sel = $(id);
+    sel.replaceChildren(el('option', { value: '' }, T('losowo')),
+      ...decades.map((d) => el('option', { value: String(d), selected: String(filterState[key] || '') === String(d) }, decadeLabelLong(d))));
+    sel.onchange = () => { filterState[key] = sel.value ? Number(sel.value) : null; saveFilters(); };
+  }
+}
+const decadeLabelLong = (d) => (d === OLDEST_DECADE ? T('do 1969')
+  : (d >= 2000 ? T('lata {0}.', d) : T('lata {0}.', String(d % 100))) + ` (${d}–${d + 9})`);
 const expertParts = () => (filterState.expert ? [
   filterState.expTitle && 'title', filterState.expArtist && 'artist', filterState.expYear && 'year'].filter(Boolean) : []);
 const PART_NAMES = { title: 'tytuł', artist: 'wykonawcę', year: 'dokładny rok' };
@@ -659,6 +762,13 @@ function applyPreset(set) {
   filterState.pool = set.pool;
   saveFilters();
   updatePoolInfo();
+}
+// id aktywnego zestawu (do statystyk)
+function renderPresetsActive() {
+  const cur = currentSettings();
+  const p = [...PRESETS.map((x) => ({ ...x, set: x.set() })), ...store.get('presets', []).map((x) => ({ ...x, id: 'wlasny' }))]
+    .find((x) => sameSettings(x.set, cur));
+  return p ? p.id : null;
 }
 function renderPresets() {
   const cur = currentSettings();
@@ -740,8 +850,14 @@ function startGame() {
   state.expert = isTimeline() ? expertParts() : [];
   state.letterHint = filterState.letterHint;
   const plShare = poolValue() === 'ALL' ? filterState.plShare / 100 : (poolValue() === 'PL' ? 1 : 0);
-  const needed = isTimeline() ? names.length * 3 : names.length * state.rounds;
-  const pool = freshPool(songPool(), needed);
+  const needed = state.mode === 'buzz' ? state.rounds : (isTimeline() || state.mode === 'hilo' ? names.length * 3 : names.length * state.rounds);
+  let base = songPool();
+  if (state.mode === 'duel') {
+    state.duel = pickDuelDecades(base, needed);
+    if (!state.duel) { alert(T('Za mało piosenek w wybranej puli dla tych ustawień.')); return; }
+    base = base.filter((s) => state.duel.includes(decadeOf(s)));
+  }
+  const pool = freshPool(base, needed);
   state.deck = new Deck(pool, { level: state.difficulty, plShare });
   prefetched = null;
   const artists = new Set(pool.map((s) => artistKeys(s)[0])).size;
@@ -749,6 +865,13 @@ function startGame() {
     alert('Za mało piosenek w wybranej puli dla tych ustawień.');
     return;
   }
+  state.timeLimit = filterState.timeLimit || 120;
+  state.timeLeft = state.timeLimit * 1000;
+  state.specials = isTimeline() ? (filterState.specials || []).filter((k) => isMulti() || k === 'double') : [];
+  state.startedAt = Date.now();
+  state.buzz = null;
+  state.ref = null;
+  state.streak = 0;
   state.players = rows.map((r) => ({
     name: r.name, tokens: startTokens, timeline: [], score: 0, lives,
     members: teams ? (r.members || '').split(/[,;\n]+/).map((m) => m.trim()).filter(Boolean) : [], member: 0,
@@ -757,8 +880,29 @@ function startGame() {
   state.turn = Math.floor(Math.random() * names.length);
   state.turnsPlayed = 0;
   state.history = [];
+  if (state.mode === 'hilo') {
+    // karta startowa: odkryta piosenka (bez odtwarzania)
+    state.ref = state.deck.draw();
+    markPlayed(state.ref);
+  }
+  window.track && window.track('start-gry', {
+    tryb: state.mode, poziom: (LEVELS[filterState.level] || LEVELS[1]).name, zestaw: filterState.tag || (renderPresetsActive() || 'wlasne'),
+    graczy: names.length, ekspert: state.expert.join('+') || 'nie', specjalne: state.specials.join('+') || 'nie', jezyk: LANG,
+  });
   showScreen('game');
   startTurn();
+}
+
+// Pojedynek dekad: wybrane w ustawieniach albo losowe – dwie dekady z wystarczającą liczbą piosenek
+function pickDuelDecades(pool, needed) {
+  const count = new Map();
+  for (const s of pool) count.set(decadeOf(s), (count.get(decadeOf(s)) || 0) + 1);
+  const enough = [...count.keys()].filter((d) => count.get(d) >= Math.ceil(needed / 2) + 2);
+  let [a, b] = [filterState.duelA, filterState.duelB].map((d) => (d != null && count.has(d) ? d : null));
+  if (a == null) a = shuffle(enough.filter((d) => d !== b))[0];
+  if (b == null || b === a) b = shuffle(enough.filter((d) => d !== a))[0];
+  if (a == null || b == null) return null;
+  return [a, b].sort((x, y) => x - y);
 }
 
 // Karta startowa to sam rok (bez piosenki). Każdy gracz dostaje rok z innej kategorii dekad
@@ -781,7 +925,8 @@ async function startTurn() {
   stopAudio();
   Object.assign(state, {
     phase: 'listen', slot: null, challenger: null, challengeSlot: null, challengeYear: null, awarded: false,
-    current: null, preview: null, marks: null,
+    current: null, preview: null, marks: null, special: null, swapOffer: false, hiloLost: false,
+    buzz: state.mode === 'buzz' ? { answering: null, locked: new Set() } : null,
   });
   $('#reveal').classList.add('hidden');
   $('#guess-form').reset();
@@ -796,11 +941,12 @@ async function startTurn() {
 let prefetched = null;
 // rok kart gracza, który dostanie następną piosenkę (dla trudniejszych poziomów)
 function nearYearsFor(playerIndex) {
+  if (state.mode === 'hilo') return state.ref ? [state.ref.y] : null;
   return isTimeline() ? state.players[playerIndex].timeline.map((s) => s.y) : null;
 }
 const nextPlayerIndex = () => (isMulti() ? (state.turn + 1) % state.players.length : state.turn);
 // na trudnych poziomach oś następnego gracza zmienia się do chwili odkrycia karty – wtedy szukamy dopiero po odkryciu
-const prefetchAfterReveal = () => isTimeline() && state.difficulty === 2;
+const prefetchAfterReveal = () => (isTimeline() || state.mode === 'hilo') && state.difficulty === 2;
 
 // Cały 30-sekundowy fragment (~1 MB) pobieramy z góry. Bez tego telefony zaczynały grać przy małym
 // buforze i po chwili zatrzymywały się na doładowanie. Serwer iTunes zezwala na to (CORS: *).
@@ -862,16 +1008,25 @@ async function drawSong() {
         state.clipStart = filterState.random && filterState.clip < 30 ? Math.random() * (29 - filterState.clip) : 0;
       }
       setAudioSource(preview);
-      $('#mystery-status').replaceChildren(state.mode === 'steps'
-        ? `Posłuchaj ${STEPS[0].len} sekundy i zgaduj – albo wydłuż fragment.`
-        : (state.mode === 'melody' ? 'Posłuchaj i wpisz odpowiedź.' : 'Posłuchaj i wybierz miejsce na swojej osi czasu.'));
+      const status = {
+        steps: T('Posłuchaj {0} sekundy i zgaduj – albo wydłuż fragment.', STEPS[0].len),
+        melody: T('Posłuchaj i wpisz odpowiedź.'),
+        buzz: T('Włącz fragment – kto pierwszy naciśnie swój przycisk, ten odpowiada.'),
+        hilo: T('Posłuchaj: starsza czy nowsza od poprzedniej karty?'),
+        duel: T('Posłuchaj i wybierz dekadę.'),
+      }[state.mode] || T('Posłuchaj i wybierz miejsce na swojej osi czasu.');
+      $('#mystery-status').replaceChildren(status);
+      // karta specjalna: co ok. piąta karta na osi czasu (jeśli włączone)
+      if (state.specials && state.specials.length && Math.random() < SPECIAL_CHANCE) {
+        state.special = state.specials[Math.floor(Math.random() * state.specials.length)];
+      }
       if (isMelody() && filterState.hint) {
         $('#mystery-status').append(' ', el('span', { class: 'decade-hint' }, `Podpowiedź: ${decadeRange(decadeOf(song))}`));
       }
       $('#btn-play').disabled = false;
       render();
       if (!prefetchAfterReveal()) prefetchNext();
-      if (isMelody()) $(state.guessType === 'artist' ? '#guess-artist' : '#guess-title').focus({ preventScroll: true });
+      if (isMelody() && state.mode !== 'buzz') $(state.guessType === 'artist' ? '#guess-artist' : '#guess-title').focus({ preventScroll: true });
       return;
     }
     if (!previewCache.has(songKey(song))) {
@@ -948,6 +1103,8 @@ function revealTimeline() {
   };
   let verdict;
   let note;
+  let specialLine = null;
+  state.extraCard = null;
   const expertLines = state.expert.map((part) => el('div', { class: 'verdict small-verdict ' + (answers[part].ok ? 'ok' : 'bad') },
     `${answers[part].ok ? '✔' : '✘'} ${PART_LABELS[part]}: ${answers[part].guess.trim() ? `„${answers[part].guess.trim()}”` : '—'}`));
   const yearInfo = yearMode && !challengeOk
@@ -962,7 +1119,8 @@ function revealTimeline() {
     note = `🎯 kartę zdobył(a) ${ch.name} (dokładny rok)`;
   } else if (ok) {
     p.timeline.splice(state.slot, 0, song);
-    verdict = el('div', { class: 'verdict ok' }, state.mode === 'solo'
+    specialLine = applySpecial(p);
+    verdict = el('div', { class: 'verdict ok' }, isSoloLike()
       ? '✔ Dobrze! Karta trafia na Twoją oś.'
       : `✔ Dobrze! Karta trafia do: ${p.name}.`);
     note = `✔ ${p.name}`;
@@ -974,7 +1132,7 @@ function revealTimeline() {
   } else {
     if (state.mode === 'solo') p.lives -= 1;
     verdict = el('div', { class: 'verdict bad' }, (state.mode === 'solo'
-      ? `✘ Pudło – karta przepada. Pozostałe pomyłki: ${p.lives}.`
+      ? T('✘ Pudło – karta przepada. Pozostałe pomyłki: {0}.', p.lives)
       : '✘ Pudło – karta przepada.') + why);
     note = `✘ ${p.name}`;
   }
@@ -994,8 +1152,28 @@ function revealTimeline() {
     state.awarded = true;
   }
   state.history.push({ song, preview: state.preview, player: p.name, ok: ok || challengeOk, note });
+  recordAnswer(song, ok);
   fx(ok ? 'good' : 'bad');
-  showReveal(verdict, ...expertLines, tokenLine, yearInfo);
+  showReveal(verdict, specialLine, ...expertLines, tokenLine, yearInfo);
+}
+
+// ciekawostki o piosence (pole f z songs.js) – najwyżej dwie
+function factLines(song) {
+  const out = [];
+  for (const f of song.f || []) {
+    const [kind, a, b, c] = f.split(':');
+    if (kind === 'e') {
+      const country = c ? countryName({ cc: c }) : '';
+      out.push(b === '1' ? T('🏆 Zwycięzca Eurowizji {0} ({1})', a, country)
+        : (b ? T('🎤 Eurowizja {0}: {1}. miejsce ({2})', a, b, country) : T('🎤 Występ na Eurowizji {0} ({1})', a, country)));
+    } else if (kind === 't1') out.push(T('📻 1. miejsce na Liście Przebojów Programu Trzeciego'));
+    else if (kind === 'tp') out.push(T('📻 W plebiscycie „Polski Top Wszech Czasów” Trójki'));
+    else if (kind === 'o') out.push(T('🎙 Śpiewana na {0} Krajowym Festiwalu Piosenki Polskiej w Opolu', a));
+    else if (kind === 'b') out.push(b ? T('🇺🇸 Billboard Year-End Hot 100 ({0}): {1}. miejsce', a, b) : T('🇺🇸 Na liście Billboard Year-End Hot 100 ({0})', a));
+    else if (kind === 'n') out.push(T('🇵🇱 Nr 1 na liście przebojów w Polsce ({0})', a));
+  }
+  if (!out.length && TOP_SONGS.has(songKey(song))) out.push(T('🔥 Jedna z 1000 najpopularniejszych piosenek w grze (Spotify)'));
+  return out.slice(0, 2).map((t) => el('div', { class: 'fact' }, t));
 }
 
 function showReveal(...extra) {
@@ -1004,8 +1182,9 @@ function showReveal(...extra) {
   setVinyl(state.preview.art);
   $('#reveal').replaceChildren(
     el('div', { class: 'year' }, String(song.y)),
-    el('div', {}, el('b', {}, song.t), ' — ', artistLine(song), ' ', flagEl(song)),
+    el('div', {}, el('b', { class: 'notr' }, song.t), ' — ', el('span', { class: 'notr' }, artistLine(song)), ' ', flagEl(song)),
     ...extra.filter(Boolean),
+    ...factLines(song),
     listenLink(song, state.preview),
   );
   $('#reveal').classList.remove('hidden');
@@ -1034,7 +1213,9 @@ function buyCard() {
 $('#guess-form').addEventListener('submit', (e) => {
   e.preventDefault();
   if (!isMelody() || state.phase !== 'listen' || !state.current) return;
-  if (state.mode === 'steps') stepsGuess(); else revealMelody(false);
+  if (state.mode === 'steps') stepsGuess();
+  else if (state.mode === 'buzz') buzzGuess();
+  else revealMelody(false);
 });
 $('#btn-giveup').addEventListener('click', () => {
   if (state.mode === 'melody' && state.phase === 'listen' && state.current) revealMelody(true);
@@ -1084,6 +1265,7 @@ function revealSteps(gaveUp) {
   p.score += points;
   state.turnsPlayed += 1;
   const all = parts.every((part) => state.solved[part] != null);
+  recordAnswer(song, all);
   state.history.push({
     song, preview: state.preview, player: p.name, ok: all, note: `${p.name}: ${points} pkt`,
   });
@@ -1158,6 +1340,7 @@ function revealMelody(gaveUp) {
   }
   const points = parts.filter((x) => x.ok).length;
   p.score += points;
+  recordAnswer(song, points === parts.length);
   state.turnsPlayed += 1;
   state.history.push({
     song, preview: state.preview, player: p.name, ok: points === parts.length,
@@ -1170,8 +1353,226 @@ function revealMelody(gaveUp) {
   showReveal(...lines);
 }
 
+/* --- Na czas --- */
+// czas płynie tylko, gdy piosenka jest gotowa i gracz słucha/układa (nie przy wczytywaniu i odkrytej karcie)
+let timerLast = 0;
+setInterval(() => {
+  const now = Date.now();
+  const dt = now - (timerLast || now);
+  timerLast = now;
+  if (state.mode !== 'timed' || $('#screen-game').classList.contains('hidden') || state.phase === 'ended') return;
+  if (!state.current || !['listen', 'placed'].includes(state.phase)) return;
+  state.timeLeft -= dt;
+  renderTimer();
+  if (state.timeLeft <= 0) {
+    state.timeLeft = 0;
+    fx('bad');
+    endGame();
+  }
+}, 200);
+function renderTimer() {
+  const p = activePlayer();
+  const sec = Math.max(0, Math.ceil(state.timeLeft / 1000));
+  const placed = p.timeline.filter((c) => !c.start).length;
+  $('#turn-title').textContent = `⏳ ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')} · ${T('ułożone: {0}', placed)}`;
+  $('#turn-title').classList.toggle('hurry', sec <= 10);
+  if (sec !== renderTimer.last) { renderTimer.last = sec; tvSync(); }
+  $('#turn-info').textContent = T('Żetony: {0}', '🪙'.repeat(p.tokens) || T('brak'));
+}
+
+/* --- Starsza czy nowsza? --- */
+function renderHiloCards(container) {
+  const ref = state.ref;
+  const card = (s, cls) => el('div', { class: 'tcard ' + cls },
+    el('div', { class: 'a notr' }, s.a), el('div', { class: 'y' }, String(s.y)), el('div', { class: 't notr' }, s.t), el('div', { class: 'flag' }, flagEl(s)));
+  const items = [card(ref, 'ref')];
+  if (state.phase === 'revealed' && state.current) {
+    const cur = card(state.current, state.hiloLost ? 'lost' : 'new');
+    if (state.current.y < ref.y) items.unshift(cur); else items.push(cur);
+  } else if (state.current) {
+    items.push(el('div', { class: 'tcard mystery-card' }, el('div', { class: 'y' }, '?')));
+  }
+  container.replaceChildren(...items);
+}
+function answerHilo(older) {
+  const song = state.current;
+  const ok = older ? song.y <= state.ref.y : song.y >= state.ref.y;
+  stopAudio();
+  if (ok) state.streak += 1; else state.hiloLost = true;
+  state.history.push({ song, preview: state.preview, player: activePlayer().name, ok,
+    note: `${older ? T('starsza') : T('nowsza')} ${T('niż')} ${state.ref.y}` });
+  recordAnswer(song, ok);
+  fx(ok ? 'good' : 'bad');
+  showReveal(el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') }, ok
+    ? T('✔ Dobrze! {0} {1} {2}. Seria: {3}', song.y, song.y === state.ref.y ? '=' : (song.y < state.ref.y ? '<' : '>'), state.ref.y, state.streak)
+    : T('✘ Pudło – {0} {1} {2}. Koniec serii: {3}', song.y, song.y < state.ref.y ? '<' : '>', state.ref.y, state.streak)));
+}
+
+/* --- Pojedynek dekad --- */
+function answerDuel(decade) {
+  const song = state.current;
+  const p = activePlayer();
+  const ok = decadeOf(song) === decade;
+  stopAudio();
+  if (ok) p.score += 1;
+  state.turnsPlayed += 1;
+  state.history.push({ song, preview: state.preview, player: p.name, ok, note: `${p.name}: ${decadeLabelLong(decade)}` });
+  recordAnswer(song, ok);
+  fx(ok ? 'good' : 'bad');
+  showReveal(el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') }, ok
+    ? T('✔ Tak – to {0}! +1 pkt', decadeLabelLong(decade))
+    : T('✘ Nie – to {0}.', decadeLabelLong(decadeOf(song)))));
+}
+
+/* --- Kto pierwszy? --- */
+function renderBuzzers() {
+  const box = $('#buzzers');
+  const b = state.buzz;
+  const show = state.mode === 'buzz' && !!state.current && state.phase === 'listen' && b && b.answering == null;
+  box.classList.toggle('hidden', !show);
+  $('#buzz-who').classList.toggle('hidden', !(state.mode === 'buzz' && b && b.answering != null && state.phase === 'listen'));
+  if (state.mode === 'buzz' && b && b.answering != null) {
+    $('#buzz-who').textContent = T('🔔 Odpowiada: {0}', state.players[b.answering].name);
+    $('#buzz-who').style.borderColor = BUZZ_COLORS[b.answering];
+  }
+  if (!show) return;
+  box.replaceChildren(...state.players.map((pl, i) => el('button', {
+    class: 'buzzer' + (b.locked.has(i) ? ' locked' : ''), disabled: b.locked.has(i),
+    style: `--c:${BUZZ_COLORS[i]}`, onclick: () => buzz(i),
+  }, el('b', {}, pl.name), el('kbd', {}, BUZZ_KEYS[i]))));
+}
+function buzz(i) {
+  const b = state.buzz;
+  if (state.mode !== 'buzz' || !state.current || state.phase !== 'listen' || !b || b.answering != null || b.locked.has(i) || i >= state.players.length) return;
+  b.answering = i;
+  audio.pause();
+  fx('place');
+  $('#guess-form').reset();
+  render();
+  $(state.guessType === 'artist' ? '#guess-artist' : '#guess-title').focus({ preventScroll: true });
+}
+document.addEventListener('keydown', (e) => {
+  if (state.mode !== 'buzz' || e.target.closest('input, textarea, select') || e.repeat) return;
+  const i = BUZZ_KEYS.indexOf(e.key);
+  if (i >= 0) { e.preventDefault(); buzz(i); }
+});
+function buzzGuess() {
+  const b = state.buzz;
+  if (!b || b.answering == null) return;
+  const song = state.current;
+  const pl = state.players[b.answering];
+  const parts = [];
+  if (state.guessType !== 'artist') parts.push(checkTitle($('#guess-title').value, song));
+  if (state.guessType !== 'title') parts.push(checkArtist($('#guess-artist').value, song));
+  if (parts.every(Boolean)) {
+    pl.score += 1;
+    return revealBuzz(b.answering, true);
+  }
+  pl.score -= 1;
+  fx('bad');
+  b.locked.add(b.answering);
+  const who = pl.name;
+  b.answering = null;
+  if (b.locked.size >= state.players.length) return revealBuzz(null, false, who);
+  $('#mystery-status').textContent = T('✘ {0} – źle, −1 pkt. Pozostali mogą odpowiadać.', who);
+  render();
+  audio.play().catch(() => {});
+}
+function revealBuzz(winner, ok, lastWrong) {
+  const song = state.current;
+  stopAudio();
+  state.turnsPlayed += 1;
+  const name = winner != null ? state.players[winner].name : T('nikt');
+  state.history.push({ song, preview: state.preview, player: name, ok, note: ok ? T('{0}: +1 pkt', name) : T('nikt nie zgadł') });
+  recordAnswer(song, ok);
+  fx(ok ? 'good' : 'bad');
+  showReveal(el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') }, ok
+    ? T('✔ {0} zgaduje! +1 pkt', name)
+    : (lastWrong ? T('✘ Nikt nie zgadł (ostatnio: {0}).', lastWrong) : T('Nikt nie zgadł.'))));
+}
+
+// przyciski trybów „Starsza czy nowsza?”, „Pojedynek dekad” i „Kto pierwszy?”
+function quickActions() {
+  const btns = [];
+  if (state.phase === 'listen' && state.current) {
+    if (state.mode === 'hilo') {
+      btns.push(el('button', { class: 'big-choice', onclick: () => answerHilo(true) }, T('⬅ Starsza')),
+        el('button', { class: 'big-choice', onclick: () => answerHilo(false) }, T('Nowsza ➡')));
+    } else if (state.mode === 'duel') {
+      btns.push(...state.duel.map((d) => el('button', { class: 'big-choice', onclick: () => answerDuel(d) }, decadeLabelLong(d))));
+    } else if (state.mode === 'buzz' && state.buzz.answering == null) {
+      btns.push(el('button', { class: 'ghost', onclick: () => revealBuzz(null, false) }, T('🏳 Nikt nie wie – odkryj')));
+    } else if (state.mode === 'buzz') {
+      btns.push(el('button', {
+        class: 'ghost', onclick: () => { $('#guess-form').reset(); buzzGuess(); },
+      }, T('Nie wiem (−1 pkt)')));
+    }
+  }
+  if (state.phase === 'revealed') {
+    const last = state.mode === 'hilo' ? state.hiloLost
+      : state.turnsPlayed >= state.rounds * (state.mode === 'buzz' ? 1 : state.players.length);
+    btns.push(el('button', { class: 'primary', onclick: nextTurn }, last ? T('Zobacz wyniki →')
+      : (state.mode === 'duel' && state.players.length > 1 ? T('Następny gracz →') : T('Następna piosenka →'))));
+  }
+  return btns;
+}
+
+/* --- karty specjalne --- */
+function renderSpecialBadge() {
+  const badge = $('#special-badge');
+  const sp = state.special && SPECIALS[state.special];
+  badge.classList.toggle('hidden', !sp || !state.current);
+  if (sp) badge.textContent = `${sp.icon} ${T(sp.name)} – ${T(sp.desc)}`;
+}
+// efekt karty specjalnej po dobrym ułożeniu; zwraca linię do odkrycia
+function applySpecial(p) {
+  if (!state.special) return null;
+  if (state.special === 'double') {
+    const extra = state.deck.draw(nearYearsFor(state.turn));
+    if (!extra) return null;
+    markPlayed(extra);
+    addToTimeline(p, extra);
+    state.extraCard = extra;
+    return el('div', { class: 'verdict small-verdict ok' }, T('✨ Karta podwójna: dodatkowa karta {0} – „{1}” ({2})', extra.y, extra.t, extra.a));
+  }
+  if (state.special === 'steal') {
+    const others = state.players.filter((x) => x !== p && x.tokens > 0);
+    if (!others.length || p.tokens >= MAX_TOKENS) return el('div', { class: 'muted' }, T('🪙 Kradzież żetonu: nikt nie ma żetonów do zabrania.'));
+    const victim = others.sort((a, b) => b.tokens - a.tokens)[0];
+    victim.tokens -= 1;
+    p.tokens += 1;
+    return el('div', { class: 'verdict small-verdict ok' }, T('🪙 Kradzież żetonu: {0} zabiera żeton graczowi {1}.', p.name, victim.name));
+  }
+  if (state.special === 'swap') {
+    state.swapOffer = true;
+    return el('div', { class: 'verdict small-verdict ok' }, T('🔄 Zamiana osi: możesz zamienić się osią z innym graczem (przyciski poniżej).'));
+  }
+  return null;
+}
+function swapButtons(p) {
+  return [...state.players.filter((x) => x !== p).map((x) => el('button', {
+    class: 'gold', onclick: () => {
+      [p.timeline, x.timeline] = [x.timeline, p.timeline];
+      state.swapOffer = false;
+      fx('place');
+      $('#reveal').append(el('div', { class: 'verdict small-verdict ok' }, T('🔄 {0} i {1} zamienili się osiami.', p.name, x.name)));
+      render();
+    },
+  }, T('🔄 Zamień z: {0} ({1})', x.name, cardsLabel(x.timeline.length)))),
+  el('button', { class: 'ghost', onclick: () => { state.swapOffer = false; render(); } }, T('Nie zamieniaj'))];
+}
+
 /* --- wspólne --- */
 function nextTurn() {
+  if (state.mode === 'hilo') {
+    if (state.hiloLost) return endGame();
+    state.ref = state.current;
+    return startTurn();
+  }
+  if (state.mode === 'buzz') {
+    if (state.turnsPlayed >= state.rounds) return endGame();
+    return startTurn();
+  }
   if (isTimeline()) {
     const winner = !state.endless && state.players.find((p) => p.timeline.length >= state.winTarget);
     if (winner || (state.mode === 'solo' && activePlayer().lives <= 0)) return endGame();
@@ -1193,45 +1594,88 @@ function cardsLabel(n) {
 }
 const pointsLabel = (n) => `${n} pkt`;
 
+// zapis rekordu (najlepszy wynik) i historii rekordów do statystyk gracza
+function saveRecord(key, value, label) {
+  const records = store.get('records', {});
+  const prev = records[key] || 0;
+  if (value > prev) {
+    records[key] = value;
+    store.set('records', records);
+    const log = store.get('recordLog', []);
+    log.push({ d: new Date().toISOString().slice(0, 10), k: key, v: value, l: label });
+    store.set('recordLog', log.slice(-200));
+  }
+  return prev;
+}
+
 function endGame() {
   stopAudio();
   state.drawId++;
+  if (state.phase === 'ended') return;
   state.phase = 'ended';
+  $('#turn-title').classList.remove('hurry');
   const metric = isTimeline() ? (p) => p.timeline.length : (p) => p.score;
   const label = isTimeline() ? cardsLabel : pointsLabel;
   const ranking = state.players.slice().sort((a, b) => metric(b) - metric(a));
   const best = ranking[0];
-  if (isMelody() && state.players.length === 1) {
-    const max = state.rounds * (state.guessType === 'both' ? 2 : 1) * (state.mode === 'steps' ? STEPS[0].pts : 1);
-    $('#winner-title').textContent = `${state.mode === 'steps' ? '⏱️' : '🎤'} Twój wynik: ${best.score} z ${max} pkt`;
+  const lvlName = (LEVELS[state.difficulty] || LEVELS[1]).name;
+  let won = false;
+  let extra = [];
+  const title = $('#winner-title');
+  if (state.mode === 'timed') {
+    // ranking 10 najlepszych wyników dla danego limitu czasu i poziomu
+    const placed = best.timeline.filter((c) => !c.start).length;
+    const key = `${state.timeLimit}-${state.difficulty}`;
+    const all = store.get('timedRecords', {});
+    const list = all[key] || [];
+    const entry = { score: placed, date: new Date().toISOString().slice(0, 10), now: true };
+    const prevBest = list.length ? list[0].score : 0;
+    list.push(entry);
+    list.sort((x, y) => y.score - x.score);
+    all[key] = list.slice(0, 10).map(({ score, date }) => ({ score, date }));
+    store.set('timedRecords', all);
+    saveRecord(`timed${key}`, placed, T('Na czas {0}, {1}', timeLabel(state.timeLimit), lvlName));
+    won = placed > prevBest && placed > 0;
+    title.textContent = won ? T('🏆 Nowy rekord! Ułożone karty: {0} w {1}.', placed, timeLabel(state.timeLimit))
+      : T('⏳ Koniec czasu! Ułożone karty: {0} (rekord: {1}).', placed, prevBest);
+    const pos = list.indexOf(entry);
+    extra = [el('h3', {}, T('Najlepsze wyniki – {0}, poziom „{1}”', timeLabel(state.timeLimit), lvlName)),
+      el('ol', { class: 'ranking' }, list.slice(0, 10).map((r, i) => el('li', { class: i === pos ? 'me' : '' },
+        `${cardsLabel(r.score)} · ${r.date}${i === pos ? T(' ← teraz') : ''}`)))];
+  } else if (state.mode === 'hilo') {
+    const prev = saveRecord(`hilo${state.difficulty}`, state.streak, T('Starsza czy nowsza?, {0}', lvlName));
+    won = state.streak > prev;
+    title.textContent = won ? T('🏆 Nowy rekord! Seria: {0} (poprzedni: {1}).', state.streak, prev)
+      : T('Koniec serii: {0}. Rekord: {1}.', state.streak, prev);
+  } else if ((isMelody() || state.mode === 'duel') && state.players.length === 1) {
+    const max = state.mode === 'duel' ? state.rounds
+      : state.rounds * (state.guessType === 'both' ? 2 : 1) * (state.mode === 'steps' ? STEPS[0].pts : 1);
+    title.textContent = T('{0} Twój wynik: {1} z {2} pkt', { steps: '⏱️', duel: '🥊' }[state.mode] || '🎤', best.score, max);
+    won = best.score >= max / 2 && best.score > 0;
   } else if (state.mode === 'solo' && state.endless) {
     const placed = best.timeline.filter((c) => !c.start).length;
-    const records = store.get('records', {});
-    const prev = records[state.recordLevel] || 0;
-    if (placed > prev) { records[state.recordLevel] = placed; store.set('records', records); }
-    $('#winner-title').textContent = placed > prev
-      ? `🏆 Nowy rekord! Ułożone piosenki: ${placed} (poprzedni: ${prev}).`
-      : `Koniec gry – ułożone piosenki: ${placed}. Rekord: ${prev}.`;
+    const prev = saveRecord(state.recordLevel, placed, T('Gra bez końca, {0}', lvlName));
+    won = placed > prev;
+    title.textContent = won ? T('🏆 Nowy rekord! Ułożone piosenki: {0} (poprzedni: {1}).', placed, prev)
+      : T('Koniec gry – ułożone piosenki: {0}. Rekord: {1}.', placed, prev);
   } else if (state.mode === 'solo') {
-    $('#winner-title').textContent = best.timeline.length >= state.winTarget
-      ? `🏆 Wygrana! Zebrano ${cardsLabel(best.timeline.length)}.`
-      : `Koniec gry – zebrano ${cardsLabel(best.timeline.length)} z ${state.winTarget}.`;
+    won = best.timeline.length >= state.winTarget;
+    title.textContent = won ? T('🏆 Wygrana! Zebrano {0}.', cardsLabel(best.timeline.length))
+      : T('Koniec gry – zebrano {0} z {1}.', cardsLabel(best.timeline.length), state.winTarget);
   } else {
     const tie = ranking.length > 1 && metric(ranking[1]) === metric(best);
-    $('#winner-title').textContent = tie ? `🤝 Remis! (${label(metric(best))})` : `🏆 Wygrywa ${best.name} (${label(metric(best))})!`;
+    title.textContent = tie ? T('🤝 Remis! ({0})', label(metric(best))) : T('🏆 Wygrywa {0} ({1})!', best.name, label(metric(best)));
+    won = !tie && metric(best) > 0;
   }
-  const tieEnd = ranking.length > 1 && metric(ranking[1]) === metric(best);
-  const won = state.mode === 'solo'
-    ? (state.endless ? /Nowy rekord/.test($('#winner-title').textContent) : best.timeline.length >= state.winTarget)
-    : (ranking.length > 1 ? !tieEnd && metric(best) > 0 : best.score >= state.rounds);
   if (won) { fx('win'); celebrate(); }
   $('#ranking').replaceChildren(...(ranking.length > 1
     ? [el('ol', { class: 'ranking' }, ranking.map((p) => el('li', {}, `${p.name} – ${label(metric(p))}`)))]
-    : []));
+    : []), ...extra);
   const tl = $('#winner-timeline');
   tl.classList.toggle('hidden', !isTimeline());
   if (isTimeline()) renderTimeline(tl, best.timeline, false);
   renderPlayedList();
+  recordGame(best, Math.round((Date.now() - (state.startedAt || Date.now())) / 1000));
   showScreen('end');
 }
 
@@ -1336,36 +1780,19 @@ function render() {
   const p = activePlayer();
   const timeline = isTimeline();
 
-  $('#scoreboard').classList.toggle('hidden', state.players.length === 1 && !isMelody());
-  $('#scoreboard').replaceChildren(...state.players.map((pl, i) => el('div', {
-    class: 'score' + (i === state.turn ? ' active' : ''),
-  }, pl.name, ': ', timeline
-    ? [el('b', {}, String(pl.timeline.length)), `/${state.winTarget} kart · `, el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || '–')]
-    : [el('b', {}, String(pl.score)), ' pkt'])));
+  renderHeader(p, timeline);
 
-  if (isMelody()) {
-    const round = Math.min(state.rounds, Math.floor(state.turnsPlayed / state.players.length) + 1);
-    $('#turn-title').textContent = state.players.length > 1 ? `Tura: ${p.name}` : `Piosenka ${state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1)} z ${state.rounds}`;
-    $('#turn-info').textContent = state.players.length > 1 ? `Runda ${round}/${state.rounds}` : `Wynik: ${p.score} pkt`;
-  } else {
-    const placed = p.timeline.filter((c) => !c.start).length;
-    const rec = store.get('records', {})[state.recordLevel] || 0;
-    $('#turn-title').textContent = state.mode !== 'solo' ? `Tura: ${turnName(p)}`
-      : (state.endless ? `Ułożone piosenki: ${placed} · rekord: ${Math.max(rec, placed)}` : `Twoja oś: ${cardsLabel(p.timeline.length)} z ${state.winTarget}`);
-    $('#turn-info').textContent = `Żetony: ${'🪙'.repeat(p.tokens) || 'brak'}`
-      + (state.mode === 'solo' ? ` · Pomyłki: ${'❤️'.repeat(Math.max(0, p.lives))}` : '');
-  }
-
-  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && state.mode !== 'steps';
+  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !['steps', 'buzz', 'hilo', 'duel'].includes(state.mode);
   $('#btn-skip').textContent = timeline ? `⏭ Pomiń (${SKIP_COST} żeton)` : '⏭ Inna piosenka';
   $('#btn-skip').disabled = !canSkip || (timeline && p.tokens < SKIP_COST);
-  $('#btn-skip').classList.toggle('hidden', state.mode === 'steps');
+  $('#btn-skip').classList.toggle('hidden', ['steps', 'buzz', 'hilo', 'duel'].includes(state.mode));
 
   // pola odpowiedzi: zawsze w „Jaka to melodia”; przy osi czasu – w trybie ekspert (wymagane)
   // i w solo (tytuł + wykonawca opcjonalnie, za żeton)
   const fields = guessFields();
   const showGuess = !!state.current && state.phase !== 'revealed' && state.phase !== 'challenge'
-    && (fields.title || fields.artist || fields.year);
+    && (fields.title || fields.artist || fields.year)
+    && (state.mode !== 'buzz' || (state.buzz && state.buzz.answering != null));
   $('#guess-form').classList.toggle('hidden', !showGuess);
   if (showGuess) {
     const ex = state.expert || [];
@@ -1378,10 +1805,12 @@ function render() {
     $('#guess-artist').placeholder = label('artist', 'Wykonawca');
     $('#guess-year').placeholder = 'Dokładny rok wydania (wymagany)';
     $('#btn-guess').classList.toggle('hidden', !isMelody());
-    $('#btn-giveup').classList.toggle('hidden', !isMelody());
+    $('#btn-giveup').classList.toggle('hidden', state.mode !== 'melody');
     if (state.mode === 'steps') renderStepsGuess();
   }
   renderStepsBar();
+  renderBuzzers();
+  renderSpecialBadge();
 
   const hints = {
     listen: timeline ? (state.mode === 'solo'
@@ -1399,13 +1828,62 @@ function render() {
   };
   $('#hint').textContent = (state.current || state.phase === 'revealed') ? (hints[state.phase] || '') : '';
 
+  if (state.mode === 'hilo') hints.listen = T('Ta piosenka jest starsza czy nowsza od karty poniżej?');
+  if (state.mode === 'duel') hints.listen = T('Z której dekady jest ta piosenka?');
+  if (state.mode === 'hilo' || state.mode === 'duel') $('#hint').textContent = state.current && state.phase === 'listen' ? hints.listen : '';
+
   const tl = $('#timeline');
-  tl.classList.toggle('hidden', !timeline);
+  tl.classList.toggle('hidden', !timeline && state.mode !== 'hilo');
   if (timeline) renderTimeline(tl, p.timeline, ['listen', 'placed', 'challenge'].includes(state.phase),
     state.phase === 'revealed' ? state.marks : null);
+  if (state.mode === 'hilo') renderHiloCards(tl);
   renderDragCard();
   renderOthers();
   renderActions();
+  tvSync();
+}
+
+// tablica wyników i tytuł tury – zależnie od trybu
+function renderHeader(p, timeline) {
+  const sb = $('#scoreboard');
+  sb.classList.toggle('hidden', state.players.length === 1 && !isMelody() && state.mode !== 'duel');
+  sb.replaceChildren(...state.players.map((pl, i) => el('div', {
+    class: 'score' + (i === state.turn && state.mode !== 'buzz' ? ' active' : ''),
+    style: state.mode === 'buzz' ? `border-color:${BUZZ_COLORS[i]}` : null,
+  }, pl.name, ': ', timeline
+    ? [el('b', {}, String(pl.timeline.length)), T('/{0} kart · ', state.winTarget), el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || '–')]
+    : [el('b', {}, String(pl.score)), T(' pkt')])));
+  const title = $('#turn-title');
+  const info = $('#turn-info');
+  info.classList.toggle('tokens', timeline);
+  const songNo = state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1);
+  if (state.mode === 'buzz') {
+    title.textContent = T('Piosenka {0} z {1}', Math.min(songNo, state.rounds), state.rounds);
+    info.textContent = T('Naciśnij swój przycisk albo klawisz, gdy znasz odpowiedź');
+  } else if (state.mode === 'hilo') {
+    const rec = store.get('records', {})[`hilo${state.difficulty}`] || 0;
+    title.textContent = T('Seria: {0}', state.streak);
+    info.textContent = T('Rekord: {0}', Math.max(rec, state.streak));
+  } else if (state.mode === 'duel') {
+    const round = Math.min(state.rounds, Math.floor(state.turnsPlayed / state.players.length) + 1);
+    title.textContent = state.players.length > 1 ? T('Tura: {0}', p.name) : T('Piosenka {0} z {1}', songNo, state.rounds);
+    info.textContent = `🥊 ${decadeLabelLong(state.duel[0])} ${T('kontra')} ${decadeLabelLong(state.duel[1])}`
+      + (state.players.length > 1 ? ` · ${T('Runda {0}/{1}', round, state.rounds)}` : ` · ${T('Wynik: {0} pkt', p.score)}`);
+  } else if (isMelody()) {
+    const round = Math.min(state.rounds, Math.floor(state.turnsPlayed / state.players.length) + 1);
+    title.textContent = state.players.length > 1 ? T('Tura: {0}', p.name) : T('Piosenka {0} z {1}', songNo, state.rounds);
+    info.textContent = state.players.length > 1 ? T('Runda {0}/{1}', round, state.rounds) : T('Wynik: {0} pkt', p.score);
+  } else if (state.mode === 'timed') {
+    renderTimer();
+  } else {
+    const placed = p.timeline.filter((c) => !c.start).length;
+    const rec = store.get('records', {})[state.recordLevel] || 0;
+    title.textContent = state.mode !== 'solo' ? T('Tura: {0}', turnName(p))
+      : (state.endless ? T('Ułożone piosenki: {0} · rekord: {1}', placed, Math.max(rec, placed))
+        : T('Twoja oś: {0} z {1}', cardsLabel(p.timeline.length), state.winTarget));
+    info.textContent = T('Żetony: {0}', '🪙'.repeat(p.tokens) || T('brak'))
+      + (state.mode === 'solo' ? T(' · Pomyłki: {0}', '❤️'.repeat(Math.max(0, p.lives))) : '');
+  }
 }
 
 /* --- przeciąganie karty na oś (palcem lub myszą); kliknięcie „＋” działa nadal --- */
@@ -1538,7 +2016,9 @@ function renderTimeline(container, timeline, interactive, marks) {
 function renderActions() {
   const p = activePlayer();
   const btns = [];
-  if (isMelody()) {
+  if (state.mode === 'hilo' || state.mode === 'duel' || state.mode === 'buzz') {
+    btns.push(...quickActions(p));
+  } else if (isMelody()) {
     if (state.mode === 'steps' && state.phase === 'listen' && state.current) {
       btns.push(...stepsActions());
     }
@@ -1598,9 +2078,10 @@ function renderActions() {
       }, state.awarded ? '+1 żeton przyznany'
         : (state.mode === 'teams' ? '🪙 Drużyna odgadła wykonawcę i tytuł' : '🪙 Odgadł(a) wykonawcę i tytuł')));
     }
+    if (state.swapOffer) btns.push(...swapButtons(p));
     const over = state.mode === 'solo' && (p.lives <= 0 || (!state.endless && p.timeline.length >= state.winTarget));
     btns.push(el('button', { class: 'primary', onclick: nextTurn },
-      over ? 'Zobacz podsumowanie →' : (state.mode === 'solo' ? 'Następna piosenka →'
+      over ? 'Zobacz podsumowanie →' : (isSoloLike() ? 'Następna piosenka →'
         : (state.mode === 'teams' ? 'Następna drużyna →' : 'Następny gracz →'))));
   }
   $('#actions').replaceChildren(...btns);
