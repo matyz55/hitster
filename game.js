@@ -731,7 +731,7 @@ const PRESETS = [
     set: () => ({ pool: 'ALL', tag: 'trojka', decade: [], genre: [], country: [] }) },
   { id: 'opole', name: T('🎙 Opole'), desc: T('Piosenki wykonywane na Krajowym Festiwalu Piosenki Polskiej w Opolu (wg artykułów o kolejnych festiwalach w polskiej Wikipedii).'),
     set: () => ({ pool: 'PL', tag: 'opole', decade: [], genre: [], country: [] }) },
-  { id: 'eurowizja', name: T('🌍 Eurowizja'), desc: T('Piosenki z Konkursu Piosenki Eurowizji (wg kategorii „Eurovision songs” angielskiej Wikipedii).'),
+  { id: 'eurowizja', name: T('🌍 Eurowizja'), desc: T('Piosenki z Konkursu Piosenki Eurowizji i Eurowizji Junior – zwycięzcy, wszystkie polskie występy i najbardziej znane przeboje.'),
     set: () => ({ pool: 'ALL', tag: 'eurowizja', decade: [], genre: [], country: [] }) },
   { id: 'film', name: T('🎬 Muzyka filmowa'), desc: T('Piosenki i motywy z filmów (gatunek „muzyka filmowa”).'),
     set: () => ({ pool: 'ALL', tag: null, decade: [], genre: only('genre', ['muzyka filmowa']), country: [] }) },
@@ -1153,10 +1153,17 @@ function factLines(song) {
   const out = [];
   for (const f of song.f || []) {
     const [kind, a, b, c] = f.split(':');
-    if (kind === 'e') {
+    if (kind === 'e' && a === '2020') {
+      // Eurowizja 2020 w Rotterdamie została odwołana 18 marca 2020 r. z powodu pandemii COVID-19
+      out.push(T('🎤 Wybrana na Eurowizję 2020 ({0}) – konkurs się nie odbył z powodu pandemii COVID-19', c ? countryName({ cc: c }) : ''));
+    } else if (kind === 'e') {
       const country = c ? countryName({ cc: c }) : '';
       out.push(b === '1' ? T('🏆 Zwycięzca Eurowizji {0} ({1})', a, country)
         : (b ? T('🎤 Eurowizja {0}: {1}. miejsce ({2})', a, b, country) : T('🎤 Występ na Eurowizji {0} ({1})', a, country)));
+    } else if (kind === 'jr') {
+      const country = c ? countryName({ cc: c }) : '';
+      out.push(b === '1' ? T('🏆 Zwycięzca Eurowizji Junior {0} ({1})', a, country)
+        : (b ? T('🎤 Eurowizja Junior {0}: {1}. miejsce ({2})', a, b, country) : T('🎤 Występ na Eurowizji Junior {0} ({1})', a, country)));
     } else if (kind === 't1') out.push(T('📻 1. miejsce na Liście Przebojów Programu Trzeciego'));
     else if (kind === 'tp') out.push(T('📻 W plebiscycie „Polski Top Wszech Czasów” Trójki'));
     else if (kind === 'o') out.push(T('🎙 Śpiewana na {0} Krajowym Festiwalu Piosenki Polskiej w Opolu', a));
