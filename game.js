@@ -430,7 +430,36 @@ function tvSync() {
     if (isTimeline()) {
       // aktywny gracz na górze, potem pozostali
       const order = state.players.map((p, i) => ({ p, i })).sort((x, y) => (y.i === state.turn) - (x.i === state.turn));
-      snap.timelines = order.map(({ p, i }) => ({ name: p.name, active: i === state.turn, cards: p.timeline.map(card) }));
+      const choosing = ['listen', 'placed', 'challenge'].includes(state.phase) && !!state.current;
+      const challenger = state.challenger != null ? state.players[state.challenger] : null;
+      snap.timelines = order.map(({ p, i }) => {
+        const tl = { name: p.name, active: i === state.turn, cards: p.timeline.map(card), tokens: isMulti() ? p.tokens : null };
+        if (i !== state.turn) return tl;
+        // gdzie gracz (i ewentualnie wyzywający) położył kartę, a po pomyłce – gdzie było jej miejsce
+        if (choosing) {
+          tl.slot = state.slot;
+          tl.slotLabel = state.mode === 'solo' ? T('tutaj') : p.name;
+          if (challenger && state.challengeSlot != null) { tl.challengeSlot = state.challengeSlot; tl.challengeLabel = challenger.name; }
+        } else if (revealed && state.marks) {
+          tl.marks = { slot: state.marks.slot, correct: state.marks.correct, challengeSlot: state.marks.challengeSlot,
+            who: state.mode === 'solo' ? T('Twój wybór') : p.name, challenger: challenger ? challenger.name : '', year: state.current.y };
+        }
+        return tl;
+      });
+      // przypomnienie o wyzwaniu: kto może je rzucić (ma żeton) i co się dzieje w trakcie
+      if (isMulti() && choosing) {
+        const can = state.players.filter((pl, i) => i !== state.turn && pl.tokens >= 1).map((pl) => pl.name);
+        const cur = activePlayer().name;
+        if (state.phase === 'challenge') {
+          snap.challenge = !challenger ? T('⚔ Wyzwanie! Kto je rzuca? (koszt: 1 żeton)')
+            : (state.challengeMode === 'year' ? T('⚔ {0} rzuca wyzwanie – podaje dokładny rok wydania', challenger.name)
+              : T('⚔ {0} rzuca wyzwanie – wskazuje inne miejsce na osi gracza {1}', challenger.name, cur));
+        } else if (can.length) {
+          snap.challenge = state.slot == null
+            ? T('⚔ Pamiętajcie o wyzwaniu! Gdy {0} wybierze miejsce, możecie się nie zgodzić (1 żeton). Żetony mają: {1}', cur, can.join(', '))
+            : T('⚔ Czas na wyzwanie! Nie zgadzasz się z wyborem gracza {0}? Rzuć wyzwanie za 1 żeton. Mogą: {1}', cur, can.join(', '));
+        }
+      }
     } else if (state.mode === 'hilo' && state.ref) {
       const cards = [card(state.ref)];
       if (revealed) { const c = card(state.current); if (state.current.y < state.ref.y) cards.unshift(c); else cards.push(c); }
@@ -916,7 +945,7 @@ async function startTurn() {
   stopAudio();
   Object.assign(state, {
     phase: 'listen', slot: null, challenger: null, challengeSlot: null, challengeYear: null, awarded: false,
-    current: null, preview: null, marks: null, special: null, swapOffer: false, hiloLost: false,
+    current: null, preview: null, marks: null, special: null, swapOffer: false, hiloLost: false, skipped: false,
     buzz: state.mode === 'buzz' ? { answering: null, locked: new Set() } : null,
   });
   $('#reveal').classList.add('hidden');
@@ -1193,18 +1222,34 @@ function showReveal(...extra) {
   if (prefetchAfterReveal() && !prefetched) prefetchNext();
 }
 
+// zakup karty za żetony: przed odkryciem na oś trafia właśnie grana piosenka (i od razu ją odkrywamy),
+// po odkryciu – losowa karta z talii
 function buyCard() {
   const p = activePlayer();
-  if (p.tokens < BUY_COST || !state.deck.size) return;
+  if (p.tokens < BUY_COST) return;
+  if (state.phase === 'revealed') {
+    if (!state.deck.size) return;
+    p.tokens -= BUY_COST;
+    const bought = state.deck.draw();
+    markPlayed(bought);
+    addToTimeline(p, bought);
+    fx('good');
+    $('#reveal').append(el('div', { class: 'verdict ok small-verdict' },
+      T('🛒 Kupiona losowa karta: {0} – {1} ({2})', bought.t, artistLine(bought), bought.y)));
+    render();
+    return;
+  }
+  if (!['listen', 'placed'].includes(state.phase) || !state.current) return;
   p.tokens -= BUY_COST;
-  const bought = state.deck.draw();
-  markPlayed(bought);
-  addToTimeline(p, bought);
-  // zakupiona karta mogła przesunąć indeksy – resetujemy wybór miejsca
+  const song = state.current;
+  addToTimeline(p, song);
   state.slot = null;
-  state.phase = 'listen';
-  if (!state.endless && p.timeline.length >= state.winTarget) return endGame();
-  render();
+  state.marks = null;
+  state.history.push({ song, preview: state.preview, player: p.name, ok: true, note: T('🛒 {0} – kupiona karta', p.name) });
+  fx('good');
+  showReveal(el('div', { class: 'verdict ok' }, isSoloLike()
+    ? T('🛒 Kupiona karta – ta piosenka trafia na Twoją oś.')
+    : T('🛒 Kupiona karta – ta piosenka trafia do: {0}.', p.name)));
 }
 
 /* --- Jaka to melodia --- */
@@ -1747,12 +1792,16 @@ $('#btn-skip').addEventListener('click', () => {
     if (p.tokens < SKIP_COST) return;
     p.tokens -= SKIP_COST;
   }
-  stopAudio();
+  // najpierw pokazujemy, co to był za utwór; kolejną piosenkę losuje przycisk „Dalej”
   state.slot = null;
-  state.phase = 'listen';
-  render();
-  drawSong();
+  state.skipped = true;
+  state.history.push({ song: state.current, preview: state.preview, player: p.name, ok: false, note: T('⏭ {0} – pominięta', p.name) });
+  showReveal(el('div', { class: 'verdict' }, T('⏭ Piosenka pominięta – to był ten utwór.')));
 });
+function afterSkip() {
+  state.skipped = false;
+  startTurn();
+}
 
 function setVinyl(art) {
   const v = $('#vinyl');
@@ -1820,7 +1869,7 @@ function render() {
       : (state.challengeMode === 'year'
         ? T('{0}, wpisz dokładny rok wydania tej piosenki.', state.players[state.challenger]?.name)
         : T('{0}, wybierz INNE miejsce na osi gracza {1}.', state.players[state.challenger]?.name, p.name)),
-    revealed: isMulti() && !state.awarded && !(guessFields().title && guessFields().artist)
+    revealed: !state.skipped && isMulti() && !state.awarded && !(guessFields().title && guessFields().artist)
       ? (state.mode === 'teams' ? T('Czy drużyna podała poprawnie wykonawcę i tytuł? Decydują pozostali.')
         : T('Czy gracz podał poprawnie wykonawcę i tytuł? Decyduje reszta stołu.')) : '',
   };
@@ -2020,7 +2069,9 @@ function renderActions() {
     if (state.mode === 'steps' && state.phase === 'listen' && state.current) {
       btns.push(...stepsActions());
     }
-    if (state.phase === 'revealed') {
+    if (state.phase === 'revealed' && state.skipped) {
+      btns.push(el('button', { class: 'primary', onclick: afterSkip }, T('Dalej – nowa piosenka →')));
+    } else if (state.phase === 'revealed') {
       const last = state.turnsPlayed >= state.rounds * state.players.length;
       btns.push(el('button', { class: 'primary', onclick: nextTurn }, last ? T('Zobacz wyniki →') : (state.players.length > 1 ? T('Następny gracz →') : T('Następna piosenka →'))));
     }
@@ -2035,9 +2086,9 @@ function renderActions() {
     }
     btns.push(el('button', {
       class: 'ghost', disabled: p.tokens < BUY_COST || !state.deck.size,
-      title: T('Za 3 żetony dobierasz kartę, która od razu trafia na właściwe miejsce osi'),
+      title: T('Za 3 żetony odtwarzana piosenka trafia od razu na właściwe miejsce Twojej osi'),
       onclick: buyCard,
-    }, T('Kup kartę ({0} żetony)', BUY_COST)));
+    }, T('Kup tę kartę ({0} żetony)', BUY_COST)));
   } else if (state.phase === 'challenge') {
     if (state.challenger == null) {
       state.players.forEach((pl, i) => {
@@ -2067,6 +2118,8 @@ function renderActions() {
         btns.push(el('button', { class: 'primary', disabled: state.challengeSlot == null, onclick: revealTimeline }, T('✔ Odkryj kartę')));
       }
     }
+  } else if (state.phase === 'revealed' && state.skipped) {
+    btns.push(el('button', { class: 'primary', onclick: afterSkip }, T('Dalej – nowa piosenka →')));
   } else if (state.phase === 'revealed') {
     // żeton „przy stole” – gdy tytułu i wykonawcy nie sprawdza gra
     if (isMulti() && !(guessFields().title && guessFields().artist)) {
@@ -2077,6 +2130,13 @@ function renderActions() {
         : (state.mode === 'teams' ? T('🪙 Drużyna odgadła wykonawcę i tytuł') : T('🪙 Odgadł(a) wykonawcę i tytuł'))));
     }
     if (state.swapOffer) btns.push(...swapButtons(p));
+    if (isTimeline()) {
+      btns.push(el('button', {
+        class: 'ghost', disabled: p.tokens < BUY_COST || !state.deck.size,
+        title: T('Za 3 żetony dobierasz losową kartę z talii, która od razu trafia na właściwe miejsce osi'),
+        onclick: buyCard,
+      }, T('Kup losową kartę ({0} żetony)', BUY_COST)));
+    }
     const over = state.mode === 'solo' && (p.lives <= 0 || (!state.endless && p.timeline.length >= state.winTarget));
     btns.push(el('button', { class: 'primary', onclick: nextTurn },
       over ? T('Zobacz podsumowanie →') : (isSoloLike() ? T('Następna piosenka →')

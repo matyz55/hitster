@@ -10,7 +10,8 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
 - **Oś czasu – 1 gracz** – układasz piosenki na osi czasu wg roku wydania;
   masz ograniczoną liczbę pomyłek. Wpisanie poprawnego tytułu i wykonawcy daje żeton.
 - **Oś czasu – multiplayer** – 2–8 graczy przy jednym urządzeniu, z wyzwaniami
-  i żetonami jak w planszówce.
+  i żetonami jak w planszówce. Żetony: 1 = pominięcie piosenki (gra najpierw pokazuje, co to było),
+  3 = kupno karty – przed odkryciem na oś trafia grana piosenka, po odkryciu losowa karta z talii.
 - **Oś czasu – drużyny** – 2–4 drużyny, każda ze wspólną osią czasu; członkowie drużyny
   odpowiadają po kolei (gra pokazuje, kto teraz zgaduje). Zasady jak w multiplayerze.
 - **Jaka to melodia** – 1–8 graczy po kolei odgadują tytuł, wykonawcę albo oba.
@@ -38,6 +39,9 @@ najczęściej mylone piosenki, historia rekordów i wykres postępów.
 
 **Duży ekran** (📺): drugie okno (`tv.html`) dla telewizora lub rzutnika, z dużymi kartami
 i osiami wszystkich graczy; okno gry na tym samym urządzeniu jest pilotem (BroadcastChannel).
+Wszystkie osie mieszczą się na ekranie bez przewijania (przy 4+ graczach w dwóch kolumnach), widać
+wybrane miejsce karty (i miejsce wskazane przy wyzwaniu), znaczniki po pomyłce oraz przypomnienie,
+kto może rzucić wyzwanie.
 
 **Wersja angielska**: język wybiera się w Ustawieniach (domyślnie wg języka przeglądarki).
 Teksty interfejsu przechodzą przez `T()` (`i18n.js`), słownik jest w `i18n-en.js`; tytuły

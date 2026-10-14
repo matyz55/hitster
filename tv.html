@@ -14,14 +14,18 @@
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: clamp(16px, 1.6vw, 28px); overflow: hidden; }
     .wrap { height: 100%; display: flex; flex-direction: column; padding: 2vh 3vw; gap: 2vh; }
     header { display: flex; align-items: center; justify-content: space-between; gap: 2vw; }
-    h1 { margin: 0; font-size: 2.2em; }
+    h1 { margin: 0; font-size: 1.8em; white-space: nowrap; }
+    .many h1 { font-size: 1.4em; }
+    .many .score { font-size: .8em; padding: .25em .6em; }
     .info { color: var(--gold); font-size: 1.1em; }
     .scores { display: flex; gap: 1vw; flex-wrap: wrap; }
     .score { background: var(--panel); border: 3px solid transparent; border-radius: 14px; padding: .4em .9em; font-size: 1.05em; }
     .score.active { border-color: var(--accent); }
-    .main { display: flex; gap: 3vw; align-items: center; }
+    .main { display: flex; gap: 3vw; align-items: center; flex-shrink: 0; }
     .vinyl { width: 16vh; height: 16vh; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 0 4px #000;
       background: repeating-radial-gradient(circle, #111 0 3px, #222 3px 6px); display: grid; place-items: center; background-size: cover; background-position: center; }
+    .compact .vinyl { width: 10vh; height: 10vh; }
+    .compact .reveal .year { font-size: 2.2em; }
     .vinyl .lbl { width: 38%; height: 38%; border-radius: 50%; background: var(--accent); display: grid; place-items: center; font-weight: 800; font-size: 1.6em; }
     .vinyl.cover .lbl { display: none; }
     .status { font-size: 1.3em; }
@@ -29,21 +33,44 @@
     .reveal .year { font-size: 3em; font-weight: 900; color: var(--gold); line-height: 1; }
     .reveal .song { font-size: 1.5em; }
     .reveal .lines div { margin-top: .2em; font-weight: 700; }
-    .hint { color: var(--accent-2); font-size: 1.2em; min-height: 1.3em; }
-    .timelines { flex: 1; overflow: hidden; display: flex; flex-direction: column; gap: 1.5vh; }
-    .tl-row { display: flex; align-items: center; gap: 1vw; }
-    .tl-name { width: 12vw; flex-shrink: 0; font-weight: 800; font-size: 1.1em; }
+    .hint { color: var(--accent-2); font-size: 1.2em; flex-shrink: 0; }
+    .hint:empty { display: none; }
+    .challenge { flex-shrink: 0; background: rgba(255, 201, 60, .14); border: 3px solid var(--gold); color: var(--gold); border-radius: 14px;
+      padding: .4em .8em; font-size: 1.25em; font-weight: 800; animation: glow 1.6s ease-in-out infinite; }
+    @keyframes glow { 50% { box-shadow: 0 0 1.2em rgba(255, 201, 60, .45); } }
+    /* osie czasu: zawsze wszystkie, rozmiar kart liczony w tv.js tak, by zmieściły się bez przewijania */
+    .timelines { flex: 1; min-height: 0; overflow: hidden; display: grid; gap: 1vh 1.5vw; }
+    .tl-row { display: flex; align-items: center; gap: .8vw; min-height: 0; min-width: 0; border-radius: 14px; padding: 0 .4vw; }
+    .tl-row.active { grid-column: 1 / -1; }
+    .tl-row.active { background: rgba(255, 61, 127, .08); outline: 2px solid rgba(255, 61, 127, .5); }
+    .tl-name { width: 9vw; flex-shrink: 0; font-weight: 800; font-size: var(--nfs, 1em); line-height: 1.15; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .tl-name small { display: block; font-weight: 400; color: var(--muted); font-size: .75em; letter-spacing: -.1em; }
     .tl-row.active .tl-name { color: var(--accent); }
-    .tl { display: flex; gap: .6vw; overflow: hidden; flex: 1; }
-    .card { flex: 0 0 auto; width: 11vw; min-height: 14vh; border-radius: 14px; padding: .5em; text-align: center;
-      background: linear-gradient(160deg, #3a2d63, #2a2244); display: flex; flex-direction: column; justify-content: space-between; }
-    .card .y { font-size: 1.8em; font-weight: 900; color: var(--gold); }
-    .card .t { font-weight: 700; font-size: .8em; }
-    .card .a { color: var(--muted); font-size: .7em; }
+    .tl { display: flex; gap: var(--gap, .5vw); overflow: hidden; flex: 1; align-items: center; justify-content: center; }
+    .card { flex: 0 0 auto; width: var(--cw, 11vw); height: var(--ch, 14vh); border-radius: .7em; padding: .35em; text-align: center; overflow: hidden;
+      font-size: var(--fs, 1em); background: linear-gradient(160deg, #3a2d63, #2a2244); display: flex; flex-direction: column; justify-content: space-between; }
+    .card .y { font-size: 1.9em; font-weight: 900; color: var(--gold); line-height: 1.05; }
+    .card .t { font-weight: 700; font-size: .85em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card .a { color: var(--muted); font-size: .75em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .flag { width: 1.6em; height: auto; border-radius: 3px; vertical-align: -0.15em; }
+    .card .flag { width: 1.3em; align-self: center; }
+    .tiny .card .a, .tiny .card .flag { display: none; }
+    .tiny .card .t { -webkit-line-clamp: 1; }
+    .tiny .card .y { font-size: 1.6em; }
+    .tiny .card { justify-content: center; gap: .2em; }
     .card.start { background: transparent; border: 3px dashed var(--gold); }
     .card.new { outline: 4px solid var(--ok); }
-    .flag { width: 1.6em; height: auto; border-radius: 3px; vertical-align: -0.15em; }
-    .single .card { width: 13vw; min-height: 20vh; }
+    .card.mystery { background: linear-gradient(160deg, var(--accent), #b0245a); border: 3px solid #fff; justify-content: center; gap: .2em;
+      animation: pulse 1.2s ease-in-out infinite; }
+    .card.mystery.ch { background: linear-gradient(160deg, var(--gold), #c48a00); color: #1d1a29; }
+    .card.mystery .q { font-size: 2.6em; font-weight: 900; line-height: 1; }
+    .card.mystery .who { font-weight: 800; font-size: .8em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    @keyframes pulse { 50% { transform: translateY(-.25em); box-shadow: 0 .5em 1.2em rgba(0, 0, 0, .5); } }
+    .mark { flex: 0 0 auto; width: calc(var(--cw, 11vw) * .55); height: var(--ch, 14vh); border-radius: .7em; display: grid; place-items: center; text-align: center;
+      font-size: var(--fs, 1em); font-weight: 800; border: 3px dashed; padding: .2em; overflow: hidden; }
+    .mark.bad { color: var(--bad); border-color: var(--bad); }
+    .mark.ok { color: var(--ok); border-color: var(--ok); }
+    .mark.challenge { color: var(--gold); border-color: var(--gold); }
     .end h2 { font-size: 2.6em; margin: 0 0 .4em; }
     .end ol { font-size: 1.4em; }
     .waiting { margin: auto; text-align: center; color: var(--muted); font-size: 1.4em; }
