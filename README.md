@@ -74,4 +74,8 @@ Flagi to obrazki SVG z pakietu [flag-icons](https://github.com/lipis/flag-icons)
 
 Dopasowanie nagrania w iTunes (`match.js`) wymaga zgodności wykonawcy i tytułu
 oraz pomija wersje koncertowe, remiksy, karaoke i covery (pola `q`, `m`, `al`
-w `songs.js` to podpowiedzi dla wyszukiwarki).
+w `songs.js` to podpowiedzi dla wyszukiwarki; `ia` – inny wykonawca, pod którym
+nagranie jest w iTunes, `nx` – albumy z późniejszymi nagraniami do pominięcia).
+Oryginałów Lombardu nie ma w iTunes – gra odtwarza nowe aranżacje z oryginalną
+wokalistką z albumu Małgorzaty Ostrowskiej „Instynkt” (2001), a nie wersje
+„Lombard Swing” (2016) czy „Lombard 40/40” (2025).

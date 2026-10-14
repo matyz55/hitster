@@ -38,6 +38,8 @@
   function isUnwanted(r, song) {
     const track = r.trackName || '';
     if (UNWANTED.test(track) || UNWANTED.test(r.collectionName || '')) return true;
+    // song.nx – albumy z późniejszymi nagraniami tego wykonawcy (np. „Lombard Swing”)
+    if (song.nx && new RegExp(song.nx, 'i').test(r.collectionName || '')) return true;
     // „(2013)” przy utworze z 2000 r. oznacza zwykle nowe nagranie
     const yr = track.match(/\(\s*(\d{4})\s*\)/);
     if (yr && song.y && Number(yr[1]) > song.y + 1) return true;
@@ -58,16 +60,20 @@
   function isLaterDuet(r, song) {
     const year = parseInt((r.releaseDate || '').slice(0, 4), 10);
     if (!song.y || !year || year <= song.y + 10) return false;
-    const known = new Set(artistsOf(song).map((a) => norm(a.replace(/^the /i, ''))));
-    const credited = (r.artistName || '').split(/\s*(?:&|,|\bfeat\.?|\bft\.|\bx\b|\band\b|\bi\b)\s*/i)
+    const known = new Set([...artistsOf(song), song.ia].filter(Boolean).map((a) => norm(a.replace(/^the /i, ''))));
+    // goście wymienieni w wykonawcy albo w tytule („Szklana pogoda (feat. Marta Cugier)”)
+    const guests = ((r.trackName || '').match(/[([](?:feat\.?|ft\.|with|featuring)\s+([^)\]]+)[)\]]/i) || [])[1] || '';
+    const credited = [r.artistName || '', guests].join(' & ').split(/\s*(?:&|,|\bfeat\.?|\bft\.|\bx\b|\band\b|\bi\b)\s*/i)
       .map((a) => norm(a.replace(/^the /i, ''))).filter(Boolean);
     const whole = norm((r.artistName || '').replace(/^the /i, ''));
-    if (known.has(whole)) return false;
+    if (known.has(whole) && !guests) return false;
     return credited.some((a) => ![...known].some((k) => k.includes(a) || a.includes(k)));
   }
 
   function pickPreview(results, song) {
     const wantArtist = norm(mainArtist(song).replace(/^the /i, ''));
+    // song.ia – wykonawca, pod którym nagranie jest w iTunes (np. wokalistka zespołu)
+    const wanted = [mainArtist(song), song.ia].filter(Boolean);
     // song.m – opcjonalny tytuł, pod jakim utwór figuruje w iTunes (np. „Pt. 2” zamiast „Part 2”)
     const titles = [song.t, song.m].filter(Boolean);
     const exact = new Set(titles.map(norm));
@@ -77,7 +83,7 @@
     for (const r of results) {
       if (!r.previewUrl || isUnwanted(r, song)) continue;
       const artist = norm((r.artistName || '').replace(/^the /i, ''));
-      if (!artistMatches(r.artistName || '', mainArtist(song))) continue;
+      if (!wanted.some((w) => artistMatches(r.artistName || '', w))) continue;
       // nowe nagranie z gościem (np. „Maryla Rodowicz & Lanberry” 2025 zamiast „Małgośki” z 1973 r.):
       // dodatkowy wykonawca spoza piosenki + wydanie ponad 10 lat po roku piosenki → pomijamy
       if (isLaterDuet(r, song)) continue;

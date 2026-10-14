@@ -31,10 +31,10 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 
 ## Podsumowanie
 
-- piosenek w grze: **5452** (polskich: 1893, zagranicznych: 3559)
+- piosenek w grze: **5450** (polskich: 1891, zagranicznych: 3559)
 - bez żadnej daty (pominięte): 59
 - covery zamiast oryginałów (pominięte): 46
-- usunięte duplikaty: 33
+- usunięte duplikaty: 35
 - bez ustalonego kraju artysty: 96
 
 | Źródło roku | Piosenek |
@@ -42,7 +42,7 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 | Discogs + Spotify | 1973 |
 | Discogs | 1773 |
 | Discogs + Wikipedia | 316 |
-| Spotify + MusicBrainz | 292 |
+| Spotify + MusicBrainz | 290 |
 | Spotify | 254 |
 | MusicBrainz | 233 |
 | Wikipedia | 222 |
@@ -160,6 +160,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Jasmine Thompson – Ain't Nobody (Loves Me Better) | felix jaehn & Jasmine Thompson – Ain't Nobody (Loves Me Better) |
 | Silk Sonic & Bruno Mars – Leave the Door Open | Bruno Mars & Anderson .Paak – Leave The Door Open |
 | Baranovski – Czułe miejsce | Wojciech Baranowski – Czułe miejsce |
+| Małgorzata Ostrowska – Szklana pogoda | Lombard – Szklana pogoda |
+| Małgorzata Ostrowska – Golebi puch | Lombard – Gołębi Puch |
 | Baranovski – Lubię być z nią | Wojciech Baranowski – Lubię być z nią |
 | Edyta Geppert – Jaka róża taki czerń | Edyta Geppert – Jaka Róża Taki Cierń |
 | Kool & The Gang – Celebration | Kool & the Gang – Celebration |
@@ -3410,10 +3412,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Maxine Nightingale | Right Back Where We Started From | 1975 | Discogs | 1975 | – | 2020 | GB |
 | Mazzy Star | Fade Into You | 1993 | Discogs + Spotify | 1993 | – | 1993 | US |
 | Małgorzata Kozłowska | Prosta Piosenka | 2020 | Spotify | – | – | 2020 | ? |
-| Małgorzata Ostrowska | Golebi puch | 2001 | Spotify + MusicBrainz | – | 2001 | 2001 | PL |
 | Małgorzata Ostrowska | Lawa | 1999 | Discogs + Spotify | 1999 | – | 1999 | PL |
 | Małgorzata Ostrowska | Meluzyna | 1985 | Poprawka użytkownika (zmiana w repozytorium); Discogs dawał 2012 – reedycję | 2012 | – | 2014 | PL |
-| Małgorzata Ostrowska | Szklana pogoda | 2001 | Spotify + MusicBrainz | – | 2001 | 2001 | PL |
 | MBrother | Trebles | 2003 | Wikipedia | 2004 | – | – | PL |
 | MC Hammer | U Can't Touch This | 1990 | Spotify + MusicBrainz | – | 1990 | 1990 | US |
 | McFadden & Whitehead | Ain't No Stoppin' Us Now | 1976 | MusicBrainz (Spotify: 1979) | – | 1976 | 1979 | US |
