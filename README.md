@@ -84,11 +84,11 @@ kategoria „do 1969”, bo starszych piosenek jest niewiele), **gatunki**
 (z Discogs), **kraj wykonawcy**, a także ustawić
 **długość fragmentu** (30/15/10/5 s), odtwarzanie z **losowego miejsca** i podpowiedź
 z dekadą. Ustawienia są zapamiętywane. Po grze widać listę
-wszystkich piosenek, które padły, z linkami do serwisu streamingowego.
+wszystkich piosenek, które padły, z ikonkami YouTube, Spotify i Apple Music (na Androidzie
+otwierają od razu aplikację, a gdy jej nie ma – stronę serwisu). Te same ikonki są pod odkrytą kartą.
 
 ## Ustawienia (⚙)
 
-- serwis dla przycisku „Posłuchaj całości”: YouTube, Spotify albo Apple Music,
 - dźwięki efektów i animacje (włączone domyślnie; animacje wyłączają się też przy
   systemowym ustawieniu „ogranicz ruch”),
 - poprawianie roku wydania i kraju wykonawcy dowolnej piosenki (zapisywane w przeglądarce;

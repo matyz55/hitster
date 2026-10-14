@@ -157,8 +157,7 @@ function flagEl(song) {
 }
 
 /* ---------- linki do serwisów streamingowych ---------- */
-function streamUrl(song, preview) {
-  const platform = store.get('platform', 'youtube');
+function streamUrl(song, preview, platform) {
   const q = encodeURIComponent(`${mainArtist(song)} ${song.t}`);
   if (platform === 'spotify') {
     return song.sp ? `https://open.spotify.com/track/${song.sp}` : `https://open.spotify.com/search/${q}`;
@@ -169,19 +168,35 @@ function streamUrl(song, preview) {
   return `https://www.youtube.com/results?search_query=${q}`;
 }
 const PLATFORM_NAMES = { youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple Music' };
-// Android: link „intent://” otwiera od razu aplikację (YouTube / Spotify / Apple Music), a gdy jej nie ma –
-// stronę WWW (S.browser_fallback_url). iPhone: zwykłe linki https tych serwisów same otwierają aplikację (Universal Links).
+// Android: link „intent://” otwiera od razu aplikację, a gdy jej nie ma – stronę WWW (S.browser_fallback_url).
+// iPhone i komputer: zwykłe linki https (na iPhonie z zainstalowaną aplikacją otwierają ją same).
 const APP_PACKAGES = { youtube: 'com.google.android.youtube', spotify: 'com.spotify.music', apple: 'com.apple.android.music' };
 const IS_ANDROID = /Android/i.test(navigator.userAgent);
-function appUrl(url) {
-  const pkg = APP_PACKAGES[store.get('platform', 'youtube')];
+function appUrl(url, platform) {
+  const pkg = APP_PACKAGES[platform];
   if (!IS_ANDROID || !pkg) return url;
   const u = new URL(url);
   return `intent://${u.host}${u.pathname}${u.search}#Intent;scheme=https;package=${pkg};S.browser_fallback_url=${encodeURIComponent(url)};end`;
 }
-const listenLink = (song, preview, label) => el('a', {
-  href: appUrl(streamUrl(song, preview)), target: '_blank', rel: 'noopener', class: 'listen',
-}, label || T('Posłuchaj całości ({0}) ↗', PLATFORM_NAMES[store.get('platform', 'youtube')]));
+// proste ikonki serwisów (SVG w kodzie – bez zewnętrznych plików)
+const PLATFORM_ICONS = {
+  youtube: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4.5" width="22" height="15" rx="4.5" fill="#FF0000"/><path d="M10 8.6v6.8l5.8-3.4z" fill="#fff"/></svg>',
+  spotify: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1ED760"/><path d="M6.6 9.3c3.8-1.1 8-.8 11.1 1M7.2 12.5c3.1-.9 6.5-.6 9.2.9M7.8 15.5c2.4-.6 4.9-.4 7 .7" stroke="#000" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>',
+  apple: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="5.5" fill="#FA2D48"/><path d="M15.6 5.4v9.4a2.3 2.3 0 1 1-1.4-2.1V8.3l-5 1.1v6.7a2.3 2.3 0 1 1-1.4-2.1V7.2z" fill="#fff"/></svg>',
+};
+// trzy ikonki: piosenka w YouTube, Spotify albo Apple Music
+function listenLinks(song, preview, withLabel = true) {
+  const box = el('span', { class: 'listen' }, withLabel ? el('span', { class: 'listen-label' }, T('Posłuchaj całości:')) : null);
+  for (const platform of ['youtube', 'spotify', 'apple']) {
+    const a = el('a', {
+      href: appUrl(streamUrl(song, preview, platform), platform), target: '_blank', rel: 'noopener', class: 'listen-icon',
+      title: T('Posłuchaj w: {0}', PLATFORM_NAMES[platform]), 'aria-label': T('Posłuchaj w: {0}', PLATFORM_NAMES[platform]),
+    });
+    a.innerHTML = PLATFORM_ICONS[platform];
+    box.append(a);
+  }
+  return box;
+}
 
 /* ---------- talia ---------- */
 // Zasady losowania:
@@ -1282,7 +1297,7 @@ function showReveal(...extra) {
     el('div', {}, el('b', { class: 'notr' }, song.t), ' — ', el('span', { class: 'notr' }, artistLine(song)), ' ', flagEl(song)),
     ...extra.filter(Boolean),
     ...factLines(song),
-    listenLink(song, state.preview),
+    listenLinks(song, state.preview),
   );
   $('#reveal').classList.remove('hidden');
   $('#reveal').classList.remove('flip');
@@ -1953,7 +1968,7 @@ function renderPlayedList() {
     el('span', { class: 'py' }, String(h.song.y)),
     el('span', { class: 'pt' }, el('b', {}, h.song.t), ' — ', artistLine(h.song), ' ', flagEl(h.song)),
     el('span', { class: 'pn muted' }, h.note),
-    listenLink(h.song, h.preview, `${PLATFORM_NAMES[store.get('platform', 'youtube')]} ↗`))));
+    listenLinks(h.song, h.preview, false))));
 }
 
 /* ---------- audio ---------- */
@@ -2409,12 +2424,7 @@ $('#animations').addEventListener('change', (e) => { store.set('animations', e.t
   $('#ios-install').classList.toggle('hidden', !(ios && !standalone));
 }
 
-/* ---------- ustawienia: platforma i poprawki dat ---------- */
-$$('input[name=platform]').forEach((r) => {
-  r.checked = r.value === store.get('platform', 'youtube');
-  r.addEventListener('change', () => store.set('platform', r.value));
-});
-
+/* ---------- ustawienia: poprawki dat ---------- */
 let searchTimer = null;
 $('#song-search').addEventListener('input', () => {
   clearTimeout(searchTimer);

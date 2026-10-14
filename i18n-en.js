@@ -221,6 +221,8 @@ window.I18N_EN = {
  "🎤 Eurowizja {0}: {1}. miejsce ({2})": "🎤 Eurovision {0}: placed {1} ({2})",
  "🎤 Występ na Eurowizji {0} ({1})": "🎤 Performed at Eurovision {0} ({1})",
  "⚔ Kto rzuca wyzwanie? (koszt: 1 żeton)": "⚔ Who is challenging? (cost: 1 token)",
+ "Posłuchaj całości:": "Listen to the full song:",
+ "Posłuchaj w: {0}": "Listen on {0}",
  "Wpisz tytuł lub wykonawcę – od 3 liter pojawią się podpowiedzi": "Type the title or artist – suggestions appear from 3 letters",
  "Wpisz tytuł – od 3 liter pojawią się podpowiedzi": "Type the title – suggestions appear from 3 letters",
  "Wpisz wykonawcę – od 3 liter pojawią się podpowiedzi": "Type the artist – suggestions appear from 3 letters",
