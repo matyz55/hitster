@@ -14,7 +14,8 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
   3 = kupno karty – przed odkryciem na oś trafia grana piosenka, po odkryciu losowa karta z talii.
 - **Oś czasu – drużyny** – 2–4 drużyny, każda ze wspólną osią czasu; członkowie drużyny
   odpowiadają po kolei (gra pokazuje, kto teraz zgaduje). Zasady jak w multiplayerze.
-- **Jaka to melodia** – 1–8 graczy po kolei odgadują tytuł, wykonawcę albo oba.
+- **Jaka to melodia** – 1–8 graczy po kolei odgadują tytuł, wykonawcę albo oba. Odpowiedź wpisuje się
+  w jedno pole – od 3 liter pojawiają się podpowiedzi ze wszystkich piosenek w bazie (także przy osi czasu).
   Wielkość liter, polskie znaki i drobne literówki nie mają znaczenia. Przy duetach
   i utworach kilku wykonawców wystarczy podać jednego z nich.
 - **Melodia krok po kroku** – najpierw 1 s fragmentu, potem 2, 4 i 8 s. Odgadnięcie
@@ -26,7 +27,7 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
 - **Starsza czy nowsza?** – czy piosenka jest starsza, czy nowsza od poprzedniej karty;
   seria bez pomyłki i rekord.
 - **Pojedynek dekad** – dwie dekady (losowe lub wybrane), trzeba wskazać, z której jest piosenka.
-- **Kto pierwszy?** – 2–8 osób przy jednym urządzeniu, każda ma przycisk i klawisz (1–8);
+- **Kto pierwszy?** – 2–8 osób przy jednym urządzeniu, każda ma przycisk i klawisz (domyślnie 1–8, w ustawieniach każdy gracz może przypisać własny);
   kto pierwszy naciśnie, ten odpowiada: +1 pkt za dobrą odpowiedź, −1 za złą.
 
 **Karty specjalne** (modyfikatory osi czasu, do wyboru): podwójna, kradzież żetonu, zamiana osi.

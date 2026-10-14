@@ -35,7 +35,7 @@ const store = {
     try { localStorage.setItem('songster.' + key, JSON.stringify(val)); } catch (e) { /* tryb prywatny */ }
   },
 };
-const { pickPreview, mainArtist, checkTitle, checkArtist } = window.SongMatch;
+const { pickPreview, mainArtist, checkTitle, checkArtist, artistsOf, norm } = window.SongMatch;
 translatePage();
 
 const MAX_TOKENS = 5;
@@ -336,7 +336,22 @@ const MODES = {
   buzz: { title: 'Kto pierwszy?', minPlayers: 2, maxPlayers: MAX_PLAYERS },
 };
 // klawisze graczy w „Kto pierwszy?” (oprócz przycisków na ekranie)
-const BUZZ_KEYS = ['1', '2', '3', '4', '5', '6', '7', '8'];
+// domyślne klawisze „Kto pierwszy?” (kody fizycznych klawiszy – działają niezależnie od układu klawiatury);
+// każdy gracz może w ustawieniach przypisać sobie własny
+const BUZZ_KEYS = ['Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8'];
+const KEY_NAMES = { Space: () => T('Spacja'), Enter: () => 'Enter', ArrowUp: () => '↑', ArrowDown: () => '↓', ArrowLeft: () => '←', ArrowRight: () => '→',
+  ShiftLeft: () => T('lewy Shift'), ShiftRight: () => T('prawy Shift'), ControlLeft: () => T('lewy Ctrl'), ControlRight: () => T('prawy Ctrl'),
+  AltLeft: () => T('lewy Alt'), AltRight: () => T('prawy Alt'), Backspace: () => '⌫', Tab: () => 'Tab' };
+function keyLabel(code) {
+  if (!code) return '?';
+  if (KEY_NAMES[code]) return KEY_NAMES[code]();
+  const m = code.match(/^(?:Key|Digit)(.+)$/);
+  if (m) return m[1];
+  if (code.startsWith('Numpad')) return 'Num ' + code.slice(6);
+  return code;
+}
+// pierwszy wolny klawisz dla nowego gracza
+const freeBuzzKey = (used) => [...BUZZ_KEYS, 'Digit9', 'Digit0', 'KeyQ', 'KeyP', 'KeyZ', 'KeyM'].find((k) => !used.includes(k));
 const BUZZ_COLORS = ['#ff3d7f', '#2de2e6', '#ffc93c', '#3ddc84', '#a78bfa', '#ff8a3d', '#60a5fa', '#f472b6'];
 // karty specjalne (modyfikatory osi czasu)
 const SPECIAL_CHANCE = 0.2;
@@ -529,7 +544,8 @@ function openSetup(mode) {
     let names = store.get('players', [T('Gracz {0}', 1), T('Gracz {0}', 2)]);
     if (names.length < cfg.minPlayers) names = names.concat([T('Gracz 2')]).slice(0, cfg.minPlayers);
     if (names.length > cfg.maxPlayers) names = names.slice(0, cfg.maxPlayers);
-    renderSetupPlayers(names.map((name) => ({ name })));
+    const keys = store.get('buzzKeys', BUZZ_KEYS);
+    renderSetupPlayers(names.map((name, i) => ({ name, key: keys[i] })));
   }
   $('#rounds-label').textContent = mode === 'buzz' ? T('Liczba piosenek') : (cfg.teams ? T('Piosenek na drużynę') : T('Piosenek na gracza'));
   if (mode === 'duel') renderDuelPick();
@@ -542,8 +558,17 @@ function renderSetupPlayers(rows) {
   const cfg = MODES[state.mode];
   const noun = cfg.teams ? T('Drużyny') : T('Gracze');
   $('#sec-players h2').textContent = cfg.maxPlayers === 1 ? T('Gracz') : `${noun} (${cfg.minPlayers}–${cfg.maxPlayers})`;
+  // „Kto pierwszy?”: każdy gracz ma swój klawisz (bez powtórzeń)
+  if (state.mode === 'buzz') {
+    const used = [];
+    for (const r of rows) { if (!r.key || used.includes(r.key)) r.key = freeBuzzKey(used); used.push(r.key); }
+  }
   $('#players-list').replaceChildren(...rows.map((r, i) => el('div', { class: 'player-row' + (cfg.teams ? ' team-row' : '') },
     el('input', { type: 'text', value: r.name, maxlength: '20', class: 'p-name', 'aria-label': cfg.teams ? T('Nazwa drużyny {0}', i + 1) : T('Gracz {0}', i + 1) }),
+    state.mode === 'buzz' ? el('button', {
+      type: 'button', class: 'ghost p-key', 'data-key': r.key, title: T('Kliknij i naciśnij klawisz, którym ten gracz będzie się zgłaszał'),
+      onclick: (e) => captureBuzzKey(e.currentTarget),
+    }, `⌨ ${keyLabel(r.key)}`) : null,
     cfg.teams ? el('input', {
       type: 'text', value: r.members || '', maxlength: '120', class: 'p-members',
       placeholder: T('Członkowie, np. Ania, Bartek, Ola'), 'aria-label': T('Członkowie drużyny {0}', i + 1),
@@ -560,12 +585,36 @@ function renderSetupPlayers(rows) {
 const readSetupRows = () => $$('#players-list .player-row').map((row) => ({
   name: row.querySelector('.p-name').value,
   members: row.querySelector('.p-members') ? row.querySelector('.p-members').value : '',
+  key: row.querySelector('.p-key') ? row.querySelector('.p-key').dataset.key : undefined,
 }));
+
+// przypisanie klawisza: następny naciśnięty klawisz (Esc anuluje); zajęty klawisz zamienia się z innym graczem
+let keyCapture = null;
+function captureBuzzKey(btn) {
+  if (keyCapture) keyCapture.btn.textContent = `⌨ ${keyLabel(keyCapture.btn.dataset.key)}`;
+  keyCapture = { btn };
+  btn.textContent = T('⌨ Naciśnij klawisz…');
+  btn.classList.add('capturing');
+}
+document.addEventListener('keydown', (e) => {
+  if (!keyCapture) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const { btn } = keyCapture;
+  keyCapture = null;
+  btn.classList.remove('capturing');
+  if (e.code !== 'Escape' && e.code) {
+    const other = $$('#players-list .p-key').find((b) => b !== btn && b.dataset.key === e.code);
+    if (other) { other.dataset.key = btn.dataset.key; other.textContent = `⌨ ${keyLabel(other.dataset.key)}`; }
+    btn.dataset.key = e.code;
+  }
+  btn.textContent = `⌨ ${keyLabel(btn.dataset.key)}`;
+}, true);
 const readSetupNames = () => readSetupRows().map((r) => r.name);
 
 $('#btn-add-player').addEventListener('click', () => {
   const rows = readSetupRows();
-  rows.push({ name: `${MODES[state.mode].teams ? T('Drużyna') : T('Gracz')} ${rows.length + 1}`, members: '' });
+  rows.push({ name: `${MODES[state.mode].teams ? T('Drużyna') : T('Gracz')} ${rows.length + 1}`, members: '', key: freeBuzzKey(rows.map((r) => r.key)) });
   renderSetupPlayers(rows);
 });
 $('#btn-back').addEventListener('click', () => showScreen('home'));
@@ -866,6 +915,8 @@ function startGame() {
   const rows = readSetupRows().map((r, i) => ({ name: r.name.trim() || `${teams ? T('Drużyna') : T('Gracz')} ${i + 1}`, members: r.members }));
   const names = rows.map((r) => r.name);
   if (teams) store.set('teams', rows); else store.set('players', names);
+  state.buzzKeys = readSetupRows().map((r, i) => r.key || BUZZ_KEYS[i]);
+  if (state.mode === 'buzz') store.set('buzzKeys', state.buzzKeys);
   const startTokens = clampInt($('#start-tokens').value, 0, MAX_TOKENS, 2);
   const lives = clampInt($('#lives').value, 1, 10, 3);
   state.winTarget = clampInt($('#win-target').value, 3, 30, 10);
@@ -960,7 +1011,7 @@ async function startTurn() {
   });
   $('#reveal').classList.add('hidden');
   $('#guess-form').reset();
-  for (const id of ['#guess-title', '#guess-artist']) { $(id).disabled = false; $(id).classList.remove('solved'); }
+  $('#guess-song').disabled = false;
   $('#letter-hint').classList.add('hidden');
   render();
   await drawSong();
@@ -1056,7 +1107,7 @@ async function drawSong() {
       $('#btn-play').disabled = false;
       render();
       if (!prefetchAfterReveal()) prefetchNext();
-      if (isMelody() && state.mode !== 'buzz') $(state.guessType === 'artist' ? '#guess-artist' : '#guess-title').focus({ preventScroll: true });
+      if (isMelody() && state.mode !== 'buzz') $('#guess-song').focus({ preventScroll: true });
       return;
     }
     if (!previewCache.has(songKey(song))) {
@@ -1102,8 +1153,7 @@ function onSlotClick(i) {
 
 // odpowiedzi wpisane przy osi czasu: tryb ekspert (wymagane) i żeton za tytuł + wykonawcę (solo, opcjonalnie)
 function timelineAnswers(song) {
-  const t = $('#guess-title').value;
-  const a = $('#guess-artist').value;
+  const { title: t, artist: a } = guessParts(song);
   const yRaw = $('#guess-year').value.trim();
   return {
     title: { guess: t, ok: !!t.trim() && checkTitle(t, song) },
@@ -1262,6 +1312,140 @@ function buyCard() {
     : T('🛒 Kupiona karta – ta piosenka trafia do: {0}.', p.name)));
 }
 
+/* --- jedno pole odpowiedzi: tytuł i/lub wykonawca z podpowiedziami z całej bazy --- */
+// podpowiedzi biorą się ze wszystkich piosenek (nie tylko z puli gry), więc niczego nie zdradzają
+let guessPick = null;      // wybrana podpowiedź: { t, a, label }
+let suggestItems = [];
+let suggestActive = -1;
+let suggestIndex = null;
+function buildSuggestIndex() {
+  if (suggestIndex) return suggestIndex;
+  const songs = new Map();
+  const artists = new Map();
+  for (const s of window.SONGS) {
+    const key = norm(s.t) + '|' + norm(s.a);
+    const pop = s.p || 0;
+    if (!songs.has(key)) songs.set(key, { t: s.t, a: s.a, nt: norm(s.t), na: norm(s.a), p: pop });
+    else songs.get(key).p = Math.max(songs.get(key).p, pop);
+    for (const name of artistsOf(s)) {
+      const k = norm(name);
+      if (!k) continue;
+      if (!artists.has(k)) artists.set(k, { a: name, na: k, p: 0 });
+      artists.get(k).p = Math.max(artists.get(k).p, pop);
+    }
+  }
+  suggestIndex = { songs: [...songs.values()], artists: [...artists.values()] };
+  return suggestIndex;
+}
+// czego dotyczy pole: obu części, samego tytułu albo samego wykonawcy (bez już odgadniętych w trybie krokowym)
+function suggestKind() {
+  const f = guessFields();
+  let title = !!f.title;
+  let artist = !!f.artist;
+  if (state.mode === 'steps' && state.solved) {
+    if (state.solved.title != null) title = false;
+    if (state.solved.artist != null) artist = false;
+  }
+  return title && artist ? 'both' : (title ? 'title' : (artist ? 'artist' : null));
+}
+function findSuggestions(raw, kind) {
+  const words = raw.split(/\s+/).map(norm).filter(Boolean);
+  if (words.join('').length < 3) return [];
+  const idx = buildSuggestIndex();
+  const out = [];
+  if (kind !== 'title') {
+    const q = words.join('');
+    for (const x of idx.artists) {
+      if (!x.na.includes(q)) continue;
+      out.push({ kind: 'artist', a: x.a, label: x.a, score: (x.na === q ? 6 : x.na.startsWith(q) ? 4 : 1) + x.p / 100 });
+    }
+  }
+  if (kind !== 'artist') {
+    for (const x of idx.songs) {
+      const hay = x.nt + '|' + x.na;
+      if (!words.every((w) => hay.includes(w))) continue;
+      const score = (x.nt.startsWith(words[0]) ? 3 : x.na.startsWith(words[0]) ? 2 : 1) + (x.nt === words.join('') ? 2 : 0) + x.p / 100;
+      out.push({ kind: 'song', t: x.t, a: x.a, label: `${x.t} — ${x.a}`, score });
+    }
+  }
+  out.sort((x, y) => y.score - x.score);
+  // najwyżej 3 wykonawców na górze, potem piosenki
+  const arts = out.filter((x) => x.kind === 'artist').slice(0, kind === 'artist' ? 10 : 3);
+  const songs = out.filter((x) => x.kind === 'song').slice(0, 10 - arts.length);
+  return [...arts, ...songs];
+}
+function renderSuggest() {
+  const list = $('#guess-suggest');
+  const open = suggestItems.length > 0;
+  list.classList.toggle('hidden', !open);
+  $('#guess-song').setAttribute('aria-expanded', String(open));
+  if (open) {
+    // lista nad polem, a gdy nad nim jest za mało miejsca – pod nim; wysokość dopasowana do wolnego miejsca
+    const r = $('#guess-song').getBoundingClientRect();
+    const above = r.top >= 200 || r.top >= window.innerHeight - r.bottom;
+    list.classList.toggle('below', !above);
+    list.style.maxHeight = `${Math.max(120, Math.min(320, (above ? r.top : window.innerHeight - r.bottom) - 12))}px`;
+  }
+  list.replaceChildren(...suggestItems.map((x, i) => {
+    const li = el('li', { class: (x.kind === 'artist' ? 'artist' : '') + (i === suggestActive ? ' active' : ''), role: 'option', id: `sg-${i}` },
+      el('b', { class: 'notr' }, x.kind === 'artist' ? x.a : x.t), ' ',
+      el('span', { class: x.kind === 'artist' ? '' : 'notr' }, x.kind === 'artist' ? T('– wykonawca') : `— ${x.a}`));
+    // pointerdown, żeby wybór zadziałał przed utratą fokusu przez pole
+    li.addEventListener('pointerdown', (e) => { e.preventDefault(); pickSuggestion(i); });
+    return li;
+  }));
+  if (suggestActive >= 0) {
+    $('#guess-song').setAttribute('aria-activedescendant', `sg-${suggestActive}`);
+    const act = list.children[suggestActive];
+    if (act) act.scrollIntoView({ block: 'nearest' });
+  } else $('#guess-song').removeAttribute('aria-activedescendant');
+}
+function pickSuggestion(i) {
+  const x = suggestItems[i];
+  if (!x) return;
+  guessPick = { t: x.kind === 'song' ? x.t : '', a: x.a, label: x.label };
+  $('#guess-song').value = x.label;
+  suggestItems = [];
+  suggestActive = -1;
+  renderSuggest();
+}
+function clearGuess() {
+  $('#guess-song').value = '';
+  guessPick = null;
+  suggestItems = [];
+  suggestActive = -1;
+  renderSuggest();
+}
+// tytuł i wykonawca z pola: z wybranej podpowiedzi albo z wpisanego tekstu
+// („tytuł – wykonawca” w dowolnej kolejności albo samo jedno z nich – sprawdzamy wtedy oba)
+function guessParts(song) {
+  const raw = $('#guess-song').value.trim();
+  if (guessPick && raw === guessPick.label) return { title: guessPick.t, artist: guessPick.a };
+  const seg = raw.split(/\s+[—–-]\s+/).filter(Boolean);
+  if (seg.length >= 2) {
+    const x = seg[0];
+    const y = seg.slice(1).join(' - ');
+    if (song && !(checkTitle(x, song) || checkArtist(y, song)) && (checkTitle(y, song) || checkArtist(x, song))) return { title: y, artist: x };
+    return { title: x, artist: y };
+  }
+  return { title: raw, artist: raw };
+}
+$('#guess-song').addEventListener('input', () => {
+  guessPick = null;
+  suggestItems = findSuggestions($('#guess-song').value, suggestKind() || 'both');
+  suggestActive = -1;
+  renderSuggest();
+});
+$('#guess-song').addEventListener('keydown', (e) => {
+  const open = suggestItems.length > 0;
+  if (e.key === 'ArrowDown' && open) { e.preventDefault(); suggestActive = (suggestActive + 1) % suggestItems.length; renderSuggest(); }
+  else if (e.key === 'ArrowUp' && open) { e.preventDefault(); suggestActive = suggestActive <= 0 ? suggestItems.length - 1 : suggestActive - 1; renderSuggest(); }
+  else if (e.key === 'Enter' && open && suggestActive >= 0) { e.preventDefault(); pickSuggestion(suggestActive); }
+  else if (e.key === 'Escape' && open) { e.preventDefault(); suggestItems = []; renderSuggest(); }
+});
+$('#guess-song').addEventListener('blur', () => { suggestItems = []; suggestActive = -1; renderSuggest(); });
+$('#guess-form').addEventListener('reset', () => { guessPick = null; suggestItems = []; suggestActive = -1; renderSuggest(); });
+
 /* --- Jaka to melodia --- */
 $('#guess-form').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -1280,18 +1464,18 @@ const firstLetter = (txt) => ((txt || '').replace(/^\s*(the|a)\s+/i, '').match(/
 
 function stepsGuess() {
   const song = state.current;
-  const inputs = { title: $('#guess-title'), artist: $('#guess-artist') };
+  const inputs = guessParts(song);
   const check = { title: checkTitle, artist: checkArtist };
   let anyNew = false;
   for (const part of stepParts()) {
     if (state.solved[part] != null) continue;
-    if (inputs[part].value.trim() && check[part](inputs[part].value, song)) {
+    if (inputs[part].trim() && check[part](inputs[part], song)) {
       state.solved[part] = STEPS[state.step].pts;
       anyNew = true;
     }
   }
   if (stepParts().every((part) => state.solved[part] != null)) return revealSteps(false);
-  if (anyNew) fx('good');
+  if (anyNew) { fx('good'); clearGuess(); }
   stepsExtend(anyNew ? T('Dobrze – ta część zaliczona! Zgaduj dalej.') : T('✘ Jeszcze nie.'));
 }
 
@@ -1322,7 +1506,7 @@ function revealSteps(gaveUp) {
   state.history.push({
     song, preview: state.preview, player: p.name, ok: all, note: T('{0}: {1} pkt', p.name, points),
   });
-  const inputs = { title: $('#guess-title').value, artist: $('#guess-artist').value };
+  const inputs = guessParts(song);
   const lines = parts.map((part) => {
     const pts = state.solved[part];
     const at = pts != null ? STEPS.find((x) => x.pts === pts).len : null;
@@ -1363,12 +1547,10 @@ function renderStepsBar() {
 
 function renderStepsGuess() {
   const song = state.current;
-  for (const [part, id] of [['title', '#guess-title'], ['artist', '#guess-artist']]) {
-    const solved = state.solved[part] != null;
-    $(id).disabled = solved;
-    $(id).classList.toggle('solved', solved);
-    if (solved) $(id).value = part === 'title' ? song.t : mainArtist(song);
-  }
+  // odgadnięte części zostają – pokazujemy je pod polem, a w polu zgaduje się już tylko resztę
+  const solved = stepParts().filter((part) => state.solved[part] != null);
+  $('#guess-solved').classList.toggle('hidden', !solved.length);
+  $('#guess-solved').textContent = solved.map((part) => `✔ ${PART_LABELS[part]}: ${part === 'title' ? song.t : mainArtist(song)}`).join(' · ');
   $('#btn-giveup').classList.add('hidden');
   const hint = $('#letter-hint');
   const parts = stepParts().filter((part) => state.solved[part] == null);
@@ -1383,14 +1565,9 @@ function revealMelody(gaveUp) {
   const song = state.current;
   const p = activePlayer();
   const parts = [];
-  if (state.guessType !== 'artist') {
-    const guess = $('#guess-title').value;
-    parts.push({ label: T('Tytuł'), guess, ok: !gaveUp && checkTitle(guess, song) });
-  }
-  if (state.guessType !== 'title') {
-    const guess = $('#guess-artist').value;
-    parts.push({ label: T('Wykonawca'), guess, ok: !gaveUp && checkArtist(guess, song) });
-  }
+  const g = guessParts(song);
+  if (state.guessType !== 'artist') parts.push({ label: T('Tytuł'), guess: g.title, ok: !gaveUp && checkTitle(g.title, song) });
+  if (state.guessType !== 'title') parts.push({ label: T('Wykonawca'), guess: g.artist, ok: !gaveUp && checkArtist(g.artist, song) });
   const points = parts.filter((x) => x.ok).length;
   p.score += points;
   recordAnswer(song, points === parts.length);
@@ -1492,7 +1669,7 @@ function renderBuzzers() {
   box.replaceChildren(...state.players.map((pl, i) => el('button', {
     class: 'buzzer' + (b.locked.has(i) ? ' locked' : ''), disabled: b.locked.has(i),
     style: `--c:${BUZZ_COLORS[i]}`, onclick: () => buzz(i),
-  }, el('b', {}, pl.name), el('kbd', {}, BUZZ_KEYS[i]))));
+  }, el('b', {}, pl.name), el('kbd', {}, keyLabel((state.buzzKeys || BUZZ_KEYS)[i])))));
 }
 function buzz(i) {
   const b = state.buzz;
@@ -1502,11 +1679,14 @@ function buzz(i) {
   fx('place');
   $('#guess-form').reset();
   render();
-  $(state.guessType === 'artist' ? '#guess-artist' : '#guess-title').focus({ preventScroll: true });
+  $('#guess-song').focus({ preventScroll: true });
 }
 document.addEventListener('keydown', (e) => {
   if (state.mode !== 'buzz' || e.target.closest('input, textarea, select') || e.repeat) return;
-  const i = BUZZ_KEYS.indexOf(e.key);
+  const keys = state.buzzKeys || BUZZ_KEYS;
+  // klawisze numeryczne działają też z klawiatury numerycznej
+  let i = keys.indexOf(e.code);
+  if (i < 0 && e.code.startsWith('Numpad')) i = keys.indexOf('Digit' + e.code.slice(6));
   if (i >= 0) { e.preventDefault(); buzz(i); }
 });
 function buzzGuess() {
@@ -1515,8 +1695,9 @@ function buzzGuess() {
   const song = state.current;
   const pl = state.players[b.answering];
   const parts = [];
-  if (state.guessType !== 'artist') parts.push(checkTitle($('#guess-title').value, song));
-  if (state.guessType !== 'title') parts.push(checkArtist($('#guess-artist').value, song));
+  const g = guessParts(song);
+  if (state.guessType !== 'artist') parts.push(checkTitle(g.title, song));
+  if (state.guessType !== 'title') parts.push(checkArtist(g.artist, song));
   if (parts.every(Boolean)) {
     pl.score += 1;
     return revealBuzz(b.answering, true);
@@ -1853,13 +2034,14 @@ function render() {
   $('#guess-form').classList.toggle('hidden', !showGuess);
   if (showGuess) {
     const ex = state.expert || [];
-    const label = (part, name) => (isMelody() ? name
-      : `${name} (${ex.includes(part) ? T('wymagany') : T('opcjonalnie – za żeton')})`);
-    $('#guess-title').classList.toggle('hidden', !fields.title);
-    $('#guess-artist').classList.toggle('hidden', !fields.artist);
+    const kind = suggestKind();
+    $('#guess-song').closest('.suggest-wrap').classList.toggle('hidden', !kind);
+    $('#guess-solved').classList.add('hidden');
     $('#guess-year').classList.toggle('hidden', !fields.year);
-    $('#guess-title').placeholder = label('title', T('Tytuł'));
-    $('#guess-artist').placeholder = label('artist', T('Wykonawca'));
+    const base = { both: T('Wpisz tytuł lub wykonawcę – od 3 liter pojawią się podpowiedzi'), title: T('Wpisz tytuł – od 3 liter pojawią się podpowiedzi'),
+      artist: T('Wpisz wykonawcę – od 3 liter pojawią się podpowiedzi') }[kind] || '';
+    const required = ['title', 'artist'].some((part) => fields[part] && ex.includes(part));
+    $('#guess-song').placeholder = isMelody() ? base : `${base} (${required ? T('wymagany') : T('opcjonalnie – za żeton')})`;
     $('#guess-year').placeholder = T('Dokładny rok wydania (wymagany)');
     $('#btn-guess').classList.toggle('hidden', !isMelody());
     $('#btn-giveup').classList.toggle('hidden', state.mode !== 'melody');

@@ -282,8 +282,12 @@
       <div id="buzzers" class="buzzers hidden"></div>
       <p id="buzz-who" class="buzz-who hidden"></p>
       <form id="guess-form" class="guess hidden" autocomplete="off">
-        <input type="text" id="guess-title" placeholder="Tytuł" aria-label="Tytuł">
-        <input type="text" id="guess-artist" placeholder="Wykonawca" aria-label="Wykonawca">
+        <div class="suggest-wrap">
+          <input type="text" id="guess-song" placeholder="Tytuł lub wykonawca" aria-label="Tytuł i wykonawca" role="combobox"
+            aria-autocomplete="list" aria-expanded="false" aria-controls="guess-suggest" autocomplete="off" spellcheck="false">
+          <ul id="guess-suggest" class="suggest hidden" role="listbox"></ul>
+        </div>
+        <p id="guess-solved" class="guess-solved hidden"></p>
         <input type="number" id="guess-year" placeholder="Rok wydania" aria-label="Rok wydania" inputmode="numeric" min="1900" max="2100">
         <p id="letter-hint" class="letter-hint hidden"></p>
         <div class="actions">
@@ -379,7 +383,7 @@
     </ol>
     <h3>Jaka to melodia</h3>
     <ol>
-      <li>Gracze po kolei słuchają fragmentu i wpisują tytuł, wykonawcę albo oba (zależnie od ustawień).</li>
+      <li>Gracze po kolei słuchają fragmentu i wpisują tytuł, wykonawcę albo oba (zależnie od ustawień) – w jednym polu; od 3 liter pojawiają się podpowiedzi ze wszystkich piosenek w bazie.</li>
       <li>Za każdą poprawną część jest punkt. Drobne literówki, wielkość liter i polskie znaki nie mają znaczenia.</li>
       <li>Przy duetach i utworach kilku wykonawców wystarczy podać jednego z nich.</li>
     </ol>
@@ -399,7 +403,7 @@
     </ol>
     <h3>Kto pierwszy?</h3>
     <ol>
-      <li>Każdy gracz ma swój przycisk na ekranie i klawisz (1–8). Kto pierwszy naciśnie, ten odpowiada – muzyka się zatrzymuje.</li>
+      <li>Każdy gracz ma swój przycisk na ekranie i klawisz (domyślnie 1–8, w ustawieniach gry każdy może przypisać sobie dowolny). Kto pierwszy naciśnie, ten odpowiada – muzyka się zatrzymuje.</li>
       <li>Dobra odpowiedź: +1 punkt. Zła: −1 punkt, a pozostali mogą odpowiadać dalej.</li>
     </ol>
     <h3>Karty specjalne</h3>

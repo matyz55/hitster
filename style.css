@@ -63,6 +63,8 @@ input[type=number] { width: 80px; }
 
 .player-row { display: flex; gap: 8px; margin-bottom: 8px; }
 .player-row input { flex: 1; min-width: 0; }
+.p-key { flex: 0 0 auto; min-width: 7.5em; white-space: nowrap; }
+.p-key.capturing { border-color: var(--gold); color: var(--gold); }
 .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
 
 .seg { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -351,7 +353,22 @@ select {
 .step.done { opacity: .5; }
 .step.current { border-color: var(--gold); background: rgba(255,201,60,.12); }
 .step.current b { color: var(--gold); }
-.guess input.solved { border-color: var(--ok); color: var(--ok); background: rgba(60,220,140,.08); }
+.guess-solved { margin: 0; color: var(--ok); font-weight: 600; }
+
+/* --- jedno pole odpowiedzi z podpowiedziami --- */
+.suggest-wrap { position: relative; }
+.suggest {
+  /* nad polem: nie zasłania przycisków formularza i nie przesuwa ich przy zamykaniu */
+  position: absolute; left: 0; right: 0; bottom: calc(100% + 4px); z-index: 30; margin: 0; padding: 4px; list-style: none;
+  max-height: min(320px, 40vh); overflow-y: auto; border-radius: 12px; background: var(--panel-2);
+  border: 1px solid #3d3755; box-shadow: 0 12px 28px rgba(0,0,0,.45);
+}
+.suggest.below { bottom: auto; top: calc(100% + 4px); }
+.suggest li { padding: 9px 10px; border-radius: 8px; cursor: pointer; line-height: 1.25; }
+.suggest li b { font-weight: 600; }
+.suggest li span { color: var(--muted); }
+.suggest li.active, .suggest li:hover { background: rgba(255,61,127,.18); }
+.suggest li.artist b::before { content: '🎤 '; }
 .letter-hint { margin: 0; color: var(--gold); font-weight: 600; }
 
 /* --- karta do przeciągania --- */
