@@ -368,7 +368,6 @@ select {
 .suggest li b { font-weight: 600; }
 .suggest li span { color: var(--muted); }
 .suggest li.active, .suggest li:hover { background: rgba(255,61,127,.18); }
-.suggest li.artist b::before { content: '🎤 '; }
 .letter-hint { margin: 0; color: var(--gold); font-weight: 600; }
 
 /* --- karta do przeciągania --- */

@@ -224,7 +224,6 @@ window.I18N_EN = {
  "Wpisz tytuł lub wykonawcę – od 3 liter pojawią się podpowiedzi": "Type the title or artist – suggestions appear from 3 letters",
  "Wpisz tytuł – od 3 liter pojawią się podpowiedzi": "Type the title – suggestions appear from 3 letters",
  "Wpisz wykonawcę – od 3 liter pojawią się podpowiedzi": "Type the artist – suggestions appear from 3 letters",
- "– wykonawca": "– artist",
  "Tytuł lub wykonawca": "Title or artist",
  "Tytuł i wykonawca": "Title and artist",
  "Spacja": "Space",

@@ -1348,31 +1348,37 @@ function suggestKind() {
   }
   return title && artist ? 'both' : (title ? 'title' : (artist ? 'artist' : null));
 }
+// podpowiedzi zależą od tego, o co pyta gra: sam tytuł → same tytuły, sam wykonawca → sami wykonawcy,
+// tytuł i wykonawca → piosenki „tytuł — wykonawca”
 function findSuggestions(raw, kind) {
   const words = raw.split(/\s+/).map(norm).filter(Boolean);
   if (words.join('').length < 3) return [];
   const idx = buildSuggestIndex();
+  const q = words.join('');
   const out = [];
-  if (kind !== 'title') {
-    const q = words.join('');
+  if (kind === 'artist') {
     for (const x of idx.artists) {
       if (!x.na.includes(q)) continue;
-      out.push({ kind: 'artist', a: x.a, label: x.a, score: (x.na === q ? 6 : x.na.startsWith(q) ? 4 : 1) + x.p / 100 });
+      out.push({ kind: 'artist', t: '', a: x.a, label: x.a, score: (x.na === q ? 6 : x.na.startsWith(q) ? 4 : 1) + x.p / 100 });
     }
-  }
-  if (kind !== 'artist') {
+  } else if (kind === 'title') {
+    const seen = new Map();
+    for (const x of idx.songs) {
+      if (!words.every((w) => x.nt.includes(w))) continue;
+      const score = (x.nt === q ? 6 : x.nt.startsWith(words[0]) ? 4 : 1) + x.p / 100;
+      const prev = seen.get(x.nt);
+      if (!prev || prev.score < score) seen.set(x.nt, { kind: 'title', t: x.t, a: '', label: x.t, score });
+    }
+    out.push(...seen.values());
+  } else {
     for (const x of idx.songs) {
       const hay = x.nt + '|' + x.na;
       if (!words.every((w) => hay.includes(w))) continue;
-      const score = (x.nt.startsWith(words[0]) ? 3 : x.na.startsWith(words[0]) ? 2 : 1) + (x.nt === words.join('') ? 2 : 0) + x.p / 100;
+      const score = (x.nt.startsWith(words[0]) ? 3 : x.na.startsWith(words[0]) ? 2 : 1) + (x.nt === q ? 2 : 0) + x.p / 100;
       out.push({ kind: 'song', t: x.t, a: x.a, label: `${x.t} — ${x.a}`, score });
     }
   }
-  out.sort((x, y) => y.score - x.score);
-  // najwyżej 3 wykonawców na górze, potem piosenki
-  const arts = out.filter((x) => x.kind === 'artist').slice(0, kind === 'artist' ? 10 : 3);
-  const songs = out.filter((x) => x.kind === 'song').slice(0, 10 - arts.length);
-  return [...arts, ...songs];
+  return out.sort((x, y) => y.score - x.score).slice(0, 10);
 }
 function renderSuggest() {
   const list = $('#guess-suggest');
@@ -1387,9 +1393,9 @@ function renderSuggest() {
     list.style.maxHeight = `${Math.max(120, Math.min(320, (above ? r.top : window.innerHeight - r.bottom) - 12))}px`;
   }
   list.replaceChildren(...suggestItems.map((x, i) => {
-    const li = el('li', { class: (x.kind === 'artist' ? 'artist' : '') + (i === suggestActive ? ' active' : ''), role: 'option', id: `sg-${i}` },
-      el('b', { class: 'notr' }, x.kind === 'artist' ? x.a : x.t), ' ',
-      el('span', { class: x.kind === 'artist' ? '' : 'notr' }, x.kind === 'artist' ? T('– wykonawca') : `— ${x.a}`));
+    const li = el('li', { class: i === suggestActive ? 'active' : '', role: 'option', id: `sg-${i}` },
+      el('b', { class: 'notr' }, x.kind === 'artist' ? x.a : x.t),
+      x.kind === 'song' ? el('span', { class: 'notr' }, ` — ${x.a}`) : null);
     // pointerdown, żeby wybór zadziałał przed utratą fokusu przez pole
     li.addEventListener('pointerdown', (e) => { e.preventDefault(); pickSuggestion(i); });
     return li;
@@ -1403,7 +1409,7 @@ function renderSuggest() {
 function pickSuggestion(i) {
   const x = suggestItems[i];
   if (!x) return;
-  guessPick = { t: x.kind === 'song' ? x.t : '', a: x.a, label: x.label };
+  guessPick = { t: x.t, a: x.a, label: x.label };
   $('#guess-song').value = x.label;
   suggestItems = [];
   suggestActive = -1;
