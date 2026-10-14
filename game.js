@@ -200,7 +200,7 @@ class Deck {
     if (!cat) return null;
     const decades = [...this.lists[cat].entries()].filter(([, l]) => l.length);
     const least = Math.min(...decades.map(([d]) => this.used.get(d) || 0));
-    if (this.level >= 2 && nearYears && nearYears.length && Math.random() < 0.5) {
+    if (this.level === 2 && nearYears && nearYears.length && Math.random() < 0.5) {
       // tylko dekady co najwyżej o 1 piosenkę „ponad normę”
       const allowed = decades.filter(([d]) => (this.used.get(d) || 0) <= least + 1).flatMap(([, l]) => l.slice(-60));
       const pick = this.closeTo(allowed, nearYears);
@@ -409,6 +409,12 @@ const POP_MEDIAN = (() => {
   };
   return { PL: med('PL'), INT: med('INT') };
 })();
+// „bardzo łatwy”: po 500 najpopularniejszych piosenek polskich i zagranicznych w Spotify (razem ok. 1000)
+const TOP_PER_CATEGORY = 500;
+const TOP_SONGS = new Set(['PL', 'INT'].flatMap((c) => window.SONGS
+  .filter((s) => s.c === c && s.p != null).sort((a, b) => b.p - a.p)
+  .slice(0, TOP_PER_CATEGORY).map(songKey)));
+// indeks = wartość w ustawieniach (zapisane filtry i rekordy); kolejność na ekranie ustala index.html
 const LEVELS = [
   { name: 'Łatwy', desc: 'Znane piosenki (popularniejsza połowa w Spotify), równomiernie z różnych dekad.',
     // bez danych o popularności: klasyki z pierwotnej listy i przeboje z list przebojów są „znane”,
@@ -418,6 +424,8 @@ const LEVELS = [
   { name: 'Trudny', desc: 'Mniej znane piosenki. Na osi czasu częściej trafiają się utwory wydane blisko lat Twoich kart – ale dekady wciąż są wymieszane.',
     // piosenki bez danych o popularności to klasyki i przeboje z list – nie są „mniej znane”
     ok: (s) => s.p != null && s.p < POP_MEDIAN[s.c] },
+  { name: 'Bardzo łatwy', desc: 'Tylko największe przeboje: ok. 1000 najpopularniejszych piosenek w Spotify (po połowie polskich i zagranicznych), równomiernie z różnych dekad.',
+    ok: (s) => TOP_SONGS.has(songKey(s)) },
 ];
 
 const filterState = Object.assign(
@@ -601,7 +609,7 @@ function nearYearsFor(playerIndex) {
 }
 const nextPlayerIndex = () => (state.mode === 'multi' ? (state.turn + 1) % state.players.length : state.turn);
 // na trudnych poziomach oś następnego gracza zmienia się do chwili odkrycia karty – wtedy szukamy dopiero po odkryciu
-const prefetchAfterReveal = () => isTimeline() && state.difficulty >= 2;
+const prefetchAfterReveal = () => isTimeline() && state.difficulty === 2;
 
 // Cały 30-sekundowy fragment (~1 MB) pobieramy z góry. Bez tego telefony zaczynały grać przy małym
 // buforze i po chwili zatrzymywały się na doładowanie. Serwer iTunes zezwala na to (CORS: *).

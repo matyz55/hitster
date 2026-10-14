@@ -23,7 +23,7 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 ## Pozostałe dane
 
 - **Kraj artysty (flaga)** – MusicBrainz (kraj lub obszar artysty; region typu „England” jest przeliczany na państwo), a gdy brak – [Wikidata](https://www.wikidata.org/) (kraj pochodzenia zespołu lub obywatelstwo, tylko gdy jednoznaczne). 🌍 = nie ustalono. Polska/zagraniczna = kraj artysty.
-- **Ręczne poprawki kraju:** Ewa Farna – Polska (decyzja; w MusicBrainz: Czechy). Polscy wykonawcy automatycznie dopasowani do zagranicznych imienników, poprawieni po sprawdzeniu w MusicBrainz (*country:PL*): Tilt, MAFIA, Hurt, Feel, Jamal, VOX, Jacek Stachursky, ŁZY Adam Konkol, Human, bambi, Bambi, Patty, RH+, Marissa, Nita, Venus, Exodus, Kowalski, Madame, Rendez Vous, Blanka, Oki, Loka, Igo, Basia; w Wikidacie: IRA, Ørganek | ØNA, Dwa plus Jeden, Muniek Staszczyk; w polskiej Wikipedii: Eugeniusz Bodo, Marcin Sójka. Basia (Trzetrzelewska) – w MusicBrainz kraj „US”, ale miejsce urodzenia Jaworzno, więc Polska. „Napisz proszę” zespołu ABC (z Haliną Frąckowiak) – polski zespół ABC, nie brytyjski imiennik; „Kamienie” i „Ne rozumiju” – polski wykonawca Vixen (MusicBrainz), nie amerykański zespół o tej nazwie.
+- **Ręczne poprawki kraju:** Ewa Farna – Polska (decyzja; w MusicBrainz: Czechy). Polscy wykonawcy automatycznie dopasowani do zagranicznych imienników, poprawieni po sprawdzeniu w MusicBrainz (*country:PL*): Tilt, MAFIA, Hurt, Feel, Jamal, VOX, Jacek Stachursky, ŁZY Adam Konkol, Human, bambi, Bambi, Patty, RH+, Marissa, Nita, Venus, Exodus, Kowalski, Madame, Rendez Vous, Blanka, Oki, Loka, Wojciech Baranowski, Igo, Basia; w Wikidacie: IRA, Ørganek | ØNA, Dwa plus Jeden, Muniek Staszczyk; w polskiej Wikipedii: Eugeniusz Bodo, Marcin Sójka. Basia (Trzetrzelewska) – w MusicBrainz kraj „US”, ale miejsce urodzenia Jaworzno, więc Polska. „Napisz proszę” zespołu ABC (z Haliną Frąckowiak) – polski zespół ABC, nie brytyjski imiennik; „Kamienie” i „Ne rozumiju” – polski wykonawca Vixen (MusicBrainz), nie amerykański zespół o tej nazwie.
 - **Kraj nieznany, kategoria „polskie”:** Bungee, Miü – polskie tytuły na polskiej liście przebojów, a jedyny wykonawca o tej nazwie w MusicBrainz jest zagraniczny (prawdopodobnie imiennik); nie znalazłem źródła potwierdzającego kraj. Wykonawcy bez ustalonego kraju obecni wyłącznie na polskich playlistach trafiają do kategorii „polskie”.
 - **Kategoria „polskie” bez flagi** (żadne źródło nie podaje kraju, ale utwory są wyłącznie na polskich playlistach): Anna Wyszkoni, Antek Smykiewicz, Basia Stępniak-Wilk, Bluszcz, KARAŚ/ROGUCKI, KOSKA, Klincz, Maciek Czemplik, Marcelina, Wojciech Baranowski.
 - **Gatunki** – kategorie gatunków i stylów z Discogs (np. styl z „Metal” → metal, Disco/Italo-Disco → disco), a gdy brak – gatunki ze Spotify.
@@ -31,19 +31,19 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 
 ## Podsumowanie
 
-- piosenek w grze: **5490** (polskich: 1931, zagranicznych: 3559)
+- piosenek w grze: **5452** (polskich: 1893, zagranicznych: 3559)
 - bez żadnej daty (pominięte): 59
-- covery zamiast oryginałów (pominięte): 7
-- usunięte duplikaty: 31
-- bez ustalonego kraju artysty: 105
+- covery zamiast oryginałów (pominięte): 47
+- usunięte duplikaty: 33
+- bez ustalonego kraju artysty: 96
 
 | Źródło roku | Piosenek |
 |---|---|
-| Discogs + Spotify | 1984 |
-| Discogs | 1778 |
+| Discogs + Spotify | 1973 |
+| Discogs | 1773 |
 | Discogs + Wikipedia | 316 |
-| Spotify + MusicBrainz | 297 |
-| Spotify | 279 |
+| Spotify + MusicBrainz | 292 |
+| Spotify | 254 |
 | MusicBrainz | 233 |
 | Wikipedia | 222 |
 | Discogs + MusicBrainz+Wikipedia + Spotify | 94 |
@@ -51,12 +51,16 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 | Discogs + MusicBrainz+Wikipedia | 56 |
 | Wikipedia + Discogs | 55 |
 | Discogs + MusicBrainz | 37 |
-| Ręczna poprawka (opis niżej) | 32 |
+| Ręczna poprawka (opis niżej) | 36 |
 | Spotify + Discogs | 19 |
 | MusicBrainz+Wikipedia | 8 |
 | MusicBrainz+Wikipedia + Spotify + Discogs | 5 |
 | MusicBrainz+Wikipedia + Discogs | 4 |
 | MusicBrainz+Wikipedia + Spotify | 3 |
+| Discogs – album „Niemen Enigmatic”, utwór na trackliście; zamiast coveru Ewy Bem & Bemibek | 1 |
+| Discogs – „Skaldowie i Łucja Prus – W żółtych płomieniach liści”; zamiast coveru The Dumplings | 1 |
+| Discogs – singiel „Plamy na słońcu”; zamiast wersji Kazik Na Żywo | 1 |
+| Discogs – „Przeboje polskiego rocka – Nie będę Julią”, utwór na trackliście; zamiast nagrania Agnieszki Chylińskiej z 2019 r. | 1 |
 
 ## Rozbieżności Discogs ↔ wcześniejsza weryfikacja (MusicBrainz + Wikipedia)
 
@@ -90,6 +94,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Niemen | Sen O Warszawie | 1966 | Discogs – EP „Niemen” (1966, Polska), utwór na trackliście |
 | Republika | Biała Flaga | 1991 | Discogs – najwcześniejsze wydanie płytowe (album „1991”); Wikipedia: nagranie radiowe 1982, MusicBrainz: demo 1981 |
 | Budka Suflera | Jolka Jolka pamiętasz | 1983 | Discogs – „Various - TOP '83 "Klub Razem"” (1983), utwór „Jolka, Jolka Pamiętasz” na trackliście; 1984 to składanka „1974 - 1984” |
+| Anna Jantar | Nic nie może wiecznie trwać | 1979 | Discogs – „Plebiscyt Studia Gama 5” (1979), utwór na trackliście |
 | AC/DC | T.N.T. | 1975 | Discogs (ponowne sprawdzenie) – AC/DC - T.N.T. / „T.N.T.” |
 | Thelma Houston | Don't Leave Me This Way | 1976 | Discogs – album „Any Way You Like It” (1976, USA), utwór na trackliście |
 | Sister Sledge | He's the Greatest Dancer | 1978 | Discogs (ponowne sprawdzenie) – Sister Sledge - He's The Greatest Dancer / We Are Family / „He's The Greatest Dancer” |
@@ -110,19 +115,20 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Guns N' Roses | Don't Cry | 1991 | Discogs (ponowne sprawdzenie) – album „Use Your Illusion I” (1991); wpis z 1986 r. to kaseta demo (zgłoszenie użytkownika) – Guns 'N' Roses* - Guns 'N' Roses / „Don't Cry” |
 | Ray Wilson & Stiltskin | Inside | 1994 | Discogs – singiel Stiltskin „Inside” (1994); Ray Wilson był wokalistą Stiltskin |
 | Tina Turner | What's Love Got to Do with It | 1984 | Discogs – album „Private Dancer” (1984), utwór na trackliście; wynik automatyczny (box set 1990) był błędny |
+| Jacek Stachursky | Z Kazdym Twym Oddechem | 2006 | Discogs – singiel „Stachursky – Z każdym twym oddechem” (2006) |
 | Anna Wyszkoni | Z Ciszą Pośród Czterech Ścian | 2009 | MusicBrainz – oficjalny album „Pan i pani” (29.06.2009); 2021 to data reedycji w Spotify (zgłoszenie użytkownika) |
 | Anna Jurksztowicz | Hej, man! | 1987 | Discogs (ponowne sprawdzenie) – Anna Jurksztowicz - Dziękuję, Nie Tańczę / „Hej, Man!” |
 | Elżbieta Mielczarek | Poczekalnia PKP | 1982 | Discogs – singiel „Blues” (1982): „Poczekalnia PKP” / „Trouble in Mind” |
+| Zespół Dziecięcy Fasolki | Mydło lubi zabawę | 1988 | Discogs – „Fasolki – Fasola 1. Przeboje z telewizyjnego teatrzyku piosenki dla dzieci” (1988) |
 | ABC & Halina Frackowiak | Napisz proszę | 1969 | Discogs – singiel „Grupa ABC Andrzeja Nebeskiego – Napisz proszę” (1969); 2021 to reedycja w Spotify |
 | Kabaret Starszych Panow | Herbatka | 1970 | Discogs – „Various, Kabaret Starszych Panów - Wizyta Starszych Panów” (1970), utwór „Herbatka” na trackliście; 1999 to składanka „Złote Przeboje” |
 | Kalina Jedrusik | Bo we mnie jest seks | 1992 | Discogs (ponowne sprawdzenie) – Kalina Jędrusik - Kalinowe Serce / „Bo We Mnie Jest Sex ” |
-| Nosowska | Na Całych Jeziorach Ty | 2008 | Discogs (ponowne sprawdzenie) – Nosowska* - Osiecka / „Na Całych Jeziorach Ty” |
 | Nosowska | Kto? | 2011 | Discogs (ponowne sprawdzenie) – Nosowska* - 8 / „Kto?” |
 | Katarzyna Sobczyk | Mały książę | 1968 | Discogs – album „Zakochani są sami na świecie” (1968), utwór „Mały książę” na trackliście |
 | Lady Pank | Tańcz głupia tańcz | 1983 | Discogs – „Various - Na Luzie” (1983), utwór „Tańcz Głupia Tańcz” na trackliście; 1990 to składanka „The Best Of” |
 | Madame | Sybilla (Może własnie Sybilla) | 1985 | Wikipedia – artykuł „Może właśnie Sybilla” (1985); 2001 to późniejsze wydanie |
-| Nosowska | Uciekaj, Moje Serce | 2008 | Discogs (ponowne sprawdzenie) – Nosowska* - Osiecka / „Uciekaj, Moje Serce” |
 | Myslovitz | The Iris Sleeps Under the Snow | 2001 | Discogs – „Ścianka - ...Only Your Bus Doesn't Stop Here EP” (2001), utwór „The Iris Sleeps Under The Snow - Myslovitz Version” na trackliście; 2003 to składanka „The Best Of” |
+| Teresa Tutinas | Na Całych Jeziorach Ty | 1966 | Discogs – „Piosenki Agnieszki Osieckiej” (1966), wykonanie Teresy Tutinas |
 | Tommy Edwards | It's All in the Game | 1958 | Discogs – singiel „It’s All in the Game / Please Love Me Forever” (1958); przebój to nagranie z 1958 r. (pierwsza wersja z 1951 r. to inne nagranie), 2012 to składanka |
 
 ## Usunięte duplikaty
@@ -153,6 +159,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Janieck Devy – Reality | Lost Frequencies & Janieck Devy – Reality |
 | Jasmine Thompson – Ain't Nobody (Loves Me Better) | felix jaehn & Jasmine Thompson – Ain't Nobody (Loves Me Better) |
 | Silk Sonic & Bruno Mars – Leave the Door Open | Bruno Mars & Anderson .Paak – Leave The Door Open |
+| Baranovski – Czułe miejsce | Wojciech Baranowski – Czułe miejsce |
+| Baranovski – Lubię być z nią | Wojciech Baranowski – Lubię być z nią |
 | Edyta Geppert – Jaka róża taki czerń | Edyta Geppert – Jaka Róża Taki Cierń |
 | Kool & The Gang – Celebration | Kool & the Gang – Celebration |
 | Kat & Roman Kostrzewski – Łza dla cieniów minionych | KAT – Łza dla cieniów minionych |
@@ -165,13 +173,53 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 
 | Wykonawca | Tytuł |
 |---|---|
+| Jary Oddział Zamknięty | Ten Wasz Swiat |
+| Kazik Na Żywo | Plamy na słońcu |
+| Męskie Granie Orkiestra & Daria Zawiałow | Płoną góry, płoną lasy |
+| Bitamina | Niech no tylko zakwitną jabłonie |
+| Felicjan Andrzejczak | Noc komety |
+| Artur Rojek | Chciałbym umrzeć z miłości |
+| Agnieszka Chylińska | Kiedy powiem sobie dość |
+| Felicjan Andrzejczak | Jolka, jolka pamiętasz |
 | Maciek Czemplik & Martyna Kasprzycka | Bieszczadzkie anioły |
+| Maciek Czemplik & Aneta Szymczyk | Czarny Blues O Czwartej Nad Ranem |
+| Krzysztof Zalewski | Dziwny jest ten świat |
+| Stanisław Soyka | Dziwny Jest Ten Swiat |
+| Grzegorz Szczepaniak & ABC | Asfaltowe Łąki |
+| Felicjan Andrzejczak | Czas ołowiu |
+| Artur Rojek | Długość dźwięku samotności |
 | Magic Finger Project | Equinoxe Part Iv |
 | Movie Sounds Unlimited | The World Is Not Enough |
 | New Tribute Kings | Barcelona Originally Performed By Freddie Mercury & Montserrat Caballe |
 | Studio Sunset | Sex Bomb - Tom Jones (Tribute) |
 | Tohma Nitoube | Falling -Twin Peaks Theme- |
+| Natalia Zastępa | Nie Żałuję |
 | Marcin Klimczak | Aicha |
+| Męskie Granie Orkiestra & Krzysztof Zalewski | Obracam W Palcach Złoty Pieniądz |
+| Zbigniew Preisner & Andrzej Sikorowski | Wielka woda |
+| Kwiat Jabłoni & Kasia Lins | Jutro możemy być szczęśliwi |
+| Męskie Granie Orkiestra & Błażej Król | Byłaś serca biciem |
+| Tribute to Alibabki & Dymoll i Mucha | Grajmy sobie w zielone |
+| Katarzyn Gӓrtner & Katarzyna Zawada | Tańczące Eurydyki |
+| Męskie Granie Orkiestra & Dawid Podsiadło | Nic Nie Może Przecież Wiecznie Trwać |
+| Ewa Bem & Bemibek | Sprzedaj mnie wiatrowi |
+| The Dumplings | Ach nie mnie jednej |
+| Michał Bajor | Och, Zycie Kocham Cie Nad Zycie |
+| Nula Stankiewicz | W moim magicznym domu |
+| Dorota Lulka & Paweł A. Nowak | Ballada jarzynowa |
+| Nosowska | Na Całych Jeziorach Ty |
+| Kuba Badach | Byłaś serca biciem |
+| Krzysztof Zalewski & Natalia Przybysz | Romanca Cherubina |
+| Paweł Orkisz | Pomarańcze i mandarynki |
+| Bianka Jackowska & Three Times Four | W Życiu Trzeba Zawsze Wolnym Być |
+| Sylwia Drabik | Łatwopalni |
+| Dorota Osinska | Remedium (Wsiąść do pociągu) |
+| Nosowska | Uciekaj, Moje Serce |
+| Agnieszka Chylińska | Koła czasu |
+| Męskie Granie Orkiestra & Daria Zawiałow | Ten wasz świat |
+| Jary Oddział Zamknięty | Twój Każdy Krok |
+| Strachy Na Lachy | Co się stało z Magdą K.? |
+| Irena | Aleja Gwiazd |
 
 ## Pominięte – brak daty w jakimkolwiek źródle
 
@@ -347,9 +395,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Aespa & G-Dragon | WDA (Whole Different Animal) | 2026 | Discogs + Wikipedia | 2026 | – | – | KR |
 | Afromental | Radio Song | 2009 | Spotify + MusicBrainz | – | 2009 | 2009 | PL |
 | After Blues | Zobacz jak Pięknie | 2008 | Discogs (singiel) | 2013 | – | 2013 | PL |
-| Agnieszka Chylińska | Kiedy powiem sobie dość | 2019 | Discogs + Spotify | 2019 | – | 2019 | PL |
 | Agnieszka Chylińska | Kiedyś do Ciebie wrócę | 2022 | Discogs + Spotify | 2022 | – | 2022 | PL |
-| Agnieszka Chylińska | Koła czasu | 2019 | Discogs + Spotify | 2019 | – | 2019 | PL |
 | Agnieszka Chylińska | Królowa łez | 2016 | Discogs + Spotify | 2016 | – | 2016 | PL |
 | Agnieszka Chylińska | Nie mogę Cię zapomnieć | 2009 | Discogs + Spotify | 2009 | – | 2009 | PL |
 | Agnieszka Chylińska | Niebo | 2009 | Discogs | 2009 | – | – | PL |
@@ -483,7 +529,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Anna German & Marta Majek | Człowieczy Los | 1970 | Discogs | 1983 | – | 2021 | PL |
 | Anna Jantar | Moje jedyne marzenie | 1980 | Discogs + Spotify | 1980 | – | 1980 | PL |
 | Anna Jantar | Najtrudniejszy pierwszy krok | 1973 | Discogs + MusicBrainz | 1973 | 1973 | 1974 | PL |
-| Anna Jantar | Nic nie może wiecznie trwać | 1980 | Discogs + Spotify | 1980 | – | 1980 | PL |
+| Anna Jantar | Nic nie może wiecznie trwać | 1979 | Discogs – „Plebiscyt Studia Gama 5” (1979), utwór na trackliście | 1980 | – | 1980 | PL |
 | Anna Jantar | Radość najpiękniejszych lat | 1977 | Discogs + Spotify | 1977 | – | 1977 | PL |
 | Anna Jantar | Staruszek świat | 1975 | Discogs (singiel) | 1976 | – | 2016 | PL |
 | Anna Jantar | Tyle słońca w całym mieście | 1974 | Discogs + MusicBrainz+Wikipedia + Spotify | 1974 | 1974 | 1974 | PL |
@@ -565,9 +611,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Artur Gadowski | Szczęśliwego Nowego Jorku | 1998 | Wikipedia | – | – | – | PL |
 | Artur Rojek | Beksa | 2014 | Discogs + Spotify | 2014 | – | 2014 | PL |
 | Artur Rojek | Bez końca | 2020 | Discogs + Spotify | 2020 | – | 2020 | PL |
-| Artur Rojek | Chciałbym umrzeć z miłości | 2017 | Spotify + MusicBrainz | 2025 | 2017 | 2017 | PL |
 | Artur Rojek | Czas, który pozostał | 2014 | Discogs + Wikipedia | 2014 | – | – | PL |
-| Artur Rojek | Długość dźwięku samotności | 2017 | Spotify + MusicBrainz | – | 2017 | 2017 | PL |
 | Artur Rojek | Mirafiori | 2026 | Discogs + Spotify | 2026 | – | 2026 | PL |
 | Artur Rojek | Prosta rzecz | 2005 | Wikipedia | – | – | – | PL |
 | Artur Rojek | Syreny | 2014 | Discogs + Spotify | 2014 | – | 2014 | PL |
@@ -639,8 +683,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Band of Horses | The Funeral | 2006 | Spotify + MusicBrainz | – | 2006 | 2006 | US |
 | Banda i Wanda | Hi-Fi / Nie będę Julią | 1983 | Wikipedia | – | – | – | PL |
 | Bandolier Kings | Zoom Club | 2019 | Spotify + MusicBrainz | 2020 | 2019 | 2019 | SE |
-| Baranovski | Czułe miejsce | 2019 | Discogs | 2019 | – | – | PL |
-| Baranovski | Lubię być z nią | 2021 | Discogs | 2021 | – | – | PL |
 | Barbara Wrońska | Nie czekaj | 2018 | Spotify + MusicBrainz | – | 2018 | 2018 | PL |
 | Barbra Streisand | Evergreen | 1976 | Discogs + Spotify | 1976 | – | 1976 | US |
 | Barbra Streisand | People | 1964 | Discogs | 1964 | – | – | US |
@@ -708,7 +750,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Beyoncé | Single Ladies (Put a Ring on It) | 2008 | Discogs | 2008 | – | – | US |
 | Beyoncé | TEXAS HOLD 'EM | 2024 | Discogs + Spotify | 2024 | – | 2024 | US |
 | Beyoncé & Sean Paul | Baby Boy | 2003 | Discogs | 2003 | – | – | US |
-| Bianka Jackowska & Three Times Four | W Życiu Trzeba Zawsze Wolnym Być | 2016 | Spotify | – | – | 2016 | ? |
 | Bibobit & Anna Rusowicz | Kropla | 2021 | Spotify | – | – | 2021 | PL |
 | Bielizna | Stefan | 1988 | Discogs | 1988 | – | 2016 | PL |
 | Biesiada | Zielone wzgórza nad Solina | 2011 | Spotify | – | – | 2011 | ? |
@@ -761,7 +802,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Billy Vaughn | Sail Along, Silv'ry Moon | 1958 | MusicBrainz | – | 1958 | – | US |
 | Bing Crosby & Ken Darby Singers | White Christmas | 1942 | Discogs + Spotify | 1942 | – | 1942 | US |
 | Bitamina | Dom | 2017 | Discogs + Spotify | 2017 | – | 2017 | PL |
-| Bitamina | Niech no tylko zakwitną jabłonie | 2021 | Spotify | – | – | 2021 | PL |
 | Bitamina | Pytanie do Niej | 2017 | Discogs + Spotify | 2017 | – | 2017 | PL |
 | Björk | All Is Full Of Love | 1997 | Discogs | 1997 | – | 2002 | IS |
 | Björk | Human Behaviour | 1993 | Discogs + Spotify | 1993 | – | 1993 | IS |
@@ -1202,6 +1242,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Czesław Mozil | Lubię mówić z Tobą | 2016 | Spotify | – | – | 2016 | PL |
 | Czesław Niemen | Dziwny jest ten świat | 1967 | Discogs + MusicBrainz+Wikipedia | 1967 | 1980 | – | PL |
 | Czesław Niemen | Sen srebrny Salomei | 1978 | Discogs + Wikipedia | 1978 | – | – | PL |
+| Czesław Niemen | Sprzedaj mnie wiatrowi | 1971 | Discogs – album „Niemen Enigmatic” (1971), utwór na trackliście; zamiast coveru Ewy Bem & Bemibek | 1971 | – | – | PL |
 | Czesław Śpiewa | Baczyński – Pieśń o szczęściu | 2013 | Wikipedia | – | – | – | PL |
 | Czesław Śpiewa | Maszynka do świerkania | 2008 | Spotify | 2011 | – | 2008 | PL |
 | Czesław Śpiewa | W sam raz | 2010 | Discogs + Spotify | 2010 | – | 2010 | PL |
@@ -1467,10 +1508,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Donna Summer | I Feel Love | 1977 | Discogs + MusicBrainz+Wikipedia + Spotify | 1977 | 1977 | 1977 | US |
 | Donna Summer | MacArthur Park | 1978 | Discogs | 1978 | 1978 | 1979 | US |
 | Doris Day | Que Sera, Sera (Whatever Will Be, Will Be) | 1956 | Discogs | 1956 | 1987 | – | US |
-| Dorota Lulka & Paweł A. Nowak | Ballada jarzynowa | 2016 | Spotify | – | – | 2016 | ? |
 | Dorota Miskiewicz | Nuce, gwizdze sobie | 2008 | Discogs + Spotify | 2008 | – | 2008 | PL |
 | Dorota Miskiewicz | Poza Czasem | 2005 | Discogs + Spotify | 2005 | – | 2005 | PL |
-| Dorota Osinska | Remedium (Wsiąść do pociągu) | 2013 | Spotify | – | – | 2013 | PL |
 | Dotan | Numb | 2020 | Discogs | 2020 | – | – | NL |
 | Dove Cameron | Boyfriend | 2022 | Discogs + Spotify | 2022 | – | 2022 | US |
 | Doves | There Goes The Fear | 2002 | Discogs + Spotify | 2002 | – | 2002 | GB |
@@ -1757,7 +1796,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Ewa Bem | Serce to jest muzyk | 2001 | MusicBrainz (Spotify: 2014) | – | 2001 | 2014 | PL |
 | Ewa Bem | To cześć | 2007 | Discogs | 2007 | – | 2021 | PL |
 | Ewa Bem | Żyj kolorowo | 1993 | Discogs | 1993 | – | 2014 | PL |
-| Ewa Bem & Bemibek | Sprzedaj mnie wiatrowi | 2015 | Spotify | 2021 | – | 2015 | PL |
 | Ewa Demarczyk | Wiersze wojenne | 1967 | Wikipedia | 1982 | – | – | PL |
 | Ewa Farna | Ciało | 2021 | Spotify + MusicBrainz | 2022 | 2021 | 2021 | PL |
 | Ewa Farna | Cicho | 2009 | Discogs + MusicBrainz+Wikipedia + Spotify | 2009 | 2009 | 2009 | PL |
@@ -1805,9 +1843,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Feel | Jak anioła głos | 2007 | Discogs + Spotify | 2007 | – | 2007 | PL |
 | Feel | No pokaż na co cię stać | 2007 | Discogs + Spotify | 2007 | – | 2007 | PL |
 | Feel & Lanberry | Gotowi na wszystko | 2017 | Discogs (singiel) | – | 2018 | – | PL |
-| Felicjan Andrzejczak | Czas ołowiu | 2013 | Spotify | – | – | 2013 | PL |
-| Felicjan Andrzejczak | Jolka, jolka pamiętasz | 2013 | Spotify (MusicBrainz: 2014) | – | 2014 | 2013 | PL |
-| Felicjan Andrzejczak | Noc komety | 2013 | Spotify | – | – | 2013 | PL |
 | felix jaehn & Jasmine Thompson | Ain't Nobody (Loves Me Better) | 2015 | MusicBrainz – oficjalny singiel „Ain’t Nobody (Loves Me Better)” (2015); Discogs zna tylko album „I” (2018) | 2018 | – | 2018 | DE |
 | Felix Jaehn & Shouse | Walk with Me | 2024 | MusicBrainz | – | 2024 | – | DE |
 | Felix Jaehn & Sophie Ellis-Bextor | Ready for Your Love | 2024 | Discogs | 2024 | – | – | DE |
@@ -2072,7 +2107,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Grzegorz Hyży & Tabb | Pusty dom | 2014 | Spotify + MusicBrainz | – | 2014 | 2014 | PL |
 | Grzegorz Hyży & Tabb | Wstaje | 2014 | Spotify + MusicBrainz | – | 2014 | 2014 | PL |
 | Grzegorz Markowski | Ballada 07 | 2015 | Spotify | – | – | 2015 | PL |
-| Grzegorz Szczepaniak & ABC | Asfaltowe Łąki | 2015 | Spotify | – | – | 2015 | PL |
 | Grzegorz Turnau | Bracka | 1995 | Discogs + Spotify | 1995 | – | 1995 | PL |
 | Grzegorz Turnau | Cichosza | 1993 | Discogs + Spotify | 1993 | – | 1993 | PL |
 | Grzegorz Turnau | Czas Blekitu | 2005 | Discogs + Spotify | 2005 | – | 2005 | PL |
@@ -2215,7 +2249,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Ira | Nie zatrzymam się | 1991 | Discogs + Wikipedia | 1991 | – | – | BR |
 | IRA | Ona Jest Ze Snu | 2005 | MusicBrainz (Spotify: 2014) | – | 2005 | 2014 | PL |
 | IRA | Wiara | 1993 | Discogs + Spotify | 1993 | – | 1993 | PL |
-| Irena | Aleja Gwiazd | 2012 | Discogs + Spotify | 2012 | – | 2012 | PL |
 | Irena Jarocka | Gondolierzy znad Wisły | 1975 | Discogs | 1975 | – | 1976 | PL |
 | Irena Jarocka | Motylem jestem | 1974 | Discogs + Spotify | 1974 | – | 1974 | PL |
 | Irena Jarocka | Odpływają Kawiarenki | 1976 | Discogs + Spotify | 1995 | – | 1976 | PL |
@@ -2249,7 +2282,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Jacek Skubikowski | Dobre miejsce dla naiwnych | 1984 | Discogs | 1984 | – | 2012 | PL |
 | Jacek Skubikowski | Jedyny hotel w mieście | 1983 | Discogs (singiel) | 1984 | – | 2012 | PL |
 | Jacek Stachursky | Na Falochronie | 2008 | Spotify | – | – | 2008 | PL |
-| Jacek Stachursky | Z Kazdym Twym Oddechem | 2011 | Spotify | – | – | 2011 | PL |
+| Jacek Stachursky | Z Kazdym Twym Oddechem | 2006 | Discogs – singiel „Stachursky – Z każdym twym oddechem” (2006) | – | – | 2011 | PL |
 | Jacek Stachursky | Zostanmy Razem | 2010 | Spotify | – | – | 2010 | PL |
 | Jack Harlow | First Class | 2022 | Discogs | 2022 | – | – | US |
 | Jack Harlow | Lovin On Me | 2023 | Discogs + Spotify | 2023 | – | 2023 | US |
@@ -2302,8 +2335,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Jaromir Nohavica | Minulost | 2012 | Discogs + Spotify | 2012 | – | 2012 | CZ |
 | Jaromír Nohavica | Jiné to nebude | 2012 | Discogs | 2012 | – | – | CZ |
 | Jary Oddział Zamknięty | Obudź Się | 2016 | Spotify | – | – | 2016 | PL |
-| Jary Oddział Zamknięty | Ten Wasz Swiat | 2016 | Spotify | – | – | 2016 | PL |
-| Jary Oddział Zamknięty | Twój Każdy Krok | 2016 | Spotify | – | – | 2016 | PL |
 | Jasiek Piwowarczyk | halo Houston | 2026 | Spotify | – | – | 2026 | PL |
 | Jasiek Piwowarczyk | obłoki | 2026 | Spotify | – | – | 2026 | PL |
 | Jason Derulo | In My Head | 2009 | Discogs (singiel) | 2010 | – | – | US |
@@ -2595,7 +2626,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kat | Ostatni tabor / Noce Szatana | 1985 | Discogs + Wikipedia | 1985 | – | – | PL |
 | Kat | Time of Revenge / Czas zemsty | 1986 | Wikipedia | – | – | – | PL |
 | KAT | Łza dla cieniów minionych | 1992 | Discogs + Spotify | 1992 | – | 1992 | PL |
-| Katarzyn Gӓrtner & Katarzyna Zawada | Tańczące Eurydyki | 2021 | Spotify | – | – | 2021 | ? |
 | Katarzyna Groniec | Będę z Tobą | 2007 | Spotify + MusicBrainz | – | 2007 | 2007 | PL |
 | Katarzyna Groniec | Dzięki Za Miłość | 2000 | Discogs | 2000 | – | 2002 | PL |
 | Katarzyna Sobczyk | Mały książę | 1968 | Discogs – album „Zakochani są sami na świecie” (1968), utwór „Mały książę” na trackliście | 1968 | 1991 | 2015 | PL |
@@ -2659,7 +2689,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kazik & Edyta Bartosiewicz | Cztery pokoje | 2000 | Spotify + Discogs (singiel) + MusicBrainz | 2001 | 2000 | 2000 | PL |
 | Kazik & Kwartet ProForma | Gdybym miał kogoś | 2017 | Discogs + Spotify | 2017 | – | 2017 | ? |
 | Kazik Na Żywo | Celina | 1994 | Discogs + Spotify | 1994 | – | 1994 | PL |
-| Kazik Na Żywo | Plamy na słońcu | 2011 | Discogs + Spotify | 2011 | – | 2011 | PL |
 | Kazik Na Żywo | Spalam się | 1994 | Discogs + Spotify | 1994 | – | 1994 | PL |
 | Kazik na Żywo | W południe | 1999 | Discogs + Wikipedia | 1999 | – | – | PL |
 | Kazik Staszewski | 100 000 000 | 1993 | Wikipedia | – | – | – | PL |
@@ -2741,6 +2770,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Klaus Mitffoch | Strzeż się tych miejsc | 1984 | Discogs | 1984 | – | 2005 | PL |
 | Klaus Mitffoch & Lech Janerka | Konstytucje | 2005 | Spotify | – | – | 2005 | PL |
 | Klincz | Latarnik | 1985 | Discogs (singiel) | 1999 | – | 2013 | ? |
+| Klincz | Plamy na słońcu | 1984 | Discogs – singiel „Plamy na słońcu” (1984); zamiast wersji Kazik Na Żywo | 1984 | – | – | PL |
 | Klingande | Jubel | 2013 | Discogs | 2013 | – | – | FR |
 | Kobranocka | Hipisówka | 1992 | Discogs | 1992 | – | 2007 | PL |
 | Kobranocka | I nikomu nie wolno się z tego śmiać | 1988 | Discogs | 1988 | – | 2003 | PL |
@@ -2820,7 +2850,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Krzysztof Krawczyk | Zycie jak wino | 2007 | Spotify (MusicBrainz: 2012) | – | 2012 | 2007 | PL |
 | Krzysztof Krawczyk & Edyta Bartosiewicz | Trudno Tak (Razem Być Nam Ze Sobą) | 2004 | Discogs | 2004 | – | 2016 | PL |
 | Krzysztof Krawczyk & Goran Bregović | Mój przyjacielu | 1999 | MusicBrainz+Wikipedia | 2001 | 1999 | 2019 | PL |
-| Krzysztof Zalewski | Dziwny jest ten świat | 2018 | Discogs + Spotify | 2018 | – | 2018 | PL |
 | Krzysztof Zalewski | Jaśniej | 2013 | Discogs + Spotify | 2013 | – | 2013 | PL |
 | Krzysztof Zalewski | Jednakowi | 2026 | Spotify | – | – | 2026 | PL |
 | Krzysztof Zalewski | Kurier | 2019 | Spotify (MusicBrainz: 2021) | 2021 | 2021 | 2019 | PL |
@@ -2828,11 +2857,9 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Krzysztof Zalewski | Polsko | 2016 | Discogs + Spotify | 2016 | – | 2016 | PL |
 | Krzysztof Zalewski | Ptaki | 2021 | Discogs + Spotify | 2021 | – | 2021 | PL |
 | Krzysztof Zalewski | Zabawa | 2020 | Discogs + Spotify | 2020 | – | 2020 | PL |
-| Krzysztof Zalewski & Natalia Przybysz | Romanca Cherubina | 2021 | Discogs + Spotify | 2021 | – | 2021 | PL |
 | KSU | Moje Bieszczady | 1994 | Discogs | 1994 | – | 2005 | PL |
 | KSU | Pod Prąd | 1989 | Discogs (singiel) | 1993 | – | 1998 | PL |
 | KT Tunstall | Suddenly I See | 2004 | Discogs | 2004 | – | 2005 | GB |
-| Kuba Badach | Byłaś serca biciem | 2009 | Discogs + Spotify | 2009 | – | 2009 | PL |
 | Kuba Badach | Liczy się tylko to | 2021 | Spotify (MusicBrainz: 2022) | – | 2022 | 2021 | PL |
 | Kuba Badach | Obecny | 2009 | Wikipedia | – | – | – | PL |
 | Kuba Badach | Wracam do siebie | 2017 | Discogs + Spotify | 2017 | – | 2017 | PL |
@@ -2875,7 +2902,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Kwiat Jabłoni | Mogło być nic | 2020 | Spotify (MusicBrainz: 2021) | 2021 | 2021 | 2020 | PL |
 | Kwiat Jabłoni | Od nowa | 2023 | Discogs | 2023 | – | – | PL |
 | Kwiat Jabłoni | Wodymidaj | 2019 | Discogs + Spotify | 2019 | – | 2019 | PL |
-| Kwiat Jabłoni & Kasia Lins | Jutro możemy być szczęśliwi | 2022 | Spotify + MusicBrainz | – | 2022 | 2022 | PL |
 | Kygo & Conrad Sewell | Firestone | 2014 | Discogs (singiel) | 2015 | – | – | NO |
 | Kygo & Parson James | Stole the Show | 2014 | Discogs (singiel) | 2015 | – | 2016 | NO |
 | Kygo & Tina Turner | What's Love Got to Do with It | 2020 | MusicBrainz | – | 2020 | – | NO |
@@ -3174,7 +3200,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Maciej Malenczuk z zespolem Psychodancing | Dawna dziewczyno | 2010 | Spotify | – | – | 2010 | ? |
 | Maciej Maleńczuk | Ach Proszę Pani | 1998 | Discogs | 1998 | – | 2016 | PL |
 | Maciej Maleńczuk & Wojciech Waglewski | Koledzy | 2007 | Discogs + Spotify | 2007 | – | 2007 | PL |
-| Maciek Czemplik & Aneta Szymczyk | Czarny Blues O Czwartej Nad Ranem | 2017 | Spotify | – | – | 2017 | ? |
 | Maciek Czemplik & Aneta Szymczyk | Sen Na Pogodne Dni | 2017 | Spotify | – | – | 2017 | ? |
 | Maciek Czemplik & Natalia Podwin | Małe szczęścia | 2020 | Spotify | – | – | 2020 | ? |
 | Macklemore & Ryan Lewis | Can't Hold Us | 2011 | MusicBrainz (Spotify: 2012) | – | 2011 | 2012 | US |
@@ -3477,7 +3502,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Michael Schulte & R3hab | Waterfall | 2023 | Discogs | 2023 | – | – | DE |
 | Michael Sembello | Maniac | 1983 | Discogs | 1983 | – | 2019 | US |
 | Michał Bajor | Nie chcę więcej | 1989 | Discogs | 1989 | – | 1995 | PL |
-| Michał Bajor | Och, Zycie Kocham Cie Nad Zycie | 2015 | Discogs + Spotify | 2015 | – | 2015 | PL |
 | Michał Bajor | Ogrzej mnie | 1989 | Discogs | 1989 | – | 1990 | PL |
 | Michał Lorenc | Taniec Eleny | 1997 | Discogs | 1997 | – | 2017 | PL |
 | Michał Szczygieł | Adrenalina | 2022 | MusicBrainz | – | 2022 | – | PL |
@@ -3637,18 +3661,13 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Mötley Crüe | Shout at the Devil | 1983 | Discogs + Spotify | 1983 | – | 1983 | US |
 | Mötley Crüe | Wild Side | 1987 | Discogs + Spotify | 1987 | – | 1987 | US |
 | Męskie Granie Orkiestra | Wspomnienie | 2019 | Spotify + MusicBrainz | – | 2019 | 2019 | PL |
-| Męskie Granie Orkiestra & Błażej Król | Byłaś serca biciem | 2020 | Spotify | – | – | 2020 | PL |
 | Męskie Granie Orkiestra & Daria Zawiałow | I Ciebie też, bardzo | 2021 | Discogs + Spotify | 2021 | – | 2021 | PL |
-| Męskie Granie Orkiestra & Daria Zawiałow | Płoną góry, płoną lasy | 2020 | Spotify | – | – | 2020 | PL |
-| Męskie Granie Orkiestra & Daria Zawiałow | Ten wasz świat | 2021 | Spotify + MusicBrainz | – | 2021 | 2021 | PL |
 | Męskie Granie Orkiestra & Daria Zawiałow | Świt | 2020 | Spotify + Discogs (singiel) + MusicBrainz | – | 2020 | 2020 | PL |
-| Męskie Granie Orkiestra & Dawid Podsiadło | Nic Nie Może Przecież Wiecznie Trwać | 2016 | Spotify | – | – | 2016 | PL |
 | Męskie Granie Orkiestra & Dawid Podsiadło | Początek | 2018 | Spotify + MusicBrainz | – | 2018 | 2018 | PL |
 | Męskie Granie Orkiestra & Dawid Podsiadło | Wataha | 2016 | Spotify + MusicBrainz | – | 2016 | 2016 | PL |
 | Męskie Granie Orkiestra & Igo | Supermoce | 2023 | Discogs + Spotify | 2023 | – | 2023 | PL |
 | Męskie Granie Orkiestra & Igor Herbut | Nareszcie | 2026 | Spotify + MusicBrainz | – | 2026 | 2026 | PL |
 | Męskie Granie Orkiestra & Igor Herbut | Tańczę | 2026 | Spotify + MusicBrainz | – | 2026 | 2026 | PL |
-| Męskie Granie Orkiestra & Krzysztof Zalewski | Obracam W Palcach Złoty Pieniądz | 2015 | Spotify + MusicBrainz | 2022 | 2015 | 2015 | PL |
 | Męskie Granie Orkiestra & Nosowska | Sobie i Wam | 2019 | Spotify + MusicBrainz | – | 2019 | 2019 | PL |
 | Męskie Granie Orkiestra & Obywatel G.C. 2.0 | Ciało | 2017 | Spotify | – | – | 2017 | PL |
 | Męskie Granie Orkiestra & Smolik | Elektryczny | 2014 | Spotify + MusicBrainz | – | 2014 | 2014 | PL |
@@ -3685,7 +3704,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Natalia Przybysz | Nazywam się niebo | 2014 | Discogs + Spotify | 2014 | – | 2014 | PL |
 | Natalia Przybysz | Ogień | 2019 | Discogs + Spotify | 2019 | – | 2019 | PL |
 | Natalia Szroeder & Vito Bambino | Późne godziny | 2021 | Discogs | 2021 | – | 2022 | PL |
-| Natalia Zastępa | Nie Żałuję | 2019 | Spotify (MusicBrainz: 2021) | – | 2021 | 2019 | PL |
 | Natalie Imbruglia | Torn | 1997 | Discogs + Spotify | 1997 | – | 1997 | AU |
 | Natasha Bedingfield | These Words | 2004 | Discogs + Wikipedia | 2004 | – | – | GB |
 | Natasha Bedingfield | Unwritten | 2004 | Discogs + Spotify | 2004 | – | 2004 | GB |
@@ -3786,16 +3804,14 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Nosowska | Jeśli Wiesz Co Chcę Powiedzieć | 1996 | Discogs + Spotify | 1996 | – | 1996 | PL |
 | Nosowska | Kto? | 2011 | Discogs (ponowne sprawdzenie) | 2011 | 2011 | 2016 | PL |
 | Nosowska | Można | 2024 | Discogs + Wikipedia | 2024 | – | – | PL |
-| Nosowska | Na Całych Jeziorach Ty | 2008 | Discogs (ponowne sprawdzenie) | 2008 | 2008 | 2012 | PL |
 | Nosowska | O lesie | 2011 | Discogs + Wikipedia | 2011 | – | – | PL |
-| Nosowska | Uciekaj, Moje Serce | 2008 | Discogs (ponowne sprawdzenie) | 2008 | 2008 | 2012 | PL |
 | Nowator & LEREK | Moja Panienka | 2019 | Spotify | – | – | 2019 | PL |
-| Nula Stankiewicz | W moim magicznym domu | 2022 | Spotify | – | – | 2022 | ? |
 | Numer Raz & Pyskaty | A pamiętasz jak? | 2011 | Wikipedia | – | – | – | PL |
 | O$ka | Bezele Kochanie | 2017 | Spotify + MusicBrainz | – | 2017 | 2017 | PL |
 | O-Zone | Dragostea din tei | 2003 | Discogs | 2003 | – | 2004 | MD |
 | O.N.A. | Drzwi | 1995 | Discogs | 1995 | – | 2017 | PL |
 | O.N.A. | Kiedy powiem sobie dość | 1996 | Discogs + Spotify | 1996 | – | 1996 | PL |
+| O.N.A. | Koła czasu | 1994 | Discogs – „Przeboje polskiego rocka – Nie będę Julią” (1994), utwór na trackliście; zamiast nagrania Agnieszki Chylińskiej z 2019 r. | 1994 | – | – | PL |
 | O.N.A. | Wszystko to co ja | 2001 | Discogs | 2001 | – | – | PL |
 | O.S.T.R. | 1980 | 2008 | Discogs + Wikipedia | 2008 | – | – | PL |
 | O.S.T.R. | Ile jestem w stanie dać | 2001 | Discogs + Wikipedia | 2001 | – | – | PL |
@@ -3953,7 +3969,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Paweł Domagała | Popatrz na mnie | 2020 | Wikipedia | – | – | – | PL |
 | Paweł Domagała | Weź nie pytaj | 2018 | Discogs + Spotify | 2018 | – | 2018 | PL |
 | Paweł Domagała | Wystarczę ja | 2018 | Discogs | 2018 | – | – | PL |
-| Paweł Orkisz | Pomarańcze i mandarynki | 2011 | Spotify | – | – | 2011 | PL |
 | Peaches & Herb | Shake Your Groove Thing | 1978 | Discogs + Spotify | 1978 | – | 1978 | US |
 | Pearl Jam | Alive | 1991 | Discogs + Spotify | 1991 | – | 1991 | US |
 | Pearl Jam | Black | 1991 | Discogs + Spotify | 1991 | – | 1991 | US |
@@ -4612,6 +4627,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Skaldowie | Wszystko mi mówi, że mnie ktoś pokochał | 1968 | Discogs + Spotify | 1968 | – | 1968 | PL |
 | Skaldowie & Lucja Prus | W żółtych płomieniach liści | 1972 | Spotify + Discogs (singiel) | 1991 | 1998 | 1972 | PL |
 | Skaldowie & Stanislaw Wenglorz | Nie widzę ciebie w swych marzeniach | 2000 | Discogs | 2000 | – | 2016 | PL |
+| Skaldowie & Łucja Prus | Ach nie mnie jednej | 1972 | Discogs – „Skaldowie i Łucja Prus – W żółtych płomieniach liści” (1972); zamiast coveru The Dumplings | 1972 | – | – | PL |
 | Skeeter Davis | The End of the World | 1962 | Discogs | 1962 | – | 1994 | US |
 | Skid Row | 18 and Life | 1989 | Discogs + Spotify | 1989 | – | 1989 | US |
 | Skid Row | I Remember You | 1989 | Discogs + Spotify | 1989 | – | 1989 | US |
@@ -4689,7 +4705,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Stan Ridgway | Camouflage | 1986 | Discogs | 1986 | – | 1993 | US |
 | Stanisław Soyka | Cud niepamięci | 2002 | MusicBrainz (Spotify: 2016) | – | 2002 | 2016 | PL |
 | Stanisław Soyka | Czas nas uczy pogody | 2016 | Spotify | – | – | 2016 | PL |
-| Stanisław Soyka | Dziwny Jest Ten Swiat | 2012 | Spotify | – | – | 2012 | PL |
 | Stanisław Soyka | Kiedy jesteś taka bliska | 2016 | Spotify | – | – | 2016 | PL |
 | Stanisław Soyka | Tolerancja | 2016 | Spotify (MusicBrainz: 2023) | – | 2023 | 2016 | PL |
 | Stanisław Soyka & Janusz Iwanski "yanina" | Tolerancja / Na Miły Bóg | 1992 | Spotify | – | – | 1992 | PL |
@@ -4745,7 +4760,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Sting | Shape Of My Heart | 1993 | Discogs + Spotify | 1993 | – | 1993 | GB |
 | Sting & Cheb Mami | Desert Rose | 1999 | Discogs + Spotify | 1999 | – | 1999 | GB |
 | Stonewall Jackson | Waterloo | 1959 | Discogs | 1959 | – | – | US |
-| Strachy Na Lachy | Co się stało z Magdą K.? | 2005 | Discogs + Spotify | 2005 | – | 2005 | PL |
 | Strachy Na Lachy | Czarny chleb i czarna kawa | 2005 | Discogs + Spotify | 2005 | – | 2005 | PL |
 | Strachy Na Lachy | Dzień dobry, kocham Cię | 2005 | Discogs + Spotify | 2005 | – | 2005 | PL |
 | Strachy na Lachy | I can’t get no gratisfaction | 2013 | Wikipedia | – | – | – | PL |
@@ -4783,7 +4797,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Swiernalis & Piotr Rogucki | Ogrodnik | 2020 | Spotify | – | – | 2020 | PL |
 | Swietliki | Filandia | 2005 | Discogs + Spotify | 2005 | – | 2005 | PL |
 | Sylvester | You Make Me Feel (Mighty Real) | 1978 | Discogs + Spotify | 1978 | – | 1978 | US |
-| Sylwia Drabik | Łatwopalni | 2016 | Spotify | – | – | 2016 | ? |
 | Sylwia Grzeszczak | Flirt | 2013 | Discogs + Wikipedia | 2013 | – | – | PL |
 | Sylwia Grzeszczak | Księżniczka | 2013 | Discogs | 2013 | – | – | PL |
 | Sylwia Grzeszczak | MANGO | 2026 | Spotify + Discogs (singiel) | – | – | 2026 | PL |
@@ -4905,7 +4918,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Tennessee Ernie Ford | The Ballad of Davy Crockett | 1955 | Discogs (singiel) | 1979 | – | – | US |
 | Tercet Egzotyczny | Pamelo, żegnaj | 1966 | Discogs + Wikipedia | 1966 | – | – | PL |
 | Teresa Tutinas | Jak cię miły zatrzymać | 1968 | Spotify + Discogs (singiel) | 1995 | 1999 | 1968 | ? |
-| Teresa Tutinas | Na Całych Jeziorach Ty | 1995 | Discogs | 1995 | – | 2014 | ? |
+| Teresa Tutinas | Na Całych Jeziorach Ty | 1966 | Discogs – „Piosenki Agnieszki Osieckiej” (1966), wykonanie Teresy Tutinas | 1995 | – | 2014 | ? |
 | Terror Squad & Fat Joe | Lean Back | 2004 | Discogs | 2004 | – | – | US |
 | Terry Jacks | Seasons in the Sun | 1973 | Discogs | 1973 | – | – | CA |
 | Terry Stafford | Suspicion | 1964 | Discogs | 1964 | – | – | US |
@@ -5055,7 +5068,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | The Drifters | Save the Last Dance for Me | 1960 | Discogs | 1960 | – | – | US |
 | The Drifters | There Goes My Baby | 1959 | Discogs | 1959 | – | – | US |
 | The Drifters | Under the Boardwalk | 1964 | Discogs | 1964 | – | – | US |
-| The Dumplings | Ach nie mnie jednej | 2017 | Spotify (MusicBrainz: 2018) | 2018 | 2018 | 2017 | PL |
 | The Dumplings | Betonowy las | 2014 | Discogs + Spotify | 2014 | – | 2014 | PL |
 | The Dumplings | Kocham być z tobą | 2015 | Discogs + Spotify | 2015 | – | 2015 | PL |
 | The Dumplings | Raj | 2018 | Discogs + Spotify | 2018 | – | 2018 | PL |
@@ -5369,7 +5381,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Travis Scott | Sicko Mode | 2018 | Discogs | 2018 | – | – | US |
 | Travis Scott & Playboi Carti | FE!N | 2023 | Spotify + MusicBrainz | – | 2023 | 2023 | US |
 | Trebunie-Tutki | Filozofia dramatu | 2007 | Wikipedia | – | – | – | PL |
-| Tribute to Alibabki & Dymoll i Mucha | Grajmy sobie w zielone | 2020 | Spotify | – | – | 2020 | ? |
 | Tricky & Martina Topley-Bird | Hell Is Round The Corner | 1995 | Discogs + Spotify | 1995 | – | 1995 | GB |
 | Triumph | Lay It On The Line | 1979 | Discogs | 1979 | – | 2010 | CA |
 | Trubadurzy | Będziesz ty | 1973 | Discogs | 1973 | – | 2006 | PL |
@@ -5610,8 +5621,8 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Within Temptation | Memories | 2004 | Discogs + Spotify | 2004 | – | 2004 | NL |
 | Wiz Khalifa & Charlie Puth | See You Again | 2015 | Discogs | 2015 | – | – | US |
 | WizTheMc & bees & honey | Show Me Love | 2025 | Spotify + Discogs (singiel) + MusicBrainz | 2026 | 2025 | 2025 | DE |
-| Wojciech Baranowski | Czułe miejsce | 2019 | Spotify | – | – | 2019 | ? |
-| Wojciech Baranowski | Lubię być z nią | 2020 | Spotify | – | – | 2020 | ? |
+| Wojciech Baranowski | Czułe miejsce | 2019 | Spotify | – | – | 2019 | PL |
+| Wojciech Baranowski | Lubię być z nią | 2020 | Spotify | – | – | 2020 | PL |
 | Wojciech Gassowski | Tak mi źle - Tylko wróć | 2015 | Spotify | – | – | 2015 | PL |
 | Wojciech Gąssowski | Gdzie się podziały tamte prywatki | 1989 | Discogs + Wikipedia | 1989 | – | – | PL |
 | Wojciech Młynarski | Absolutnie | 1975 | Discogs | 1975 | – | 2014 | PL |
@@ -5680,7 +5691,6 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | ZAYN & Taylor Swift | I Don’t Wanna Live Forever (Fifty Shades Darker) | 2016 | Discogs | 2016 | – | 2017 | GB |
 | Zaz | Je veux | 2010 | Discogs + Spotify | 2010 | – | 2010 | FR |
 | Zaz | Si jamais j'oublie | 2015 | Spotify + MusicBrainz | – | 2015 | 2015 | FR |
-| Zbigniew Preisner & Andrzej Sikorowski | Wielka woda | 2010 | Discogs + Spotify | 2010 | – | 2010 | PL |
 | Zbigniew Wodecki | Chałupy welcome to | 1985 | Wikipedia + Discogs (singiel) | 1992 | – | – | PL |
 | Zbigniew Wodecki | Izolda | 1992 | Discogs | 1992 | – | 2004 | PL |
 | Zbigniew Wodecki | Lubię wracać tam gdzie byłem | 1992 | Discogs | 1992 | – | 2004 | PL |
@@ -5694,7 +5704,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Zdzisława Sośnicka & Zbigniew Wodecki | Z tobą chcę oglądać świat | 1997 | Discogs | 1997 | – | 2004 | PL |
 | Zedd & Alessia Cara | Stay | 2017 | Discogs | 2017 | – | – | DE |
 | Zedd & Maren Morris | The Middle | 2018 | Discogs | 2018 | – | – | DE |
-| Zespół Dziecięcy Fasolki | Mydło lubi zabawę | 2015 | Spotify | – | – | 2015 | ? |
+| Zespół Dziecięcy Fasolki | Mydło lubi zabawę | 1988 | Discogs – „Fasolki – Fasola 1. Przeboje z telewizyjnego teatrzyku piosenki dla dzieci” (1988) | – | – | 2015 | ? |
 | Zhu | Faded | 2014 | Discogs + Wikipedia | 2014 | – | – | US |
 | Ziyo | Magiczne Słowa | 1994 | Discogs + Spotify | 1994 | – | 1994 | PL |
 | Zoe Wees | Control | 2020 | Spotify + Discogs (singiel) + MusicBrainz | 2021 | 2020 | 2020 | DE |

@@ -19,7 +19,8 @@ Każdy wykonawca pojawia się w jednej grze najwyżej raz, a piosenki nie powtar
 między kolejnymi rozgrywkami w tej samej karcie przeglądarki (dopóki w wybranej puli
 nie zabraknie nowych). Po pomyłce oś pokazuje, gdzie gracz położył kartę i gdzie było
 właściwe miejsce. **Poziom trudności**:
-łatwy (znane piosenki), średni – domyślny (wszystkie piosenki) i trudny (mniej znane;
+bardzo łatwy (ok. 1000 najpopularniejszych piosenek w Spotify – po 500 polskich
+i zagranicznych), łatwy (znane piosenki), średni – domyślny (wszystkie piosenki) i trudny (mniej znane;
 na osi czasu częściej trafiają się utwory wydane blisko lat Twoich kart). Na każdym
 poziomie piosenki są losowane równomiernie z różnych dekad, a przy mieszanych piosenkach
 można ustawić **udział polskich** (domyślnie 50%). W multiplayerze można widzieć osie wszystkich graczy.
