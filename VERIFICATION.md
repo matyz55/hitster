@@ -31,26 +31,26 @@ Rok na karcie = rok **pierwszego wydania nagrania** danego wykonawcy (singiel lu
 
 ## Podsumowanie
 
-- piosenek w grze: **5450** (polskich: 1891, zagranicznych: 3559)
+- piosenek w grze: **5449** (polskich: 1890, zagranicznych: 3559)
 - bez żadnej daty (pominięte): 59
-- covery zamiast oryginałów (pominięte): 46
+- covery zamiast oryginałów (pominięte): 47
 - usunięte duplikaty: 35
 - bez ustalonego kraju artysty: 96
 
 | Źródło roku | Piosenek |
 |---|---|
 | Discogs + Spotify | 1973 |
-| Discogs | 1773 |
+| Discogs | 1772 |
 | Discogs + Wikipedia | 316 |
 | Spotify + MusicBrainz | 290 |
-| Spotify | 254 |
+| Spotify | 253 |
 | MusicBrainz | 233 |
 | Wikipedia | 222 |
 | Discogs + MusicBrainz+Wikipedia + Spotify | 94 |
 | Spotify + Discogs + MusicBrainz | 68 |
 | Discogs + MusicBrainz+Wikipedia | 56 |
 | Wikipedia + Discogs | 55 |
-| Ręczna poprawka (opis niżej) | 37 |
+| Ręczna poprawka (opis niżej) | 38 |
 | Discogs + MusicBrainz | 37 |
 | Spotify + Discogs | 19 |
 | MusicBrainz+Wikipedia | 8 |
@@ -130,6 +130,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Myslovitz | The Iris Sleeps Under the Snow | 2001 | Discogs – „Ścianka - ...Only Your Bus Doesn't Stop Here EP” (2001), utwór „The Iris Sleeps Under The Snow - Myslovitz Version” na trackliście; 2003 to składanka „The Best Of” |
 | Teresa Tutinas | Na Całych Jeziorach Ty | 1966 | Discogs – „Piosenki Agnieszki Osieckiej” (1966), wykonanie Teresy Tutinas |
 | Tommy Edwards | It's All in the Game | 1958 | Discogs – singiel „It’s All in the Game / Please Love Me Forever” (1958); przebój to nagranie z 1958 r. (pierwsza wersja z 1951 r. to inne nagranie), 2012 to składanka |
+| Łzy | Agnieszka już dawno… | 2000 | Discogs – album „W związku z samotnością” (2000), utwór 11; singiel „Agnieszka już dawno… / Opowiem wam jej historię” – 2001. W grze odtwarzane ponowne nagranie „Agnieszka” (ŁZY Adam Konkol, 2023) – oryginału nie ma w iTunes |
 
 ## Usunięte duplikaty
 
@@ -187,6 +188,7 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Krzysztof Zalewski | Dziwny jest ten świat |
 | Stanisław Soyka | Dziwny Jest Ten Swiat |
 | Grzegorz Szczepaniak & ABC | Asfaltowe Łąki |
+| ŁZY Adam Konkol | Agnieszka |
 | Felicjan Andrzejczak | Czas ołowiu |
 | Artur Rojek | Długość dźwięku samotności |
 | Magic Finger Project | Equinoxe Part Iv |
@@ -5732,11 +5734,10 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Łucja Prus | Nic dwa razy się nie zdarza | 1974 | Discogs | 1974 | – | 2015 | PL |
 | Łukasz Zagrobelny | U mnie maj | 2012 | Wikipedia | – | – | – | PL |
 | Łukasz Zagrobelny | Życie na czekanie | 2007 | Discogs | 2007 | – | 2015 | PL |
-| Łzy | Agnieszka już dawno… | 2000 | Discogs | 2000 | – | – | PL |
+| Łzy | Agnieszka już dawno… | 2000 | Discogs – album „W związku z samotnością” (2000), utwór 11; singiel „Agnieszka już dawno… / Opowiem wam jej historię” – 2001. W grze odtwarzane ponowne nagranie „Agnieszka” (ŁZY Adam Konkol, 2023) – oryginału nie ma w iTunes | 2000 | – | – | PL |
 | Łzy | Bo każdej nocy | 2011 | Discogs + Wikipedia | 2011 | – | – | PL |
 | Łzy | Jestem dilerem | 2002 | Discogs + Wikipedia | 2002 | – | – | PL |
 | Łzy | Oczy szeroko zamknięte | 2003 | Discogs + Wikipedia | 2003 | – | – | PL |
-| ŁZY Adam Konkol | Agnieszka | 2023 | Spotify | – | – | 2023 | PL |
 | Łąki Łan | LASS | 2019 | Spotify + MusicBrainz | – | 2019 | 2019 | PL |
 | Śmierć Kliniczna | Jestem ziarnkiem piasku | 1984 | Discogs + Wikipedia | 1984 | – | – | PL |
 | Śmierć Kliniczna | Nienormalny świat | 1983 | Wikipedia | 1996 | – | – | PL |
