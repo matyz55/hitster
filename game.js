@@ -404,8 +404,20 @@ function showScreen(name) {
 let tvChannel = null;
 try {
   tvChannel = new BroadcastChannel('songster-tv');
-  tvChannel.onmessage = (e) => { if (e.data && e.data.hello) tvSync(); };
+  tvChannel.onmessage = (e) => {
+    if (!e.data) return;
+    if (e.data.hello) tvSync();
+    // przycisk kliknięty na dużym ekranie – klikamy ten sam w oknie gry (sprawdzamy też napis, gdyby stan zdążył się zmienić)
+    if (e.data.click) {
+      const b = tvButtons()[e.data.click.i];
+      if (b && !b.disabled && b.textContent.trim() === e.data.click.text) b.click();
+    }
+  };
 } catch (e) { /* stara przeglądarka – bez dużego ekranu */ }
+// przyciski gry widoczne też na dużym ekranie: akcje tury (wyzwanie, kupno karty, dalej…) i pominięcie
+function tvButtons() {
+  return [...$$('#actions button'), $('#btn-skip')].filter((b) => b && !b.closest('.hidden') && !b.classList.contains('hidden'));
+}
 function tvSync() {
   if (!tvChannel) return;
   const screen = SCREENS.find((x) => !$('#screen-' + x).classList.contains('hidden'));
@@ -421,6 +433,7 @@ function tvSync() {
       status: revealed ? '' : txt('#mystery-status') + (state.special && SPECIALS[state.special] ? ` · ${txt('#special-badge')}` : ''),
       scores: state.players.length > 1 ? $$('#scoreboard .score').map((n, i) => ({ text: n.textContent, active: n.classList.contains('active') || (state.buzz && state.buzz.answering === i) })) : [],
       art: revealed && state.preview ? state.preview.art : null,
+      buttons: tvButtons().map((b) => ({ text: b.textContent.trim(), cls: b.className, disabled: b.disabled, title: b.title || '' })),
       reveal: revealed ? {
         y: state.current.y, t: state.current.t, a: artistLine(state.current), cc: state.current.cc,
         lines: $$('#reveal .verdict, #reveal .fact').map((n) => n.textContent),
@@ -433,7 +446,9 @@ function tvSync() {
       const choosing = ['listen', 'placed', 'challenge'].includes(state.phase) && !!state.current;
       const challenger = state.challenger != null ? state.players[state.challenger] : null;
       snap.timelines = order.map(({ p, i }) => {
-        const tl = { name: p.name, active: i === state.turn, cards: p.timeline.map(card), tokens: isMulti() ? p.tokens : null };
+        // stan gracza (karty, żetony) z tablicy wyników – na dużym ekranie pokazywany przy jego osi zamiast u góry
+        const sc = $$('#scoreboard .score')[i];
+        const tl = { name: p.name, active: i === state.turn, cards: p.timeline.map(card), sub: sc ? sc.textContent.replace(`${p.name}: `, '').trim() : '' };
         if (i !== state.turn) return tl;
         // gdzie gracz (i ewentualnie wyzywający) położył kartę, a po pomyłce – gdzie było jej miejsce
         if (choosing) {
@@ -449,15 +464,10 @@ function tvSync() {
       // przypomnienie o wyzwaniu: kto może je rzucić (ma żeton) i co się dzieje w trakcie
       if (isMulti() && choosing) {
         const can = state.players.filter((pl, i) => i !== state.turn && pl.tokens >= 1).map((pl) => pl.name);
-        const cur = activePlayer().name;
         if (state.phase === 'challenge') {
-          snap.challenge = !challenger ? T('⚔ Wyzwanie! Kto je rzuca? (koszt: 1 żeton)')
-            : (state.challengeMode === 'year' ? T('⚔ {0} rzuca wyzwanie – podaje dokładny rok wydania', challenger.name)
-              : T('⚔ {0} rzuca wyzwanie – wskazuje inne miejsce na osi gracza {1}', challenger.name, cur));
+          snap.challenge = challenger ? '' : T('⚔ Kto rzuca wyzwanie? (koszt: 1 żeton)');
         } else if (can.length) {
-          snap.challenge = state.slot == null
-            ? T('⚔ Pamiętajcie o wyzwaniu! Gdy {0} wybierze miejsce, możecie się nie zgodzić (1 żeton). Żetony mają: {1}', cur, can.join(', '))
-            : T('⚔ Czas na wyzwanie! Nie zgadzasz się z wyborem gracza {0}? Rzuć wyzwanie za 1 żeton. Mogą: {1}', cur, can.join(', '));
+          snap.challenge = T('⚔ Wyzwanie (1 żeton) mogą rzucić: {0}', can.join(', '));
         }
       }
     } else if (state.mode === 'hilo' && state.ref) {

@@ -55,13 +55,15 @@ function render(s) {
   }
   if (s.screen === 'end') {
     app.replaceChildren(h('div', 'end', h('h2', '', s.winner || ''), h('ol', '', (s.ranking || []).map((r) => h('li', '', r)))));
+    fit();
     return;
   }
   const rows = s.timelines || [];
   app.classList.toggle('compact', rows.length > 2);
-  app.classList.toggle('many', (s.scores || []).length > 4);
-  const head = h('header', '', h('div', '', h('h1', '', s.title || ''), h('div', 'info', s.info || '')),
-    h('div', 'scores', (s.scores || []).map((x) => h('div', 'score' + (x.active ? ' active' : ''), x.text))));
+  app.classList.toggle('many', rows.length <= 1 && (s.scores || []).length > 4);
+  const head = h('header', '', h('div', '', h('h1', '', s.title || ''), rows.length > 1 ? null : h('div', 'info', s.info || '')),
+    // przy osiach czasu stan graczy jest przy każdej osi – górnej tablicy wyników nie dublujemy
+    rows.length > 1 ? null : h('div', 'scores', (s.scores || []).map((x) => h('div', 'score' + (x.active ? ' active' : ''), x.text))));
   const vinyl = h('div', 'vinyl' + (s.art ? ' cover' : ''), h('div', 'lbl', '?'));
   if (s.art) vinyl.style.backgroundImage = `url("${s.art}")`;
   const body = h('div', '', h('div', 'status', s.status || ''));
@@ -72,18 +74,25 @@ function render(s) {
   }
   const main = h('div', 'main', vinyl, body);
   const hint = h('div', 'hint', s.hint || '');
-  const challenge = s.challenge ? h('div', 'challenge', s.challenge) : null;
+  // przyciski z okna gry; kliknięcie wysyła polecenie do pilota
+  const actions = h('div', 'actions', (s.buttons || []).map((b, i) => {
+    const btn = h('button', b.cls, b.text);
+    btn.disabled = b.disabled;
+    if (b.title) btn.title = b.title;
+    btn.addEventListener('click', () => channel && channel.postMessage({ click: { i, text: b.text } }));
+    return btn;
+  }), s.challenge ? h('span', 'note', s.challenge) : null);
   const tls = h('div', 'timelines', rows.map((t) => h('div', 'tl-row' + (t.active ? ' active' : ''),
-    (rows.length > 1 ? h('div', 'tl-name', t.name, t.tokens != null ? h('small', '', '🪙'.repeat(t.tokens) || T('brak żetonów')) : null) : null),
+    (rows.length > 1 ? h('div', 'tl-name', t.name, t.sub ? h('small', '', t.sub) : null) : null),
     h('div', 'tl', rowItems(t)))));
-  app.replaceChildren(...[head, main, hint, challenge, tls].filter(Boolean));
+  app.replaceChildren(head, main, hint, actions, tls);
   fit();
 }
 
-// wszystkie osie na ekranie bez przewijania: oś aktywnego gracza na całą szerokość u góry, pozostałe
+// wszystkie osie na ekranie bez przewijania (fitTimelines): oś aktywnego gracza na całą szerokość u góry, pozostałe
 // (przy 4+ osiach) w dwóch kolumnach; wysokość dzielimy między wiersze, a szerokość kart dobieramy tak,
 // by cały rząd zmieścił się w jednej linii
-function fit() {
+function fitTimelines() {
   const box = app.querySelector('.timelines');
   if (!box) return;
   const rows = [...box.children];
@@ -107,9 +116,28 @@ function fit() {
     tl.style.setProperty('--cw', `${cw}px`);
     tl.style.setProperty('--ch', `${ch}px`);
     tl.style.setProperty('--gap', `${gap}px`);
-    tl.style.setProperty('--fs', `${Math.max(9, Math.min(cw * 0.13, ch * 0.16))}px`);
-    r.style.setProperty('--nfs', `${Math.max(11, Math.min(rowH * 0.3, 30))}px`);
-    r.classList.toggle('tiny', ch < 85);
+    // czcionka karty: rok (4 cyfry) musi zmieścić się w szerokości, a wszystkie linijki w wysokości
+    // (w małych kartach chowamy wykonawcę i flagę, tytuł ma jedną linijkę)
+    const tiny = ch < 85;
+    tl.style.setProperty('--fs', `${Math.max(6, Math.min(cw / 5.8, ch / (tiny ? 3.9 : 7.4)))}px`);
+    r.classList.toggle('tiny', tiny);
+    const name = r.querySelector('.tl-name');
+    if (name) r.style.setProperty('--nfs', `${Math.max(10, Math.min(rowH * 0.3, 30, name.clientWidth / (0.62 * Math.max(4, name.firstChild.textContent.length))))}px`);
+  }
+}
+// cały ekran bez przewijania: zaczynamy od czcionki zależnej od szerokości okna i zmniejszamy ją (oraz minimalną
+// wysokość osi), dopóki wszystko się nie zmieści; liczone przy każdej zmianie stanu i rozmiaru okna
+function fit() {
+  const box = app.querySelector('.timelines');
+  const rows = box ? box.children.length : 0;
+  let fs = Math.max(12, Math.min(30, window.innerWidth * 0.016));
+  let minH = rows > 4 ? 0.5 : (rows ? 0.4 : 0);
+  for (let k = 0; k < 20; k++) {
+    app.style.fontSize = `${fs}px`;
+    if (box) box.style.minHeight = `${Math.round(window.innerHeight * minH)}px`;
+    fitTimelines();
+    if (app.scrollHeight <= app.clientHeight + 1) break;
+    if (fs > 10) fs *= 0.92; else minH *= 0.9;
   }
 }
 window.addEventListener('resize', () => last && fit());

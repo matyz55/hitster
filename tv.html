@@ -12,7 +12,7 @@
     html, body { margin: 0; height: 100%; }
     body { background: radial-gradient(circle at 20% 0%, #2a1840 0%, var(--bg) 60%); background-color: var(--bg); color: var(--text);
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: clamp(16px, 1.6vw, 28px); overflow: hidden; }
-    .wrap { height: 100%; display: flex; flex-direction: column; padding: 2vh 3vw; gap: 2vh; }
+    .wrap { height: 100%; display: flex; flex-direction: column; padding: 2vh 3vw; gap: 1.5vh; overflow: hidden; }
     header { display: flex; align-items: center; justify-content: space-between; gap: 2vw; }
     h1 { margin: 0; font-size: 1.8em; white-space: nowrap; }
     .many h1 { font-size: 1.4em; }
@@ -22,9 +22,9 @@
     .score { background: var(--panel); border: 3px solid transparent; border-radius: 14px; padding: .4em .9em; font-size: 1.05em; }
     .score.active { border-color: var(--accent); }
     .main { display: flex; gap: 3vw; align-items: center; flex-shrink: 0; }
-    .vinyl { width: 16vh; height: 16vh; border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 0 4px #000;
+    .vinyl { width: min(16vh, 6em); height: min(16vh, 6em); border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 0 4px #000;
       background: repeating-radial-gradient(circle, #111 0 3px, #222 3px 6px); display: grid; place-items: center; background-size: cover; background-position: center; }
-    .compact .vinyl { width: 10vh; height: 10vh; }
+    .compact .vinyl { width: min(10vh, 4em); height: min(10vh, 4em); }
     .compact .reveal .year { font-size: 2.2em; }
     .vinyl .lbl { width: 38%; height: 38%; border-radius: 50%; background: var(--accent); display: grid; place-items: center; font-weight: 800; font-size: 1.6em; }
     .vinyl.cover .lbl { display: none; }
@@ -35,16 +35,24 @@
     .reveal .lines div { margin-top: .2em; font-weight: 700; }
     .hint { color: var(--accent-2); font-size: 1.2em; flex-shrink: 0; }
     .hint:empty { display: none; }
-    .challenge { flex-shrink: 0; background: rgba(255, 201, 60, .14); border: 3px solid var(--gold); color: var(--gold); border-radius: 14px;
-      padding: .4em .8em; font-size: 1.25em; font-weight: 800; animation: glow 1.6s ease-in-out infinite; }
-    @keyframes glow { 50% { box-shadow: 0 0 1.2em rgba(255, 201, 60, .45); } }
+    /* przyciski jak w oknie gry – można je klikać także tutaj */
+    .actions { display: flex; flex-wrap: wrap; gap: .5em; align-items: center; flex-shrink: 0; }
+    .actions:empty { display: none; }
+    .actions button { font-size: .8em; border: 0; border-radius: 10px; padding: .45em .9em; color: var(--text); background: var(--panel-2); }
+    .actions button.primary { background: var(--accent); font-weight: 600; }
+    .actions button.ghost { background: transparent; border: 1px solid #3d3755; }
+    .actions button.ok { background: var(--ok); color: #0b1d12; font-weight: 600; }
+    .actions button.gold { background: var(--gold); color: #2b2000; font-weight: 600; }
+    .actions button:disabled { opacity: .4; cursor: default; }
+    .actions .note { color: var(--muted); font-size: .8em; }
     /* osie czasu: zawsze wszystkie, rozmiar kart liczony w tv.js tak, by zmieściły się bez przewijania */
     .timelines { flex: 1; min-height: 0; overflow: hidden; display: grid; gap: 1vh 1.5vw; }
     .tl-row { display: flex; align-items: center; gap: .8vw; min-height: 0; min-width: 0; border-radius: 14px; padding: 0 .4vw; }
     .tl-row.active { grid-column: 1 / -1; }
     .tl-row.active { background: rgba(255, 61, 127, .08); outline: 2px solid rgba(255, 61, 127, .5); }
-    .tl-name { width: 9vw; flex-shrink: 0; font-weight: 800; font-size: var(--nfs, 1em); line-height: 1.15; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-    .tl-name small { display: block; font-weight: 400; color: var(--muted); font-size: .75em; letter-spacing: -.1em; }
+    .tl-name { width: 11vw; flex-shrink: 0; font-weight: 800; font-size: var(--nfs, 1em); line-height: 1.15; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .tl-name small { display: block; font-weight: 400; color: var(--muted); font-size: .7em; white-space: normal; }
+    .tl-row.active .tl-name small { font-size: .55em; }
     .tl-row.active .tl-name { color: var(--accent); }
     .tl { display: flex; gap: var(--gap, .5vw); overflow: hidden; flex: 1; align-items: center; justify-content: center; }
     .card { flex: 0 0 auto; width: var(--cw, 11vw); height: var(--ch, 14vh); border-radius: .7em; padding: .35em; text-align: center; overflow: hidden;

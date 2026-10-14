@@ -40,8 +40,10 @@ najczęściej mylone piosenki, historia rekordów i wykres postępów.
 **Duży ekran** (📺): drugie okno (`tv.html`) dla telewizora lub rzutnika, z dużymi kartami
 i osiami wszystkich graczy; okno gry na tym samym urządzeniu jest pilotem (BroadcastChannel).
 Wszystkie osie mieszczą się na ekranie bez przewijania (przy 4+ graczach w dwóch kolumnach), widać
-wybrane miejsce karty (i miejsce wskazane przy wyzwaniu), znaczniki po pomyłce oraz przypomnienie,
-kto może rzucić wyzwanie.
+wybrane miejsce karty (i miejsce wskazane przy wyzwaniu) oraz znaczniki po pomyłce. Stan graczy
+(karty, żetony) jest przy ich osiach. Przyciski z okna gry (zatwierdź, wyzwanie z podpowiedzią, kto może je
+rzucić, kupno karty, pominięcie…) są też na dużym ekranie i można je tam klikać. Wszystko skaluje się
+na bieżąco do rozmiaru okna.
 
 **Wersja angielska**: język wybiera się w Ustawieniach (domyślnie wg języka przeglądarki).
 Teksty interfejsu przechodzą przez `T()` (`i18n.js`), słownik jest w `i18n-en.js`; tytuły
