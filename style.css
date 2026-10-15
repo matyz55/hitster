@@ -540,3 +540,18 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .party-box .plus { color: var(--ok, #3ddc84); font-weight: 700; }
 #party-pick label.off { opacity: .4; }
 .end-multi { flex-wrap: wrap; }
+
+/* --- przycisk „wstecz” w górnym pasku (każdy ekran poza startowym) --- */
+.nav-back { font-size: 1.3rem; line-height: 1; padding: 8px 12px; margin-right: 8px; }
+.topbar .nav-back + h1 { margin-right: auto; }
+.topbar h1 { white-space: nowrap; }
+/* wąski telefon: przy przycisku „wstecz” ustawienia tylko jako ikona ⚙, żeby pasek mieścił się w jednej linii */
+@media (max-width: 560px) {
+  .topbar { gap: 6px; }
+  .nav-back { margin-right: 0; padding: 8px 10px; }
+  .topbar h1 { font-size: 1.15rem; }
+  .nav-back:not(.hidden) ~ .topbar-actions #btn-settings { font-size: 0; padding: 8px 10px; }
+  .nav-back:not(.hidden) ~ .topbar-actions #btn-settings::before { content: '⚙'; font-size: 1rem; }
+  .nav-back:not(.hidden) ~ .topbar-actions #btn-rules { font-size: 0; padding: 8px 12px; }
+  .nav-back:not(.hidden) ~ .topbar-actions #btn-rules::before { content: '?'; font-size: 1rem; font-weight: 700; }
+}
