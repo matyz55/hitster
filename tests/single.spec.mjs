@@ -220,3 +220,13 @@ test('bez podłączonego dużego ekranu nie ma napisu „Brak połączonego urz�
   await page.evaluate(() => { tvWindowSeen = true; tvChannel = null; applyAudioRoute(); });
   await expect(page.locator('#audio-note')).toContainText('Brak połączonego urządzenia');
 });
+
+test('iPhone: przycisk „Zainstaluj” pokazuje, jak dodać grę do ekranu początkowego', async ({ page }) => {
+  await page.addInitScript(() => Object.defineProperty(navigator, 'userAgent',
+    { get: () => 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1' }));
+  await page.goto('/');
+  await expect(page.locator('#btn-install')).toBeVisible();
+  await expect(page.locator('#ios-install')).toBeHidden();
+  await page.click('#btn-install');
+  await expect(page.locator('#ios-install')).toContainText('Do ekranu początkowego');
+});

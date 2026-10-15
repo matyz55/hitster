@@ -208,6 +208,9 @@ function songFacts(song) {
     else if (k === 'pr') push(wd(T('🎚 Producent nagrania: {0}', a)));
     else if (k === 'bo') push(wd(b ? T('🔁 Oparta na utworze „{0}” ({1})', a, b) : T('🔁 Oparta na utworze „{0}”', a)));
   }
+  // z jakiego memu (zestaw Memy, tools/memes.json)
+  const meme = window.SONG_MEMES && window.SONG_MEMES[songKey(song)];
+  if (meme) { kind = 'memy'; push('😂 ' + (LANG === 'en' && meme[1] ? meme[1] : meme[0])); }
   if (out.length) return out;
   // o wykonawcy – gdy o samej piosence nic nie wiadomo
   const name = mainArtist(song);
@@ -223,7 +226,7 @@ function songFacts(song) {
 // zestaw tematyczny, w którym gramy → rodzaj ciekawostki, który pokazujemy w pierwszej kolejności
 function factTheme() {
   const tag = filterState.tag;
-  if (tag === 'eurowizja' || tag === 'opole' || tag === 'trojka') return { eurowizja: 'euro', opole: 'opole', trojka: 'trojka' }[tag];
+  if (tag === 'eurowizja' || tag === 'opole' || tag === 'trojka' || tag === 'memy') return { eurowizja: 'euro', opole: 'opole', trojka: 'trojka', memy: 'memy' }[tag];
   if (typeof renderPresetsActive === 'function' && renderPresetsActive() === 'film') return 'film';
   return null;
 }

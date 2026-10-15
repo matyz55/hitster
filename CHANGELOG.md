@@ -546,3 +546,15 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Oznaczone piosenki niecenzuralne (dla opcji pomijania), lepsze ciekawostki – bez pomyłek z osobami o tym samym
   nazwisku; przy piosence pokazywana jest jedna ciekawostka.
 - Poprawki stabilności połączenia z dużym ekranem i telefonami; zaktualizowane zasady gry i README.
+
+## 5.24.1 – 15.10.2026 (`HASH`)
+
+- „Eldorado” to teraz jedna piosenka wykonawców sanah & Daria Zawiałow (wcześniej dwa osobne wpisy: osobno Darii
+  Zawiałow i osobno sanah).
+- Ujednolicony zapis wykonawców zapisanych na kilka sposobów, np. sanah, Kult, IRA, Wanda i Banda, Czesław Niemen,
+  Stanisław Soyka, Ania Rusowicz, 2 plus 1, The Black Eyed Peas, Jay-Z, OutKast.
+- Dodane brakujące polskie znaki w nazwach wykonawców (np. Halina Frąckowiak, Kalina Jędrusik, Bohdan Łazuka,
+  Kabaret Starszych Panów, Świetliki) i w 54 tytułach (np. „Miłość jak ogień”, „Dziewczyna mojego chłopaka”,
+  „Z każdym twym oddechem”, „Życie jak wino”).
+- iPhone i iPad: na ekranie startowym jest przycisk „Zainstaluj Songstera na tym urządzeniu” – w Safari pokazuje,
+  jak dodać grę do ekranu początkowego.

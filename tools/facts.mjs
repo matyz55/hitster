@@ -256,4 +256,5 @@ const js = `// Ciekawostki z Wikidata – generuje tools/facts.mjs (źródła: F
 writeFileSync(new URL('facts.js', dir), js);
 md.push('', '## Odrzucone dopasowania wykonawców (homonimy)', '', ...rejected.map((x) => `- ${x}`));
 writeFileSync(new URL('FACTS.md', dir), md.join('\n') + '\n');
+await import('./memes.mjs'); // ciekawostki o memach (tools/memes.json)
 console.log(`ciekawostki: ${Object.keys(SONG_OUT).length} piosenek, ${Object.keys(ARTIST_OUT).length} wykonawców`);

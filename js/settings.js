@@ -28,7 +28,8 @@ $('#animations').addEventListener('change', (e) => { store.set('animations', e.t
     $('#btn-install').classList.remove('hidden');
   });
   $('#btn-install').addEventListener('click', async () => {
-    if (!installEvent) return;
+    // Safari na iPhonie/iPadzie nie ma okna instalacji – pokazujemy, jak dodać grę do ekranu początkowego
+    if (!installEvent) { $('#ios-install').classList.remove('hidden'); $('#ios-install').classList.add('flash'); return; }
     installEvent.prompt();
     await installEvent.userChoice.catch(() => null);
     installEvent = null;
@@ -38,7 +39,7 @@ $('#animations').addEventListener('change', (e) => { store.set('animations', e.t
   // iPhone/iPad nie mają przycisku instalacji – podpowiadamy „Do ekranu początkowego”
   const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
   const standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-  $('#ios-install').classList.toggle('hidden', !(ios && !standalone));
+  if (ios && !standalone) $('#btn-install').classList.remove('hidden');
 }
 
 /* ---------- ustawienia: poprawki dat ---------- */

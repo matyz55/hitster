@@ -630,3 +630,5 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .royale-row { flex: 1 1 100%; display: flex; gap: 8px; align-items: center; }
 .royale-row b { min-width: 6em; }
 .royale-row input { flex: 1 1 8em; min-width: 7em; font-size: 1.05rem; }
+#ios-install.flash { color: var(--text, inherit); animation: hint-flash 1.2s ease 2; }
+@keyframes hint-flash { 50% { opacity: 0.35; } }
