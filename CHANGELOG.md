@@ -657,7 +657,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Katalog: film z kanału „… – Topic” musi być kanałem wykonawcy tej piosenki (np. bez późniejszego nagrania Kombi
   Łosowski zamiast Kombi); dane skanu tekstów (`60e1d6c`, `29405ac`).
 
-## 5.30.1 – 16.10.2026 (`HASH`)
+## 5.30.1 – 16.10.2026 (`8f67f3e`)
 
 - Tak to leciało!: 100 000 zł jest wyśrodkowane w szerokim polu na górze drabinki.
 - Nowe kategorie: Lato i wakacje, Młodość i szkoła, Kobieta, Mężczyzna, Polska i ojczyzna, Pieniądze, Ogień
