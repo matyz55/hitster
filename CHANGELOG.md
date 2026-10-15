@@ -478,7 +478,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Duży ekran w pionie (obrócony monitor lub telewizor): kod QR i ustawienia gry są jeden pod drugim, a osie pozostałych
   graczy mają całą szerokość ekranu.
 
-## 5.21.1 – 15.10.2026 (`HASH`)
+## 5.21.1 – 15.10.2026 (`a415648`)
 
 - Poprawiona data piosenki „Tak mi źle – Tylko wróć” (Wojciech Gąssowski): 1966 zamiast 2015. Piosenka pochodzi
   z serialu „Wojna domowa” (odcinek „Młode talenty”, 1966); 2015 to rok późniejszej składanki.
