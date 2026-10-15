@@ -10,13 +10,18 @@
 // Film jest przyjmowany, gdy można go osadzić, nie jest zablokowany w Polsce, a jego długość różni się od długości
 // nagrania z tekstem o najwyżej 3 s (wtedy czasy wersów pasują do filmu). Kolejność: najpopularniejsze piosenki.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
-import { SONGS, SongMatch, sparql, sleep, cacheDir, dir } from './wd-lib.mjs';
+import { SONGS, SongMatch, sparql, sleep, dir } from './wd-lib.mjs';
 
 const UA = 'SongsterTools/1.0 (https://github.com/matyz55/hitster)';
 const norm = SongMatch.norm;
 const clean = (t) => t.replace(/\s*[([].*?[)\]]/g, '').replace(/\s+[-–]\s+.*$/, '').trim();
-const load = (name, def) => { const f = new URL(name, cacheDir); return existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : def; };
-const save = (name, v) => writeFileSync(new URL(name, cacheDir), JSON.stringify(v));
+// wyniki zapisywane w repozytorium (tools/lyrics-data) – kolejne uruchomienia, także w innych sesjach, kontynuują pracę
+// (tylko identyfikatory i długości – bez tekstów piosenek)
+const dataDir = new URL('tools/lyrics-data/', dir);
+const FILES = { 'lrclib-pl.json': 'lrclib.json', 'youtube-pl.json': 'youtube.json' };
+const load = (name, def) => { const f = new URL(FILES[name] || name, dataDir); return existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : def; };
+const save = (name, v) => writeFileSync(new URL(FILES[name] || name, dataDir),
+  `{\n${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}: ${JSON.stringify(v[k])}`).join(',\n')}\n}\n`);
 const key = (s) => `${s.a}|${s.t}`;
 const MAX_DIFF = 3;
 

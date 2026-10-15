@@ -145,7 +145,7 @@ przewija się jak w karaoke, a przed wersem do uzupełnienia muzyka milknie. Odp
 (rozpoznawanie mowy przeglądarki). Katalog piosenek (`lyrics-catalog.js`, bez tekstów) buduje
 `tools/lyrics-catalog.mjs`: `lrclib` (teksty z czasami), `youtube` (filmy – wymaga zmiennej `YOUTUBE_API_KEY` z kluczem
 YouTube Data API v3; film musi dać się osadzić, nie może być zablokowany w Polsce, a jego długość musi zgadzać się
-z nagraniem z tekstem ±3 s) i `build`. Kafelek trybu pojawia się, gdy katalog ma co najmniej 40 piosenek.
+z nagraniem z tekstem ±3 s) i `build`. Wyniki pośrednie (tylko identyfikatory i długości) są w `tools/lyrics-data`, więc kolejne uruchomienia kontynuują pracę. Kafelek trybu pojawia się, gdy katalog ma co najmniej 40 piosenek.
 
 **Zestawy tematyczne** – gotowe ustawienia puli: Przeboje Trójki (1. miejsca Listy Przebojów
 Programu Trzeciego wg polskiej Wikipedii i plebiscyty „Polski Top Wszech Czasów”), Opole
