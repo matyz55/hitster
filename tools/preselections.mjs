@@ -1,9 +1,9 @@
-// Piosenki z polskich preselekcji do Eurowizji (krajowe eliminacje i publiczne listy wewnętrznego wyboru) →
+// Piosenki z preselekcji do Eurowizji (polskich i innych krajów) (krajowe eliminacje i publiczne listy wewnętrznego wyboru) →
 // zestaw „Eurowizja” (tg: eurowizja) i ciekawostka ep:rok:PL:miejsce w songs.js.
 // Dane: tools/preselections-pl.json (z artykułów „Poland in the Eurovision Song Contest RRRR” angielskiej Wikipedii,
 // adres przy każdym wpisie). Piosenka, która ma już ciekawostkę o występie na Eurowizji (e:…), dostaje tylko znacznik.
 // Uruchomienie: node tools/preselections.mjs
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync } from 'node:fs';
 import vm from 'node:vm';
 
 const dir = new URL('..', import.meta.url);
@@ -15,7 +15,9 @@ vm.runInNewContext(src, ctx);
 const { SONGS, SongMatch } = ctx.window;
 const norm = SongMatch.norm;
 const base = (t) => norm(t.replace(/\s*[([].*?[)\]]/g, '').replace(/\s+[-–]\s+.*$/, ''));
-const entries = JSON.parse(readFileSync(new URL('tools/preselections-pl.json', dir), 'utf8'));
+// wszystkie pliki tools/preselections-*.json (pl – Polska; inne kraje mają pole cc przy każdym wpisie)
+const entries = readdirSync(new URL('tools/', dir)).filter((f) => /^preselections-[a-z-]+\.json$/.test(f) && f !== 'preselections-missing.json')
+  .flatMap((f) => JSON.parse(readFileSync(new URL(`tools/${f}`, dir), 'utf8')).map((e) => ({ cc: 'PL', ...e })));
 
 const found = new Map(); // klucz piosenki → wpis preselekcji
 const missing = [];
@@ -23,7 +25,7 @@ for (const e of entries) {
   const want = base(e.title);
   const performers = e.artist.split(/\s*(?:&|,| i | feat\.? | x | and )\s*/i).map(norm).filter(Boolean);
   const song = SONGS.find((s) => base(s.t) === want && SongMatch.artistsOf(s).some((a) => performers.includes(norm(a)) || norm(e.artist).includes(norm(a))));
-  if (song) found.set(`${song.a}|${song.t}`, e); else missing.push(e);
+  if (song) { if (!found.has(`${song.a}|${song.t}`)) found.set(`${song.a}|${song.t}`, e); } else missing.push(e);
 }
 const lines = src.split('\n');
 let changed = 0;
@@ -39,7 +41,7 @@ for (let i = 0; i < lines.length; i++) {
     l = /\btg: \[/.test(l) ? l.replace(/\btg: \[/, 'tg: ["eurowizja", ') : l.replace(/\},\s*$/, ', tg: ["eurowizja"]},');
   }
   // ciekawostka (gdy nie ma już ciekawostki o występie na Eurowizji)
-  const code = `ep:${e.year}:PL${e.place ? ':' + e.place : ''}`;
+  const code = `ep:${e.year}:${e.cc}${e.place ? ':' + e.place : ''}`;
   if (!/"e:/.test(l) && !l.includes(`"ep:${e.year}:`)) {
     l = /\bf: \[/.test(l) ? l.replace(/\bf: \[/, `f: ["${code}", `) : l.replace(/\},\s*$/, `, f: ["${code}"]},`);
   }

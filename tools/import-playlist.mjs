@@ -154,7 +154,12 @@ if (mode === 'prepare') {
 }
 
 if (mode === 'apply') {
-  const items = JSON.parse(readFileSync(inFile, 'utf8')).filter((o) => o.y && !o.skip);
+  // bez piosenek, które już są w bazie (ten sam tytuł bez dopisków i wspólny wykonawca)
+  const known = (o) => SONGS.some((s) => base(s.t) === base(o.t)
+    && SongMatch.artistsOf(s).map(norm).some((a) => o.a.split(' & ').map(norm).includes(a)));
+  const all = JSON.parse(readFileSync(inFile, 'utf8')).filter((o) => o.y && !o.skip);
+  const items = all.filter((o) => !known(o));
+  if (items.length < all.length) console.log(`pominięte (już w bazie): ${all.filter(known).map((o) => `${o.a} – ${o.t}`).join('; ')}`);
   const q = (s) => JSON.stringify(s);
   const line = (o) => {
     const parts = [`a: ${q(o.a)}`, `t: ${q(o.t)}`, `y: ${o.y}`];
@@ -172,11 +177,14 @@ if (mode === 'apply') {
   const lines = readFileSync(songsFile, 'utf8').split('\n');
   const start = lines.findIndex((l) => l.startsWith('window.SONGS = ['));
   const end = lines.lastIndexOf('];');
-  const body = lines.slice(start + 1, end).map((l) => ({ l, y: Number((l.match(/\by: (\d+)/) || [])[1]) || 0 }));
+  // baza: najpierw polskie (c: "PL"), potem zagraniczne – w każdej części rosnąco według roku
+  const body = lines.slice(start + 1, end).map((l) => ({ l, y: Number((l.match(/\by: (\d+)/) || [])[1]) || 0,
+    pl: /\bc: "PL"/.test(l) }));
   for (const o of items.sort((a, b) => a.y - b.y)) {
-    let pos = body.findIndex((b) => b.y > o.y);
+    const pl = o.c === 'PL';
+    let pos = body.findIndex((b) => (pl ? !b.pl || b.y > o.y : !b.pl && b.y > o.y));
     if (pos < 0) pos = body.length;
-    body.splice(pos, 0, { l: line(o), y: o.y });
+    body.splice(pos, 0, { l: line(o), y: o.y, pl });
   }
   writeFileSync(songsFile, [...lines.slice(0, start + 1), ...body.map((b) => b.l), ...lines.slice(end)].join('\n'));
   console.log(`dopisano ${items.length} piosenek`);

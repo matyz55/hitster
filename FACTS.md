@@ -39,6 +39,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Bogusław Mec – Jej portret (Q19947078): m · Włodzimierz Nahorny · Jonasz Kofta
 - Maryla Rodowicz & Alibabki – Wielka Woda (Q134456589): m · Katarzyna Gärtner · Agnieszka Osiecka
 - 2 plus 1 – Iść w stronę słońca (Q11715006): m · Janusz Kruk · 
+- 2 plus 1 – Iść W Stronę Słońca (Q11715006): m · Janusz Kruk · 
 - Bajm – Józek, nie daruję ci tej nocy (Q25407359): al · Bajm · 1983
 - Lombard – Droga pani z TV (Q109652450): al · Śmierć dyskotece! · 1983
 - Lombard – Nasz ostatni taniec (Q109652443): m · Grzegorz Stróżniak · 
@@ -60,7 +61,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Budka Suflera – Moja Alabama (Q15919483): al · Giganci tańczą · 1986
 - Edyta Geppert – Jaka Róża Taki Cierń (Q16560958): al · Och, życie kocham cię nad życie · 1986
 - Maryla Rodowicz – Niech Żyje Bal (Q11791310): m · Seweryn Krajewski · Agnieszka Osiecka
-- Jacek Kaczmarski & Przemyslaw Gintrowski – Mury (Q4891371): m ·  · Lluís Llach | bo · L'Estaca · 1968
+- Jacek Kaczmarski & Przemysław Gintrowski – Mury (Q4891371): m ·  · Lluís Llach | bo · L'Estaca · 1968
 - Kult – Hej, czy nie wiecie (Q11708785): al · Posłuchaj to do ciebie · 1987
 - Kult – Konsument (Q11743097): al · Kult · 1987
 - Kayah – Córeczko chciałabym, żebyś była chłopcem (Q69568055): m · John Porter · 
@@ -81,18 +82,17 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Piersi – ZCHN zbliża się (Q138603290): m ·  · Paweł Kukiz | al · Piersi · 1992
 - Wilki – Son of the Blue Sky (Q9339464): al · Wilki · 1992
 - Elektryczne Gitary – Dzieci wybiegły (Q9248289): al · A ty co · 1993
-- Kazik Staszewski – 100 000 000 (Q9127874): al · Spalaj się! · 1993
 - Kult – Baranek (Q9165178): al · Tata Kazika · 1993
 - Lady Pank – Na co komu dziś (Q141131336): m · Jan Borysewicz · 
 - Grzegorz Turnau – Bracka (Q126364794): m · Grzegorz Turnau · Michał Zabłocki
-- Grzegorz Turnau – Miedzy Cisza A Cisza (Q126363854): m · Grzegorz Turnau · Michał Zabłocki
+- Grzegorz Turnau – Między Ciszą A Ciszą (Q126363854): m · Grzegorz Turnau · Michał Zabłocki
 - Ich Troje – Prawo (Q65175769): al · Intro · 1996
 - Varius Manx & Kasia Stankiewicz – Orła cień (Q106857566): m · Robert Janson · Katarzyna Stankiewicz
 - Edyta Górniak – One & One (Q1408404): m · Marie-Claire D'Ubaldo, Rick Nowels, Billy Steinberg · 
 - Jerzy Połomski – To ostatnia niedziela (Q1995333): m · Jerzy Petersburski · Zenon Friedwald
 - Brygada Kryzys – To co czujesz, to co wiesz (Q122871015): m · Robert Brylewski, Tomasz Lipiński · Tomasz Lipiński
 - Krzysztof Kiljański & Kayah – Prócz Ciebie, Nic (Q2677401): m · Witold Cisło · Kayah
-- Wilki – Slonce pokonal cień (Q117007080): al · Watra · 2004
+- Wilki – Słońce pokonał cień (Q117007080): al · Watra · 2004
 - Blog 27 – Hey Boy (Get Your Ass Up) (Q5749244): m ·  · Teddybears
 - Kult – Amnezja (Q54807493): m · Wojciech Jabłoński, Janusz Grudziński, Kazik Staszewski · Kazik Staszewski
 - Artur Andrus – Ballada o Baronie, Niedźwiedziu i Czarnej Helenie (Q9164635): m ·  · Artur Andrus
@@ -103,7 +103,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Donatan – My Słowianie (Q15377494): m · Cleo, Donatan · Cleo | pr · Donatan
 - Enej – Symetryczno-liryczna (Q16608188): pr · Enej
 - Riverside – The Depth of Self-Delusion (Q11836952): al · Shrine of New Generation Slaves · 2013
-- Grzegorz Hyży & Tabb – Na Chwile (Q134436578): al · Z całych sił · 2014
+- Grzegorz Hyży & Tabb – Na Chwilę (Q134436578): al · Z całych sił · 2014
 - Grzegorz Hyży & Tabb – Wstaje (Q134436587): al · Z całych sił · 2014
 - Kortez – Od dawna już wiem (Q24944749): pr · Olek Świerkot
 - Lao Che – Wojenka (Q25412293): m ·  · Hubert Dobaczewski
@@ -125,7 +125,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Bryska – Kraksa (Q134469580): m · Magdalena Wójcik, Bryska, Jakub Galiński · Bryska, Magdalena Wójcik | pr · Jakub Galiński
 - Bryska – Na legalu (Q134466527): ml · Bryska
 - Bryska – Odbicie (Mark Neve Remix) (Q134469701): ml · Bryska
-- Daria Zawiałow – Eldorado (Q134469755): m · Sanah · Daria Zawiałow, Sanah
 - Dawid Podsiadło – Mori (Q134466525): m · Dawid Podsiadło, Jakub Galiński · Dawid Podsiadło | pr · Jakub Galiński
 - Dawid Podsiadło – Post (Q134469641): m · Dawid Podsiadło, Jakub Galiński · Dawid Podsiadło | pr · Jakub Galiński
 - Dawid Podsiadło – To co masz Ty! (Q131286836): m · Dawid Podsiadło, Jakub Galiński · 
@@ -138,10 +137,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Michał Szczygieł – Adrenalina (Q134469609): ml · Michał Szczygieł
 - Mrozu & Vito Bambino – Za Daleko (Q134435129): al · Złote bloki · 2022
 - Pezet & Auer – Dom Nad Wodą (Q134460189): m ·  · Pezet
-- Sanah – Czesława (Q134429478): m ·  · Sanah, Natalia Grosiak
-- Sanah – Eldorado (Q134469755): m · Sanah · Daria Zawiałow, Sanah
-- Sanah – Najlepszy dzień w moim życiu (Q134469605): ml · Sanah
-- Sanah – Sen we śnie (Q134429647): m ·  · Edgar Allan Poe
 - Skolim – Wyglądasz Idealnie (Q134446644): m ·  · Skolim
 - Vito Bambino – Poszło (Q134459882): ml · Vito Bambino | pr · Vito Bambino
 - Daria Zawiałow – Ballada o niej (Q134464194): m · Daria Zawiałow, Bartosz Dziedzic · Daria Zawiałow | pr · Bartosz Dziedzic
@@ -154,8 +149,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Oskar Cyms – Na niebie (Q134437284): m · Damian Skoczyk, Emilian Waluchowski, Dominic Buczkowski-Wojtaszek · Marissa, Carla Fernandes, Oskar Cyms | pr · Emilian Waluchowski, Dominic Buczkowski-Wojtaszek, Patryk Kumór
 - PRO8L3M – Nicea (Q134455935): m ·  · PRO8L3M
 - ReTo – Fluid (Q134456414): m ·  · ReTo
-- Sanah – Jestem twoją bajką (Q134466261): m · Andrzej Korzyński, Sanah, Dominic Buczkowski-Wojtaszek ·  | pr · Dominic Buczkowski-Wojtaszek, Patryk Kumór
-- Sanah – Pocałunki (Q134466216): m · Sanah · Maria Pawlikowska-Jasnorzewska
 - Vito Bambino – Etna (Q134428380): m ·  · Vito Bambino
 - Chivas – Prawie straciłem głos (Q134455444): ml · Chivas | pr · Chivas
 - Dawid Podsiadło – Pięknie płyniesz (Q133888161): ml · Dawid Podsiadło
@@ -170,8 +163,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Oskar Cyms – Cały czas (Q131754045): m · Patryk Kumór, Oskar Cyms, Emilian Waluchowski · Patryk Kumór, Damian Skoczyk, Marissa
 - Oskar Cyms – Do gwiazd (Q131749518): m · Carla Fernandes, Marissa ·  | pr · Patryk Kumór, Emilian Waluchowski, Dominic Buczkowski-Wojtaszek
 - Oskar Cyms – Nie musisz się bać (Q131782704): m · Dominic Buczkowski-Wojtaszek, Patryk Kumór, Emilian Waluchowski · 
-- Sanah – Było, minęło (Q131761084): ml · Sanah
-- Sanah – Hip hip hura! (Q131729384): m · Sanah · 
 - Sarsa – Jak w filmie (Q134464351): m · Paweł Smakulski, Sarsa · Zeus, Sarsa | pr · Paweł Smakulski
 - Sylwia Grzeszczak – Motyle (Q131729378): m · Sylwia Grzeszczak · Liber | pr · Tabb
 - Sylwia Grzeszczak – Och i ach (Q131749544): m · Sylwia Grzeszczak · Magdalena Wójcik, Liber
@@ -194,8 +185,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Mrozu & Zalia – Odpowiedni moment (Q136806032): m · Mrozu · Zalia, Mrozu | pr · Mrozu
 - Oskar Cyms – Co noc (Q134503614): m · Dominic Buczkowski-Wojtaszek, Patryk Kumór, Oskar Cyms · Oskar Cyms, Patryk Kumór | pr · Dominic Buczkowski-Wojtaszek, Patryk Kumór
 - Quebonafide – Futurama 3 (fanserwis) (Q134464221): m · Gedz · Quebonafide | pr · Gedz
-- Sanah – Dwoje ludzieńków (Q134503534): m · Sanah · Bolesław Leśmian
-- Sanah – Eviva l’arte! (Q134463720): m · Sanah · Kazimierz Przerwa-Tetmajer
 - Sobel – Cha cha (Q134503608): m ·  · Sobel
 - Sobel – Z tyłu głowy (Q134503550): m ·  · Sobel
 - Wiktor Dyduła & Kasia Sienkiewicz – Nie mówię tak, nie mówię nie (Q135012629): ml · Wiktor Dyduła
@@ -968,7 +957,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - a-ha – Lifelines (Q384492): pr · Stephen Hague, Martin Landquist
 - t.A.T.u. – All The Things She Said (Q654353): m ·  · Sergio Galoyan, Trevor Horn, Elena Kiper | pr · Trevor Horn
 - Alicia Keys – If I Ain't Got You (Q256085): m ·  · Alicia Keys | pr · Alicia Keys
-- Black Eyed Peas – Where Is the Love? (Q1460758): m ·  · apl.de.ap | pr · will.i.am
+- The Black Eyed Peas – Where Is the Love? (Q1460758): m ·  · apl.de.ap | pr · will.i.am
 - Blur – Out of Time (Q2616166): pr · Ben Hillier
 - Céline Dion – Tout l’or des hommes (Q3276964): pr · Erick Benzi
 - Dido – Life for Rent (Q2463838): ml · Dido | al · Life for Rent · 2003 | pr · Dido
@@ -1086,7 +1075,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Rihanna – Disturbia (Q853621): m ·  · Rihanna | al · Good Girl Gone Bad · 2007 | pr · Brian Kennedy
 - The Killers – Human (Q919463): m ·  · Brandon Flowers | al · Day & Age · 2008 | pr · Stuart Price
 - Alicia Keys – Empire State of Mind (Part II) Broken Down (Q2713322): m ·  · Alicia Keys | al · The Element of Freedom · 2009
-- Black Eyed Peas – Meet Me Halfway (Q957341): pr · will.i.am
+- The Black Eyed Peas – Meet Me Halfway (Q957341): pr · will.i.am
 - David Guetta & Kelly Rowland – When Love Takes Over (Q540744): al · One Love · 2009 | pr · David Guetta
 - Depeche Mode – Wrong (Q2555136): ml · Martin Gore | pr · Ben Hillier
 - Flo Rida – Right Round (Q2005943): m ·  · Bruno Mars
@@ -1115,6 +1104,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The xx – Intro (Q18795343): al · xx · 2009
 - Tiësto & Nelly Furtado – Who Wants to Be Alone (Q2742811): m ·  · Nelly Furtado
 - Yeah Yeah Yeahs – Heads Will Roll (Q3115869): m ·  · Nick Zinner | pr · Nick Launay
+- The Black Eyed Peas – I Gotta Feeling (Q778849): m ·  · David Guetta | al · The E.N.D · 2009 | pr · David Guetta
 - Alexandra Stan – Mr. Saxobeat (Q1508133): al · Saxobeats · 2009
 - Armin van Buuren – Not Giving Up on Love (Q2437008): m ·  · Sophie Ellis-Bextor | pr · Armin van Buuren
 - B.o.B & Bruno Mars – Nothin' on You (Q1123388): m · Bruno Mars, B.o.B, Philip Lawrence · Bruno Mars | al · B.o.B Presents: The Adventures of Bobby Ray · 2010
@@ -1178,12 +1168,12 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Disclosure & Sam Smith – Latch (Q6495132): pr · Disclosure
 - Emeli Sandé – Next To Me (Q2061188): m ·  · Emeli Sandé
 - Flo Rida – Whistle (Q1781150): m ·  · Flo Rida | pr · DJ Frank E
-- Icona Pop & Charli xcx – I Love It (Q3273659): m ·  · Charli XCX | al · This Is... Icona Pop · 2013
+- Icona Pop & Charli XCX – I Love It (Q3273659): m ·  · Charli XCX | al · This Is... Icona Pop · 2013
 - Jessie Ware – Wildest Moments (Q13622722): m · Jessie Ware, Kid Harpoon · 
 - Labrinth & Emeli Sandé – Beneath Your Beautiful (Q4845187): m ·  · Labrinth
 - Lana Del Rey – Born To Die (Q577442): m ·  · Lana Del Rey | al · Born to Die · 2012 | pr · Emile Haynie
 - Lana Del Rey – Summertime Sadness (Q951715): m · Rick Nowels · Lana Del Rey, Rick Nowels | al · Born to Die · 2012
-- Macklemore & Ryan Lewis & Macklemore – Thrift Shop (Q3196791): m ·  · Macklemore | pr · Ryan Lewis
+- Macklemore & Ryan Lewis – Thrift Shop (Q3196791): m ·  · Macklemore | pr · Ryan Lewis
 - Mumford & Sons – I Will Wait (Q5979848): al · Babel · 2012 | pr · Markus Dravs
 - Nicki Minaj – Starships (Q903409): m ·  · RedOne | al · Pink Friday: Roman Reloaded · 2012 | pr · Rami Yacoub
 - Pitbull – Back in Time (Q2702607): m ·  · Pitbull
@@ -1427,6 +1417,12 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - OneRepublic – Run (Q106764553): m ·  · Ryan Tedder | pr · Ryan Tedder
 - The Kid Laroi & Justin Bieber – Stay (Q107439752): m ·  · Charlie Puth, Justin Bieber, The Kid Laroi | al · F*ck Love 3: Over You · 2021 | pr · Cashmere Cat
 - Tix – Fallen Angel (Q105282769): ml · Tix
+- Måneskin – MAMMAMIA (Q108833231): ml · Måneskin | pr · Måneskin, Fabrizio Ferraguzzo
+- Måneskin – CORALINE (Q107366467): al · Teatro d'ira: Vol. I · 2021
+- Olivia Rodrigo – jealousy, jealousy (Q107193262): ml · Olivia Rodrigo, Casey Smith, Dan Nigro | al · Sour · 2021 | pr · Dan Nigro, Jam City
+- Taylor Swift – Wildest Dreams (Taylor's Version) (Q20882673): m ·  · Shellback, Max Martin, Taylor Swift | pr · Shellback, Max Martin
+- Beyoncé – Be Alive (Q108830589): pr · Beyoncé
+- Billie Eilish – Your Power (Q106646142): m ·  · Finneas O'Connell, Billie Eilish | al · Happier Than Ever · 2021 | pr · Finneas O'Connell
 - Bad Bunny & Chencho Corleone – Me Porto Bonito (Q112161024): m ·  · Bad Bunny | al · Un verano sin ti · 2022
 - David Guetta & Bebe Rexha – I'm Good (Blue) (Q113680812): m · Maurizio Lobina, Gianfranco Randone, Bebe Rexha · Kamille, Bebe Rexha | pr · David Guetta, Timofey Reznikov | bo · Blue · 1998
 - Harry Styles – As It Was (Q111397510): m ·  · Harry Styles, Kid Harpoon, Tyler Johnson | al · Harry's House · 2022 | pr · Kid Harpoon
@@ -1446,6 +1442,16 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Sam Smith & Kim Petras – Unholy (Q113876065): al · Gloria · 2023
 - Sigala – Melody (Q113494972): pr · Sigala
 - Zach Bryan – Something in the Orange (Q112317018): pr · Ryan Hadlock
+- Bastille – Shut Off The Lights (Q110726473): al · Give Me the Future · 2022
+- Calvin Harris & Justin Timberlake – Stay With Me (Q113318846): al · Funk Wav Bounces Vol. 2 · 2022
+- Gorillaz & Thundercat – Cracker Island (Q115811537): al · Cracker Island · 2023
+- Harry Styles – Music For a Sushi Restaurant (Q112839296): m ·  · Harry Styles | al · Harry's House · 2022
+- Harry Styles – Late Night Talking (Q112075432): m ·  · Harry Styles | al · Harry's House · 2022
+- Lady Gaga – Hold My Hand (Q111784795): pr · Lady Gaga
+- Purple Disco Machine & Sophie and the Giants – In The Dark (Q110663666): pr · Purple Disco Machine
+- Tove Lo – How Long (Q112701669): m ·  · Tove Lo
+- Sabrina Carpenter – Nonsense (Q116453699): al · Emails I Can't Send · 2022
+- Rihanna – Lift Me Up (Q114878437): pr · Ludwig Göransson
 - Billie Eilish – What Was I Made For? (Q120638205): m ·  · Finneas O'Connell, Billie Eilish | al · Barbie: The Album · 2023 | pr · Mark Ronson, Andrew Wyatt, Finneas O'Connell
 - David Kushner – Daylight (Q118316199): m ·  · David Kushner
 - Doja Cat – Paint The Town Red (Q121167968): m · Burt Bacharach, Hal David · Doja Cat | al · Scarlet · 2023
@@ -1470,6 +1476,14 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Travis Scott & Playboi Carti – FE!N (Q121591466): m ·  · Playboi Carti, Travis Scott
 - Tyla – Water (Q123169436): al · Tyla · 2024
 - Zach Bryan & Kacey Musgraves – I Remember Everything (Q121972390): al · Zach Bryan · 2023 | pr · Zach Bryan
+- Linkin Park – Lost (Q116764603): pr · Linkin Park, Don Gilmore
+- Linkin Park – Fighting Myself (Q118347223): pr · Don Gilmore, Linkin Park
+- Måneskin – HONEY (ARE U COMING?) (Q122169437): pr · Rami Yacoub
+- The Rolling Stones – Angry (Q122285084): m · Jagger/Richards, Andrew Watt · 
+- The Rolling Stones – Mess It Up (Q124060444): pr · Andrew Watt
+- Olivia Rodrigo – bad idea right? (Q121289849): m ·  · Olivia Rodrigo | al · Guts · 2023 | pr · Dan Nigro
+- Olivia Rodrigo – Can’t Catch Me Now (Q123313708): m ·  · Dan Nigro | al · Music From & Inspired by The Hunger Games: The Ballad of Songbirds & Snakes · 2023 | pr · Dan Nigro
+- Kylie Minogue – Padam Padam (Q118534203): m ·  · Ina Wroldsen, Lostboy | pr · Lostboy
 - Alyona Alyona & Jerry Heil – Teresa & Maria (Q124413120): ml · Ivan Klymenko
 - Angelina Mango – La noia (Q124444683): ml · Madame, Dardust | al · Poké melodrama · 2024 | pr · Dardust
 - Ariana Grande – we can't be friends (wait for your love) (Q124739632): m · Ariana Grande, Max Martin · Ariana Grande | al · Eternal Sunshine · 2024 | pr · Ariana Grande, Max Martin
@@ -1490,6 +1504,9 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Slimane – Mon amour (Q123369676): m ·  · Slimane
 - Tommy Richman – MILLION DOLLAR BABY (Q125743792): m ·  · Tommy Richman
 - Zach Bryan – Pink Skies (Q126370159): m ·  · Zach Bryan | al · The Great American Bar Scene · 2024 | pr · Zach Bryan
+- Linkin Park – The Emptiness Machine (Q130243069): m · Colin Brittain, Joseph Hahn, Brad Delson · 
+- Linkin Park – Heavy Is the Crown (Q130359769): m ·  · Colin Brittain, Mike Elizondo, Joseph Hahn
+- Charli XCX – Apple (Q128117967): al · Brat · 2024 | pr · A.G. Cook
 - Alex Warren – Ordinary (Q132746150): m ·  · Alex Warren | al · You'll Be Alright, Kid · 2024
 - Benson Boone – Mystical Magical (Q134384883): al · American Heart · 2025
 - Ed Sheeran – Azizam (Q133457122): al · Play · 2025 | pr · Ed Sheeran, Johnny McDaid
@@ -1574,7 +1591,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Wojciech Gąssowski (Q9376515): bp · Warszawa · 1943
 - wykonawca Seweryn Krajewski (Q719489): bp · Nowa Sól · 1947
 - wykonawca Tadeusz Nalepa (Q721006): bp · Zgłobień · 1943
-- wykonawca Kazik Staszewski (Q240018): bn · Kazimierz Piotr Staszewski | bp · Warszawa · 1963
 - wykonawca Edyta Geppert (Q467456): bp · Nowa Ruda · 1953
 - wykonawca Majka Jeżowska (Q55736): bp · Nowy Sącz · 1960
 - wykonawca Lech Janerka (Q638931): bp · Wrocław · 1953
@@ -1627,7 +1643,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca O.S.T.R. (Q1931736): bn · Adam Andrzej Ostrowski | bp · Łódź · 1980
 - wykonawca Fisz (Q1362691): bp · Warszawa · 1978
 - wykonawca Mezo (Q11778157): bp · Poznań · 1982
-- wykonawca Noon (Q3502993): bp · Warszawa · 1979
 - wykonawca Piotr Bukartyk (Q11817341): bp · Zielona Góra · 1964
 - wykonawca Tede (Q7694132): bn · Jacek Maciej Szymon Graniecki | bp · Warszawa · 1976
 - wykonawca Jan Kaczmarek (Q11717864): bp · Lwówek · 1945
@@ -1695,7 +1710,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Marcin Sójka (Q61944232): bp · Siedlce · 1987
 - wykonawca Taco Hemingway (Q9383157): bp · Kair · 1990
 - wykonawca Viki Gabor (Q69349910): bn · Wiktoria Genowefa Gabor | bp · Hamburg · 2007
-- wykonawca Schafter (Q66838242): bp · Racibórz · 2003
 - wykonawca Monika Lewczuk (Q6900207): bp · Łomża · 1988
 - wykonawca Grzegorz Hyży (Q16729472): bp · Gniezno · 1987
 - wykonawca Sarsa (Q20925336): bn · Marta Markiewicz | bp · Słupsk · 1989
@@ -1760,7 +1774,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Carla Fernandes (Q125658005): bp · Londyn · 2003
 - wykonawca Fagata (Q116453028): bp · Konin · 2000
 - wykonawca Zalia (Q131754383): bp · Warszawa · 2000
-- wykonawca Sanah (Q85868033): bn · Zuzanna Irena Jurczak | bp · Warszawa · 1997
 - wykonawca ReTo (Q9134374): bp · Piastów · 1995
 - wykonawca Kubi Producent (Q60832624): bp · Wadowice · 2000
 - wykonawca Michał Szczygieł (Q55392507): bp · Nowa Wieś · 1999
@@ -2745,7 +2758,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Arcade Fire (Q58608): fp · Montreal · 2001
 - wykonawca Stereophonics (Q28963): fp · Cwmaman · 1992
 - wykonawca Arctic Monkeys (Q170599): fp · Sheffield · 2002
-- wykonawca Black Eyed Peas (Q134541): fp · Los Angeles · 1995
 - wykonawca The Darkness (Q421794): fp · Lowestoft · 2000
 - wykonawca Gossip (Q12831): fp · Olympia · 1999
 - wykonawca Katy Perry (Q42493): bn · Katheryn Elizabeth Hudson | bp · Santa Barbara · 1984

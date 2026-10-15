@@ -13,12 +13,14 @@ const MAP = {
   'Black Eyed Peas': 'The Black Eyed Peas', 'MIKA': 'Mika', 'Empire Of The Sun': 'Empire of the Sun',
   'Sunstroke Project': 'SunStroke Project', 'Charli xcx': 'Charli XCX', 'felix jaehn': 'Felix Jaehn', 'Zayn': 'ZAYN',
   'Keiino': 'KEiiNO', 'THE ROOP': 'The Roop', 'the Roop': 'The Roop', 'Twocolors': 'twocolors', 'Katseye': 'KATSEYE',
+  'Noon': 'NOON', 'przyłu': 'Przyłu', 'Schafter': 'schafter', 'Oki': 'OKI', 'Marketa Irglova': 'Markéta Irglová',
+  'Panic! At The Disco': 'Panic! at the Disco', 'Abradab / GrubSon': 'Abradab & Grubson', 'SMOLIK / KEV FOX': 'Smolik & Kev Fox',
   'Kool & the Gang': 'Kool & The Gang', 'Katrina & the Waves': 'Katrina & The Waves',
   // ten sam wykonawca pod różnymi nazwami
   'Niemen': 'Czesław Niemen', 'Soyka': 'Stanisław Soyka', 'Kazik Staszewski': 'Kazik', 'Anna Rusowicz': 'Ania Rusowicz',
   'Dwa plus Jeden': '2 plus 1', 'Banda i Wanda': 'Wanda i Banda', 'Grzegorz Z Ciechowa': 'Grzegorz z Ciechowa',
   // brakujące polskie znaki
-  'Andrzej Dabrowski': 'Andrzej Dąbrowski', 'Antonina Krzyszton': 'Antonina Krzysztoń', 'Bohdan Lazuka': 'Bohdan Łazuka',
+  'Andrzej Dabrowski': 'Andrzej Dąbrowski', 'Emilian Kaminski': 'Emilian Kamiński', 'Miro Kepinski': 'Miro Kępiński', 'Antonina Krzyszton': 'Antonina Krzysztoń', 'Bohdan Lazuka': 'Bohdan Łazuka',
   'Dorota Miskiewicz': 'Dorota Miśkiewicz', 'Dzamble': 'Dżamble', 'Elzbieta Wojnowska': 'Elżbieta Wojnowska',
   'Formacja Niezywych Schabuff': 'Formacja Nieżywych Schabuff', 'Halina Frackowiak': 'Halina Frąckowiak',
   'Jacek Bonczyk': 'Jacek Bończyk', 'Jan Kanty Pawluskiewicz': 'Jan Kanty Pawluśkiewicz', 'Janusz Iwanski': 'Janusz Iwański',

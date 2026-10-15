@@ -558,3 +558,13 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   „Z każdym twym oddechem”, „Życie jak wino”).
 - iPhone i iPad: na ekranie startowym jest przycisk „Zainstaluj Songstera na tym urządzeniu” – w Safari pokazuje,
   jak dodać grę do ekranu początkowego.
+
+## 5.25.0 – 15.10.2026 (`HASH`)
+
+- **1110 nowych piosenek** z playlisty „spokojnie panowie” – polskie i zagraniczne przeboje, rap, muzyka z filmów
+  i bajek (także polskie wersje piosenek z filmów Disneya). Lata sprawdzone: zgodne w co najmniej dwóch bazach
+  (Spotify, MusicBrainz, Discogs) albo potwierdzone w Wikipedii; 9 piosenek bez pewnej daty nie zostało dodanych.
+- 117 nowych piosenek z filmów, seriali i gier ma ciekawostkę, w czym zabrzmiały, i należy do muzyki filmowej.
+- Nowe piosenki z polskich preselekcji do Eurowizji są w zestawie Eurowizja (np. Chrust – „Tempo”).
+- Oznaczenia piosenek niecenzuralnych dla nowych piosenek (z Deezer i ze znacznika Spotify).
+- Kolejne poprawki zapisu wykonawców i polskich znaków w tytułach (np. „Zaopiekuj się mną”, „Się ściemnia”).

@@ -58,7 +58,8 @@ for (const s of SONGS) {
 writeFileSync(cacheFile, JSON.stringify(cache));
 console.log(`\nznalezione w Deezer: ${found}/${SONGS.length}, niecenzuralne: ${explicit}`);
 
-// zapis: pole ex: 1 w wierszach songs.js (po polu y, bez zmiany reszty wiersza)
+// zapis: pole ex: 1 w wierszach songs.js (po polu y, bez zmiany reszty wiersza); istniejących oznaczeń nie usuwamy –
+// mogą pochodzić z innego źródła (np. znacznik „Explicit” z eksportu playlisty Spotify)
 const lines = src.split('\n');
 const keyOf = (line) => {
   const a = line.match(/\ba: "((?:[^"\\]|\\.)*)"/);
@@ -71,7 +72,6 @@ for (let i = 0; i < lines.length; i++) {
   if (!k) continue;
   const has = /\bex: 1\b/.test(lines[i]);
   if (flagged.has(k) && !has) { lines[i] = lines[i].replace(/(\by: \d+,)/, '$1 ex: 1,'); changed += 1; }
-  if (!flagged.has(k) && has) { lines[i] = lines[i].replace(/ ex: 1,/, ''); changed += 1; }
 }
 src = lines.join('\n');
 writeFileSync(songsFile, src);
