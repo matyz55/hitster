@@ -151,6 +151,10 @@ npm run lint                      # sprawdzanie kodu (ESLint)
 
 Testy uruchamiają się automatycznie na GitHubie przy każdej zmianie (`.github/workflows/test.yml`).
 
+**Sprawdzanie bazy**: `node tools/check-previews.mjs --limit 150` sprawdza porcję piosenek w iTunes (najdawniej
+sprawdzane najpierw, z limitem zapytań) i zapisuje raport piosenek bez fragmentu w [PREVIEW-REPORT.md](PREVIEW-REPORT.md).
+Na GitHubie robi to codziennie `.github/workflows/check-previews.yml` (harmonogram działa na domyślnej gałęzi repozytorium).
+
 ## Jak uruchomić lokalnie
 
 To statyczna strona – bez instalacji i bez budowania.
