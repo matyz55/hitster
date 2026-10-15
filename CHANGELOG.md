@@ -526,7 +526,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Nowe rodzaje ciekawostek: występ w preselekcjach do Eurowizji (z rokiem i miejscem) oraz film/serial/gra, w którym
   piosenka zabrzmiała (m.in. ze ścieżek dźwiękowych filmów w Wikidata).
 
-## 5.24.0 – 15.10.2026 (`HASH`)
+## 5.24.0 – 15.10.2026 (`0e121c1`)
 
 - **Nowe tryby**: „Kto za tym stoi?” (kompozytor, autor tekstu, producent), „Okładka z mgły” (zgadywanie po
   rozmywanej okładce), „Krzywe zwierciadło” (piosenka puszczona od tyłu albo zniekształcona), „Mikser” (dwie piosenki
