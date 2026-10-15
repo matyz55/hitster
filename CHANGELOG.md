@@ -483,7 +483,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Poprawiona data piosenki „Tak mi źle – Tylko wróć” (Wojciech Gąssowski): 1966 zamiast 2015. Piosenka pochodzi
   z serialu „Wojna domowa” (odcinek „Młode talenty”, 1966); 2015 to rok późniejszej składanki.
 
-## 5.22.0 – 15.10.2026 (`HASH`)
+## 5.22.0 – 15.10.2026 (`57e46ce`)
 
 - **Więcej ciekawostek** po odkryciu karty – z Wikidata, z dokładnymi danymi: kompozytor i autor tekstu, film lub serial,
   w którym piosenka zabrzmiała (z rokiem), album z rokiem wydania, producent nagrania, utwór, na którym piosenka jest
