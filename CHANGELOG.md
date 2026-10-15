@@ -378,7 +378,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   telefonu + 80 ms, najwyżej 0,6 s) i wygrywa to, które po odjęciu opóźnienia sieci danego telefonu było najwcześniejsze.
   Bez telefonów zgłoszenie działa od razu.
 
-## 5.11.0 – 15.10.2026 (`HASH`)
+## 5.11.0 – 15.10.2026 (`aa619fb`)
 
 - Cztery nowe tryby w grupie **Quizy** (dla jednej osoby i w multiplayerze):
   - **📅 Rok co do roku** – wpisujesz rok wydania; dokładnie – 3 pkt, do 2 lat różnicy – 1 pkt
