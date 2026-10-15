@@ -685,6 +685,7 @@ function handleRemote(msg, from) {
         state.phase = 'challenge';
         state.challenger = who;
         state.players[who].tokens -= 1;
+        if (state.challengeMode === 'all') state.challenges.push({ i: who, slot: null });
         render();
       } else b.click();
     }
@@ -692,8 +693,13 @@ function handleRemote(msg, from) {
   // miejsce na osi z telefonu: tylko gracz z turą, a przy wyzwaniu – tylko wyzywający
   if (msg.slot != null && remoteSlotsAllowed()) {
     const who = from && from.role === 'player' ? playerIndexOf(from.name) : null;
-    const expected = state.phase === 'challenge' ? state.challenger : state.turn;
-    if (who === null || who === expected) onSlotClick(msg.slot);
+    if (state.phase === 'challenge' && state.challengeMode === 'all' && who !== null) {
+      // każdy wyzywający wskazuje miejsce na swoim telefonie niezależnie od innych
+      if (state.challenges.some((x) => x.i === who)) { state.challenger = who; onSlotClick(msg.slot); }
+    } else {
+      const expected = state.phase === 'challenge' ? state.challenger : state.turn;
+      if (who === null || who === expected) onSlotClick(msg.slot);
+    }
   }
   // Bingo: pole zaznaczone na telefonie gracza
   if (msg.bingoPick != null && from && state.mode === 'bingo') { const i = playerIndexOf(from.name); if (i >= 0) bingoPick(i, msg.bingoPick); }
@@ -737,7 +743,8 @@ function controlNames() {
 const controlPhone = () => [...remotes].find((r) => r.role === 'player' && r.name && controlNames().includes(r.name));
 // wybór miejsca na osi z innego urządzenia: gracz w swojej turze albo wyzywający (wariant „inne miejsce”)
 const remoteSlotsAllowed = () => isTimeline() && !!state.current
-  && (['listen', 'placed'].includes(state.phase) || (state.phase === 'challenge' && state.challenger != null && state.challengeMode === 'place'));
+  && (['listen', 'placed'].includes(state.phase) || (state.phase === 'challenge' && (state.challengeMode === 'all'
+    ? state.challenges.length > 0 : state.challenger != null && state.challengeMode === 'place')));
 // czy jest podłączone okno dużego ekranu na tym urządzeniu
 let tvWindowSeen = false;
 // wybrane opcje rozgrywki – czytane z widocznych pól ekranu ustawień (pokazywane na dużym ekranie)
@@ -860,6 +867,9 @@ function tvSync() {
       // drużyny: do której drużyny należy gracz z telefonem
       teamOf: state.mode === 'teams' || state.coop ? Object.fromEntries(state.players.flatMap((pl) => (pl.members || []).map((m) => [m, pl.name]))) : null,
       challenger: state.challenger != null ? state.players[state.challenger].name : null,
+      // wyzwanie „wszyscy naraz”: kto już rzucił wyzwanie (każdy może wskazać miejsce na swoim telefonie)
+      challengers: state.challengeMode === 'all' && state.phase === 'challenge' ? state.challenges.map((x) => state.players[x.i].name) : [],
+      challengeAll: state.challengeMode === 'all',
       slots: remoteSlotsAllowed(),
       // pasek kroków (Melodia krok po kroku): 1 s · 2 s · 4 s · 8 s
       steps: state.mode === 'steps' && state.current ? { current: state.step, items: STEPS.map((x) => ({ len: x.len, pts: x.pts })) } : null,
@@ -890,7 +900,9 @@ function tvSync() {
         if (choosing) {
           tl.slot = state.slot;
           tl.slotLabel = state.mode === 'solo' ? T('tutaj') : p.name;
-          if (challenger && state.challengeSlot != null) { tl.challengeSlot = state.challengeSlot; tl.challengeLabel = challenger.name; }
+          if (state.challengeMode === 'all') {
+            tl.challenges = state.challenges.filter((x) => x.slot != null).map((x) => ({ slot: x.slot, label: state.players[x.i].name }));
+          } else if (challenger && state.challengeSlot != null) { tl.challengeSlot = state.challengeSlot; tl.challengeLabel = challenger.name; }
         } else if (revealed && state.marks) {
           tl.marks = { slot: state.marks.slot, correct: state.marks.correct, challengeSlot: state.marks.challengeSlot,
             who: state.mode === 'solo' ? T('Twój wybór') : p.name, challenger: challenger ? challenger.name : '', year: state.current.y };
@@ -1525,7 +1537,9 @@ function updateModeOptions() {
     : '';
   $('#challenge-desc').textContent = filterState.challenge === 'year'
     ? T('Pretendent wpisuje rok wydania. Jeśli trafi co do roku – zabiera kartę, niezależnie od tego, czy gracz ułożył ją dobrze.')
-    : T('Pretendent wskazuje inne miejsce na osi gracza. Jeśli gracz się pomyli, a pretendent trafi – zabiera kartę.');
+    : filterState.challenge === 'all'
+      ? T('Wyzwanie może rzucić kilka osób naraz (każda płaci 1 żeton) – każda wskazuje swoje miejsce. Jeśli gracz się pomyli, kartę zabiera ta, która pierwsza wskazała dobre miejsce.')
+      : T('Pretendent wskazuje inne miejsce na osi gracza. Jeśli gracz się pomyli, a pretendent trafi – zabiera kartę.');
 }
 $('#show-all').checked = filterState.showAll;
 $('#show-all').addEventListener('change', (e) => { filterState.showAll = e.target.checked; saveFilters(); });
@@ -1998,7 +2012,7 @@ function dealStartYears(pool) {
 async function startTurn() {
   stopAudio();
   Object.assign(state, {
-    phase: 'listen', slot: null, challenger: null, challengeSlot: null, challengeYear: null, awarded: false,
+    phase: 'listen', slot: null, challenger: null, challengeSlot: null, challengeYear: null, awarded: false, challenges: [],
     current: null, preview: null, marks: null, special: null, swapOffer: false, hiloLost: false, skipped: false, heard: false,
     buzz: state.mode === 'buzz' ? { answering: null, locked: new Set() } : null,
   });
@@ -2156,6 +2170,9 @@ function onSlotClick(i) {
     state.phase = 'placed';
   } else if (state.phase === 'challenge' && state.challenger != null && i !== state.slot) {
     state.challengeSlot = i;
+    // wyzwanie „wszyscy naraz”: miejsce zapisujemy przy wyzywającym (liczy się kolejność wskazania)
+    const e = state.challengeMode === 'all' && state.challenges.find((x) => x.i === state.challenger);
+    if (e) { e.slot = i; e.at = Date.now(); }
   }
   render();
 }
@@ -2181,6 +2198,12 @@ function revealTimeline() {
   const expertOk = state.expert.every((part) => answers[part].ok);
   const ok = placedOk && expertOk;
   const yearMode = state.challengeMode === 'year' && state.challenger != null;
+  // wszyscy naraz: wygrywa pierwszy (wg chwili wskazania), kto trafił – gdy gracz z turą się pomylił
+  if (state.challengeMode === 'all' && state.challenges.length) {
+    const hits = state.challenges.filter((x) => x.slot != null && placeIsCorrect(p.timeline, x.slot, song.y)).sort((a, b) => a.at - b.at);
+    state.challenger = hits.length ? hits[0].i : state.challenges[0].i;
+    state.challengeSlot = hits.length ? hits[0].slot : null;
+  }
   const challengeOk = state.challenger != null && (yearMode
     ? state.challengeYear === song.y
     : state.challengeSlot != null && placeIsCorrect(p.timeline, state.challengeSlot, song.y));
@@ -2243,7 +2266,11 @@ function revealTimeline() {
   state.history.push({ song, preview: state.preview, player: p.name, ok: ok || challengeOk, note });
   recordAnswer(song, ok);
   fx(ok ? 'good' : 'bad');
-  showReveal(verdict, specialLine, ...expertLines, tokenLine, yearInfo);
+  const allLines = state.challengeMode === 'all' ? state.challenges.map((x) => {
+    const hit = x.slot != null && placeIsCorrect(p.timeline, x.slot, song.y);
+    return el('div', { class: 'verdict small-verdict ' + (hit ? 'ok' : 'bad') }, `⚔ ${state.players[x.i].name}: ${x.slot == null ? T('bez wskazania') : (hit ? T('trafione') : T('pudło'))}`);
+  }) : [];
+  showReveal(verdict, specialLine, ...expertLines, tokenLine, yearInfo, ...allLines);
 }
 
 // ciekawostki o piosence (pole f z songs.js) – najwyżej dwie
@@ -3471,7 +3498,10 @@ function renderTimeline(container, timeline, interactive, marks) {
       // przy jednej karcie na osi same plusy bywają mylące – podpisujemy kierunek
       if (timeline.length === 1) { cls += ' labeled'; label = i === 0 ? T('＋ Wcześniej') : T('＋ Później'); }
       if (state.slot === i) { cls += ' chosen'; label = state.mode === 'solo' ? T('tutaj') : activePlayer().name; }
-      if (state.challengeSlot === i) { cls += ' challenge'; label = state.players[state.challenger].name; }
+      if (state.challengeMode === 'all' && state.phase === 'challenge') {
+        const here = state.challenges.filter((x) => x.slot === i).map((x) => state.players[x.i].name);
+        if (here.length) { cls += ' challenge'; label = here.join(', '); }
+      } else if (state.challengeSlot === i) { cls += ' challenge'; label = state.players[state.challenger].name; }
       const disabled = !state.current
         || (state.phase === 'challenge' && (state.challenger == null || i === state.slot || state.challengeMode === 'year'));
       items.push(el('button', {
@@ -3533,6 +3563,17 @@ function renderActions() {
       title: T('Za 3 żetony odtwarzana piosenka trafia od razu na właściwe miejsce Twojej osi'),
       onclick: buyCard,
     }, T('Kup tę kartę ({0} żetony)', BUY_COST)));
+  } else if (state.phase === 'challenge' && state.challengeMode === 'all') {
+    // wszyscy naraz: kolejni wyzywający dołączają (1 żeton), każdy wskazuje swoje miejsce
+    state.players.forEach((pl, i) => {
+      if (i !== state.turn && pl.tokens >= 1 && !state.challenges.some((x) => x.i === i)) {
+        btns.push(el('button', { class: 'gold', onclick: () => {
+          pl.tokens -= 1; state.challenges.push({ i, slot: null }); state.challenger = i; state.challengeSlot = null; render();
+        } }, pl.name));
+      }
+    });
+    btns.push(el('button', { class: 'primary', disabled: !state.challenges.some((x) => x.slot != null), onclick: revealTimeline }, T('✔ Odkryj kartę')));
+    if (!state.challenges.length) btns.push(el('button', { class: 'ghost', onclick: () => { state.phase = 'placed'; render(); } }, T('Anuluj')));
   } else if (state.phase === 'challenge') {
     if (state.challenger == null) {
       state.players.forEach((pl, i) => {

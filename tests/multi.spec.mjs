@@ -186,3 +186,32 @@ test('bingo: plansze 3×3, trafione pole skreślone, trzy w linii kończą grę'
   await page.click('#actions button.primary');
   await expect(page.locator('#winner-title')).toContainText('BINGO');
 });
+
+test('wyzwanie „wszyscy naraz”: kartę bierze pierwszy, kto trafił', async ({ page }) => {
+  await lobby(page, 3);
+  await page.click('.mode[data-mode=multi]');
+  await page.check('input[name=challenge][value=all]');
+  await page.click('#btn-start');
+  await ready(page);
+  const info = await page.evaluate(() => {
+    const tl = activePlayer().timeline;
+    tl.push({ y: 1950, t: 'X', a: 'Y' }, { y: 2020, t: 'Z', a: 'W' });
+    tl.sort((a, b) => a.y - b.y);
+    render();
+    const good = correctSlot(tl, state.current.y);
+    const bad = [0, 1, 2, 3].filter((i) => !placeIsCorrect(tl, i, state.current.y));
+    return { good, bad, turn: state.turn };
+  });
+  test.skip(info.bad.length < 2, 'za mało złych miejsc w tym rozdaniu');
+  await page.evaluate((b) => onSlotClick(b), info.bad[0]);
+  await page.click('#actions button.gold'); // ⚔ Wyzwanie
+  // dwóch wyzywających: pierwszy pudłuje, drugi trafia
+  const others = await page.evaluate((t) => state.players.map((p, i) => i).filter((i) => i !== t), info.turn);
+  await page.evaluate(([i]) => { state.players[i].tokens -= 1; state.challenges.push({ i, slot: null }); state.challenger = i; }, [others[0]]);
+  await page.evaluate((b) => onSlotClick(b), info.bad[1]);
+  await page.evaluate(([i]) => { state.players[i].tokens -= 1; state.challenges.push({ i, slot: null }); state.challenger = i; }, [others[1]]);
+  await page.evaluate((g) => onSlotClick(g), info.good);
+  await page.evaluate(() => revealTimeline());
+  expect(await page.evaluate((i) => state.players[i].timeline.length, others[1])).toBe(2);
+  expect(await page.evaluate((i) => state.players[i].timeline.length, others[0])).toBe(1);
+});

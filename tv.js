@@ -49,7 +49,7 @@ const mystery = (who, ch) => h('div', 'card mystery' + (ch ? ' ch' : ''), h('div
 function rowItems(t, pick) {
   const items = [];
   for (let i = 0; i <= t.cards.length; i++) {
-    if (pick && t.slot !== i && t.challengeSlot !== i) {
+    if (pick && t.slot !== i && t.challengeSlot !== i && !(t.challenges || []).some((c) => c.slot === i)) {
       const gap = h('button', 'gap', '+');
       gap.setAttribute('aria-label', T('Miejsce {0}', i + 1));
       gap.addEventListener('click', () => send({ slot: i }));
@@ -57,6 +57,7 @@ function rowItems(t, pick) {
     }
     if (t.slot === i) items.push(mystery(t.slotLabel));
     if (t.challengeSlot === i) items.push(mystery(t.challengeLabel, true));
+    for (const c of t.challenges || []) if (c.slot === i) items.push(mystery(c.label, true));
     if (t.marks) {
       if (t.marks.slot === i) items.push(h('div', 'mark bad', `✘ ${t.marks.who}`));
       if (t.marks.challengeSlot === i) items.push(h('div', 'mark challenge', `✘ ${t.marks.challenger}`));
@@ -82,7 +83,8 @@ function toast(text) {
 // czy ten gracz ma teraz turę: w drużynach odpowiada wskazany członek (albo telefon z nazwą drużyny)
 const turnIsMine = (s) => !!me && (s.turnWho ? (s.turnWho === me || s.turnName === me) : myIds(s).includes(s.turnName));
 // czy ten telefon gracza może teraz działać: jego tura albo jego wyzwanie
-const myTurn = (s) => PLAYER && !!me && (turnIsMine(s) || (!!s.challenger && myIds(s).includes(s.challenger)));
+const myTurn = (s) => PLAYER && !!me && (turnIsMine(s) || (!!s.challenger && myIds(s).includes(s.challenger))
+  || (s.challengers || []).some((n) => myIds(s).includes(n)));
 const inGame = (s) => !!me && ((s.players || []).includes(me) || !!(s.teamOf && s.teamOf[me]));
 // lista graczy w lobby (multiplayer) – albo, gdy jej nie ma, lista z ustawień gry
 const lobbyNames = (s) => (s && s.lobby ? s.lobby.names : (s && s.setup ? s.setup.names : []));
@@ -383,6 +385,7 @@ function vTimeline(t, pick, title) {
   for (let i = 0; i <= t.cards.length; i++) {
     if (t.slot === i) box.append(h('div', 'vrow vmys', h('span', 'q', '?'), h('span', '', t.slotLabel)));
     if (t.challengeSlot === i) box.append(h('div', 'vrow vmys ch', h('span', 'q', '?'), h('span', '', t.challengeLabel)));
+    for (const c of t.challenges || []) if (c.slot === i) box.append(h('div', 'vrow vmys ch', h('span', 'q', '?'), h('span', '', c.label)));
     if (t.marks) {
       if (t.marks.slot === i) box.append(h('div', 'vrow vmark bad', `✘ ${t.marks.who}`));
       if (t.marks.challengeSlot === i) box.append(h('div', 'vrow vmark challenge', `✘ ${t.marks.challenger}`));
@@ -447,6 +450,8 @@ function renderPlayer(s) {
   // (tylko w osi czasu z wyzwaniami – w pozostałych trybach poza swoją turą nie ma czego klikać)
   const tableBtn = (b) => ['multi', 'teams'].includes(s.mode) && /\b(gold|ok)\b/.test(b.cls);
   const allowed = (b) => (s.mode === 'buzz' ? answering
+    // wyzwanie „wszyscy naraz”: każdy może dołączyć (przycisk ze swoim imieniem), odkrywa gracz z turą
+    : s.challengeAll && s.phase === 'challenge' ? (ids.includes(b.text) || (turnIsMine(s) && !tableBtn(b)))
     : (ids.includes(s.challenger) && s.phase === 'challenge') || (turnIsMine(s) ? !tableBtn(b) : (tableBtn(b) || ids.includes(b.text))));
   const btns = (s.buttons || []).map((b, i) => ({ ...b, i })).filter((b) => allowed(b));
   const mk = (b, cls) => {
@@ -460,7 +465,8 @@ function renderPlayer(s) {
   const yearForm = s.challengeInput && ids.includes(s.challengeInput.who) ? challengeYearForm(T('⚔ Twoje wyzwanie: podaj dokładny rok wydania'), 'challengeYear')
     : (s.yearAsk && s.yearAsk.who.includes(me) ? challengeYearForm(T('📅 W którym roku wydano tę piosenkę?'), 'yearAnswer') : null);
   const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text) && !(yearForm && b.cls.includes('primary')));
-  const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || ids.includes(s.challenger)));
+  const myChallenge = ids.includes(s.challenger) || (s.challengers || []).some((n) => ids.includes(n));
+  const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || myChallenge));
   // karta tury – jak na urządzeniu gospodarza
   const vinyl = h('div', 'ht-vinyl' + (s.art ? ' cover' : '') + (audioState.playing ? ' spinning' : ''), h('div', 'lbl', '?'));
   if (s.art) vinyl.style.backgroundImage = `url("${s.art}")`;

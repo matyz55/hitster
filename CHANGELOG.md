@@ -416,3 +416,9 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   według niego pasuje – po odkryciu trafione pola zostają skreślone (1 pkt). Trzy w linii to BINGO i koniec gry;
   inaczej po ustalonej liczbie piosenek wygrywa najwięcej skreśleń. Plansze widać u gospodarza i na dużym ekranie,
   a gracz z telefonem zaznacza pola na swojej planszy na telefonie.
+
+## 5.16.0 – 15.10.2026 (`HASH`)
+
+- Nowy wariant wyzwania w osi czasu: **„Wszyscy naraz – kartę bierze pierwszy trafny”**. Wyzwanie może rzucić kilka
+  osób (każda płaci 1 żeton), każda wskazuje swoje miejsce – także równocześnie na swoich telefonach. Jeśli gracz z turą
+  się pomyli, kartę zabiera ta osoba, która pierwsza wskazała dobre miejsce; po odkryciu widać wynik każdego wyzywającego.

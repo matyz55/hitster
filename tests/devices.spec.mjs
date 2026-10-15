@@ -166,3 +166,27 @@ test('@net bingo: plansza na telefonie, zaznaczenie trafia do gospodarza', async
   await expect.poll(() => host.evaluate(() => state.bingo.boards[state.players.findIndex((p) => p.name === 'Ania')].pick)).toBe(4);
   noErrors(host, ania);
 });
+
+test('@net wyzwanie „wszyscy naraz” z dwóch telefonów', async ({ browser }) => {
+  const { host, code } = await hostLobby(browser);
+  const ania = await join(browser, code, 'Ania');
+  const bartek = await join(browser, code, 'Bartek');
+  await host.click('#btn-lobby-next');
+  await host.click('.mode[data-mode=multi]');
+  await host.check('input[name=challenge][value=all]');
+  await host.click('#btn-start');
+  await ready(host);
+  await host.evaluate(() => { state.turn = state.players.findIndex((p) => p.name === 'Gracz 1'); startTurn(); });
+  await ready(host);
+  await host.evaluate(() => onSlotClick(0));
+  await ania.click('.ht-actions button.gold'); // ⚔ Wyzwanie – Ania od razu wyzywająca
+  await bartek.waitForSelector('.ht-actions button:has-text("Bartek")');
+  await bartek.click('.ht-actions button:has-text("Bartek")'); // Bartek dołącza
+  await expect.poll(() => host.evaluate(() => state.challenges.length)).toBe(2);
+  await ania.click('.vslot >> nth=0');
+  await bartek.click('.vslot >> nth=0');
+  await expect.poll(() => host.evaluate(() => state.challenges.every((x) => x.slot != null))).toBe(true);
+  await host.click('#actions button.primary');
+  await expect.poll(() => host.evaluate(() => state.phase)).toBe('revealed');
+  noErrors(host, ania, bartek);
+});
