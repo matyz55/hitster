@@ -440,7 +440,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   i zapisuje jako zestaw. Piosenki spoza bazy są wypisane (dopasowanie tylko do bazy, bo tam lata wydania są sprawdzone).
   Gra z własnej listy nie zawęża jej poziomem trudności.
 
-## 5.19.0 – 15.10.2026 (`HASH`)
+## 5.19.0 – 15.10.2026 (`615f3ca`)
 
 - Nowe **ciekawostki o nagrodach** po odkryciu karty (38 piosenek): Oscar i Złoty Glob za piosenkę, Grammy (w tym
   piosenka i nagranie roku), Grammy Hall of Fame, Latin Grammy – z Wikidata, tylko wpisy z datą przyznania, z dopiskiem
