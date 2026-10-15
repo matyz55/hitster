@@ -569,7 +569,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Oznaczenia piosenek niecenzuralnych dla nowych piosenek (z Deezer i ze znacznika Spotify).
 - Kolejne poprawki zapisu wykonawców i polskich znaków w tytułach (np. „Zaopiekuj się mną”, „Się ściemnia”).
 
-## 5.26.0 – 15.10.2026 (`HASH`)
+## 5.26.0 – 15.10.2026 (`e35f06d`)
 
 - **Nowy zestaw „😂 Memy”** – 660 piosenek znanych z internetowych memów: polskie przeboje i disco polo, rap, hity
   z TikToka, EDM, motywy z gier, anime i filmów, utwory Kevina MacLeoda i muzyka klasyczna.
