@@ -389,7 +389,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
     (dobrze – zyskujesz stawkę, źle – tracisz).
 - Rok co do roku, Kto to śpiewa? i Skąd jest wykonawca? są też minigrami w trybie Impreza.
 
-## 5.12.0 – 15.10.2026 (`HASH`)
+## 5.12.0 – 15.10.2026 (`be589e1`)
 
 - Nowy tryb **🤝 Współpraca** (multiplayer, od 2 osób): wszyscy razem przeciw grze – wspólna oś czasu, wspólne
   pomyłki i cel kart; gracze odpowiadają po kolei (także z telefonów).
