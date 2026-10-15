@@ -5,6 +5,8 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
 
 **Zagraj:** https://matyz55.github.io/songster/ (po włączeniu GitHub Pages)
 
+Historia wszystkich wersji gry: [CHANGELOG.md](CHANGELOG.md).
+
 ## Tryby gry
 
 Na ekranie startowym wybiera się **Jeden gracz** albo **Multiplayer**:
