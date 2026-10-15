@@ -1016,6 +1016,10 @@ $('#pl-share').value = String(filterState.plShare);
 $('#pl-share').addEventListener('input', (e) => { filterState.plShare = Number(e.target.value); saveFilters(); updatePoolInfo(); });
 $('#endless').checked = filterState.endless;
 $('#endless').addEventListener('change', (e) => { filterState.endless = e.target.checked; saveFilters(); updateModeOptions(); });
+$$('input[name=audio-out]').forEach((r) => {
+  r.checked = r.value === store.get('audioOut', 'host');
+  r.addEventListener('change', () => { store.set('audioOut', r.value); tvSync(); });
+});
 $$('input[name=challenge]').forEach((r) => {
   r.checked = r.value === filterState.challenge;
   r.addEventListener('change', () => { filterState.challenge = r.value; saveFilters(); updateModeOptions(); });
@@ -1306,6 +1310,7 @@ async function startTurn() {
   $('#guess-song').disabled = false;
   $('#letter-hint').classList.add('hidden');
   render();
+  applyAudioRoute();
   await drawSong();
 }
 
@@ -1342,6 +1347,8 @@ function setAudioSource(preview) {
   currentBlobUrl = preview.blobUrl || null;
   $('#audio').src = preview.blobUrl || preview.url;
   $('#audio').load();
+  // urządzenia, które mogą grać muzykę, pobierają fragment z wyprzedzeniem
+  remoteSend({ audioCmd: 'load', url: preview.url });
 }
 
 function prefetchNext() {
@@ -2265,6 +2272,7 @@ function renderPlayedList() {
 const audio = $('#audio');
 function stopAudio() {
   audio.pause();
+  sendAudioCmd({ audioCmd: 'stop' }, true);
   $('#vinyl').classList.remove('spinning');
   $('#btn-play').textContent = T('▶ Odtwórz');
 }
@@ -2309,9 +2317,50 @@ function playClip() {
       : T('Nie udało się odtworzyć: ') + e.message;
   });
 }
+/* --- gdzie gra muzyka: ten telefon, duży ekran albo telefon gracza z turą --- */
+// Ten telefon zawsze prowadzi grę (odmierza fragmenty, kroki, zegar); gdy muzyka ma grać gdzie indziej,
+// jego odtwarzacz jest wyciszony, a wybrane urządzenie dostaje polecenia „graj od t do until” i „pauza”.
+const audioOut = () => store.get('audioOut', 'host');
+function audioTargets() {
+  const out = audioOut();
+  if (out === 'tv') {
+    const tvs = [...remotes].filter((r) => r.role === 'tv');
+    return tvs.length || tvWindowSeen ? { remotes: tvs, channel: tvWindowSeen && !!tvChannel } : null;
+  }
+  if (out === 'player' && state.players.length) {
+    const name = state.mode === 'buzz' ? null : activePlayer().name;
+    const ph = [...remotes].filter((r) => r.role === 'player' && r.name && r.name === name);
+    return ph.length ? { remotes: ph, channel: false } : null;
+  }
+  return null;
+}
+// polecenie dla urządzeń grających muzykę (all – do wszystkich, np. zatrzymanie przy zmianie tury)
+function sendAudioCmd(cmd, all) {
+  if (all) { remoteSend(cmd); return; }
+  const t = audioTargets();
+  if (!t) return;
+  for (const r of t.remotes) { try { if (r.conn.open !== false) r.conn.send(cmd); } catch (e) { /* zerwane */ } }
+  if (t.channel) { try { tvChannel.postMessage(cmd); } catch (e) { /* zamknięte */ } }
+}
+// wyciszenie tego telefonu, gdy muzyka gra na innym urządzeniu (gdy go brak – gramy tutaj)
+function applyAudioRoute() {
+  const remote = !!audioTargets();
+  audio.muted = remote;
+  const note = $('#audio-note');
+  if (note) {
+    const out = audioOut();
+    note.textContent = remote ? (out === 'tv' ? T('🔈 Muzyka gra na dużym ekranie.') : T('🔈 Muzyka gra na telefonie gracza {0}.', activePlayer().name))
+      : (out !== 'host' ? T('🔈 Brak połączonego urządzenia – muzyka gra na tym telefonie.') : '');
+    note.classList.toggle('hidden', !note.textContent);
+  }
+  return remote;
+}
+
 // pauza z wyciszeniem 150 ms (rewind – powrót na początek fragmentu, gdy fragment się skończył)
 let fadingOut = false;
 function softPause(rewind) {
+  // koniec fragmentu na zdalnym urządzeniu wyznacza ono samo (until) – tu tylko pauza ręczna
+  if (!rewind && !audio.paused) sendAudioCmd({ audioCmd: 'pause' });
   if (audio.paused || fadingOut) return;
   if (!musicGain) { audio.pause(); if (rewind) audio.currentTime = state.clipStart; return; }
   fadingOut = true;
@@ -2328,6 +2377,10 @@ $('#btn-play').addEventListener('click', () => {
 });
 audio.addEventListener('play', () => {
   state.heard = true;
+  // muzyka na innym urządzeniu: start od tego samego miejsca, koniec wycinka (until) liczy tamto urządzenie
+  if (applyAudioRoute() && state.preview) {
+    sendAudioCmd({ audioCmd: 'play', url: state.preview.url, t: audio.currentTime, until: clipEnd() });
+  }
   $('#vinyl').classList.add('spinning'); $('#btn-play').textContent = T('⏸ Pauza');
   tvAudio();
   const tick = () => {

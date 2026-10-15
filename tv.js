@@ -384,8 +384,73 @@ function updateAudio() {
   const bar = app.querySelector('.progress .bar');
   if (bar) bar.style.width = `${Math.round(audioState.progress * 100)}%`;
 }
+/* --- muzyka na tym urządzeniu (gdy w grze wybrano „duży ekran” albo „telefon gracza z turą”) --- */
+// gra (telefon gospodarza) wysyła: load – pobierz fragment z wyprzedzeniem, play – graj od t do until, pause/stop
+const music = new Audio();
+music.crossOrigin = 'anonymous';
+music.preload = 'auto';
+let musicUntil = null;
+let fadeTimer = null;
+let pending = null; // polecenie czekające na zgodę przeglądarki na dźwięk (dotknięcie)
+const blobs = new Map();
+function loadTrack(url) {
+  if (!url || blobs.has(url)) return;
+  blobs.set(url, null);
+  fetch(url).then((r) => r.blob()).then((b) => blobs.set(url, URL.createObjectURL(b))).catch(() => blobs.delete(url));
+  // pamiętamy tylko kilka ostatnich fragmentów
+  while (blobs.size > 4) { const [k, v] = blobs.entries().next().value; if (v) URL.revokeObjectURL(v); blobs.delete(k); }
+}
+function fadeTo(to, ms, then) {
+  clearInterval(fadeTimer);
+  const from = music.volume;
+  const t0 = performance.now();
+  fadeTimer = setInterval(() => {
+    const k = Math.min(1, (performance.now() - t0) / ms);
+    music.volume = from + (to - from) * k;
+    if (k >= 1) { clearInterval(fadeTimer); if (then) then(); }
+  }, 16);
+}
+function musicTick() {
+  if (music.paused) return;
+  if (musicUntil != null && music.currentTime >= musicUntil - 0.15) { musicUntil = null; fadeTo(0, 150, () => music.pause()); return; }
+  requestAnimationFrame(musicTick);
+}
+music.addEventListener('play', () => requestAnimationFrame(musicTick));
+function unlockBox(show) {
+  let box = document.getElementById('sound-unlock');
+  if (!show) { if (box) box.remove(); return; }
+  if (box) return;
+  box = h('button', 'sound-unlock', T('🔊 Dotknij, aby włączyć dźwięk na tym urządzeniu'));
+  box.id = 'sound-unlock';
+  box.addEventListener('click', () => { const m = pending; pending = null; unlockBox(false); if (m) musicCmd(m); else music.play().then(() => music.pause()).catch(() => {}); });
+  document.body.append(box);
+  box.focus();
+}
+function musicCmd(m) {
+  if (m.audioCmd === 'load') { loadTrack(m.url); return; }
+  if (m.audioCmd === 'play') {
+    const src = blobs.get(m.url) || m.url;
+    if (music.dataset.url !== m.url) { music.src = src; music.dataset.url = m.url; }
+    musicUntil = m.until;
+    const start = () => {
+      try { music.currentTime = m.t; } catch (e) { /* jeszcze nie gotowe */ }
+      music.volume = 0;
+      music.play().then(() => { unlockBox(false); fadeTo(1, 150); }).catch((e) => {
+        if (e.name === 'NotAllowedError') { pending = m; unlockBox(true); }
+      });
+    };
+    if (music.readyState >= 1) start(); else music.addEventListener('loadedmetadata', start, { once: true });
+    return;
+  }
+  if (m.audioCmd === 'pause' || m.audioCmd === 'stop') {
+    pending = null;
+    musicUntil = null;
+    if (!music.paused) fadeTo(0, 150, () => music.pause());
+  }
+}
 function onMessage(m) {
   if (!m) return;
+  if (m.audioCmd) { musicCmd(m); return; }
   if (m.joined) { setMe(m.joined); return; }
   if (m.joinError) { alert(T('Lista graczy jest pełna.')); return; }
   if (m.audio) { audioState = m.audio; updateAudio(); return; }

@@ -58,6 +58,12 @@ skanują QR (`tv.html?join=KOD`), wpisują imię i dostają własny, pionowy wid
 z przyciskami „＋ tutaj”, odpowiedź z podpowiedziami, duże przyciski (wyzwanie, kupno karty…) i ogromny
 przycisk w „Kto pierwszy?”.
 
+**Gdzie gra muzyka** (ustawienia rozgrywki → Odtwarzanie): na tym urządzeniu, na dużym ekranie (TV) albo – w trybach
+z turami graczy – na telefonie gracza, który ma turę. Urządzenie gospodarza nadal prowadzi grę (odmierza fragmenty
+i kroki), tylko bez dźwięku; wybrane urządzenie samo pobiera fragment i gra go z płynnym wejściem/wyjściem. Gdy
+przeglądarka wymaga dotknięcia, pokazuje przycisk „🔊 Dotknij, aby włączyć dźwięk”. Bez połączonego urządzenia
+muzyka gra u gospodarza.
+
 Na dużym ekranie widać też pasek kroków (Melodia krok po kroku), przyciski graczy (Kto pierwszy?), kręcącą
 się płytę i postęp fragmentu. W trakcie gry ekran telefonu nie gaśnie (Screen Wake Lock), a fragmenty
 wchodzą i kończą się płynnie (150 ms).
