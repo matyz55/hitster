@@ -523,14 +523,29 @@ function lySubmit() {
   lyTick = setInterval(lyOnTick, 50);
   lyRender();
 }
-// zła wersja piosenki albo błędy w tekście – film pomijany w kolejnych grach na tym urządzeniu, zgłoszenie zapisane
+// zła wersja piosenki albo błędy w tekście – film pomijany w kolejnych grach na tym urządzeniu, zgłoszenie zapisane;
+// ponowne kliknięcie cofa zgłoszenie (a w ustawieniach można przywrócić także wcześniejsze)
 function lyReport() {
   const cur = state.lyrics && state.lyrics.cur;
-  if (!cur || cur.reported) return;
+  if (!cur) return;
+  if (cur.reported) { lyUnreport(cur.videoId); cur.reported = false; lyRender(); return; }
   cur.reported = true;
   if (cur.videoId) lyMarkBad(cur.videoId);
   store.set('lyReports', [...store.get('lyReports', []), { k: songKey(cur.it.song), v: cur.videoId, l: cur.it.lr, d: new Date().toISOString().slice(0, 10) }].slice(-200));
   lyRender();
+}
+function lyUnreport(videoId) {
+  store.set('lyBadVideos', store.get('lyBadVideos', []).filter((id) => id !== videoId));
+  store.set('lyReports', store.get('lyReports', []).filter((r) => r.v !== videoId));
+}
+function lyRenderReports() {
+  const list = store.get('lyReports', []);
+  $('#ly-reports-card').classList.toggle('hidden', !list.length);
+  $('#ly-reports').replaceChildren(...list.slice().reverse().map((r) => {
+    const [a, t] = r.k.split('|');
+    return el('li', {}, el('span', {}, el('b', {}, t), ` — ${a} `, el('span', { class: 'muted small' }, r.d)),
+      el('button', { class: 'ghost small', onclick: () => { lyUnreport(r.v); lyRenderReports(); } }, T('↩ Przywróć')));
+  }));
 }
 function lyQuit() {
   const me = lyMe();
@@ -638,7 +653,9 @@ function lyRender() {
     return;
   }
   const cur = ly.cur;
-  $('#ly-song').replaceChildren(...(cur ? [el('span', { class: 'ly-cattag' }, cur.cat), ` ${cur.it.song.t} — ${artistLine(cur.it.song)} `, el('span', { class: 'ly-year' }, String(cur.it.song.y))] : []));
+  $('#ly-song').replaceChildren(...(cur ? [
+    el('span', { class: 'ly-songtags' }, el('span', { class: 'ly-tag' }, cur.cat), el('span', { class: 'ly-tag' }, String(cur.it.song.y))),
+    el('b', { class: 'ly-songtitle' }, cur.it.song.t), el('span', { class: 'ly-songartist' }, artistLine(cur.it.song))] : []));
   // w trakcie piosenki bez zapowiedzi przerwy – ma być zaskoczeniem
   $('#ly-status').textContent = state.phase === 'loading' ? T('Wczytywanie piosenki…')
     : state.phase === 'play' ? (cur && cur.lines ? T('🎤 Śpiewaj razem z tekstem!') : T('Wczytywanie tekstu…')) : '';
@@ -695,7 +712,8 @@ function lyRenderAnswer() {
     const last = ly.mini ? state.players.every((pl) => pl.played + (pl === p ? 1 : 0) >= ly.mini.rounds) : !lyActive().length;
     box.replaceChildren(words, verdict, mine || '', el('div', { class: 'actions' },
       el('button', { class: 'primary', onclick: lyNextTurn }, last ? T('Koniec gry') : T('Dalej')),
-      el('button', { class: 'ghost small', disabled: cur.reported, onclick: lyReport }, cur.reported ? T('Zgłoszono – ten film nie wróci') : T('⚠️ Zła wersja piosenki / błędy w tekście'))));
+      el('button', { class: 'ghost small', onclick: lyReport }, cur.reported ? T('↩ Cofnij zgłoszenie') : T('⚠️ Zła wersja piosenki / błędy w tekście'))),
+      cur.reported ? el('p', { class: 'muted small' }, T('Zgłoszono – ten film nie wróci w kolejnych grach na tym urządzeniu.')) : '');
     return;
   }
   // liczba słów: kropki, które zapełniają się przy pisaniu; odsłonięte słowa widać w ich miejscu

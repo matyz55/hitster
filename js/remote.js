@@ -495,6 +495,7 @@ $('#btn-settings').addEventListener('click', () => {
   state.drawId++;
   screenBeforeSettings = visible === 'game' ? (lobby.active ? 'modes' : 'home') : visible;
   renderSettings();
+  if (typeof lyRenderReports === 'function') lyRenderReports();
   showScreen('settings');
 });
 $('#btn-settings-back').addEventListener('click', () => {

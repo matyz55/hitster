@@ -728,3 +728,11 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 /* drabinka: 100 000 zł – szerokie, wyśrodkowane pole na górze */
 .ly-ladder li.top { justify-content: center; gap: 10px; font-size: 1.05em; border: 1px solid rgba(255, 201, 60, .4); }
 .ly-ladder li.top b { color: var(--gold); }
+/* nagłówek piosenki: kategoria i rok obok siebie, pod nimi tytuł i wykonawca w osobnych liniach */
+#ly-song { display: flex; flex-direction: column; gap: 2px; }
+.ly-songtags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
+.ly-tag { font-size: .8rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: rgba(45, 226, 230, .15); color: var(--accent-2); }
+.ly-songtitle { font-size: 1.2rem; }
+.ly-songartist { color: var(--muted); }
+.ly-reports { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.ly-reports li { display: flex; justify-content: space-between; align-items: center; gap: 10px; }

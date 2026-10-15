@@ -104,8 +104,20 @@ test('Tak to leciało!: koła ratunkowe – trzy słowa, trzy wersje, wymiana pi
   await page.locator('#ly-input').fill('zupełnie');
   await page.getByRole('button', { name: 'Tak to leciało!' }).click();
   await expect(page.locator('#ly-answer .verdict')).toContainText('0 zł');
+  // zgłoszenie złej wersji – i jego cofnięcie
+  await page.getByRole('button', { name: /Zła wersja piosenki/ }).click();
+  expect(await page.evaluate(() => store.get('lyBadVideos', []).length)).toBe(1);
+  await page.getByRole('button', { name: /Cofnij zgłoszenie/ }).click();
+  expect(await page.evaluate(() => [store.get('lyBadVideos', []).length, store.get('lyReports', []).length])).toEqual([0, 0]);
+  await page.getByRole('button', { name: /Zła wersja piosenki/ }).click();
   await page.getByRole('button', { name: 'Koniec gry' }).click();
   await expect.poll(() => screen(page)).toBe('end');
+  // przywrócenie w ustawieniach
+  await page.click('#btn-settings');
+  await expect(page.locator('#ly-reports li')).toHaveCount(1);
+  await page.locator('#ly-reports button').click();
+  await expect(page.locator('#ly-reports-card')).toBeHidden();
+  expect(await page.evaluate(() => store.get('lyBadVideos', []).length)).toBe(0);
   await expect(page.locator('#winner-title')).toContainText('bez wygranej');
 });
 

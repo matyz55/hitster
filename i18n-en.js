@@ -1,6 +1,11 @@
 'use strict';
 // Słownik angielski: tekst polski → angielski (patrz i18n.js)
 window.I18N_EN = {
+ "↩ Przywróć": "↩ Restore",
+ "↩ Cofnij zgłoszenie": "↩ Undo report",
+ "Zgłoszono – ten film nie wróci w kolejnych grach na tym urządzeniu.": "Reported – this video won't come back in later games on this device.",
+ "Tak to leciało! – zgłoszone piosenki": "Tak to leciało! – reported songs",
+ "Zgłoszone filmy są pomijane w grze na tym urządzeniu. Jeśli zgłoszenie było przez pomyłkę – przywróć piosenkę.": "Reported videos are skipped in the game on this device. If you reported one by mistake, restore the song.",
  "Lato i wakacje": "Summer and holidays",
  "Młodość i szkoła": "Youth and school",
  "Kobieta": "Woman",
