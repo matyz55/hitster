@@ -1,11 +1,11 @@
 // Skrypt wstrzykiwany do stron w testach: zamiast iTunes – odpowiedź zbudowana z bazy piosenek gry,
-// a zamiast prawdziwego fragmentu – 6-sekundowy sygnał WAV. Dzięki temu testy nie zależą od sieci i limitu iTunes.
+// a zamiast prawdziwego fragmentu – 30-sekundowy sygnał WAV (jak fragment z iTunes). Dzięki temu testy nie zależą od sieci i limitu iTunes.
 (() => {
   const realFetch = window.fetch.bind(window);
   let wav = null;
   const tone = () => {
     if (wav) return wav;
-    const sr = 8000; const n = sr * 6; const buf = new ArrayBuffer(44 + n * 2); const v = new DataView(buf);
+    const sr = 8000; const n = sr * 30; const buf = new ArrayBuffer(44 + n * 2); const v = new DataView(buf);
     const w = (o, s) => [...s].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
     w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
     v.setUint32(24, sr, true); v.setUint32(28, sr * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, 'data'); v.setUint32(40, n * 2, true);

@@ -160,13 +160,21 @@ function flagEl(song) {
 function streamUrl(song, preview, platform) {
   const q = encodeURIComponent(`${mainArtist(song)} ${song.t}`);
   if (platform === 'spotify') {
-    return song.sp ? `https://open.spotify.com/track/${song.sp}` : `https://open.spotify.com/search/${q}`;
+    // identyfikatory Spotify są w osobnym pliku (songs-sp.js), doczytywanym w tle po starcie
+    const sp = song.sp || (window.SONG_SP && window.SONG_SP[songKey(song)]);
+    return sp ? `https://open.spotify.com/track/${sp}` : `https://open.spotify.com/search/${q}`;
   }
   if (platform === 'apple') {
     return preview && preview.link ? preview.link : `https://music.apple.com/search?term=${q}`;
   }
   return `https://www.youtube.com/results?search_query=${q}`;
 }
+// identyfikatory utworów w Spotify – w tle, gdy przeglądarka nie ma nic pilniejszego (pierwsze ładowanie jest lżejsze)
+(window.requestIdleCallback || ((f) => setTimeout(f, 1500)))(() => {
+  const sc = document.createElement('script');
+  sc.src = 'songs-sp.js';
+  document.head.append(sc);
+});
 const PLATFORM_NAMES = { youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple Music' };
 // Android: kliknięcie ikonki otwiera od razu aplikację linkiem „intent://” – w tej samej karcie i bezpośrednio
 // po kliknięciu (w nowej karcie przeglądarki, np. Brave, nie przekazują go do aplikacji). Bez adresu zastępczego:
@@ -301,11 +309,41 @@ class Deck {
 }
 
 /* ---------- podgląd audio z iTunes Search API ---------- */
+// Fragmenty z iTunes Search API. Apple podaje limit ok. 20 zapytań na minutę, dlatego:
+// • kolejka zapytań pilnuje limitu (najwyżej 18 na minutę) i po odmowie serwera robi dłuższą przerwę,
+// • znalezione adresy fragmentów (sam adres, nie dźwięk) zapamiętujemy w przeglądarce na 30 dni,
+// • gdy kolejka jest pusta, w tle wyszukujemy kilka piosenek z puli gry na zapas.
 const previewCache = new Map();
-
-async function findPreview(song) {
+const PREVIEW_STORE = 'songster.previews';
+const PREVIEW_TTL = 30 * 864e5;
+const NO_PREVIEW_TTL = 3 * 864e5;
+const savedPreviews = (() => {
+  try { return JSON.parse(localStorage.getItem(PREVIEW_STORE) || '{}'); } catch (e) { return {}; }
+})();
+let savePreviewsTimer = null;
+function rememberPreview(key, result) {
+  savedPreviews[key] = { r: result, d: Date.now() };
+  clearTimeout(savePreviewsTimer);
+  savePreviewsTimer = setTimeout(() => {
+    // najwyżej 3000 wpisów – najstarsze wypadają
+    const keys = Object.keys(savedPreviews);
+    if (keys.length > 3000) keys.sort((x, y) => savedPreviews[x].d - savedPreviews[y].d).slice(0, keys.length - 3000).forEach((k) => delete savedPreviews[k]);
+    try { localStorage.setItem(PREVIEW_STORE, JSON.stringify(savedPreviews)); } catch (e) { /* brak miejsca – bez zapisu */ }
+  }, 500);
+}
+function forgetPreview(song) {
+  const key = songKey(song);
+  previewCache.delete(key);
+  delete savedPreviews[key];
+}
+async function findPreview(song, { quiet = false } = {}) {
   const key = songKey(song);
   if (previewCache.has(key)) return previewCache.get(key);
+  const saved = savedPreviews[key];
+  if (saved && Date.now() - saved.d < (saved.r ? PREVIEW_TTL : NO_PREVIEW_TTL)) {
+    previewCache.set(key, saved.r);
+    return saved.r;
+  }
   const term = song.q || `${mainArtist(song)} ${song.t}`;
   let result = null;
   let networkError = false;
@@ -314,7 +352,7 @@ async function findPreview(song) {
       term, entity: 'song', limit: '25', country,
     });
     try {
-      const res = await fetchWithRetry(url);
+      const res = await fetchWithRetry(url, quiet);
       if (!res) { networkError = true; continue; }
       const data = await res.json();
       const hit = pickPreview(data.results, song);
@@ -332,25 +370,57 @@ async function findPreview(song) {
     }
   }
   // wynik „brak fragmentu” zapamiętujemy tylko, gdy API faktycznie odpowiedziało
-  if (result || !networkError) previewCache.set(key, result);
+  if (result || !networkError) { previewCache.set(key, result); rememberPreview(key, result); }
   return result;
 }
 
-// iTunes Search API ogranicza liczbę zapytań (ok. 20/min) – przy błędzie czekamy i ponawiamy
-async function fetchWithRetry(url, attempts = 3) {
+// kolejka zapytań do iTunes: najwyżej 18 na minutę; po odmowie (403/429) przerwa
+const itunesQueue = { times: [], blockedUntil: 0, chain: Promise.resolve(), waiting: 0 };
+function itunesTurn(quiet) {
+  itunesQueue.waiting += 1;
+  const run = async () => {
+    for (;;) {
+      const now = Date.now();
+      itunesQueue.times = itunesQueue.times.filter((t) => now - t < 60000);
+      const full = itunesQueue.times.length >= 18 ? 60000 - (now - itunesQueue.times[0]) + 100 : 0;
+      const wait = Math.max(itunesQueue.blockedUntil - now, full, 0);
+      if (!wait) { itunesQueue.times.push(now); itunesQueue.waiting -= 1; return; }
+      if (!quiet && wait > 1500) $('#mystery-status').textContent = T('Serwer z fragmentami ma limit zapytań – czekam {0} s…', Math.ceil(wait / 1000));
+      await new Promise((r) => setTimeout(r, Math.min(wait, 2000)));
+    }
+  };
+  const p = itunesQueue.chain.then(run);
+  itunesQueue.chain = p.catch(() => {});
+  return p;
+}
+async function fetchWithRetry(url, quiet = false, attempts = 3) {
   for (let i = 0; i < attempts; i++) {
+    await itunesTurn(quiet);
     try {
       const res = await fetch(url);
       if (res.ok) return res;
+      // serwer odmawia (zbyt wiele zapytań) – dłuższa przerwa dla całej kolejki
+      if (res.status === 403 || res.status === 429) itunesQueue.blockedUntil = Date.now() + 20000 * (i + 1);
     } catch (e) {
       console.warn('fetch', e);
+      itunesQueue.blockedUntil = Math.max(itunesQueue.blockedUntil, Date.now() + 3000 * (i + 1));
     }
-    if (i < attempts - 1) {
-      $('#mystery-status').textContent = T('Serwer z fragmentami jest zajęty, ponawiam…');
-      await new Promise((r) => setTimeout(r, 3000 * (i + 1)));
-    }
+    if (i < attempts - 1 && !quiet) $('#mystery-status').textContent = T('Serwer z fragmentami jest zajęty, ponawiam…');
   }
   return null;
+}
+// wyszukiwanie na zapas: co kilka sekund jedna piosenka z puli, tylko gdy nic innego nie czeka
+// i zostaje zapas w limicie (żeby nie spowalniać wyszukiwania piosenek potrzebnych teraz)
+let warmTimer = null;
+function warmPreviews(pool) {
+  clearInterval(warmTimer);
+  const todo = shuffle(pool.filter((s) => !savedPreviews[songKey(s)])).slice(0, 40);
+  warmTimer = setInterval(() => {
+    if (!todo.length || $('#screen-game').classList.contains('hidden')) { if (!todo.length) clearInterval(warmTimer); return; }
+    const recent = itunesQueue.times.filter((t) => Date.now() - t < 60000).length;
+    if (itunesQueue.waiting || recent > 8 || Date.now() < itunesQueue.blockedUntil) return;
+    findPreview(todo.pop(), { quiet: true }).catch(() => {});
+  }, 6000);
 }
 
 /* ---------- stan gry ---------- */
@@ -558,7 +628,7 @@ function handleRemote(msg, from) {
     return;
   }
   if (msg.hello) {
-    if (!from) tvWindowSeen = true; // okno dużego ekranu na tym urządzeniu
+    if (!from) { tvWindowSeen = true; updatePlaybackOptions(); } // okno dużego ekranu na tym urządzeniu
     if (from) { from.role = msg.role || from.role; from.name = msg.name || from.name; renderRemoteList(); }
     tvSync();
   }
@@ -936,6 +1006,7 @@ function renderRemoteList() {
     : [el('li', { class: 'muted' }, T('Nikt jeszcze nie dołączył.'))]));
   // znaczki 📱 przy graczach w lobby i na liście trybów
   if (lobby.active) { renderLobby(); renderModes(); }
+  updatePlaybackOptions();
 }
 // adres z kodu QR telewizora: index.html?tv=KOD
 {
@@ -1101,6 +1172,7 @@ function openSetup(mode) {
   $('#rounds-label').textContent = mode === 'buzz' ? T('Liczba piosenek') : (cfg.teams ? T('Piosenek na drużynę') : T('Piosenek na gracza'));
   if (mode === 'duel') renderDuelPick();
   if (mode === 'party') renderPartyPick();
+  updatePlaybackOptions();
   updatePoolInfo();
   showScreen('setup');
 }
@@ -1346,6 +1418,24 @@ $$('input[name=audio-out]').forEach((r) => {
   r.checked = r.value === store.get('audioOut', 'host');
   r.addEventListener('change', () => { store.set('audioOut', r.value); tvSync(); });
 });
+// opcje odtwarzania zależne od sytuacji:
+// • „fragment z losowego miejsca” – tylko gdy wycinek jest krótszy od całego 30-sekundowego podglądu
+//   (przy „30 s (cały)” nie ma się gdzie przesunąć) albo w trybach z krokami 1–8 s,
+// • „muzyka gra na” – tylko gdy jest podłączony duży ekran albo (w multiplayerze) telefon gracza
+function updatePlaybackOptions() {
+  if (!state.mode || !MODES[state.mode]) return;
+  $('#clip-random-row').classList.toggle('hidden', !(state.mode === 'steps' || state.mode === 'party' || filterState.clip < 30));
+  const display = tvWindowSeen || [...remotes].some((r) => r.role === 'tv');
+  const phones = playCtx === 'multi' && [...remotes].some((r) => r.role === 'player' && r.name);
+  const playerOk = phones && $('#audio-out-player').dataset.for.split(' ').includes(state.mode);
+  $('#audio-out-tv').classList.toggle('hidden', !display);
+  $('#audio-out-player').classList.toggle('hidden', !playerOk);
+  $('#audio-out-box').classList.toggle('hidden', !display && !playerOk);
+  // zapamiętany wybór chwilowo niedostępny – pokazujemy „to urządzenie” (zapis zostaje na następny raz)
+  const cur = store.get('audioOut', 'host');
+  const avail = { host: true, tv: display, player: playerOk }[cur];
+  $$('input[name=audio-out]').forEach((r) => { r.checked = avail ? r.value === cur : r.value === 'host'; });
+}
 $$('input[name=challenge]').forEach((r) => {
   r.checked = r.value === filterState.challenge;
   r.addEventListener('change', () => { filterState.challenge = r.value; saveFilters(); updateModeOptions(); });
@@ -1378,7 +1468,7 @@ function updateModeOptions() {
 $('#show-all').checked = filterState.showAll;
 $('#show-all').addEventListener('change', (e) => { filterState.showAll = e.target.checked; saveFilters(); });
 $('#clip-length').value = String(filterState.clip);
-$('#clip-length').addEventListener('change', (e) => { filterState.clip = Number(e.target.value); saveFilters(); });
+$('#clip-length').addEventListener('change', (e) => { filterState.clip = Number(e.target.value); saveFilters(); updatePlaybackOptions(); });
 $('#clip-random').checked = filterState.random;
 $('#clip-random').addEventListener('change', (e) => { filterState.random = e.target.checked; saveFilters(); });
 $('#hint-decade').checked = filterState.hint;
@@ -1616,6 +1706,7 @@ function startGame(over = {}) {
   }
   const pool = freshPool(base, needed);
   state.deck = new Deck(pool, { level: state.difficulty, plShare });
+  warmPreviews(pool);
   prefetched = null;
   const artists = new Set(pool.map((s) => artistKeys(s)[0])).size;
   if (state.deck.size < needed || artists < needed) {
@@ -1843,6 +1934,8 @@ async function withAudio(preview) {
   if (!preview || preview.blobUrl) return preview;
   try {
     const res = await fetch(preview.url);
+    // zapamiętany adres fragmentu już nie działa – trzeba wyszukać piosenkę od nowa
+    if (res.status === 403 || res.status === 404 || res.status === 410) return { ...preview, gone: true };
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const blob = new Blob([await res.arrayBuffer()], { type: 'audio/mp4' });
     // kopia – obiekt w pamięci podręcznej wyszukiwania zostaje bez adresu blob (ten jest zwalniany po piosence)
@@ -1864,7 +1957,7 @@ function setAudioSource(preview) {
 
 function prefetchNext() {
   const song = state.deck.draw(nearYearsFor(nextPlayerIndex()));
-  prefetched = song ? { song, deck: state.deck, promise: findPreview(song).then(withAudio).catch(() => null) } : null;
+  prefetched = song ? { song, deck: state.deck, promise: findPreview(song, { quiet: true }).then(withAudio).catch(() => null) } : null;
 }
 
 async function drawSong() {
@@ -1885,6 +1978,8 @@ async function drawSong() {
       $('#mystery-status').textContent = T('Szukam fragmentu piosenki…');
       preview = await withAudio(await findPreview(song));
     }
+    if (preview && preview.gone) { forgetPreview(song); preview = await withAudio(await findPreview(song)); }
+    if (preview && preview.gone) preview = null;
     if (myDraw !== state.drawId) return; // gra została przerwana
     if (preview) {
       markPlayed(song);

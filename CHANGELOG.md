@@ -346,3 +346,16 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   w teście), osobne testy telefonów i dużego ekranu przez sieć, sprawdzanie kodu (ESLint) i uruchamianie wszystkiego
   przy każdej zmianie na GitHubie.
 - Poprawki drobnych usterek w kodzie wykrytych przez ESLint (bez zmian w działaniu gry).
+
+## 5.8.0 – 15.10.2026 (`HASH`)
+
+- Szybsze i pewniejsze wczytywanie fragmentów: zapytania do iTunes idą przez kolejkę pilnującą limitu (najwyżej
+  18 na minutę) z przerwą po odmowie serwera, znalezione adresy fragmentów są zapamiętywane w przeglądarce na 30 dni,
+  a w trakcie gry kilka piosenek z puli jest wyszukiwanych na zapas. Nieaktualny zapamiętany adres jest wyszukiwany od nowa.
+- Lżejsze pierwsze ładowanie: identyfikatory utworów Spotify (do ikonki Spotify) są w osobnym pliku wczytywanym w tle –
+  baza piosenek do pobrania na starcie jest o ok. 35% mniejsza.
+- „Fragment z losowego miejsca” widoczny tylko wtedy, gdy działa – przy fragmencie krótszym niż 30 s (przy „30 s (cały)”
+  nie ma się gdzie przesunąć) oraz w trybach z krokami.
+- „Muzyka gra na” pokazuje się tylko, gdy jest podłączony duży ekran albo (w multiplayerze) telefon gracza – i tylko
+  z dostępnymi w danej chwili możliwościami.
+- Usunięty gatunek disco polo (5 piosenek; „Wyglądasz idealnie” Skolima jest teraz bez gatunku).

@@ -20,7 +20,7 @@ export default [
     languageOptions: { globals: { ...globals.serviceworker } },
   },
   {
-    files: ['tests/**/*.mjs', '*.mjs'],
+    files: ['tests/**/*.mjs', 'tools/**/*.mjs', '*.mjs'],
     languageOptions: { ecmaVersion: 2023, sourceType: 'module', globals: { ...globals.node } },
   },
   {

@@ -215,14 +215,16 @@
           <option value="5">5 s</option>
         </select>
       </label>
-      <label class="check"><input type="checkbox" id="clip-random"> Fragment z losowego miejsca (zamiast od początku)</label>
+      <label class="check" id="clip-random-row"><input type="checkbox" id="clip-random"> Fragment z losowego miejsca (zamiast od początku)</label>
+      <div id="audio-out-box" class="hidden">
       <p class="label" style="margin-top:12px">Muzyka gra na</p>
       <div class="seg" id="audio-out">
         <label><input type="radio" name="audio-out" value="host" checked> Tym urządzeniu</label>
-        <label><input type="radio" name="audio-out" value="tv"> Dużym ekranie (TV)</label>
-        <label data-for="multi teams melody steps duel party" data-ctx="multi"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
+        <label id="audio-out-tv"><input type="radio" name="audio-out" value="tv"> Dużym ekranie (TV)</label>
+        <label data-for="multi teams melody steps duel party" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
       </div>
       <p class="muted small" id="audio-out-desc">Duży ekran i telefony graczy łączy się w oknie 📺. Gdy wybranego urządzenia nie ma, muzyka gra na tym urządzeniu.</p>
+      </div>
       <label class="check" data-for="melody steps buzz party"><input type="checkbox" id="hint-decade"> Podpowiedź: pokazuj dekadę piosenki</label>
       <label class="check" data-for="steps"><input type="checkbox" id="hint-letter"> Podpowiedź z pierwszą literą (kosztuje 1 punkt)</label>
       <p class="muted small" data-for="steps">Kroki: 1 s → 2 s → 4 s → 8 s. Odgadnięcie przy 1 s daje 4 pkt, przy 2 s – 3 pkt, przy 4 s – 2 pkt, przy 8 s – 1 pkt (za każdą zgadywaną część). Błędna odpowiedź od razu wydłuża fragment.</p>

@@ -95,3 +95,16 @@ test('@net duży ekran: lobby, głosy, gra i odświeżenie przy starszej wersji'
   expect(await screen(host)).toBe('game');
   noErrors(host, tv);
 });
+
+test('@net „muzyka gra na”: duży ekran i telefon gracza pojawiają się dopiero po podłączeniu', async ({ browser }) => {
+  const { host, code } = await hostLobby(browser);
+  await host.click('#btn-lobby-add');
+  await host.click('#btn-lobby-next');
+  await host.click('.mode[data-mode=melody]');
+  await expect(host.locator('#audio-out-box')).toBeHidden();
+  const ania = await join(browser, code, 'Ania');
+  await expect(host.locator('#audio-out-box')).toBeVisible();
+  await expect(host.locator('#audio-out-player')).toBeVisible();
+  await expect(host.locator('#audio-out-tv')).toBeHidden();
+  noErrors(host, ania);
+});

@@ -71,3 +71,45 @@ test('impreza dla jednej osoby: wyniki minigier się sumują', async ({ page }) 
   await expect(page.locator('#end-actions')).toBeVisible();
   await expect(page.locator('#winner-title')).toContainText('5');
 });
+
+test('„fragment z losowego miejsca” tylko przy krótszym fragmencie; bez TV i telefonów – bez wyboru „muzyka gra na”', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=melody]');
+  await page.selectOption('#clip-length', '30');
+  await expect(page.locator('#clip-random-row')).toBeHidden();
+  await page.selectOption('#clip-length', '10');
+  await expect(page.locator('#clip-random-row')).toBeVisible();
+  await expect(page.locator('#audio-out-box')).toBeHidden();
+});
+
+test('fragment z losowego miejsca: wycinek 10 s zaczyna się w różnych miejscach', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=melody]');
+  await page.selectOption('#clip-length', '10');
+  await page.check('#clip-random');
+  await page.click('#btn-start');
+  const starts = new Set();
+  for (let k = 0; k < 4; k++) {
+    await ready(page);
+    starts.add(await page.evaluate(() => state.clipStart.toFixed(1)));
+    await page.evaluate(() => { state.drawId++; startTurn(); });
+  }
+  expect(starts.size).toBeGreaterThan(1);
+});
+
+test('link do Spotify z identyfikatorem utworu (songs-sp.js wczytany w tle)', async ({ page }) => {
+  await page.goto('/');
+  await page.waitForFunction(() => !!window.SONG_SP);
+  const url = await page.evaluate(() => {
+    const song = window.SONGS.find((s) => window.SONG_SP[songKey(s)]);
+    return streamUrl(song, null, 'spotify');
+  });
+  expect(url).toMatch(/open\.spotify\.com\/track\/[A-Za-z0-9]+$/);
+});
+
+test('gatunek disco polo usunięty z bazy i filtrów', async ({ page }) => {
+  await page.goto('/');
+  expect(await page.evaluate(() => window.SONGS.some((s) => (s.g || []).includes('disco polo')))).toBe(false);
+});
