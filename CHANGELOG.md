@@ -559,7 +559,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - iPhone i iPad: na ekranie startowym jest przycisk „Zainstaluj Songstera na tym urządzeniu” – w Safari pokazuje,
   jak dodać grę do ekranu początkowego.
 
-## 5.25.0 – 15.10.2026 (`HASH`)
+## 5.25.0 – 15.10.2026 (`22a1319`)
 
 - **1110 nowych piosenek** z playlisty „spokojnie panowie” – polskie i zagraniczne przeboje, rap, muzyka z filmów
   i bajek (także polskie wersje piosenek z filmów Disneya). Lata sprawdzone: zgodne w co najmniej dwóch bazach
