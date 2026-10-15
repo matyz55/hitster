@@ -49,7 +49,7 @@
       <button class="mode" data-mode="teams">
         <span class="mode-icon">🎉</span>
         <b>Oś czasu – drużyny</b>
-        <span class="muted">2–4 drużyny, każda ze wspólną osią czasu. Członkowie drużyny odpowiadają na zmianę – w sam raz na imprezę.</span>
+        <span class="muted">2–16 drużyn, każda ze wspólną osią czasu. Członkowie drużyny odpowiadają na zmianę – w sam raz na imprezę.</span>
       </button>
     </div>
     <h3 class="mode-group">Szybkie gry</h3>
@@ -439,7 +439,9 @@
     <p class="muted">Drugie okno dla telewizora lub rzutnika podłączonego do tego komputera. To okno zostaje pilotem.</p>
     <button type="button" id="btn-open-tv-window" class="ghost">Otwórz okno dużego ekranu</button>
     <h3>Telewizor lub inny komputer</h3>
-    <p class="muted" id="tv-instructions">Na telewizorze otwórz duży ekran Songstera, kliknij „Połącz z innym urządzeniem” i zeskanuj kod QR telefonem – albo wpisz tutaj kod z ekranu.</p>
+    <p class="muted" id="tv-instructions">Na telewizorze wejdź w przeglądarce na stronę:</p>
+    <p class="tv-url" id="tv-url"></p>
+    <p class="muted">Kliknij tam „Połącz z innym urządzeniem” i zeskanuj kod QR tym telefonem – albo wpisz tutaj kod z ekranu.</p>
     <div class="connect-row">
       <input type="text" id="tv-code" maxlength="4" placeholder="Kod" aria-label="Kod z telewizora" autocomplete="off" spellcheck="false">
       <button type="button" id="btn-tv-connect" class="ghost">Połącz</button>

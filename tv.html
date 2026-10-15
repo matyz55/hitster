@@ -109,11 +109,16 @@
     .buzzers.mine .buzzer { flex: 1; justify-content: center; font-size: 1.6em; padding: .8em; }
     .buzz-who { font-weight: 800; color: var(--gold); }
     /* połączenie z innym urządzeniem */
-    .net-box { margin: 1em auto 0; width: 14em; background: #fff; border-radius: .6em; padding: .5em; color: #12101a; }
-    .net-box svg { width: 100%; height: auto; display: block; }
-    .net-code { font-size: 1.3em; margin-bottom: .3em; }
-    .net-code b { letter-spacing: .15em; }
-    .net-box .muted { color: #555; font-size: .6em; }
+    /* kod do połączenia z telefonem: QR (biały, kontrastowy) obok dużego kodu – dopasowane do wysokości ekranu */
+    .net-box { margin: 3vh auto 0; display: flex; gap: 4vmin; align-items: center; justify-content: center; flex-wrap: wrap; }
+    .net-qr { width: min(48vh, 70vw); aspect-ratio: 1; background: #fff; border-radius: 2vmin; padding: 2vmin; box-sizing: border-box; }
+    .net-qr svg { width: 100%; height: 100%; display: block; }
+    .net-info { text-align: left; max-width: min(40vw, 90vw); }
+    .net-label { color: var(--muted); font-size: 1em; }
+    .net-code { color: var(--gold); font-weight: 900; font-size: clamp(2.5rem, 14vmin, 12rem); letter-spacing: .12em; line-height: 1.1; }
+    .net-info p { color: var(--text); font-size: .8em; margin: .8em 0 0; }
+    .waiting.with-code { margin: auto; }
+    .waiting.with-code b { margin-bottom: .2em; }
     /* telefon gracza */
     .gap { flex: 0 0 auto; width: calc(var(--cw, 11vw) * .4); height: var(--ch, 14vh); border-radius: .6em; border: 2px dashed var(--accent-2);
       background: rgba(45, 226, 230, .08); color: var(--accent-2); font: inherit; font-size: calc(var(--fs, 1em) * 1.6); cursor: pointer; padding: 0; }
@@ -139,6 +144,55 @@
     .suggest li:hover { background: rgba(255, 61, 127, .18); }
     .actions button.primary, .guess-form button.primary { background: var(--accent); border: 0; color: var(--text); font-weight: 600; }
     body.player { overflow: auto; }
+    /* --- osobny widok telefonu gracza --- */
+    body.player .wrap { font-size: 17px; gap: 12px; padding: 14px 14px 28px; }
+    .p-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .p-me b { font-size: 1.2em; }
+    .p-me small { display: block; color: var(--muted); font-size: .85em; }
+    .p-banner { background: var(--panel); border-radius: 14px; padding: 12px 14px; font-size: 1.15em; font-weight: 800; text-align: center; }
+    .p-banner.mine { background: var(--accent); color: #fff; animation: glow 1.6s ease-in-out infinite; }
+    @keyframes glow { 50% { box-shadow: 0 0 1.2em rgba(255, 61, 127, .55); } }
+    .p-status { color: var(--muted); text-align: center; }
+    .p-status.playing { color: var(--accent-2); }
+    .p-reveal { background: var(--panel); border-radius: 14px; padding: 12px 14px; }
+    .p-reveal .y { font-size: 2.4em; font-weight: 900; color: var(--gold); line-height: 1; }
+    .p-reveal .t { font-weight: 800; font-size: 1.15em; margin-top: 4px; }
+    .p-reveal .a { color: var(--muted); }
+    .p-reveal .lines div { margin-top: 4px; font-weight: 600; font-size: .92em; }
+    .p-buzz { min-height: 45vh; font: inherit; font-size: 2.2em; font-weight: 900; border-radius: 22px; border: 6px solid var(--c);
+      background: color-mix(in srgb, var(--c) 45%, var(--panel)); color: #fff; touch-action: manipulation; user-select: none; }
+    .p-buzz:active:not(:disabled) { background: var(--c); transform: scale(.98); }
+    .p-buzz.locked { opacity: .35; }
+    .p-actions { display: flex; flex-direction: column; gap: 10px; }
+    .p-actions button { font: inherit; font-size: 1.05em; padding: 14px; border-radius: 12px; border: 1px solid #3d3755; background: var(--panel-2); color: var(--text); }
+    .p-actions button.primary { background: var(--accent); border: 0; font-weight: 700; }
+    .p-actions button.gold { background: var(--gold); color: #2b2000; border: 0; font-weight: 700; }
+    .p-actions button.ok { background: var(--ok); color: #0b1d12; border: 0; font-weight: 700; }
+    .p-actions button:disabled { opacity: .4; }
+    .vtl { display: flex; flex-direction: column; gap: 6px; }
+    .vtl-title { font-weight: 800; color: var(--accent); margin-top: 4px; }
+    .vtl-hint { color: var(--muted); font-size: .75em; text-align: center; }
+    .vrow { display: flex; align-items: center; gap: 12px; border-radius: 12px; padding: 8px 12px; min-height: 52px; }
+    .vrow.vcard { background: linear-gradient(160deg, #3a2d63, #2a2244); }
+    .vrow.vnew { outline: 3px solid var(--ok); }
+    .vrow.vstart { background: transparent; border: 2px dashed var(--gold); }
+    .vrow .y { font-size: 1.5em; font-weight: 900; color: var(--gold); min-width: 3.2em; }
+    .vrow .ta { display: flex; flex-direction: column; min-width: 0; }
+    .vrow .ta b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .vrow .ta small { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .vrow.vmys { background: var(--accent); color: #fff; font-weight: 800; }
+    .vrow.vmys.ch { background: var(--gold); color: #2b2000; }
+    .vrow.vmys .q { font-size: 1.6em; }
+    .vrow.vmark { border: 2px dashed; font-weight: 800; justify-content: center; }
+    .vrow.vmark.bad { color: var(--bad); } .vrow.vmark.ok { color: var(--ok); } .vrow.vmark.challenge { color: var(--gold); }
+    .vslot { font: inherit; font-weight: 700; color: var(--accent-2); background: rgba(45, 226, 230, .08); border: 2px dashed var(--accent-2);
+      border-radius: 12px; padding: 12px; touch-action: manipulation; }
+    .vslot.chosen { background: var(--accent-2); color: #12101a; }
+    .p-scores { display: flex; flex-wrap: wrap; gap: 4px 14px; color: var(--muted); font-size: .85em; border-top: 1px solid #3d3755; padding-top: 10px; }
+    .p-scores b { color: var(--text); }
+    .p-scores .act { color: var(--accent); }
+    body.player .guess-form input { font-size: 1.05em; padding: 12px; }
+    body.player .guess-form button { font-size: 1.05em; padding: 12px; flex: 1 1 100%; border-radius: 12px; }
     body.player .timelines { flex: none; align-content: start; }
     body.player .tl-name { width: 20vw; }
     body.player .wrap { height: auto; min-height: 100%; }

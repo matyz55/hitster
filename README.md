@@ -12,7 +12,7 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
 - **Oś czasu – multiplayer** – 2–16 graczy przy jednym urządzeniu (lub na własnych telefonach – przycisk „📱 Dołącz przez telefon” przy liście graczy), z wyzwaniami
   i żetonami jak w planszówce. Żetony: 1 = pominięcie piosenki (gra najpierw pokazuje, co to było),
   3 = kupno karty – przed odkryciem na oś trafia grana piosenka, po odkryciu losowa karta z talii.
-- **Oś czasu – drużyny** – 2–4 drużyny, każda ze wspólną osią czasu; członkowie drużyny
+- **Oś czasu – drużyny** – 2–16 drużyn, każda ze wspólną osią czasu; członkowie drużyny
   odpowiadają po kolei (gra pokazuje, kto teraz zgaduje). Zasady jak w multiplayerze.
 - **Jaka to melodia** – 1–16 graczy po kolei odgadują tytuł, wykonawcę albo oba. Odpowiedź wpisuje się
   w jedno pole – od 3 liter pojawiają się podpowiedzi ze wszystkich piosenek w bazie (także przy osi czasu).
@@ -49,12 +49,14 @@ okładki pobierane są w jakości dopasowanej do ekranu).
 
 **Telewizor przez sieć**: na telewizorze (np. Google TV) lub innym komputerze otwórz `tv.html` i kliknij
 „📶 Połącz z innym urządzeniem” – pojawi się 4-znakowy kod i kod QR. Telefon, na którym toczy się gra, skanuje
-QR (albo w oknie 📺 wpisuje kod) i od tej chwili steruje dużym ekranem. Połączenie: WebRTC przez PeerJS
-(biblioteka i serwer pośredniczący ładowane dopiero po kliknięciu).
+QR (albo w oknie 📺 wpisuje kod) i od tej chwili steruje dużym ekranem. Połączenie: najpierw bezpośrednio
+(WebRTC przez PeerJS), a gdy sieć lub przeglądarka to blokuje – automatycznie przez publiczny serwer pośredniczący
+MQTT (shiftr.io, WebSocket na porcie 443). Biblioteki ładowane są dopiero po kliknięciu.
 
 **Gracze na własnych telefonach**: gospodarz (też gra, u niego gra muzyka) w oknie 📺 tworzy pokój – gracze
-skanują QR (`tv.html?join=KOD`), wybierają, kim są, i w swojej turze wybierają miejsce na osi, wpisują
-odpowiedź (z podpowiedziami), naciskają przyciski (wyzwanie, kupno karty…) albo swój przycisk w „Kto pierwszy?”.
+skanują QR (`tv.html?join=KOD`), wpisują imię i dostają własny, pionowy widok: baner „Twoja tura”, oś czasu
+z przyciskami „＋ tutaj”, odpowiedź z podpowiedziami, duże przyciski (wyzwanie, kupno karty…) i ogromny
+przycisk w „Kto pierwszy?”.
 
 Na dużym ekranie widać też pasek kroków (Melodia krok po kroku), przyciski graczy (Kto pierwszy?), kręcącą
 się płytę i postęp fragmentu. W trakcie gry ekran telefonu nie gaśnie (Screen Wake Lock), a fragmenty

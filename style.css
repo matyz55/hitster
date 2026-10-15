@@ -518,3 +518,4 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 /* okno połączeń otwarte przyciskiem „Dołącz przez telefon” – tylko część dla graczy */
 #dlg-connect.join-only > :is(h3, p, button, .connect-row):not(.join-part) { display: none; }
 #dlg-connect.join-only .join-part { display: revert; }
+.tv-url { font-size: 1.1rem; font-weight: 700; color: var(--gold); word-break: break-all; margin: 4px 0 8px; user-select: all; }

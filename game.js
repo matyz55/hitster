@@ -354,7 +354,7 @@ async function fetchWithRetry(url, attempts = 3) {
 }
 
 /* ---------- stan gry ---------- */
-const MAX_TEAMS = 4;
+const MAX_TEAMS = 16;
 const MODES = {
   solo: { title: T('Oś czasu – 1 gracz'), minPlayers: 1, maxPlayers: 1 },
   multi: { title: T('Oś czasu – multiplayer'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
@@ -644,6 +644,8 @@ async function connectTv(code) {
   }
 }
 $('#btn-tv-connect').addEventListener('click', () => connectTv($('#tv-code').value));
+// adres dużego ekranu do wpisania w przeglądarce telewizora (bez https://, krócej)
+$('#tv-url').textContent = window.SongsterNet.pageUrl('tv.html').replace(/^https?:\/\//, '');
 $('#tv-code').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); connectTv($('#tv-code').value); } });
 
 // pokój dla telefonów graczy: kod + QR prowadzący do tv.html?join=KOD

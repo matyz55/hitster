@@ -5,6 +5,7 @@
 // • telefon gracza – tv.html?join=KOD: widok gracza, który steruje swoją turą (gra i muzyka są u gospodarza).
 const app = document.getElementById('app');
 const waiting = document.getElementById('waiting');
+const waitingText = document.getElementById('waiting-text'); // zachowana referencja – element bywa odłączony od strony
 const JOIN = new URLSearchParams(window.location.search).get('join');
 const PLAYER = !!JOIN;
 let sendFn = null; // wysyłanie poleceń do gry (pilot / gospodarz)
@@ -21,7 +22,7 @@ const h = (tag, cls, ...kids) => {
   for (const k of kids.flat()) if (k != null) n.append(k.nodeType ? k : document.createTextNode(String(k)));
   return n;
 };
-document.getElementById('waiting-text').textContent = T('Czekam na grę… Rozpocznij grę w oknie Songstera na tym urządzeniu – ono jest pilotem.');
+waitingText.textContent = T('Czekam na grę… Rozpocznij grę w oknie Songstera na tym urządzeniu – ono jest pilotem.');
 document.title = T('Songster – duży ekran');
 document.getElementById('fs').textContent = T('⛶ Pełny ekran');
 document.getElementById('fs').addEventListener('click', () => document.documentElement.requestFullscreen && document.documentElement.requestFullscreen());
@@ -106,6 +107,7 @@ function render(s) {
     app.replaceChildren(playerPicker(s));
     return;
   }
+  if (s && s.screen === 'game' && PLAYER) { renderPlayer(s); return; }
   if (!s || s.screen === 'home' || s.screen === 'setup' || s.screen === 'settings' || s.screen === 'stats') {
     app.replaceChildren(waiting);
     waiting.querySelectorAll('.picker').forEach((n) => n.remove());
@@ -187,6 +189,93 @@ function render(s) {
   fit();
 }
 
+/* --- osobny widok telefonu gracza: pionowa oś, duże przyciski, tylko to, czym ten gracz steruje --- */
+function vTimeline(t, pick, title) {
+  const box = h('div', 'vtl');
+  if (title) box.append(h('div', 'vtl-title', title));
+  box.append(h('div', 'vtl-hint', T('↑ starsze')));
+  for (let i = 0; i <= t.cards.length; i++) {
+    if (t.slot === i) box.append(h('div', 'vrow vmys', h('span', 'q', '?'), h('span', '', t.slotLabel)));
+    if (t.challengeSlot === i) box.append(h('div', 'vrow vmys ch', h('span', 'q', '?'), h('span', '', t.challengeLabel)));
+    if (t.marks) {
+      if (t.marks.slot === i) box.append(h('div', 'vrow vmark bad', `✘ ${t.marks.who}`));
+      if (t.marks.challengeSlot === i) box.append(h('div', 'vrow vmark challenge', `✘ ${t.marks.challenger}`));
+      if (t.marks.correct === i) box.append(h('div', 'vrow vmark ok', `✔ ${t.marks.year}`));
+    }
+    if (pick && t.slot !== i && t.challengeSlot !== i) {
+      const b = h('button', 'vslot', T('＋ tutaj'));
+      b.addEventListener('click', () => { b.classList.add('chosen'); send({ slot: i }); });
+      box.append(b);
+    }
+    if (i < t.cards.length) {
+      const c = t.cards[i];
+      box.append(c.start
+        ? h('div', 'vrow vcard vstart', h('span', 'y', c.y), h('span', 'ta', T('karta startowa')))
+        : h('div', 'vrow vcard' + (c.new ? ' vnew' : ''), h('span', 'y', c.y), h('span', 'ta', h('b', '', c.t), h('small', '', c.a))));
+    }
+  }
+  box.append(h('div', 'vtl-hint', T('↓ nowsze')));
+  return box;
+}
+function renderPlayer(s) {
+  app.style.fontSize = '';
+  const tls = s.timelines || [];
+  const mine = tls.find((t) => t.name === me);
+  const active = tls.find((t) => t.active);
+  const mineTurn = myTurn(s);
+  const answering = s.buzzers && s.buzzers.answering === me;
+  const top = h('div', 'p-top', h('div', 'p-me', h('b', '', me), mine && mine.sub ? h('small', '', mine.sub) : null), (() => {
+    const b = h('button', 'link', T('zmień gracza'));
+    b.addEventListener('click', () => { me = ''; render(s); });
+    return b;
+  })());
+  const bannerText = s.mode === 'buzz'
+    ? (answering ? T('🔔 Odpowiadasz!') : (s.buzzers && s.buzzers.answering ? T('🔔 Odpowiada: {0}', s.buzzers.answering) : T('Słuchaj i naciśnij, gdy znasz odpowiedź')))
+    : (s.challenger === me && s.phase === 'challenge' ? T('⚔ Twoje wyzwanie – wskaż inne miejsce') : (s.turnName === me ? T('🎯 Twoja tura!') : T('Tura: {0}', s.turnName)));
+  const banner = h('div', 'p-banner' + (mineTurn || answering ? ' mine' : ''), bannerText);
+  const song = s.reveal
+    ? h('div', 'p-reveal', h('div', 'y', s.reveal.y), h('div', 't', s.reveal.t), h('div', 'a', s.reveal.a, ' ', flag(s.reveal.cc)),
+      h('div', 'lines', (s.reveal.lines || []).map((l) => h('div', '', l))))
+    : h('div', 'p-status' + (audioState.playing ? ' playing' : ''), audioState.playing ? '🎵 ' : '', s.status || '');
+  // Kto pierwszy?: jeden ogromny przycisk
+  let buzz = null;
+  if (s.buzzers && s.buzzers.open) {
+    const it = s.buzzers.items.find((x) => x.name === me);
+    if (it) {
+      buzz = h('button', 'p-buzz' + (it.locked ? ' locked' : ''), it.locked ? T('Już odpowiadałeś') : T('🔔 Znam!'));
+      buzz.style.setProperty('--c', it.color);
+      buzz.disabled = it.locked;
+      buzz.addEventListener('pointerdown', (e) => { e.preventDefault(); send({ buzz: s.buzzers.items.indexOf(it) }); });
+    }
+  }
+  const guess = s.guess && s.guess.who === me ? guessForm(s.guess) : null;
+  // przyciski: tylko te, których ten gracz może teraz użyć
+  // w swojej turze – wszystko poza wyzwaniem i żetonem „przy stole” (o nich decydują inni); przy swoim wyzwaniu – wszystko;
+  // poza swoją turą – wyzwanie, żeton „przy stole” i wybór siebie jako wyzywającego
+  const tableBtn = (b) => /\b(gold|ok)\b/.test(b.cls);
+  const allowed = (b) => (s.mode === 'buzz' ? answering
+    : (s.challenger === me && s.phase === 'challenge') || (s.turnName === me ? !tableBtn(b) : (tableBtn(b) || b.text === me)));
+  const btns = (s.buttons || []).map((b, i) => ({ ...b, i })).filter((b) => allowed(b));
+  const actions = btns.length ? h('div', 'p-actions', btns.map((b) => {
+    const btn = h('button', b.cls, b.text);
+    btn.disabled = b.disabled;
+    btn.addEventListener('click', () => send({ click: { i: b.i, text: b.text } }));
+    return btn;
+  })) : null;
+  // oś: w swojej turze (albo przy swoim wyzwaniu) – oś gracza z turą z miejscami do stuknięcia; poza tym własna
+  const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || s.challenger === me));
+  let tl = null;
+  if (active && (pick || s.reveal || active.name === me)) tl = vTimeline(active, pick, active.name === me ? T('Twoja oś') : T('Oś: {0}', active.name));
+  else if (mine) tl = vTimeline(mine, false, T('Twoja oś'));
+  if (tl && !mine && active && tls.length === 1) tl.querySelector('.vtl-title') && tl.querySelector('.vtl-title').remove();
+  const others = tls.filter((t) => t !== mine && t !== active && t.sub);
+  const scores = (others.length ? others.map((t) => h('span', '', h('b', '', t.name), ` ${t.sub}`))
+    : (s.scores || []).map((x) => h('span', x.active ? 'act' : '', x.text)));
+  const keep = app.querySelector('.guess-form');
+  app.replaceChildren(...[top, banner, song, buzz, guess, actions, tl, scores.length ? h('div', 'p-scores', scores) : null].filter(Boolean));
+  if (guess && keep) restoreGuess(keep, guess);
+}
+
 /* --- odpowiedź wpisywana na telefonie gracza (z podpowiedziami z bazy piosenek) --- */
 let db = null;
 function loadDb() {
@@ -251,6 +340,11 @@ function guessForm(g) {
 }
 function restoreGuess(oldForm, newForm) { if (oldForm._get) newForm._set(oldForm._get()); }
 function updateAudio() {
+  if (PLAYER && last && last.screen === 'game') {
+    const st = app.querySelector('.p-status');
+    if (st) { st.classList.toggle('playing', audioState.playing); st.firstChild.textContent = audioState.playing ? '🎵 ' : ''; }
+    return;
+  }
   const v = app.querySelector('.vinyl');
   if (v) v.classList.toggle('spinning', audioState.playing);
   const bar = app.querySelector('.progress .bar');
@@ -351,15 +445,15 @@ window.addEventListener('resize', () => last && render(last));
 
 // połączenie z grą
 if (PLAYER) {
-  document.getElementById('waiting-text').textContent = T('Łączenie z pokojem {0}…', JOIN.toUpperCase());
+  waitingText.textContent = T('Łączenie z pokojem {0}…', JOIN.toUpperCase());
   window.SongsterNet.connect('room', JOIN).then(({ conn }) => {
     sendFn = (m) => { try { conn.send(m); } catch (e) { /* zerwane */ } };
     conn.on('data', onMessage);
-    conn.on('close', () => { app.replaceChildren(waiting); document.getElementById('waiting-text').textContent = T('Rozłączono z pokojem. Odśwież stronę, aby dołączyć ponownie.'); });
-    document.getElementById('waiting-text').textContent = T('Połączono z pokojem {0}. Czekaj na start gry.', JOIN.toUpperCase());
+    conn.on('close', () => { app.replaceChildren(waiting); waitingText.textContent = T('Rozłączono z pokojem. Odśwież stronę, aby dołączyć ponownie.'); });
+    waitingText.textContent = T('Połączono z pokojem {0}. Czekaj na start gry.', JOIN.toUpperCase());
     send({ hello: true, role: 'player', name: me });
   }).catch(() => {
-    document.getElementById('waiting-text').textContent = T('Nie udało się dołączyć – sprawdź kod pokoju i czy gospodarz ma otwartą grę.');
+    waitingText.textContent = T('Nie udało się dołączyć – sprawdź kod pokoju i czy gospodarz ma otwartą grę.');
   });
 } else {
   try {
@@ -368,7 +462,7 @@ if (PLAYER) {
     sendFn = (m) => channel.postMessage(m);
     channel.postMessage({ hello: true });
   } catch (e) {
-    document.getElementById('waiting-text').textContent = T('Ta przeglądarka nie obsługuje dużego ekranu (BroadcastChannel).');
+    waitingText.textContent = T('Ta przeglądarka nie obsługuje dużego ekranu (BroadcastChannel).');
   }
   // telewizor / inny komputer: kod i QR dla telefonu-pilota (PeerJS ładowany dopiero po kliknięciu)
   const btn = document.getElementById('net');
@@ -384,15 +478,19 @@ if (PLAYER) {
       });
       const url = window.SongsterNet.pageUrl('index.html', { tv: code });
       const box = document.getElementById('net-box');
-      box.innerHTML = await window.SongsterNet.qrSvg(url);
-      box.prepend(h('div', 'net-code', T('Kod: '), h('b', '', code)));
-      box.append(h('p', 'muted', T('Zeskanuj kod telefonem albo w Songsterze na telefonie wybierz 📺 i wpisz kod.')));
+      // QR obok kodu – rozmiar liczony od krótszego boku ekranu, więc mieści się w każdej rozdzielczości
+      const qr = h('div', 'net-qr');
+      qr.innerHTML = await window.SongsterNet.qrSvg(url);
+      box.replaceChildren(qr, h('div', 'net-info',
+        h('div', 'net-label', T('Kod:')), h('div', 'net-code', code),
+        h('p', '', T('Zeskanuj kod telefonem albo w Songsterze na telefonie wybierz 📺 i wpisz kod.'))));
       box.classList.remove('hidden');
+      waiting.classList.add('with-code');
       btn.classList.add('hidden');
     } catch (e) {
       btn.disabled = false;
       btn.textContent = T('📶 Połącz z innym urządzeniem');
-      document.getElementById('waiting-text').textContent = T('Nie udało się połączyć z serwerem pośredniczącym. Spróbuj ponownie.');
+      waitingText.textContent = T('Nie udało się połączyć z serwerem pośredniczącym. Spróbuj ponownie.');
     }
   });
 }
