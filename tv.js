@@ -417,17 +417,34 @@ function renderPlayer(s) {
   // oś: w swojej turze (albo przy swoim wyzwaniu) – oś gracza z turą z miejscami do stuknięcia; poza tym własna
   const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || ids.includes(s.challenger)));
   let tl = null;
+  let ownTl = null;
   if (active && (pick || s.reveal || ids.includes(active.name))) tl = vTimeline(active, pick, ids.includes(active.name) ? T('Twoja oś') : T('Oś: {0}', active.name));
-  else if (mine) tl = vTimeline(mine, false, T('Twoja oś'));
+  else if (active && active !== mine) {
+    // poza swoją turą: podgląd na żywo osi gracza, który odpowiada – widać, gdzie kładzie kartę (np. czy rzucić wyzwanie)
+    tl = vTimeline(active, false, active.slot != null ? T('👀 {0} wskazuje miejsce na swojej osi:', active.name) : T('👀 Oś gracza {0} – czeka na wybór miejsca', active.name));
+    tl.classList.add('watch');
+    if (mine) {
+      ownTl = h('details', 'own-tl', h('summary', '', T('Twoja oś ({0})', mine.sub || mine.cards.length)), vTimeline(mine, false, null));
+      if (ownOpen) ownTl.open = true;
+      ownTl.addEventListener('toggle', () => { ownOpen = ownTl.open; });
+    }
+  } else if (mine) tl = vTimeline(mine, false, T('Twoja oś'));
   if (tl && !mine && active && tls.length === 1) tl.querySelector('.vtl-title') && tl.querySelector('.vtl-title').remove();
   const others = tls.filter((t) => t !== mine && t !== active && t.sub);
   const scores = (others.length ? others.map((t) => h('span', '', h('b', '', t.name), ` ${t.sub}`))
     : (s.scores || []).map((x) => h('span', x.active ? 'act' : '', x.text)));
   const keep = app.querySelector('.guess-form');
   const partyBar = s.party ? h('div', 'p-party', s.party.label) : null;
-  app.replaceChildren(...[top, partyBar, banner, song, play, buzz, guess, actions, tl, scores.length ? h('div', 'p-scores', scores) : null].filter(Boolean));
+  app.replaceChildren(...[top, partyBar, banner, song, play, buzz, guess, actions, tl, ownTl, scores.length ? h('div', 'p-scores', scores) : null].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
+  // nowe miejsce wskazane przez odpowiadającego – przewijamy podgląd tak, by znacznik był widoczny
+  const mark = app.querySelector('.vtl.watch .vmys');
+  const markKey = mark && active ? `${active.name}:${active.slot}:${active.challengeSlot}` : '';
+  if (mark && markKey !== lastMark) mark.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  lastMark = markKey;
 }
+let ownOpen = false;
+let lastMark = '';
 
 /* --- odpowiedź wpisywana na telefonie gracza (z podpowiedziami z bazy piosenek) --- */
 let db = null;
