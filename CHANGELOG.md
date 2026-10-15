@@ -680,7 +680,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Tak to leciało!: bez napisu „Śpiewaj razem z tekstem” w trakcie piosenki; informacja o źródłach (lrclib.net,
   YouTube) przeniesiona na sam dół, pod koła ratunkowe.
 
-## 5.30.5 – 16.10.2026 (`HASH`)
+## 5.30.5 – 16.10.2026 (`af70b02`)
 
 - Tak to leciało!: koła ratunkowe są teraz przyciskami pod tekstem już w trakcie śpiewania (wtedy działa wymiana piosenki; odsłonięcie słowa i trzy wersje – przy przerwie).
 - Przy odpowiedzi przycisk „Tak to leciało!” zajmuje całą szerokość, a pod nim są trzy koła ratunkowe.
