@@ -1,7 +1,7 @@
 'use strict';
 
 // Dobór właściwego nagrania z wyników iTunes Search API.
-// Wspólne dla gry (game.js) i skryptu sprawdzającego listę piosenek.
+// Wspólne dla gry (js/*.js) i skryptu sprawdzającego listę piosenek.
 (function (root) {
   const norm = (s) => s.toLowerCase().replace(/ł/g, 'l').normalize('NFKD')
     .replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '');

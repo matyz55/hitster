@@ -7,7 +7,7 @@ export default [
   { ignores: ['node_modules/', 'playwright-report/', 'test-results/', 'songs.js', 'flags/'] },
   js.configs.recommended,
   {
-    files: ['*.js'],
+    files: ['*.js', 'js/*.js'],
     languageOptions: { ecmaVersion: 2023, sourceType: 'script', globals: { ...globals.browser } },
     rules: {
       'no-undef': 'off',

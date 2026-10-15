@@ -146,3 +146,25 @@ test('ciekawostka o nagrodzie z Wikidata po odkryciu karty', async ({ page }) =>
   expect(line).toContain('Oscar');
   expect(line).toContain('Wikidata');
 });
+
+test('wersja angielska interfejsu', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.setItem('songster.lang', JSON.stringify('en')));
+  await page.reload();
+  await expect(page.locator('#btn-single')).toContainText('Single player');
+  await page.click('#btn-single');
+  await expect(page.locator('.mode[data-mode=year]')).toContainText('Year on the nose');
+});
+
+test('ustawienia: wyszukiwanie piosenki i poprawka roku', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#btn-settings');
+  await page.fill('#song-search', 'Bohemian');
+  await expect(page.locator('#song-editor .song-row').first()).toBeVisible({ timeout: 5000 });
+  const input = page.locator('#song-editor .song-row input').first();
+  const y = Number(await input.inputValue());
+  await input.fill(String(y + 1));
+  await input.dispatchEvent('change');
+  await expect(page.locator('#song-editor .song-row.edited')).toHaveCount(1);
+  await page.click('#btn-reset-years');
+});

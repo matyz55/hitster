@@ -452,3 +452,11 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Dla twórców: okresowe sprawdzanie bazy – skrypt `tools/check-previews.mjs` sprawdza w iTunes porcję piosenek
   (tym samym sposobem co gra, z limitem zapytań) i zapisuje raport piosenek bez fragmentu w `PREVIEW-REPORT.md`;
   na GitHubie uruchamia się codziennie (150 piosenek dziennie).
+
+## 5.19.2 – 15.10.2026 (`HASH`)
+
+- Poprawka: zmiana roku lub kraju w ustawieniach („Poprawki dat”) mogła zgłaszać błąd przy przejściu do kolejnego pola
+  – lista odświeża się teraz po zakończeniu edycji.
+- Dla twórców: kod gry podzielony z jednego pliku `game.js` na moduły w katalogu `js/` (rdzeń, ekrany, telefony, lobby,
+  ustawienia gry, rozgrywka, zasady, dźwięk, wyświetlanie, ustawienia, tryby, listy, statystyki, wznawianie);
+  nowe testy: wersja angielska i edytor dat. Wersja dla dużego ekranu podniesiona – starsze strony same się odświeżą.
