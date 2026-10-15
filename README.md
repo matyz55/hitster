@@ -48,7 +48,8 @@ Na ekranie startowym wybiera się **Jeden gracz** albo **Multiplayer**:
 
 **Karty specjalne** (modyfikatory osi czasu, do wyboru): podwójna, kradzież żetonu, zamiana osi.
 
-**Ciekawostki** po odkryciu karty: zwycięstwo lub miejsce na Eurowizji, 1. miejsce Listy
+**Ciekawostki** po odkryciu karty: nagrody z Wikidata – Oscar i Złoty Glob za piosenkę, Grammy, Grammy Hall of Fame,
+Latin Grammy (tylko z datą przyznania; lista ze źródłami w [AWARDS.md](AWARDS.md), skrypt `tools/awards.mjs`); zwycięstwo lub miejsce na Eurowizji, 1. miejsce Listy
 Przebojów Trójki, festiwal w Opolu, miejsce na Billboard Year-End Hot 100, nr 1 w Polsce.
 
 **Moje statystyki** (📊, tylko na danym urządzeniu): skuteczność w dekadach i gatunkach,

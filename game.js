@@ -2360,6 +2360,13 @@ function factLines(song) {
     else if (kind === 'o') out.push(T('🎙 Śpiewana na {0} Krajowym Festiwalu Piosenki Polskiej w Opolu', a));
     else if (kind === 'b') out.push(b ? T('🇺🇸 Billboard Year-End Hot 100 ({0}): {1}. miejsce', a, b) : T('🇺🇸 Na liście Billboard Year-End Hot 100 ({0})', a));
     else if (kind === 'n') out.push(T('🇵🇱 Nr 1 na liście przebojów w Polsce ({0})', a));
+    // nagrody z Wikidata (tools/awards.mjs, lista w AWARDS.md)
+    else if (kind === 'a') {
+      const txt = { oscar: T('🏆 Oscar za najlepszą piosenkę filmową'), globe: T('🏆 Złoty Glob za najlepszą piosenkę'),
+        soty: T('🏆 Grammy – piosenka roku'), roty: T('🏆 Grammy – nagranie roku'), grammy: T('🏆 Nagroda Grammy'),
+        ghof: T('🏛 W Grammy Hall of Fame'), lgrammy: T('🏆 Latin Grammy') }[a];
+      if (txt) out.push(T('{0} ({1}, wg Wikidata)', txt, b));
+    }
   }
   if (!out.length && TOP_SONGS.has(songKey(song))) out.push(T('🔥 Jedna z 1000 najpopularniejszych piosenek w grze (Spotify)'));
   return out.slice(0, 2).map((t) => el('div', { class: 'fact' }, t));

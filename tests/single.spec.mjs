@@ -136,3 +136,13 @@ test('własna lista piosenek: dopasowanie do bazy, zestaw i gra tylko z listy', 
   const keys = await page.evaluate(() => [...playlistKeys(filterState.tag)]);
   expect(keys).toContain(await page.evaluate(() => songKey(state.current)));
 });
+
+test('ciekawostka o nagrodzie z Wikidata po odkryciu karty', async ({ page }) => {
+  await page.goto('/');
+  const line = await page.evaluate(() => {
+    const song = window.SONGS.find((s) => (s.f || []).some((f) => f.startsWith('a:oscar')));
+    return factLines(song).map((n) => n.textContent).join(' | ');
+  });
+  expect(line).toContain('Oscar');
+  expect(line).toContain('Wikidata');
+});
