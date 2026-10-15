@@ -360,7 +360,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   z dostępnymi w danej chwili możliwościami.
 - Usunięty gatunek disco polo (5 piosenek; „Wyglądasz idealnie” Skolima jest teraz bez gatunku).
 
-## 5.9.0 – 15.10.2026 (`HASH`)
+## 5.9.0 – 15.10.2026 (`573179a`)
 
 - **Wznowienie przerwanej gry**: po każdym ruchu gra zapisuje się w przeglądarce urządzenia gospodarza. Po
   przeładowaniu, zamknięciu karty albo zgaszeniu telefonu ekran startowy proponuje „▶ Wznów grę” (przez 12 godzin).
