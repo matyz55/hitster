@@ -635,7 +635,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   teksty piosenek z planszy pobierają się w tle, zanim gracz coś wybierze, a przeglądarka wcześniej łączy się
   z YouTube i lrclib.net.
 
-## 5.30.0 – 16.10.2026 (`HASH`)
+## 5.30.0 – 16.10.2026 (`73c8e95`)
 
 - **Tak to leciało! – nowa drabinka:** 500, 1000, 2000, 5000, 10 000 (kwota gwarantowana), 15 000, 25 000, 50 000,
   75 000 zł i finał za 100 000 zł. Przed finałem można zrezygnować i zabrać 50 000 zł; w finale nie ma kół
