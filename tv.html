@@ -403,6 +403,36 @@
     .cover-fog { width: min(38vh, 70vw); aspect-ratio: 1; margin: 0 auto; border-radius: .6em; overflow: hidden; background: #000; flex-shrink: 0; }
     .cover-fog > div { width: 100%; height: 100%; background-size: cover; background-position: center; transform: scale(1.12); }
     body.player .cover-fog { width: min(70vw, 300px); }
+    /* Tak to leciało */
+    .ly-tv { display: grid; grid-template-columns: minmax(12em, 18%) 1fr; gap: 2vw; height: 100%; align-items: start; }
+    .ly-tv-side h3 { margin: 0 0 .4em; color: var(--accent-2); }
+    .ly-ladder { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .25em; }
+    .ly-ladder li { display: flex; justify-content: space-between; padding: .25em .6em; border-radius: .4em; background: rgba(255, 255, 255, .06); }
+    .ly-ladder li.safe b { color: var(--gold); }
+    .ly-ladder li.done { background: rgba(61, 220, 132, .2); }
+    .ly-ladder li.now { background: var(--accent); }
+    .ly-tv-money { list-style: none; padding: 0; margin: 1em 0 0; }
+    .ly-tv-money .out { opacity: .5; }
+    .ly-tv-song, .ly-tv-board { text-align: center; }
+    .ly-tv-song h2 small { color: #a49cbf; font-weight: 400; }
+    .ly-tv-cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1vw; margin-top: 1em; }
+    .ly-tv-cat { background: rgba(255, 255, 255, .07); border-radius: .5em; padding: 1em .6em; font-weight: 700; font-size: 1.2em; }
+    .ly-lines { font-size: 1.6em; line-height: 1.45; min-height: 6em; }
+    .ly-lines p { margin: .1em 0; }
+    .ly-lines .past { opacity: .45; }
+    .ly-lines .now { color: var(--accent-2); font-weight: 800; }
+    .ly-lines .next { opacity: .75; }
+    .ly-blanks { display: flex; flex-wrap: wrap; justify-content: center; gap: .4em; font-size: 1.6em; margin: .4em 0; align-items: center; }
+    .ly-prefix { font-weight: 700; }
+    .ly-word { border-bottom: .12em solid var(--gold); padding: 0 .3em; min-width: 3em; font-weight: 700; }
+    .ly-word.ok { color: var(--ok); }
+    .ly-word.bad { color: var(--bad); }
+    .ly-hint { color: var(--gold); font-weight: 700; font-size: 1.2em; }
+    .verdict { font-size: 1.4em; font-weight: 800; }
+    body.player .ly-lines, body.player .ly-blanks { font-size: 1.05em; }
+    body.player .ly-blanks input { width: 7em; font-size: 1em; padding: 8px; text-align: center; }
+    body.player .ly-phone-form { display: flex; flex-direction: column; gap: 10px; }
+    body.player .ly-phone-form button { padding: 12px; font-size: 1.05em; border-radius: 12px; }
   </style>
 </head>
 <body>

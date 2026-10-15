@@ -102,8 +102,11 @@ function showModes() {
   renderModes();
   showScreen('modes');
 }
+// tryb dostępny w tym kontekście (jeden gracz / multiplayer); „Tak to leciało!” – gdy katalog piosenek jest gotowy
+const modeAvailable = (b) => b.dataset.ctx.split(' ').includes(playCtx)
+  && (b.dataset.mode !== 'lyrics' || Object.keys(window.LYRICS_SONGS || {}).length >= 40);
 function modeTiles() {
-  return $$('#screen-modes .mode').filter((b) => b.dataset.ctx.split(' ').includes(playCtx));
+  return $$('#screen-modes .mode').filter(modeAvailable);
 }
 function renderModes() {
   const multi = playCtx === 'multi';
@@ -115,7 +118,7 @@ function renderModes() {
   }
   const n = lobby.players.length;
   for (const b of $$('#screen-modes .mode')) {
-    const show = b.dataset.ctx.split(' ').includes(playCtx);
+    const show = modeAvailable(b);
     b.classList.toggle('hidden', !show);
     b.querySelectorAll('.votes, .mode-need').forEach((x) => x.remove());
     const need = multi ? MODES[b.dataset.mode].minPlayers : 1;

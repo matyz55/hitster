@@ -89,6 +89,8 @@ function handleRemote(msg, from) {
       if (who === null || who === expected) onSlotClick(msg.slot);
     }
   }
+  // Tak to leciało!: słowa wpisane na telefonie gracza z turą, podpowiedź suflera
+  if ((msg.lyAnswer || msg.lyHint != null) && from && from.name) lyFromPhone(msg, from.name);
   // Bingo: pole zaznaczone na telefonie gracza
   if (msg.bingoPick != null && from && state.mode === 'bingo') { const i = playerIndexOf(from.name); if (i >= 0) bingoPick(i, msg.bingoPick); }
   // „Rok co do roku”: rok wpisany na telefonie gracza z turą
@@ -222,6 +224,7 @@ function tvSync() {
     const g = PARTY_GAMES[pt.plan[Math.min(pt.plan.length - 1, screen === 'game' ? pt.idx : Math.max(0, pt.idx - 1))]];
     snap.party = { label: pt.done ? T('🥳 Koniec imprezy!') : T('🥳 Minigra {0} z {1}: {2} {3}', screen === 'game' ? pt.idx + 1 : pt.idx, pt.plan.length, g.icon, T(g.name)) };
   }
+  if (screen === 'lyrics') snap.lyrics = lyrSnapshot();
   if (screen === 'end') {
     snap.winner = txt('#winner-title');
     // w imprezie – klasyfikacja całej imprezy, a nie tylko ostatniej minigry

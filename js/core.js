@@ -1,7 +1,7 @@
 'use strict';
 
 // aktualna wersja gry – ta sama co ostatni wpis w CHANGELOG.md (pokazywana na dole ekranu startowego)
-const GAME_VERSION = '5.26.1';
+const GAME_VERSION = '5.27.0';
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -478,6 +478,8 @@ const MODES = {
   bingo: { title: T('Bingo muzyczne'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   // współpraca: wszyscy razem przeciw grze – wspólna oś i wspólne pomyłki (zasady osi jednego gracza)
   coop: { title: T('Współpraca'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
+  // Tak to leciało!: dokończ wers piosenki z YouTube (lyrics.js)
+  lyrics: { title: T('Tak to leciało!'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
 };
 // jeden gracz albo multiplayer (lobby z listą graczy, telefonami i głosowaniem na tryb)
 let playCtx = 'single';

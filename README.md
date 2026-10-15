@@ -137,6 +137,16 @@ piosenek i nazwy wykonawców się nie zmieniają.
 **Tryb ekspert** (osie czasu): żeby zatrzymać kartę, oprócz miejsca na osi trzeba podać
 wybrane dane – tytuł, wykonawcę i/lub dokładny rok (do wyboru w ustawieniach gry).
 
+**Tak to leciało!** – jak w teleturnieju: 9 kategorii po 2 piosenki (wykonawcy, tematy z tytułów, dekady, zestawy),
+10. piosenka narzucona; drabinka 500 zł → 100 000 zł (gwarantowane 5000 zł po 4. etapie, 30 000 zł w finale), koła
+ratunkowe: trzy słowa, wymiana piosenki, trzy wersje wersu, w multiplayerze sufler. Piosenka gra z YouTube (oficjalny
+osadzany odtwarzacz) od początku, tekst z czasami wersów pobierany w trakcie gry z [lrclib.net](https://lrclib.net)
+przewija się jak w karaoke, a przed wersem do uzupełnienia muzyka milknie. Odpowiedź wpisuje się albo śpiewa
+(rozpoznawanie mowy przeglądarki). Katalog piosenek (`lyrics-catalog.js`, bez tekstów) buduje
+`tools/lyrics-catalog.mjs`: `lrclib` (teksty z czasami), `youtube` (filmy – wymaga zmiennej `YOUTUBE_API_KEY` z kluczem
+YouTube Data API v3; film musi dać się osadzić, nie może być zablokowany w Polsce, a jego długość musi zgadzać się
+z nagraniem z tekstem ±3 s) i `build`. Kafelek trybu pojawia się, gdy katalog ma co najmniej 40 piosenek.
+
 **Zestawy tematyczne** – gotowe ustawienia puli: Przeboje Trójki (1. miejsca Listy Przebojów
 Programu Trzeciego wg polskiej Wikipedii i plebiscyty „Polski Top Wszech Czasów”), Opole
 (piosenki z artykułów o Krajowym Festiwalu Piosenki Polskiej w Opolu), Eurowizja (kategorie

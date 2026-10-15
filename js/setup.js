@@ -8,6 +8,8 @@ function openSetup(mode) {
   const cfg = MODES[mode];
   $('#setup-title').textContent = cfg.title;
   $$('[data-for]').forEach((n) => n.classList.toggle('hidden', !n.dataset.for.split(' ').includes(mode)));
+  // karty ustawień, które w danym trybie nie mają znaczenia (np. pula piosenek w „Tak to leciało!”)
+  $$('[data-hide-for]').forEach((n) => n.classList.toggle('hidden', n.dataset.hideFor.split(' ').includes(mode)));
   // opcje tylko dla multiplayera (np. muzyka na telefonie gracza z turą)
   $$('#screen-setup [data-ctx]').forEach((n) => { if (!n.dataset.ctx.split(' ').includes(playCtx)) n.classList.add('hidden'); });
   if (playCtx === 'multi') {

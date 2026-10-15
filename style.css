@@ -632,3 +632,50 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .royale-row input { flex: 1 1 8em; min-width: 7em; font-size: 1.05rem; }
 #ios-install.flash { color: var(--text, inherit); animation: hint-flash 1.2s ease 2; }
 @keyframes hint-flash { 50% { opacity: 0.35; } }
+
+/* ---------- Tak to leciało! ---------- */
+#ly-scores { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+#ly-scores .score.out { opacity: .55; }
+.ly-wrap { display: grid; grid-template-columns: 220px 1fr; gap: 16px; align-items: start; }
+.ly-side { padding: 12px; }
+.ly-ladder { list-style: none; margin: 0 0 12px; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.ly-ladder li { display: flex; justify-content: space-between; padding: 4px 10px; border-radius: 8px; background: var(--panel-2); font-size: .92rem; }
+.ly-ladder li span { color: var(--muted); }
+.ly-ladder li.safe b { color: var(--gold); }
+.ly-ladder li.done { background: rgba(61, 220, 132, .18); }
+.ly-ladder li.now { background: var(--accent); color: #fff; }
+.ly-ladder li.now span { color: #fff; }
+.ly-lifes { display: flex; flex-direction: column; gap: 4px; font-size: .88rem; }
+.ly-lifes .used { opacity: .4; text-decoration: line-through; }
+.ly-step { font-weight: 600; }
+.ly-cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin: 12px 0; }
+.ly-cat, .ly-song { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; text-align: left; padding: 14px; min-height: 64px; }
+.ly-songs { display: grid; gap: 10px; margin: 12px 0; }
+.ly-songname { font-weight: 600; margin: 0 0 8px; }
+.ly-video { position: relative; width: 100%; max-width: 640px; min-width: 200px; aspect-ratio: 16 / 9; min-height: 200px; margin: 0 auto 10px; background: #000; border-radius: 10px; overflow: hidden; }
+.ly-video > div, .ly-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ly-lines { min-height: 7.5em; text-align: center; font-size: 1.15rem; line-height: 1.5; }
+.ly-lines p { margin: 2px 0; transition: opacity .2s; }
+.ly-lines .past { opacity: .45; }
+.ly-lines .now { color: var(--accent-2); font-weight: 700; font-size: 1.3rem; }
+.ly-lines .next { opacity: .75; }
+.ly-lines .gap { color: var(--gold); font-weight: 700; }
+.ly-blanks { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 10px 0; font-size: 1.15rem; }
+.ly-blanks br { flex-basis: 100%; content: ''; }
+.ly-prefix { font-weight: 600; }
+.ly-blanks input { min-width: 3.5em; max-width: 100%; text-align: center; font-size: 1.05rem; padding: 6px 8px; border-bottom: 2px solid var(--gold); }
+.ly-blanks input.revealed { background: rgba(255, 201, 60, .2); }
+.ly-word { padding: 4px 8px; border-radius: 8px; font-weight: 600; }
+.ly-word.ok { background: rgba(61, 220, 132, .25); }
+.ly-word.bad { background: rgba(255, 92, 92, .25); }
+.ly-variants { display: grid; gap: 6px; margin: 8px 0; }
+.ly-hint { color: var(--gold); font-weight: 600; }
+.ly-help { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.ly-helper { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 8px 0; }
+.ly-credit { text-align: right; margin-top: 12px; }
+@media (max-width: 720px) {
+  .ly-wrap { grid-template-columns: 1fr; }
+  .ly-side { order: 2; }
+  .ly-ladder { flex-direction: row; flex-wrap: wrap; }
+  .ly-ladder li { flex: 1 1 30%; }
+}

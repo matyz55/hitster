@@ -32,6 +32,31 @@
     if (url.startsWith('https://audio.test/')) {
       return new Response(new Blob([tone()], { type: 'audio/wav' }), { headers: { 'content-type': 'audio/wav' } });
     }
+    // „Tak to leciało”: tekst z czasami (LRC) – 40 wersów co 4 s, w refrenie (co 4. wers) powtarzany wers
+    if (url.startsWith('https://lrclib.net/api/get/')) {
+      const id = url.split('/').pop();
+      const pad = (n) => String(n).padStart(2, '0');
+      const lines = Array.from({ length: 40 }, (_, i) => {
+        const t = 8 + i * 4;
+        const text = i % 4 === 3 ? 'tak to leciało w naszej starej piosence' : `wers numer ${i} piosenki ${id} śpiewamy razem głośno`;
+        return `[${pad(Math.floor(t / 60))}:${pad(t % 60)}.00] ${text}`;
+      });
+      return new Response(JSON.stringify({ id: Number(id), syncedLyrics: lines.join('\n'), duration: 180 }), { headers: { 'content-type': 'application/json' } });
+    }
     return realFetch(input, init);
   };
+  // odtwarzacz YouTube: czas płynie window.__ytSpeed razy szybciej (domyślnie 40×), bez prawdziwego filmu
+  window.__ytSpeed = 40;
+  window.YT = { Player: class {
+    constructor(elId, opts) { this.opts = opts; this.base = 0; this.t0 = null; this.vid = null; setTimeout(() => opts.events.onReady({ target: this }), 0); }
+    loadVideoById(o) {
+      this.vid = o.videoId; this.base = o.startSeconds || 0; this.t0 = performance.now();
+      setTimeout(() => this.opts.events.onStateChange({ data: 1 }), 10);
+      if (window.__ytFail && window.__ytFail.includes(o.videoId)) setTimeout(() => this.opts.events.onError({ data: 150 }), 20);
+    }
+    getCurrentTime() { return this.t0 == null ? this.base : this.base + ((performance.now() - this.t0) / 1000) * window.__ytSpeed; }
+    pauseVideo() { this.base = this.getCurrentTime(); this.t0 = null; }
+    playVideo() { if (this.t0 == null) this.t0 = performance.now(); }
+    getDuration() { return 180; }
+  } };
 })();

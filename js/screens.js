@@ -2,7 +2,7 @@
 // Songster – nawigacja między ekranami, przycisk „wstecz”, blokada wygaszania ekranu.
 // Pliki js/*.js to zwykłe skrypty ładowane po kolei (index.html) – współdzielą zmienne globalne.
 /* ---------- nawigacja między ekranami ---------- */
-const SCREENS = ['home', 'lobby', 'modes', 'setup', 'game', 'end', 'settings', 'stats'];
+const SCREENS = ['home', 'lobby', 'modes', 'setup', 'game', 'lyrics', 'end', 'settings', 'stats'];
 let screenBeforeSettings = 'home';
 function showScreen(name) {
   // wyjście z gry do menu (logo, „wstecz”, wybór trybu…) – zapisana gra nie jest już potrzebna
@@ -13,6 +13,7 @@ function showScreen(name) {
   $('#btn-nav-back').classList.toggle('hidden', name === 'home');
   navGuard(name);
   if (name !== 'game') stopAudio();
+  if (name !== 'lyrics' && typeof lyStop === 'function') lyStop();
   updateWakeLock();
   window.scrollTo(0, 0);
   tvSync();
@@ -34,6 +35,9 @@ function goBack() {
     case 'end': if (state.party && !state.party.done) $('#btn-party-stop').click(); else showModes(); break;
     case 'game':
       if (confirm(T('Przerwać grę i wrócić do wyboru trybu?'))) { state.drawId++; showModes(); }
+      break;
+    case 'lyrics':
+      if (confirm(T('Przerwać grę i wrócić do wyboru trybu?'))) { state.lyrics = null; showModes(); }
       break;
     default: break;
   }
@@ -64,7 +68,7 @@ window.addEventListener('popstate', () => {
 // przy grze imprezowej telefon często leży bez dotykania – bez blokady ekran gaśnie, a przeglądarka zatrzymuje muzykę
 let wakeLock = null;
 async function updateWakeLock() {
-  const inGame = !$('#screen-game').classList.contains('hidden');
+  const inGame = !$('#screen-game').classList.contains('hidden') || !$('#screen-lyrics').classList.contains('hidden');
   if (inGame && document.visibilityState === 'visible' && !wakeLock && navigator.wakeLock) {
     try {
       wakeLock = await navigator.wakeLock.request('screen');

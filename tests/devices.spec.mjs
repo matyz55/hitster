@@ -197,6 +197,8 @@ test('@net wyzwanie „wszyscy naraz” z dwóch telefonów', async ({ browser }
   await bartek.click('.ht-actions button:has-text("Bartek")'); // Bartek dołącza
   await expect.poll(() => host.evaluate(() => state.challenges.length)).toBe(2);
   await ania.click('.vslot >> nth=0');
+  // Bartek wybiera dopiero, gdy jego telefon pokazuje już miejsce Ani (inaczej mógłby stuknąć w nieaktualny widok)
+  await bartek.waitForSelector('.vmys.ch:has-text("Ania")');
   await bartek.click('.vslot >> nth=0');
   await expect.poll(() => host.evaluate(() => state.challenges.every((x) => x.slot != null))).toBe(true);
   // każdy wskazał inne miejsce (zajęte miejsca są zablokowane także na pionowej osi telefonu)

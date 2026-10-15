@@ -146,10 +146,77 @@ function voteView(s) {
     return b;
   })));
 }
+/* ---------- Tak to leciało!: duży ekran (karaoke, drabinka) i telefon gracza (puste pola, sufler) ---------- */
+const lyMoneyTv = (v) => T('{0} zł', Number(v).toLocaleString(document.documentElement.lang === 'en' ? 'en-US' : 'pl-PL'));
+function lyLinesEl(l) {
+  return h('div', 'ly-lines', (l.lines || []).map((x) => h('p', x.cls, x.text)));
+}
+function lyBlanksView(l) {
+  const b = l.blanks;
+  if (!b) return null;
+  return h('div', 'ly-blanks', b.prefix ? h('span', 'ly-prefix', b.prefix) : null,
+    Array.from({ length: b.n }, (_, i) => h('span', 'ly-word' + (b.marks ? (b.marks[i] ? ' ok' : ' bad') : ''), b.marks ? b.given[i] : (b.given[i] || '＿＿＿'))));
+}
+function lyricsBoard(l) {
+  const ladder = h('ol', 'ly-ladder', l.ladder.slice().reverse().map((v, ri) => {
+    const i = l.ladder.length - 1 - ri;
+    return h('li', [i < l.stage ? 'done' : '', i === l.stage ? 'now' : '', i === 3 || i === 7 ? 'safe' : ''].join(' ').trim(), h('span', '', i + 1), h('b', '', lyMoneyTv(v)));
+  }));
+  const main = l.phase === 'board' && l.board
+    ? h('div', 'ly-tv-board', h('h2', '', T('{0} wybiera kategorię – etap {1}', l.turn, l.stage + 1)),
+      l.board.pick ? h('div', 'ly-tv-cats', l.board.pick.map((x) => h('div', 'ly-tv-cat', x)))
+        : h('div', 'ly-tv-cats', l.board.cats.map((x) => h('div', 'ly-tv-cat', x))))
+    : h('div', 'ly-tv-song', l.song ? h('h2', '', `${l.cat} · ${l.song.t}`, h('small', '', ` — ${l.song.a}`)) : null, lyLinesEl(l), lyBlanksView(l),
+      l.hint ? h('p', 'ly-hint', T('🙋 Podpowiedź suflera: {0}', l.hint)) : null,
+      l.helper ? h('p', 'muted', T('🙋 {0} wpisuje podpowiedź…', l.helper)) : null,
+      l.verdict ? h('p', 'verdict', l.verdict) : null);
+  return h('div', 'ly-tv', h('aside', 'ly-tv-side', h('h3', '', `🎤 ${l.turn}`), ladder,
+    l.money.length > 1 ? h('ul', 'ly-tv-money', l.money.map((m) => h('li', m.out ? 'out' : '', `${m.name}: ${lyMoneyTv(m.v)}`))) : null), main);
+}
+let lyDraft = { key: '', words: [], hint: '' };
+function lyricsPhone(s) {
+  const l = s.lyrics;
+  const mine = l.turn === me;
+  const key = `${l.turn}|${l.stage}|${l.song ? l.song.t : ''}`;
+  if (lyDraft.key !== key) lyDraft = { key, words: [], hint: '' };
+  const top = h('div', 'p-top', h('div', 'p-me', h('b', '', me), h('small', '', mine ? T('Twoja kolej – {0}', lyMoneyTv(l.ladder[Math.min(9, l.stage)])) : T('Gra: {0}', l.turn))));
+  // sufler: podpowiedź dla gracza z turą
+  if (l.helper === me) {
+    const inp = h('input', '');
+    inp.type = 'text'; inp.placeholder = T('Podpowiedź'); inp.value = lyDraft.hint;
+    inp.addEventListener('input', () => { lyDraft.hint = inp.value; });
+    const form = h('form', 'join-form', inp, h('button', 'primary', T('Wyślij')));
+    form.addEventListener('submit', (e) => { e.preventDefault(); send({ lyHint: inp.value }); });
+    return h('div', 'picker', top, h('h2', '', T('🙋 {0} prosi Cię o podpowiedź', l.turn)), lyLinesEl(l), lyBlanksView(l), form);
+  }
+  if (mine && l.phase === 'answer' && l.blanks) {
+    const inputs = Array.from({ length: l.blanks.n }, (_, i) => {
+      const inp = h('input', '');
+      inp.type = 'text'; inp.autocomplete = 'off'; inp.spellcheck = false;
+      inp.value = lyDraft.words[i] != null ? lyDraft.words[i] : (l.blanks.given[i] || '');
+      inp.addEventListener('input', () => { lyDraft.words[i] = inp.value; });
+      return inp;
+    });
+    const form = h('form', 'ly-phone-form', h('div', 'ly-blanks', l.blanks.prefix ? h('span', 'ly-prefix', l.blanks.prefix) : null, inputs),
+      h('button', 'primary', T('Tak to leciało!')));
+    form.addEventListener('submit', (e) => { e.preventDefault(); send({ lyAnswer: inputs.map((x) => x.value), lySubmit: true }); });
+    return h('div', 'picker', top, l.hint ? h('p', 'ly-hint', T('🙋 Podpowiedź suflera: {0}', l.hint)) : null, lyLinesEl(l), form,
+      h('p', 'muted', T('Koła ratunkowe wybiera się na urządzeniu gospodarza.')));
+  }
+  return h('div', 'picker', top, l.song ? h('h3', '', `${l.cat} · ${l.song.t}`) : h('p', 'muted', T('{0} wybiera kategorię…', l.turn)),
+    lyLinesEl(l), lyBlanksView(l), l.verdict ? h('p', 'verdict', l.verdict) : null,
+    h('ul', 'p-rank', l.money.map((m) => h('li', m.out ? 'muted' : '', `${m.name}: ${lyMoneyTv(m.v)}`))));
+}
+
 function renderPhone(s) {
   app.style.fontSize = '';
   app.classList.remove('compact', 'many');
   if (!s) { app.replaceChildren(waiting); return; }
+  if (s.screen === 'lyrics' && s.lyrics) {
+    if (!(s.players || []).includes(me)) { app.replaceChildren(playerPicker(s)); return; }
+    app.replaceChildren(lyricsPhone(s));
+    return;
+  }
   if (s.screen === 'game') {
     if (inGame(s)) { renderPlayer(s); return; }
     if (joinedLobby(s)) {
@@ -284,6 +351,7 @@ function render(s) {
     renderPhone(s);
     return;
   }
+  if (s && s.screen === 'lyrics' && s.lyrics) { app.replaceChildren(lyricsBoard(s.lyrics)); return; }
   if (s && s.screen === 'lobby' && s.lobby) { app.replaceChildren(lobbyBoard(s)); fit(); return; }
   if (s && s.screen === 'modes' && s.modes && s.modes.ctx === 'multi') { app.replaceChildren(modesBoard(s)); fit(); return; }
   if (!PLAYER && s && s.screen === 'setup' && s.setup) { app.replaceChildren(setupBoard(s.setup)); fit(); return; }
