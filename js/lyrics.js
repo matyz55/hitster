@@ -288,6 +288,7 @@ function lyOnState(s) {
   // pierwsze odtwarzanie: długość filmu musi pasować do nagrania z tekstem (inaczej wersy by się rozjechały)
   if (s === 1 && !cur.started) {
     cur.started = true;
+    state.lyrics.fails = 0;
     const d = lyYT.getDuration();
     if (cur.it.d && d && Math.abs(d - cur.it.d) > 4) { lyVideoFailed(T('Film ma inną długość niż nagranie z tekstem.')); return; }
   }
@@ -315,12 +316,23 @@ function lyVideoFailed(msg) {
   lyStop();
   ly.msg = T('⚠️ {0} Gramy inną piosenkę.', msg);
   const cur = ly.cur;
-  if (cur.ci != null && ly.board[cur.ci] && ly.board[cur.ci].songs.length) lyChooseSong(cur.ci, 0);
-  else {
-    ly.cur = null;
-    state.phase = 'board';
+  ly.fails = (ly.fails || 0) + 1;
+  if (cur.ci != null && ly.board[cur.ci] && ly.board[cur.ci].songs.length) { lyChooseSong(cur.ci, 0); return; }
+  // w kategorii nie ma już piosenek (albo to finał) – inna piosenka z katalogu, najwyżej kilka prób z rzędu
+  const it = ly.fails <= 6 ? lyFinalSong() : null;
+  if (it) {
+    ly.cur = { it, other: null, ci: null, cat: cur.cat, gap: null, lines: null, given: [], revealed: new Set(), variants: null, hint: null, started: false };
+    ly.used.add(songKey(it.song));
+    state.phase = 'loading';
     lyRender();
+    lyStartSong();
+    return;
   }
+  ly.cur = null;
+  ly.board = ly.board.filter((c) => c.songs.length);
+  lyFillBoard(ly.board, ly.used);
+  state.phase = 'board';
+  lyRender();
 }
 // wymiana piosenki: druga piosenka z tej samej kategorii (raz na grę)
 function lySwap() {

@@ -99,3 +99,12 @@ test('Tak to leciało! (multiplayer): kolejka graczy i pomoc suflera', async ({ 
   expect(await page.evaluate(() => state.turn)).not.toBe(first);
   await expect(page.locator('#ly-scores .score')).toHaveCount(2);
 });
+
+test('Tak to leciało!: oba filmy w kategorii niedostępne – gra bierze inną piosenkę z katalogu', async ({ page }) => {
+  await startLyrics(page);
+  await page.evaluate(() => { window.__ytFail = state.lyrics.board[0].songs.map((it) => it.yt); });
+  await page.locator('.ly-cat').first().click();
+  await page.locator('.ly-song').first().click();
+  await expect.poll(() => page.evaluate(() => state.phase), { timeout: 20000 }).toBe('answer');
+  expect(await page.evaluate(() => window.__ytFail.includes(state.lyrics.cur.it.yt))).toBe(false);
+});

@@ -596,3 +596,14 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   W multiplayerze gracze grają po kolei, a odpowiedź i podpowiedź suflera można wpisać na telefonie; duży ekran
   pokazuje drabinkę i tekst.
 - Poprawiony niestabilny test wyzwania „wszyscy naraz” z telefonów.
+
+## 5.28.0 – 15.10.2026 (`HASH`)
+
+- **„Tak to leciało!” jest już w grze** – katalog ma 88 polskich piosenek z tekstem z czasami wersów (lrclib.net)
+  i filmem na YouTube (osadzalnym i niezablokowanym w Polsce, o długości zgodnej z nagraniem). Kolejne piosenki
+  będą dochodzić w następnych dniach (limit wyszukiwań YouTube).
+- Gdy film albo tekst nie działa, a w kategorii nie ma już drugiej piosenki, gra bierze inną piosenkę z katalogu
+  (zamiast wracać do planszy z pustą kategorią).
+- Narzędzie katalogu: przy limicie zapytań YouTube nie oznacza piosenek jako „bez filmu”, robi przerwy między
+  wyszukiwaniami, a piosenki bez filmu sprawdza ponownie najwcześniej po 30 dniach (zmiany z sesji pomocniczej:
+  `1863a8d`, `c689c90`, `a27bbfc`).
