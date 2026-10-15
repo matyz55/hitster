@@ -461,7 +461,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   ustawienia gry, rozgrywka, zasady, dźwięk, wyświetlanie, ustawienia, tryby, listy, statystyki, wznawianie);
   nowe testy: wersja angielska i edytor dat. Wersja dla dużego ekranu podniesiona – starsze strony same się odświeżą.
 
-## 5.20.0 – 15.10.2026 (`HASH`)
+## 5.20.0 – 15.10.2026 (`e1c75f3`)
 
 - **Ułóż piątkę** – nowy wygląd: fragmenty A–E są na liście, którą układa się przeciąganiem palcem lub myszą
   (za uchwyt ⠿), najstarszy u góry, najnowszy na dole. Każdy wiersz ma swój przycisk ▶ i strzałki ▲▼ do przesuwania
