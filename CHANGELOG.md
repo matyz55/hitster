@@ -336,6 +336,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Wygląd dużego ekranu spójny z gospodarzem: karta tury, kafelki trybów z opisami, podsumowanie z listą piosenek.
 - Głosy na tryb zostają do startu gry.
 
-## 5.7.1 – 15.10.2026
+## 5.7.1 – 15.10.2026 (`73980ab`)
 
 - Dodana ta historia zmian (`CHANGELOG.md`).
