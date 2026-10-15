@@ -956,7 +956,7 @@ function endGame() {
   state.phase = 'ended';
   $('#turn-title').classList.remove('hurry');
   const metric = isTimeline() ? (p) => p.timeline.length : (p) => p.score;
-  const label = isTimeline() ? cardsLabel : (state.mode === 'lyrics' ? lyMoney : pointsLabel);
+  const label = isTimeline() ? cardsLabel : (state.mode === 'lyrics' && !(state.lyrics && state.lyrics.mini) ? lyMoney : pointsLabel);
   const ranking = state.players.slice().sort((a, b) => metric(b) - metric(a));
   const best = ranking[0];
   const lvlName = (LEVELS[state.difficulty] || LEVELS[1]).name;
@@ -988,7 +988,7 @@ function endGame() {
     title.textContent = alive.length === 1 ? T('🏆 Ostatni na placu boju: {0}!', state.players[alive[0]].name)
       : T('🤝 Remis – przetrwali: {0}', (alive.length ? alive.map((i) => state.players[i].name) : ranking.filter((p) => p.score === best.score).map((p) => p.name)).join(', '));
     won = alive.length === 1;
-  } else if (state.mode === 'lyrics') {
+  } else if (state.mode === 'lyrics' && !(state.lyrics && state.lyrics.mini)) {
     const tie = ranking.length > 1 && ranking[1].score === best.score;
     title.textContent = state.players.length === 1
       ? (best.stage === 10 ? T('🏆 Główna nagroda: {0}!', lyMoney(best.score)) : (best.score ? T('🎤 Wygrana: {0}', lyMoney(best.score)) : T('🎤 Tym razem bez wygranej')))

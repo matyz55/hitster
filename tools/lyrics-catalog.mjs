@@ -30,10 +30,17 @@ const key = (s) => `${s.a}|${s.t}`;
 const OFFICIAL_LABELS = ['Universal Music Polska', 'Sony Music Poland', 'Warner Music Poland', 'Kayax', 'Agora', 'Polskie Nagrania',
   'Mystic Production', 'Pomaton', 'Step Records', 'QueQuality', 'SBM Label', 'Asfalt Records', 'Prosto', 'My Music', 'Magic Records',
   'Fonografika', 'Tonpress', 'S.P. Records', 'MTJ Wytwórnia Muzyczna', 'Agencja Muzyczna Polskiego Radia', 'MaxFloRec'];
-// Nieoficjalne wersje i wrzutki (nie dotyczy kanałów „- Topic”, gdzie np. „(Live)” to nagranie z płyty).
-const BAD_TITLE = /\b(tekst|lyrics|karaoke|cover|live|na zywo|remix|8d|slowed)\b/;
+// Wersje, które nie nadają się do gry: z tekstem na ekranie (zdradzają odpowiedź), karaoke, covery, koncerty, remiksy
+// (nie dotyczy kanałów „- Topic”, gdzie np. „(Live)” to nagranie z płyty).
+const BAD_TITLE = /\b(tekst|tekstem|lyrics?|karaoke|cover|live|na zywo|koncert|remix|8d|slowed|sped up|instrumental)\b/;
 const words = (t) => t.toLowerCase().replace(/ł/g, 'l').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ');
 const isTopic = (ch) => / - Topic$/.test(ch);
+// tytuł filmu musi zawierać tytuł piosenki (np. „Trójkąty i kwadraty” ≠ film „Małomiasteczkowy”)
+const titleMatches = (v, s) => ` ${words(v.title || '')} `.includes(` ${words(clean(s.t)).trim()} `);
+function usableVideo(v, s) {
+  if (!v.channel || !titleMatches(v, s)) return false;
+  return isTopic(v.channel) || !BAD_TITLE.test(words(v.title || ''));
+}
 function officialVideo(v, s) {
   if (!v.channel) return false;
   if (isTopic(v.channel)) return true;
@@ -129,8 +136,13 @@ async function videoInfo(ids) {
       || (v.contentDetails.regionRestriction.allowed && !v.contentDetails.regionRestriction.allowed.includes('PL')))),
   }));
 }
-const fits = (v, lr, s) => v && v.embeddable && !v.blockedPL && Math.abs(v.d - lr.d) <= MAX_DIFF && officialVideo(v, s);
-const entry = (v, src) => ({ id: v.id, src, channel: v.channel, title: v.title });
+// film nadaje się do gry: osadzalny, niezablokowany w Polsce, długość jak nagranie z tekstem, właściwy tytuł;
+// oficjalne kanały mają pierwszeństwo, ale zostawiamy też inne – część wytwórni blokuje odtwarzanie na innych
+// stronach (czego API nie pokazuje), więc gra próbuje kolejnych filmów z listy (alts)
+const fits = (v, lr, s) => v && v.embeddable && !v.blockedPL && Math.abs(v.d - lr.d) <= MAX_DIFF && usableVideo(v, s);
+const rank = (s, l) => (a, b) => (isTopic(b.channel) - isTopic(a.channel)) || (officialVideo(b, s) - officialVideo(a, s)) || Math.abs(a.d - l.d) - Math.abs(b.d - l.d);
+const MAX_ALTS = 5;
+const entry = (v, src, alts) => ({ id: v.id, src, channel: v.channel, title: v.title, ...(alts && alts.length > 1 ? { alts } : {}) });
 const songByKey = new Map(candidates.map((s) => [key(s), s]));
 
 const WD_YT = `SELECT ?songLabel ?perfLabel ?yt WHERE { ?song wdt:P1651 ?yt ; wdt:P175 ?perf .
@@ -182,16 +194,18 @@ async function stepYoutube() {
   if (checked) {
     for (const k of saved) {
       const v = now.get(yt[k].id);
-      if (songByKey.has(k) && lr[k] && fits(v, lr[k], songByKey.get(k))) yt[k] = entry(v, yt[k].src);
+      if (songByKey.has(k) && lr[k] && fits(v, lr[k], songByKey.get(k))) yt[k] = entry(v, yt[k].src, yt[k].alts);
       else { delete yt[k]; removed += 1; }
     }
     save('youtube-pl.json', yt);
     console.log(`YouTube: sprawdzone zapisane filmy ${saved.length}, usunięte ${removed}`);
   }
-  // 3) wyszukiwarka YouTube – najpopularniejsze piosenki bez filmu; najpierw nagranie „… – Topic” (wersja z płyty)
-  for (const s of candidates) {
+  // 3) wyszukiwarka YouTube – najpopularniejsze piosenki bez filmu, potem te z jednym filmem (zapasowe filmy na wypadek
+  // blokady osadzania); najpierw nagranie „… – Topic” (wersja z płyty), potem oficjalne kanały, potem pozostałe
+  const queue = [...candidates.filter((s) => lr[key(s)] && !hasVideo(yt[key(s)]) && retryDue(yt[key(s)])),
+    ...candidates.filter((s) => lr[key(s)] && hasVideo(yt[key(s)]) && !yt[key(s)].alts && !yt[key(s)].altsSearched)];
+  for (const s of queue) {
     const l = lr[key(s)];
-    if (!l || hasVideo(yt[key(s)]) || !retryDue(yt[key(s)])) continue;
     if (searchCalls >= MAX_SEARCHES) break;
     const q = `${SongMatch.mainArtist(s)} ${clean(s.t)}`;
     if (searchCalls) await sleep(SEARCH_PAUSE);
@@ -202,11 +216,18 @@ async function stepYoutube() {
       const ids = (data.items || []).map((x) => x.id.videoId).filter(Boolean);
       if (ids.length && !(vids = await videoInfo(ids))) continue;
     } catch { break; }
-    if (!vids.length) { yt[key(s)] = noVideo(yt[key(s)]); save('youtube-pl.json', yt); continue; }
+    const prev = yt[key(s)];
     const ok = vids.filter((v) => fits(v, l, s));
-    // pierwszeństwo: kanał „… - Topic” (dźwięk z płyty, czasy tekstu pasują najlepiej), potem oficjalne kanały
-    ok.sort((a, b) => (isTopic(b.channel) - isTopic(a.channel)) || Math.abs(a.d - l.d) - Math.abs(b.d - l.d));
-    yt[key(s)] = ok.length ? entry(ok[0], 'search') : noVideo(yt[key(s)]);
+    if (hasVideo(prev)) {
+      // zapasowe filmy dla piosenki, która już ma film
+      const all = [prev.id, ...ok.map((v) => v.id).filter((id) => id !== prev.id)].slice(0, MAX_ALTS);
+      yt[key(s)] = { ...prev, ...(all.length > 1 ? { alts: all } : {}), altsSearched: true };
+      save('youtube-pl.json', yt);
+      continue;
+    }
+    if (!ok.length) { yt[key(s)] = noVideo(prev); save('youtube-pl.json', yt); continue; }
+    ok.sort(rank(s, l));
+    yt[key(s)] = entry(ok[0], 'search', ok.slice(0, MAX_ALTS).map((v) => v.id));
     save('youtube-pl.json', yt);
   }
   const found = Object.values(yt).filter(hasVideo).length;
@@ -219,9 +240,12 @@ function stepBuild() {
   const out = {};
   for (const s of candidates) {
     const l = lr[key(s)]; const v = yt[key(s)];
-    if (l && hasVideo(v)) out[key(s)] = [v.id, l.id, l.d];
+    // zapisany tytuł filmu nie pasuje do piosenki albo to wersja z tekstem na ekranie – pomijamy (bez zapytań do API)
+    if (hasVideo(v) && v.title && !usableVideo(v, s)) continue;
+    if (l && hasVideo(v)) out[key(s)] = [v.alts && v.alts.length > 1 ? v.alts : v.id, l.id, l.d];
   }
-  const js = '// Tryb „Tak to leciało!”: piosenka → [film YouTube, tekst w LRCLIB, długość w s] – generuje tools/lyrics-catalog.mjs.\n'
+  const js = '// Tryb „Tak to leciało!”: piosenka → [film YouTube albo lista filmów (gra próbuje kolejnych), tekst w LRCLIB, długość w s]\n'
+    + '// – generuje tools/lyrics-catalog.mjs.\n'
     + '// Teksty nie są tu zapisane – gra pobiera je z lrclib.net w trakcie rozgrywki.\n'
     + `window.LYRICS_SONGS = ${JSON.stringify(out, null, 0).replace(/\],"/g, '],\n"')};\n`;
   writeFileSync(new URL('lyrics-catalog.js', dir), js);

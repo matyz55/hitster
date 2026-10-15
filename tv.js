@@ -164,8 +164,9 @@ function lyricsBoard(l) {
   }));
   const main = l.phase === 'board' && l.board
     ? h('div', 'ly-tv-board', h('h2', '', T('{0} wybiera kategorię – etap {1}', l.turn, l.stage + 1)),
+      h('div', 'ly-tv-hit' + (l.board.hit ? ' ready' : ''), T('🏆 Hit za {0}', lyMoneyTv(l.ladder[9]))),
       l.board.pick ? h('div', 'ly-tv-cats', l.board.pick.map((x) => h('div', 'ly-tv-cat', x)))
-        : h('div', 'ly-tv-cats', l.board.cats.map((x) => h('div', 'ly-tv-cat', x))))
+        : h('div', 'ly-tv-cats', l.board.cats.map((x) => h('div', 'ly-tv-cat' + (x.done ? ' done' : ''), x.name))))
     : h('div', 'ly-tv-song', l.song ? h('h2', '', `${l.cat} · ${l.song.t}`, h('small', '', ` — ${l.song.a}`)) : null, lyLinesEl(l), lyBlanksView(l),
       l.hint ? h('p', 'ly-hint', T('🙋 Podpowiedź suflera: {0}', l.hint)) : null,
       l.helper ? h('p', 'muted', T('🙋 {0} wpisuje podpowiedź…', l.helper)) : null,

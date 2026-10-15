@@ -1,7 +1,7 @@
 'use strict';
 
 // aktualna wersja gry – ta sama co ostatni wpis w CHANGELOG.md (pokazywana na dole ekranu startowego)
-const GAME_VERSION = '5.28.0';
+const GAME_VERSION = '5.29.0';
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -498,6 +498,12 @@ const PARTY_GAMES = {
   who: { icon: '🕵️', name: T('Kto za tym stoi?'), mode: () => 'who', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
   hilo: { icon: '↕️', name: T('Starsza czy nowsza?'), mode: () => 'hilo', opts: (n) => ({ rounds: n === 1 ? 0 : 2 }) },
   buzz: { icon: '🔔', name: 'Kto pierwszy?', min: 2, mode: () => 'buzz', opts: (n) => ({ rounds: Math.min(8, Math.max(4, n + 2)) }) },
+  lyrics: { icon: '🎤', name: T('Tak to leciało!'), mode: () => 'lyrics', opts: (n) => ({ rounds: n === 1 ? 3 : 1 }) },
+  mashup: { icon: '🎛️', name: T('Mikser'), mode: () => 'mashup', opts: (n) => ({ rounds: n === 1 ? 3 : 1 }) },
+  sort5: { icon: '🔢', name: T('Ułóż piątkę'), mode: () => 'sort5', opts: () => ({ rounds: 1 }) },
+  seconds: { icon: '⏱', name: T('Licytacja sekund'), min: 2, mode: () => 'seconds', opts: () => ({ rounds: 1 }) },
+  bomb: { icon: '💣', name: T('Gorąca bomba'), min: 2, mode: () => 'bomb', opts: () => ({}) },
+  royale: { icon: '🏁', name: T('Ostatni na placu boju'), min: 2, mode: () => 'royale', opts: () => ({}) },
   // oś czasu: dla jednej osoby – minuta na czas, dla kilku – wyścig do 4 kart (przy wielu graczach trwałoby to za długo)
   timeline: { icon: '🎧', name: T('Oś czasu'), max: 8, mode: (n) => (n === 1 ? 'timed' : 'multi'), opts: () => ({ winTarget: 4, timeLimit: 60 }) },
 };

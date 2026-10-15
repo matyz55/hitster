@@ -607,3 +607,24 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Narzędzie katalogu: przy limicie zapytań YouTube nie oznacza piosenek jako „bez filmu”, robi przerwy między
   wyszukiwaniami, a piosenki bez filmu sprawdza ponownie najwcześniej po 30 dniach (zmiany z sesji pomocniczej:
   `1863a8d`, `c689c90`, `a27bbfc`).
+
+## 5.29.0 – 15.10.2026 (`HASH`)
+
+- **Tak to leciało! – nowa plansza:** każdy gracz ma 3×3 kategorie z samymi nazwami (zagrane zostają wyszarzone
+  i niedostępne), a nad nimi szeroki kafelek „Hit za 100 000 zł”, dostępny dopiero na końcu – wtedy grasz albo
+  rezygnujesz z 50 000 zł.
+- Do uzupełnienia jest zawsze **cały wers, który wcześniej w piosence nie padł** (z etapem rośnie liczba słów
+  i przerwa wypada dalej w piosence).
+- Poprawione wyświetlanie pustych pól, gdy luka obejmuje dwa wersy (zamiast pól pojawiał się napis
+  „[object HTMLBRElement]”).
+- Piosenka może mieć kilka filmów: gdy jeden nie działa, gra od razu próbuje następnego, a niedziałające zapamiętuje
+  na tym urządzeniu i pomija w kolejnych grach. Katalog bierze tylko filmy z tytułem tej piosenki (koniec z
+  „Małomiasteczkowym” zamiast „Trójkątów i kwadratów”) i bez tekstu na ekranie; zostały 44 piosenki – kolejne
+  będą dochodzić.
+- Więcej kategorii (m.in. Jedzenie i picie, W drodze, Uczucia, Sny i marzenia, Pory roku, Muzyka, Jednym słowem,
+  Złote przeboje, gatunki), a kategorie z ostatnich gier są losowane rzadziej.
+- Kafelek „Tak to leciało!” jest duży, pod „Imprezą”.
+- **Impreza:** nowe minigry – „Tak to leciało!” (piosenka od zwrotki lub refrenu z wersem do uzupełnienia, 1 pkt
+  za dobrą odpowiedź), Mikser, Ułóż piątkę, Licytacja sekund, Gorąca bomba i Ostatni na placu boju.
+- Katalog: tylko filmy z oficjalnych kanałów i sprawdzenie wszystkich zapisanych filmów (zmiana z sesji pomocniczej:
+  `5d3a7d9`).

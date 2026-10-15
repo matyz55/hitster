@@ -9,9 +9,10 @@
 const LY_LADDER = [500, 1000, 2000, 5000, 7000, 10000, 15000, 30000, 50000, 100000];
 // po 4. etapie 5000 zł jest gwarantowane; kto gra o główną nagrodę (10. etap) i się pomyli – dostaje 30 000 zł
 const lyGuaranteed = (stage) => (stage >= 9 ? LY_LADDER[7] : stage >= 4 ? LY_LADDER[3] : 0);
-// liczba słów do uzupełnienia na kolejnych etapach i miejsce przerwy w piosence (ułamek długości)
-const LY_WORDS = [2, 2, 3, 3, 4, 4, 5, 6, 7, 8];
-const LY_BANDS = [[0.1, 0.45], [0.1, 0.45], [0.12, 0.5], [0.25, 0.7], [0.25, 0.7], [0.3, 0.75], [0.3, 0.8], [0.45, 0.9], [0.45, 0.92], [0.5, 0.92]];
+// przerwa: cały wers, który wcześniej w piosence nie padł; z etapem rośnie liczba słów (od–do) i przerwa wypada
+// dalej w piosence (ułamek długości); na ostatnich etapach przy krótkim wersie – dwa kolejne wersy
+const LY_WORDS = [[3, 6], [3, 6], [3, 7], [4, 8], [4, 8], [5, 9], [5, 10], [6, 12], [6, 14], [7, 16]];
+const LY_BANDS = [[0.08, 0.45], [0.08, 0.45], [0.1, 0.5], [0.2, 0.65], [0.2, 0.7], [0.25, 0.75], [0.3, 0.8], [0.4, 0.9], [0.45, 0.92], [0.5, 0.94]];
 const LY_CATS = 9;
 const lyMoney = (v) => T('{0} zł', v.toLocaleString(LANG === 'en' ? 'en-US' : 'pl-PL'));
 
@@ -20,8 +21,8 @@ const LY_THEMES = [
   { name: () => T('O pogodzie'), re: /deszcz|słońc|słonecz|burz|śnieg|wiatr|chmur|mgł|pogod|upał|tęcz|grad|pada\b|zim[aąy]\b|mróz/i },
   { name: () => T('Kolory'), re: /czerwon|biał|czarn|zielon|niebiesk|żółt|szar[ay]|różow|złot|srebrn|kolor|błękit|fiolet|pomarańcz/i },
   { name: () => T('Imiona'), re: /\b(jolk|ewk|małgośk|el[aię]\b|ann[aęy]|mari[aię]|kasi|marysi|agnieszk|józek|józk|stefan|marian|basi|zośk|juli[aię]|gosi|ol[ai]\b|ani[aę]?\b|celin|matyld|rebek|izold|jenny|lol[ai]\b|peggy|victori|wiki|weronik|krystyn|ag[aę]\b|helen|kamil|tomek|wojtek|jacek|marek|bartek|jasi|kubu|ewelin|ines|inez|sar[aę]\b|halink|aniel)/i },
-  { name: () => T('Miasta i miejsca'), re: /warszaw|krak|gdańsk|gdyni|wrocław|łódź|łodz|poznań|sopot|mokotów|bieszczad|tatr|mazur|polsk|ameryk|berlin|pary[żs]|londyn|chałup|alabam|hollywood|tokyo|kioto|kyoto|barcelon|honolulu|fiji|santa|meksyk|afryk|kalifor|moskw|rzym|wenecj|nowy jork|new york|kair|lloret/i },
-  { name: () => T('Miłość'), re: /miło[sś]|kocha|kocham|serc|cału|pocałun|zakocha|ukochan/i },
+  { name: () => T('Miasta i miejsca'), re: /warszaw|krak|gdańsk|gdyni|wrocław|łódź|łodz|poznań|sopot|mokotów|bieszczad|tatr|mazur|polsk|ameryk|berlin|pary[żs]|londyn|chałup|alabam|hollywood|tokyo|kioto|kyoto|barcelon|honolulu|fiji|santa|meksyk|afryk|kalifor|moskw|rzym|wenecj|nowy jork|new york|kair|lloret|miast/i },
+  { name: () => T('Miłość'), re: /miło[sś]|kocha|kocham|serc|cału|pocałun|zakocha|ukochan|love/i },
   { name: () => T('Noc i dzień'), re: /\bnoc|nocą|dzień|dnia\b|dni\b|ranek|rano\b|wieczor|północ|świt|zmierzch/i },
   { name: () => T('Zwierzęta'), re: /ptak|ptaszk|pies|psa\b|psy\b|kot\b|kota\b|koń|koni|wilk|wilcz|kruk|orł|orze|krow|ryb|motyl|pszczół|bocian|papug|kormoran|szczur|\blis\b|pingwin|\bmiś|baran|niedźwied|kaczk|żab|słoń|lew\b|tygrys|jeleń|sarn|wróbl|jaskółk|gołęb|łabędź|delfin|krab|węgorz|krowa|kogut|kur[ay]\b/i },
   { name: () => T('Liczby'), re: /\d|\bjed(en|na|no)\b|\bdwa\b|\bdwie\b|\btrzy\b|\bcztery\b|\bpięć\b|\bsto\b|tysiąc|milion|\bpierwsz|ostatni|\bsiedem\b|\bosiem\b|\bdziewięć\b|\bdziesięć\b/i },
@@ -32,6 +33,16 @@ const LY_THEMES = [
   { name: () => T('Pytania'), re: /\?/ },
   { name: () => T('Świat i niebo'), re: /\bniebo|nieba|gwiazd|księżyc|kosmos|planet|ziemi|świat|anioł|raj\b/i },
   { name: () => T('Dom i rodzina'), re: /\bdom|mam[aąoy]\b|\btata\b|tato\b|ojc|matk|brat|siostr|dziadk|babci|dzieci|dziewczyn|chłopak|chłopc/i },
+  { name: () => T('Jedzenie i picie'), re: /win[ao]\b|kaw[aęy]|herbat|chleb|cukier|cukierk|słodk|czekolad|miód|miod|piw[ao]|wódk|wóda|szampan|marcepan|gelato|bubble|tea|lody|ciast|jabłk|pomidor|truskaw|malin|bigos/i },
+  { name: () => T('Ciało'), re: /\boczy|oczach|serc|ręk|ręce|dłoń|dłoni|ust[aa]?\b|głow|włos|twarz|skór|nogi|krew|krwi/i },
+  { name: () => T('W drodze'), re: /drog[aię]|pociąg|samolot|autobus|statek|stacj|podróż|jedziem|autostop|ulic|most|peron|taksówk|rower|lot\b|lec[ęi]/i },
+  { name: () => T('Uczucia'), re: /smut|szczęś|strach|radoś|łz[ay]|łez|tęsk|samotn|żal|zazdro|nadziej|wolnoś|spokój|cisza|cisz[ąy]/i },
+  { name: () => T('Sny i marzenia'), re: /\bsen\b|\bsny\b|\bsnu\b|śni|marz|bajk|cud/i },
+  { name: () => T('Pory roku'), re: /wiosn|\blat[ao]\b|latem|jesie|jesien|\bzim[aąy]\b|zimą|\bmaj\b|majem|grudni|lipc|sierpni/i },
+  { name: () => T('Muzyka'), re: /piosenk|melodi|muzyk|radio|gitar|śpiew|ballad|\brock|disco|\bhit|\bsong|tango|walc|blues|jazz|rap\b|bęben/i },
+  { name: () => T('Jednym słowem'), re: /^[^\s]+$/ },
+  { name: () => T('Długie tytuły'), re: /^(\S+\s+){4,}\S+/ },
+  { name: () => T('Wykrzyknik!'), re: /!/ },
 ];
 const LY_SETS = [
   { name: () => T('Festiwal w Opolu'), test: (s) => (s.tg || []).includes('opole') },
@@ -42,19 +53,35 @@ const LY_SETS = [
   { name: () => T('Duety'), test: (s) => s.a.includes(' & ') },
   { name: () => T('Rap'), test: (s) => (s.g || []).includes('hip-hop') },
   { name: () => T('Rock'), test: (s) => (s.g || []).includes('rock') },
+  { name: () => T('Pop'), test: (s) => (s.g || []).includes('pop') },
+  { name: () => T('Elektronika'), test: (s) => (s.g || []).includes('elektronika') },
+  { name: () => T('Folk i country'), test: (s) => (s.g || []).includes('folk i country') },
+  { name: () => T('Punk i nowa fala'), test: (s) => (s.g || []).includes('punk i nowa fala') },
   { name: () => T('Lata 60. i 70.'), test: (s) => s.y < 1980 },
   { name: () => T('Lata 80.'), test: (s) => s.y >= 1980 && s.y < 1990 },
   { name: () => T('Lata 90.'), test: (s) => s.y >= 1990 && s.y < 2000 },
   { name: () => T('Lata 2000.'), test: (s) => s.y >= 2000 && s.y < 2010 },
   { name: () => T('Lata 2010.'), test: (s) => s.y >= 2010 && s.y < 2020 },
   { name: () => T('Najnowsze przeboje'), test: (s) => s.y >= 2020 },
-  { name: () => T('Panie przy mikrofonie'), test: (s) => /^(Maryla|Anna|Ania|Kasia|Katarzyna|Edyta|Doda|Sylwia|Natalia|Beata|Kayah|Margaret|Krystyna|Urszula|Irena|Halina|Ewa|Maria|Justyna|Monika|Agnieszka|Basia|Sanah|sanah|Daria|Brodka|Viki|Roxie|Bovska|Mela|Julia|Kaśka|Zalia|Ralph)/.test(s.a) && !/Ralph/.test(s.a) },
+  { name: () => T('Złote przeboje'), test: (s) => s.y < 1995 && (s.p || 0) >= 40 },
+  { name: () => T('Tytuł po angielsku'), test: (s) => /^[A-Za-z0-9 '’,.!?&-]+$/.test(s.t) && /\b(the|you|love|my|me|I|of|to|in|on|is|it|be)\b/i.test(s.t) },
+  { name: () => T('Panie przy mikrofonie'), test: (s) => /^(Maryla|Anna|Ania|Kasia|Katarzyna|Edyta|Doda|Sylwia|Natalia|Beata|Kayah|Margaret|Krystyna|Urszula|Irena|Halina|Ewa|Maria|Justyna|Monika|Agnieszka|Basia|Sanah|sanah|Daria|Brodka|Viki|Roxie|Bovska|Mela|Julia|Kaśka|Zalia)/.test(s.a) },
 ];
 
-// piosenki z katalogu (polskie, z tekstem i filmem) – obiekty z bazy
+// filmy, które na tym urządzeniu nie dały się odtworzyć (np. właściciel zablokował osadzanie) – pomijane w kolejnych grach
+const lyBad = () => new Set(store.get('lyBadVideos', []));
+function lyMarkBad(id) {
+  const list = store.get('lyBadVideos', []);
+  if (!list.includes(id)) store.set('lyBadVideos', [...list, id].slice(-800));
+}
+// piosenki z katalogu (polskie, z tekstem i filmem) – obiekty z bazy; wpis: [film albo lista filmów, tekst, długość]
 function lyCatalog() {
   const cat = window.LYRICS_SONGS || {};
-  return window.SONGS.filter((s) => cat[songKey(s)]).map((s) => ({ song: s, yt: cat[songKey(s)][0], lr: cat[songKey(s)][1], d: cat[songKey(s)][2] }));
+  const bad = lyBad();
+  return window.SONGS.filter((s) => cat[songKey(s)]).map((s) => {
+    const [v, lr, d] = cat[songKey(s)];
+    return { song: s, yts: (Array.isArray(v) ? v : [v]).filter((id) => !bad.has(id)), lr, d };
+  }).filter((it) => it.yts.length);
 }
 function lyCategoryList(items) {
   const out = [];
@@ -69,29 +96,40 @@ function lyCategoryList(items) {
   for (const st of LY_SETS) out.push({ name: st.name(), kind: 'set', items: items.filter((it) => st.test(it.song)) });
   return out.filter((c) => c.items.length >= 2);
 }
-// plansza: 9 kategorii po 2 nieużyte piosenki (najwyżej 3 kategorie-wykonawcy, żeby było różnorodnie)
-function lyFillBoard(board, used) {
-  const all = lyCategoryList(lyCatalog().filter((it) => !used.has(songKey(it.song))));
-  const taken = new Set(board.map((c) => c.name));
-  const busy = new Set(board.flatMap((c) => c.songs.map((it) => songKey(it.song))));
-  let artists = board.filter((c) => c.kind === 'artist').length;
-  for (const c of shuffle(all)) {
-    if (board.length >= LY_CATS) break;
-    if (taken.has(c.name) || (c.kind === 'artist' && artists >= 3)) continue;
-    const free = shuffle(c.items.filter((it) => !busy.has(songKey(it.song))));
-    // w kategorii dwie piosenki różnych wykonawców (poza kategorią-wykonawcą)
-    const pick = [];
-    for (const it of free) {
-      if (pick.length === 2) break;
-      if (c.kind !== 'artist' && pick.some((p) => mainArtist(p.song) === mainArtist(it.song))) continue;
-      pick.push(it);
+// plansza gracza: 9 kategorii po 2 piosenki (najwyżej 3 kategorie-wykonawcy); najpierw kategorie, których nie było
+// w ostatnich grach na tym urządzeniu; piosenki nie powtarzają się w grze (gdy ich zabraknie – mogą się powtórzyć
+// u różnych graczy)
+function lyMakeBoard(used) {
+  const recent = new Set(store.get('lyRecentCats', []));
+  const pick = (avoid) => {
+    const all = lyCategoryList(lyCatalog().filter((it) => !avoid.has(songKey(it.song))));
+    const fresh = shuffle(all.filter((c) => !recent.has(c.name)));
+    const old = shuffle(all.filter((c) => recent.has(c.name)));
+    const board = [];
+    const busy = new Set();
+    let artists = 0;
+    for (const c of [...fresh, ...old]) {
+      if (board.length >= LY_CATS) break;
+      if (c.kind === 'artist' && artists >= 3) continue;
+      const two = [];
+      for (const it of shuffle(c.items)) {
+        if (two.length === 2) break;
+        if (busy.has(songKey(it.song))) continue;
+        if (c.kind !== 'artist' && two.some((p) => mainArtist(p.song) === mainArtist(it.song))) continue;
+        two.push(it);
+      }
+      if (two.length < 2) continue;
+      two.forEach((it) => busy.add(songKey(it.song)));
+      board.push({ name: c.name, kind: c.kind, songs: two, done: false });
+      if (c.kind === 'artist') artists += 1;
     }
-    if (pick.length < 2) continue;
-    pick.forEach((it) => busy.add(songKey(it.song)));
-    board.push({ name: c.name, kind: c.kind, songs: pick });
-    taken.add(c.name);
-    if (c.kind === 'artist') artists += 1;
-  }
+    return board;
+  };
+  let board = pick(used);
+  if (board.length < LY_CATS) board = pick(new Set());
+  if (board.length < LY_CATS) return null;
+  board.forEach((c) => c.songs.forEach((it) => used.add(songKey(it.song))));
+  store.set('lyRecentCats', [...board.map((c) => c.name), ...store.get('lyRecentCats', [])].filter((x, i, a) => a.indexOf(x) === i).slice(0, 40));
   return board;
 }
 
@@ -137,32 +175,38 @@ function lyWordOk(given, want) {
   return w.length >= 5 && lyDist(g, w) <= 1;
 }
 
-// miejsce przerwy: wers w przedziale piosenki zależnym od etapu; na początku drabinki – wers, który już był
-// (refren), dalej – wersy jednorazowe; luka = ostatnie słowa wersu (przy dłuższej luce – także początek następnego)
+// miejsce przerwy: cały wers (same słowa, bez znaków interpunkcyjnych jako osobnych pól), który do tej pory
+// nie padł w piosence; liczba słów i miejsce w piosence zależą od etapu – gdy nic nie pasuje, warunki łagodnieją
+const lyKey = (text) => lyWords(text).map(lyFold).filter(Boolean).join(' ');
 function lyPickGap(lines, stage, duration) {
-  const n = LY_WORDS[stage - 1];
-  const [from, to] = LY_BANDS[stage - 1];
   const dur = duration || lines[lines.length - 1].t + 5;
-  const cands = [];
-  for (let i = 3; i < lines.length - 1; i++) {
-    const t = lines[i].t;
-    if (t < 12 || t / dur < from || t / dur > to) continue;
-    const words = lyWords(lines[i].text);
-    if (words.length < 2) continue;
-    const need = n - words.length;
-    if (need > 0 && lyWords(lines[i + 1].text).length < need) continue;
-    const seen = lines.slice(0, i).some((l) => lyFold(l.text) === lyFold(lines[i].text));
-    cands.push({ i, seen });
-  }
+  const [minW, maxW] = LY_WORDS[stage - 1];
+  const [from, to] = LY_BANDS[stage - 1];
+  const words = (i) => lyWords(lines[i].text).filter((w) => lyNorm(w));
+  const fresh = (i) => {
+    const k = lyKey(lines[i].text);
+    return k && !lines.slice(0, i).some((l) => { const o = lyKey(l.text); return o === k || o.includes(k); });
+  };
+  const build = (strict) => {
+    const out = [];
+    for (let i = 2; i < lines.length; i++) {
+      const t = lines[i].t;
+      if (t < 10 || (strict >= 1 && (t / dur < from || t / dur > to))) continue;
+      if (!fresh(i)) continue;
+      let span = [i];
+      let n = words(i).length;
+      // na wyższych etapach krótki wers + następny (też nowy) – razem
+      if (n < minW && stage >= 8 && i + 1 < lines.length && fresh(i + 1)) { span = [i, i + 1]; n += words(i + 1).length; }
+      if (n < 2 || (strict >= 2 && (n < minW || n > maxW))) continue;
+      out.push(span);
+    }
+    return out;
+  };
+  const cands = build(2).length ? build(2) : (build(1).length ? build(1) : build(0));
   if (!cands.length) return null;
-  const easy = stage <= 4;
-  const pref = cands.filter((c) => (easy ? c.seen : !c.seen));
-  const c = (pref.length ? pref : cands)[Math.floor(Math.random() * (pref.length ? pref.length : cands.length))];
-  const words = lyWords(lines[c.i].text);
-  const take = Math.min(n, words.length);
-  const blanks = words.slice(words.length - take).map((w) => ({ want: w }));
-  const next = n > take ? lyWords(lines[c.i + 1].text).slice(0, n - take).map((w) => ({ want: w, next: true })) : [];
-  return { line: c.i, prefix: words.slice(0, words.length - take).join(' '), blanks: [...blanks, ...next], pauseAt: Math.max(0, lines[c.i].t - 0.25) };
+  const span = cands[Math.floor(Math.random() * cands.length)];
+  const blanks = span.flatMap((i, k) => words(i).map((w) => ({ want: w, next: k > 0 })));
+  return { line: span[0], lines: span, prefix: '', blanks, pauseAt: Math.max(0, lines[span[0]].t - 0.2) };
 }
 // „trzy wersje wersu”: dwie błędne wersje z podmienionymi słowami (z tej samej piosenki)
 function lyVariants(lines, gap) {
@@ -220,18 +264,30 @@ function lyStop() {
 }
 
 /* ---------- przebieg gry ---------- */
-// state.lyrics: plansza, etap i koła ratunkowe graczy, bieżąca piosenka
-function startLyrics(rows) {
-  const items = lyCatalog();
-  if (items.length < 40) { alert(T('Za mało piosenek w katalogu trybu „Tak to leciało!”.')); return false; }
-  state.players = rows.map((r) => ({ name: r.name, score: 0, stage: 0, out: false, lifes: { words: 3, swap: true, three: true, help: true } }));
+// state.lyrics: bieżąca piosenka i wybór na planszy; każdy gracz ma własną planszę (9 kategorii + hit za 100 000 zł)
+// mini – minigra w Imprezie: każdy gracz dostaje `rounds` piosenek (od zwrotki lub refrenu z przerwą), dobra odpowiedź = 1 pkt
+function startLyrics(rows, mini = null) {
+  if (lyCatalog().length < 40) { if (!mini) alert(T('Za mało piosenek w katalogu trybu „Tak to leciało!”.')); return false; }
+  const used = new Set();
+  if (mini) {
+    state.players = rows.map((r) => ({ name: r.name, score: 0, stage: 0, out: false, played: 0, board: [], lifes: { words: 0, swap: false, three: false, help: false } }));
+    state.history = [];
+    state.startedAt = Date.now();
+    state.turn = 0;
+    state.phase = 'loading';
+    state.lyrics = { used, played: new Set(), cur: null, pickCat: null, hitAsk: false, msg: '', fails: 0, mini: { rounds: mini.rounds || 1 } };
+    showScreen('lyrics');
+    lyMiniNext();
+    return true;
+  }
+  const boards = rows.map(() => lyMakeBoard(used));
+  if (boards.some((b) => !b)) { alert(T('Za mało piosenek w katalogu trybu „Tak to leciało!”.')); return false; }
+  state.players = rows.map((r, i) => ({ name: r.name, score: 0, stage: 0, out: false, board: boards[i], lifes: { words: 3, swap: true, three: true, help: true } }));
   state.history = [];
   state.startedAt = Date.now();
   state.phase = 'board';
   state.turn = 0;
-  const used = new Set();
-  state.lyrics = { board: lyFillBoard([], used), used, cur: null, pickCat: null, msg: '' };
-  if (state.lyrics.board.length < LY_CATS) { alert(T('Za mało piosenek w katalogu trybu „Tak to leciało!”.')); return false; }
+  state.lyrics = { used, played: new Set(), cur: null, pickCat: null, hitAsk: false, msg: '', fails: 0 };
   window.track && window.track('start-gry', { tryb: 'lyrics', gra: playCtx, graczy: rows.length, jezyk: LANG });
   showScreen('lyrics');
   lyPlayer().catch(() => {}); // odtwarzacz gotowy przed wyborem piosenki
@@ -241,27 +297,40 @@ function startLyrics(rows) {
 const lyMe = () => state.players[state.turn];
 const lyActive = () => state.players.map((p, i) => i).filter((i) => !state.players[i].out);
 
-// wybór kategorii, potem jednej z dwóch piosenek; na 10. etapie piosenka jest narzucona
-function lyChooseCat(ci) { state.lyrics.pickCat = ci; lyRender(); }
-function lyFinalSong() {
-  const used = state.lyrics.used;
-  const busy = new Set(state.lyrics.board.flatMap((c) => c.songs.map((it) => songKey(it.song))));
-  const pool = lyCatalog().filter((it) => !used.has(songKey(it.song)) && !busy.has(songKey(it.song)));
-  return pool[Math.floor(Math.random() * pool.length)];
+// wybór kategorii, potem jednej z dwóch piosenek; po 9 kategoriach – hit za 100 000 zł (gram albo rezygnuję)
+function lyChooseCat(ci) { state.lyrics.pickCat = ci; state.lyrics.hitAsk = false; lyRender(); }
+function lyAnySong(extraAvoid = []) {
+  const avoid = new Set([...state.lyrics.used, ...extraAvoid]);
+  const pool = lyCatalog().filter((it) => !avoid.has(songKey(it.song)));
+  return pool[Math.floor(Math.random() * pool.length)] || null;
 }
-async function lyChooseSong(ci, si) {
+function lyPlay(it, other, cat) {
   const ly = state.lyrics;
-  const final = lyMe().stage === 9;
-  const it = final ? lyFinalSong() : ly.board[ci].songs[si];
-  if (!it) return;
-  const other = final ? null : ly.board[ci].songs[1 - si];
-  ly.cur = { it, other, ci: final ? null : ci, cat: final ? T('Finał') : ly.board[ci].name, gap: null, lines: null, given: [], revealed: new Set(), variants: null, hint: null, started: false };
+  ly.cur = { it, other, cat, vi: 0, gap: null, lines: null, given: [], revealed: new Set(), variants: null, hint: null, started: false };
   ly.pickCat = null;
+  ly.hitAsk = false;
   ly.used.add(songKey(it.song));
-  if (!final) ly.board[ci].songs = ly.board[ci].songs.filter((x) => x !== it);
+  ly.played.add(songKey(it.song));
   state.phase = 'loading';
   lyRender();
   lyStartSong();
+}
+function lyMiniNext() {
+  const it = lyAnySong();
+  if (!it) { lyEnd(); return; }
+  lyPlay(it, null, T('🎤 Tak to leciało!'));
+}
+function lyChooseSong(ci, si) {
+  const me = lyMe();
+  const c = me.board[ci];
+  if (!c || c.done) return;
+  c.done = true;
+  lyPlay(c.songs[si], c.songs[1 - si], c.name);
+}
+function lyPlayHit() {
+  const it = lyAnySong();
+  if (!it) return;
+  lyPlay(it, lyAnySong([songKey(it.song)]), T('Hit za {0}', lyMoney(LY_LADDER[9])));
 }
 async function lyStartSong() {
   const ly = state.lyrics;
@@ -270,17 +339,51 @@ async function lyStartSong() {
     const [player, lines] = await Promise.all([lyPlayer(), lyFetchLyrics(cur.it.lr)]);
     if (ly.cur !== cur) return;
     cur.lines = lines;
-    cur.gap = lyPickGap(lines, lyMe().stage + 1, cur.it.d);
+    cur.gap = lyPickGap(lines, ly.mini ? 2 : lyMe().stage + 1, cur.it.d);
     if (!cur.gap) throw new Error('brak miejsca na przerwę');
     cur.given = cur.gap.blanks.map(() => '');
+    // minigra: od początku zwrotki albo refrenu z przerwą (kilka wersów wcześniej), a nie od początku piosenki
+    cur.startAt = ly.mini ? Math.max(0, lines[Math.max(0, cur.gap.line - 4)].t - 1.5) : 0;
     state.phase = 'play';
     lyRender();
-    player.loadVideoById({ videoId: cur.it.yt, startSeconds: 0 });
-    clearInterval(lyTick);
-    lyTick = setInterval(lyOnTick, 100);
+    lyLoadVideo(player);
   } catch (e) {
-    lyVideoFailed(T('Nie udało się wczytać tekstu tej piosenki.'));
+    if (ly.cur === cur) lySongFailed(T('Nie udało się wczytać tekstu tej piosenki.'));
   }
+}
+// kolejny film tej piosenki (katalog może mieć kilka); niedziałający zapamiętujemy na tym urządzeniu
+function lyLoadVideo(player) {
+  const cur = state.lyrics.cur;
+  cur.started = false;
+  cur.videoId = cur.it.yts[cur.vi];
+  player.loadVideoById({ videoId: cur.videoId, startSeconds: cur.startAt || 0 });
+  clearInterval(lyTick);
+  lyTick = setInterval(lyOnTick, 100);
+}
+function lyVideoFailed(msg) {
+  const ly = state.lyrics;
+  const cur = ly && ly.cur;
+  if (!cur || !['loading', 'play'].includes(state.phase)) return;
+  if (cur.videoId) lyMarkBad(cur.videoId);
+  if (cur.vi + 1 < cur.it.yts.length) { cur.vi += 1; lyLoadVideo(lyYT); return; }
+  lySongFailed(msg);
+}
+// piosenka nie działa – druga piosenka z kategorii (bez zużycia koła), a gdy jej nie ma – inna z katalogu
+function lySongFailed(msg) {
+  const ly = state.lyrics;
+  const cur = ly.cur;
+  lyStop();
+  ly.fails += 1;
+  ly.msg = T('⚠️ {0} Gramy inną piosenkę.', msg);
+  const next = cur.other && !ly.played.has(songKey(cur.other.song)) ? cur.other : (ly.fails <= 8 ? lyAnySong() : null);
+  if (next) { lyPlay(next, null, cur.cat); return; }
+  if (ly.mini) { lyNextTurn(); return; }
+  const back = lyMe().board.find((c) => c.name === cur.cat);
+  if (back) back.done = false;
+  ly.cur = null;
+  ly.msg = T('⚠️ Nie udało się odtworzyć piosenek z tej kategorii – wybierz inną.');
+  state.phase = 'board';
+  lyRender();
 }
 function lyOnState(s) {
   const cur = state.lyrics && state.lyrics.cur;
@@ -288,9 +391,9 @@ function lyOnState(s) {
   // pierwsze odtwarzanie: długość filmu musi pasować do nagrania z tekstem (inaczej wersy by się rozjechały)
   if (s === 1 && !cur.started) {
     cur.started = true;
-    state.lyrics.fails = 0;
     const d = lyYT.getDuration();
     if (cur.it.d && d && Math.abs(d - cur.it.d) > 4) { lyVideoFailed(T('Film ma inną długość niż nagranie z tekstem.')); return; }
+    state.lyrics.fails = 0;
   }
   if (state.phase === 'play' || state.phase === 'result') lyRender();
 }
@@ -298,7 +401,7 @@ function lyOnTick() {
   const cur = state.lyrics && state.lyrics.cur;
   if (!cur || !lyYT || !lyYT.getCurrentTime) return;
   const t = lyYT.getCurrentTime();
-  if (state.phase === 'play' && cur.gap && t >= cur.gap.pauseAt) {
+  if (state.phase === 'play' && cur.gap && cur.started && t >= cur.gap.pauseAt) {
     lyYT.pauseVideo();
     state.phase = 'answer';
     lyRender();
@@ -309,40 +412,15 @@ function lyOnTick() {
   if (state.phase === 'result' && t >= cur.resumeUntil) { lyYT.pauseVideo(); clearInterval(lyTick); lyTick = null; }
   lyRenderLyrics(t);
 }
-// film lub tekst niedostępny – druga piosenka z kategorii (bez zużycia koła), a gdy jej nie ma – inna z katalogu
-function lyVideoFailed(msg) {
-  const ly = state.lyrics;
-  if (!ly || !ly.cur || !['loading', 'play'].includes(state.phase)) return;
-  lyStop();
-  ly.msg = T('⚠️ {0} Gramy inną piosenkę.', msg);
-  const cur = ly.cur;
-  ly.fails = (ly.fails || 0) + 1;
-  if (cur.ci != null && ly.board[cur.ci] && ly.board[cur.ci].songs.length) { lyChooseSong(cur.ci, 0); return; }
-  // w kategorii nie ma już piosenek (albo to finał) – inna piosenka z katalogu, najwyżej kilka prób z rzędu
-  const it = ly.fails <= 6 ? lyFinalSong() : null;
-  if (it) {
-    ly.cur = { it, other: null, ci: null, cat: cur.cat, gap: null, lines: null, given: [], revealed: new Set(), variants: null, hint: null, started: false };
-    ly.used.add(songKey(it.song));
-    state.phase = 'loading';
-    lyRender();
-    lyStartSong();
-    return;
-  }
-  ly.cur = null;
-  ly.board = ly.board.filter((c) => c.songs.length);
-  lyFillBoard(ly.board, ly.used);
-  state.phase = 'board';
-  lyRender();
-}
 // wymiana piosenki: druga piosenka z tej samej kategorii (raz na grę)
 function lySwap() {
   const ly = state.lyrics;
   const me = lyMe();
-  if (!me.lifes.swap || !ly.cur || ly.cur.ci == null || !ly.board[ly.cur.ci].songs.length) return;
+  if (!me.lifes.swap || !ly.cur || !ly.cur.other || ly.played.has(songKey(ly.cur.other.song))) return;
   me.lifes.swap = false;
   lyStop();
   ly.msg = T('🔁 Wymiana piosenki');
-  lyChooseSong(ly.cur.ci, 0);
+  lyPlay(ly.cur.other, null, ly.cur.cat);
 }
 // trzy słowa: odsłonięcie wybranych słów (łącznie 3 na całą grę)
 function lyRevealWord(i) {
@@ -418,7 +496,9 @@ function lySubmit() {
   cur.marks = cur.gap.blanks.map((b, i) => lyWordOk(cur.given[i] || '', b.want));
   const ok = cur.marks.every(Boolean);
   const stage = me.stage + 1;
-  if (ok) {
+  if (ly.mini) {
+    if (ok) { me.score += 1; fx('good'); } else fx('bad');
+  } else if (ok) {
     me.stage = stage;
     me.score = LY_LADDER[stage - 1];
     fx('good');
@@ -427,9 +507,9 @@ function lySubmit() {
     me.out = true;
     fx('bad');
   }
-  if (stage === 10) me.out = true;
+  if (stage === 10 && !ly.mini) me.out = true;
   cur.ok = ok;
-  state.history.push({ song: cur.it.song, ok, note: ok ? lyMoney(me.score) : T('pomyłka'), preview: null });
+  state.history.push({ song: cur.it.song, ok, note: ly.mini ? (ok ? '+1' : T('pomyłka')) : (ok ? lyMoney(me.score) : T('pomyłka')), preview: null });
   state.phase = 'result';
   // muzyka gra dalej – słychać prawidłowy wers
   cur.resumeUntil = cur.gap.pauseAt + 9;
@@ -450,9 +530,15 @@ function lyNextTurn() {
   const ly = state.lyrics;
   ly.cur = null;
   ly.msg = '';
-  // kategorie bez piosenek znikają, na ich miejsce wchodzą nowe
-  ly.board = ly.board.filter((c) => c.songs.length >= 1);
-  if (ly.board.length < LY_CATS) lyFillBoard(ly.board, ly.used);
+  ly.pickCat = null;
+  ly.hitAsk = false;
+  if (ly.mini) {
+    lyMe().played += 1;
+    if (state.players.every((p) => p.played >= ly.mini.rounds)) { lyEnd(); return; }
+    state.turn = (state.turn + 1) % state.players.length;
+    lyMiniNext();
+    return;
+  }
   const active = lyActive();
   if (!active.length) { lyEnd(); return; }
   const n = state.players.length;
@@ -491,8 +577,9 @@ function lyRender() {
   const me = lyMe();
   const multi = state.players.length > 1;
   $('#ly-title').textContent = multi ? T('🎤 Tak to leciało! – gra {0}', me.name) : T('🎤 Tak to leciało!');
+  $('#ly-ladder').classList.toggle('hidden', !!ly.mini);
   $('#ly-scores').replaceChildren(...(multi ? state.players.map((p, i) => el('span', { class: `score${i === state.turn ? ' active' : ''}${p.out ? ' out' : ''}` },
-    `${p.name}: ${lyMoney(p.score)}${p.out ? (p.quit ? ' ✋' : ' ✖') : ''}`)) : []));
+    ly.mini ? `${p.name}: ${pointsLabel(p.score)}` : `${p.name}: ${lyMoney(p.score)}${p.out ? (p.quit ? ' ✋' : ' ✖') : ''}`)) : []));
   $('#ly-ladder').replaceChildren(lyLadderEl(me), lyLifesEl(me));
   $('#ly-msg').textContent = ly.msg || '';
   $('#ly-msg').classList.toggle('hidden', !ly.msg);
@@ -501,23 +588,28 @@ function lyRender() {
   board.classList.toggle('hidden', state.phase !== 'board');
   stageBox.classList.toggle('hidden', state.phase === 'board');
   if (state.phase === 'board') {
-    const final = me.stage === 9;
-    const head = el('p', { class: 'ly-step' }, final ? T('Etap 10 – finał: piosenka jest narzucona (gra o {0}).', lyMoney(LY_LADDER[9]))
+    const hitReady = me.stage === 9;
+    const head = el('p', { class: 'ly-step' }, hitReady ? T('Został hit za {0} – grasz czy rezygnujesz z {1}?', lyMoney(LY_LADDER[9]), lyMoney(me.score))
       : T('Etap {0} – gra o {1}. Wybierz kategorię.', me.stage + 1, lyMoney(LY_LADDER[me.stage])));
-    const items = [];
-    if (final) items.push(el('button', { class: 'primary', onclick: () => lyChooseSong(null, 0) }, T('🎤 Zagraj finałową piosenkę')));
-    else if (ly.pickCat == null) {
-      items.push(el('div', { class: 'ly-cats' }, ly.board.map((c, ci) => el('button', { class: 'ly-cat', onclick: () => lyChooseCat(ci) },
-        el('b', {}, c.name), el('span', { class: 'muted small' }, T('piosenek: {0}', c.songs.length))))));
-    } else {
-      const c = ly.board[ly.pickCat];
-      items.push(el('h3', {}, c.name), el('div', { class: 'ly-songs' }, c.songs.map((it, si) => el('button', { class: 'ly-song', onclick: () => lyChooseSong(ly.pickCat, si) },
+    // u góry szeroki kafelek „Hit za 100 000 zł” – dostępny dopiero na końcu; pod nim 3×3 kategorie (zagrane – wyszarzone)
+    const hit = el('button', { class: `ly-hit${hitReady ? ' ready' : ''}`, disabled: !hitReady, onclick: () => { ly.hitAsk = true; ly.pickCat = null; lyRender(); } },
+      el('b', {}, T('🏆 Hit za {0}', lyMoney(LY_LADDER[9]))));
+    const grid = el('div', { class: 'ly-cats' }, me.board.map((c, ci) => el('button', {
+      class: `ly-cat${c.done ? ' done' : ''}${ly.pickCat === ci ? ' picked' : ''}`, disabled: c.done || hitReady, onclick: () => lyChooseCat(ci),
+    }, el('b', {}, c.name))));
+    const items = [head, hit, grid];
+    if (ly.hitAsk && hitReady) {
+      items.push(el('div', { class: 'ly-choice' },
+        el('button', { class: 'primary', onclick: lyPlayHit }, T('🎤 Gram o {0}', lyMoney(LY_LADDER[9]))),
+        el('button', { class: 'ghost', onclick: lyQuit }, T('✋ Rezygnuję – zabieram {0}', lyMoney(me.score)))));
+    } else if (ly.pickCat != null) {
+      const c = me.board[ly.pickCat];
+      items.push(el('div', { class: 'ly-choice' }, el('h3', {}, c.name), el('div', { class: 'ly-songs' }, c.songs.map((it, si) => el('button', { class: 'ly-song', onclick: () => lyChooseSong(ly.pickCat, si) },
         el('b', {}, it.song.t), el('span', { class: 'muted' }, artistLine(it.song))))),
-      el('button', { class: 'ghost', onclick: () => { ly.pickCat = null; lyRender(); } }, T('← Inna kategoria')));
+      el('button', { class: 'ghost', onclick: () => { ly.pickCat = null; lyRender(); } }, T('← Inna kategoria'))));
     }
-    const quit = me.stage > 0 && !final ? el('button', { class: 'ghost', onclick: lyQuit }, T('✋ Rezygnuję – zabieram {0}', lyMoney(me.score)))
-      : (final ? el('button', { class: 'ghost', onclick: lyQuit }, T('✋ Rezygnuję – zabieram {0}', lyMoney(me.score))) : null);
-    board.replaceChildren(head, ...items, quit || '');
+    if (me.stage > 0 && !hitReady) items.push(el('button', { class: 'ghost ly-quit', onclick: lyQuit }, T('✋ Rezygnuję – zabieram {0}', lyMoney(me.score))));
+    board.replaceChildren(...items);
     tvSync();
     return;
   }
@@ -561,10 +653,8 @@ function lyRenderAnswer() {
   const me = lyMe();
   const result = state.phase === 'result';
   const blanks = el('div', { id: 'ly-blanks', class: 'ly-blanks' }, cur.gap.prefix ? el('span', { class: 'ly-prefix' }, cur.gap.prefix) : null,
-    cur.gap.blanks.map((b, i) => {
-      if (b.next && i > 0 && !cur.gap.blanks[i - 1].next) return [el('br'), lyBlankInput(b, i, result)];
-      return lyBlankInput(b, i, result);
-    }));
+    cur.gap.blanks.flatMap((b, i) => (b.next && i > 0 && !cur.gap.blanks[i - 1].next
+      ? [el('span', { class: 'ly-break' }), lyBlankInput(b, i, result)] : [lyBlankInput(b, i, result)])));
   const parts = [blanks];
   if (!result) {
     if (cur.variants) {
@@ -577,9 +667,10 @@ function lyRenderAnswer() {
     const actions = el('div', { class: 'actions' },
       el('button', { class: 'primary', onclick: lySubmit }, T('Tak to leciało!')),
       LySpeech ? el('button', { class: 'ghost', onclick: lySing, disabled: cur.listening }, cur.listening ? T('🎤 Słucham…') : T('🎤 Zaśpiewaj')) : null,
+      ly.mini ? null : el('span', { class: 'ly-lifebtns' },
       el('button', { class: 'ghost', disabled: !me.lifes.words, onclick: () => { cur.picking = !cur.picking; lyRender(); } }, T('🔤 Odsłoń słowo ({0})', me.lifes.words)),
       el('button', { class: 'ghost', disabled: !me.lifes.three || !!cur.variants, onclick: lyThree }, T('🎯 Trzy wersje wersu')),
-      el('button', { class: 'ghost', disabled: !me.lifes.swap || cur.ci == null || !ly.board[cur.ci].songs.length, onclick: lySwap }, T('🔁 Wymiana piosenki')));
+      el('button', { class: 'ghost', disabled: !me.lifes.swap || !cur.other || ly.played.has(songKey(cur.other.song)), onclick: lySwap }, T('🔁 Wymiana piosenki'))));
     if (state.players.length > 1 && me.lifes.help && cur.helper == null && !cur.hint) {
       actions.append(el('span', { class: 'ly-help' }, T('🙋 Sufler:'), state.players.map((p, i) => (i === state.turn ? null
         : el('button', { class: 'ghost small', onclick: () => lyAskHelper(i) }, p.name)))));
@@ -587,10 +678,11 @@ function lyRenderAnswer() {
     parts.push(actions);
   } else {
     const p = lyMe();
-    parts.push(el('p', { class: `verdict ${cur.ok ? 'ok' : 'bad'}` }, cur.ok
+    parts.push(el('p', { class: `verdict ${cur.ok ? 'ok' : 'bad'}` }, ly.mini ? (cur.ok ? T('✅ Tak to leciało! +1 pkt') : T('❌ Niestety, nie tak to leciało.')) : cur.ok
       ? (p.stage === 10 ? T('🏆 Brawo! Główna nagroda: {0}!', lyMoney(p.score)) : T('✅ Tak to leciało! Masz {0}.', lyMoney(p.score)))
       : T('❌ Niestety. Wygrana: {0}.', lyMoney(p.score))));
-    parts.push(el('div', { class: 'actions' }, el('button', { class: 'primary', onclick: lyNextTurn }, lyActive().length ? T('Dalej') : T('Koniec gry'))));
+    const last = ly.mini ? state.players.every((pl) => pl.played + (pl === p ? 1 : 0) >= ly.mini.rounds) : !lyActive().length;
+    parts.push(el('div', { class: 'actions' }, el('button', { class: 'primary', onclick: lyNextTurn }, last ? T('Koniec gry') : T('Dalej'))));
   }
   box.replaceChildren(...parts);
 }
@@ -632,7 +724,8 @@ function lyrSnapshot() {
       given: state.phase === 'result' ? cur.gap.blanks.map((b) => b.want) : cur.given, marks: state.phase === 'result' ? cur.marks : null } : null,
     helper: cur && cur.helper != null ? state.players[cur.helper].name : null,
     hint: cur ? cur.hint : null, verdict: $('#ly-answer .verdict') ? $('#ly-answer .verdict').textContent : '',
-    board: state.phase === 'board' ? { cats: ly.board.map((c) => c.name), pick: ly.pickCat != null ? ly.board[ly.pickCat].songs.map((it) => `${it.song.t} — ${artistLine(it.song)}`) : null } : null,
+    board: state.phase === 'board' ? { cats: me.board.map((c) => ({ name: c.name, done: c.done })), hit: me.stage === 9,
+      pick: ly.pickCat != null ? me.board[ly.pickCat].songs.map((it) => `${it.song.t} — ${artistLine(it.song)}`) : null } : null,
   };
 }
 // odpowiedź gracza z telefonu (słowa w pustych polach) i podpowiedź suflera

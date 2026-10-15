@@ -39,7 +39,7 @@ function startGame(over = {}) {
     }
   }
   // Tak to leciało! – osobny przebieg gry (lyrics.js)
-  if (state.mode === 'lyrics' && !party) return startLyrics(rows);
+  if (state.mode === 'lyrics') return startLyrics(rows, party ? { rounds: over.rounds || 1 } : null);
   // klawisze „Kto pierwszy?” – bez powtórzeń (w imprezie gracze nie wybierali ich w ustawieniach)
   const usedKeys = [];
   state.buzzKeys = setupRows.map((r) => {

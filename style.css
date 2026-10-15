@@ -648,8 +648,17 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .ly-lifes { display: flex; flex-direction: column; gap: 4px; font-size: .88rem; }
 .ly-lifes .used { opacity: .4; text-decoration: line-through; }
 .ly-step { font-weight: 600; }
-.ly-cats { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin: 12px 0; }
-.ly-cat, .ly-song { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; text-align: left; padding: 14px; min-height: 64px; }
+.ly-hit { display: block; width: 100%; margin: 12px 0 10px; padding: 18px 12px; text-align: center; font-size: 1.15rem; border-radius: 12px;
+  background: rgba(255, 201, 60, .12); color: var(--gold); border: 2px solid rgba(255, 201, 60, .35); }
+.ly-hit.ready { background: rgba(255, 201, 60, .25); border-color: var(--gold); box-shadow: 0 0 18px rgba(255, 201, 60, .35); }
+.ly-hit:disabled { opacity: .55; cursor: default; }
+.ly-cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 0 12px; }
+.ly-cat { display: grid; place-items: center; text-align: center; padding: 12px 8px; min-height: 76px; font-size: 1rem; }
+.ly-cat.picked { border-color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
+.ly-cat.done, .ly-cat:disabled { opacity: .3; filter: grayscale(1); cursor: default; }
+.ly-choice { margin: 6px 0 12px; display: grid; gap: 10px; }
+.ly-quit { margin-top: 4px; }
+.ly-song { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; text-align: left; padding: 14px; min-height: 64px; }
 .ly-songs { display: grid; gap: 10px; margin: 12px 0; }
 .ly-songname { font-weight: 600; margin: 0 0 8px; }
 .ly-video { position: relative; width: 100%; max-width: 640px; min-width: 200px; aspect-ratio: 16 / 9; min-height: 200px; margin: 0 auto 10px; background: #000; border-radius: 10px; overflow: hidden; }
@@ -661,7 +670,7 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .ly-lines .next { opacity: .75; }
 .ly-lines .gap { color: var(--gold); font-weight: 700; }
 .ly-blanks { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 10px 0; font-size: 1.15rem; }
-.ly-blanks br { flex-basis: 100%; content: ''; }
+.ly-blanks .ly-break { flex-basis: 100%; height: 0; }
 .ly-prefix { font-weight: 600; }
 .ly-blanks input { min-width: 3.5em; max-width: 100%; text-align: center; font-size: 1.05rem; padding: 6px 8px; border-bottom: 2px solid var(--gold); }
 .ly-blanks input.revealed { background: rgba(255, 201, 60, .2); }
@@ -679,3 +688,6 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
   .ly-ladder { flex-direction: row; flex-wrap: wrap; }
   .ly-ladder li { flex: 1 1 30%; }
 }
+/* duże kafelki: Impreza i Tak to leciało! – na całą szerokość, jeden pod drugim */
+.modes .party-tile { grid-column: 1 / -1; }
+.lyrics-tile { background: linear-gradient(135deg, rgba(255, 201, 60, .2), rgba(255, 61, 127, .12)), var(--panel); }

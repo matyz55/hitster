@@ -416,7 +416,10 @@
     .ly-tv-song, .ly-tv-board { text-align: center; }
     .ly-tv-song h2 small { color: #a49cbf; font-weight: 400; }
     .ly-tv-cats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1vw; margin-top: 1em; }
-    .ly-tv-cat { background: rgba(255, 255, 255, .07); border-radius: .5em; padding: 1em .6em; font-weight: 700; font-size: 1.2em; }
+    .ly-tv-cat { background: rgba(255, 255, 255, .07); border-radius: .5em; padding: 1em .6em; font-weight: 700; font-size: 1.2em; display: grid; place-items: center; text-align: center; }
+    .ly-tv-cat.done { opacity: .3; }
+    .ly-tv-hit { margin-top: .6em; padding: .8em; border-radius: .5em; background: rgba(255, 201, 60, .12); color: var(--gold); font-weight: 800; font-size: 1.3em; opacity: .5; }
+    .ly-tv-hit.ready { opacity: 1; background: rgba(255, 201, 60, .28); }
     .ly-lines { font-size: 1.6em; line-height: 1.45; min-height: 6em; }
     .ly-lines p { margin: .1em 0; }
     .ly-lines .past { opacity: .45; }
