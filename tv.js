@@ -418,7 +418,8 @@ function renderPlayer(s) {
   // przyciski: tylko te, których ten gracz może teraz użyć
   // w swojej turze – wszystko poza wyzwaniem i żetonem „przy stole” (o nich decydują inni); przy swoim wyzwaniu – wszystko;
   // poza swoją turą – wyzwanie, żeton „przy stole” i wybór siebie jako wyzywającego
-  const tableBtn = (b) => /\b(gold|ok)\b/.test(b.cls);
+  // (tylko w osi czasu z wyzwaniami – w pozostałych trybach poza swoją turą nie ma czego klikać)
+  const tableBtn = (b) => ['multi', 'teams'].includes(s.mode) && /\b(gold|ok)\b/.test(b.cls);
   const allowed = (b) => (s.mode === 'buzz' ? answering
     : (ids.includes(s.challenger) && s.phase === 'challenge') || (turnIsMine(s) ? !tableBtn(b) : (tableBtn(b) || ids.includes(b.text))));
   const btns = (s.buttons || []).map((b, i) => ({ ...b, i })).filter((b) => allowed(b));
@@ -444,7 +445,9 @@ function renderPlayer(s) {
   const reveal = s.reveal ? h('div', 'ht-reveal', h('div', 'y', s.reveal.y), h('div', 't', h('b', '', s.reveal.t), ' — ', s.reveal.a, ' ', flag(s.reveal.cc)),
     h('div', 'lines', (s.reveal.lines || []).map((l) => h('div', '', l)))) : null;
   // w swojej turze oś z miejscami „＋ tutaj” jest w karcie (jak u gospodarza)
-  const turnTl = myView && active ? vTimeline(active, pick, null) : null;
+  // „Starsza czy nowsza?”: wspólne karty (bez właściciela) – w karcie u wszystkich
+  const shared = !!(active && !active.name);
+  const turnTl = (myView || shared) && active ? vTimeline(active, pick, null) : null;
   const card = h('section', 'ht-card' + (rest.length ? ' with-actions' : ''),
     h('div', 'ht-head', h('h2', '', s.title || ''), h('span', 'ht-info', s.info || '')),
     h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess,
@@ -453,8 +456,9 @@ function renderPlayer(s) {
   const board = (s.scores || []).length ? h('div', 'ht-scores', s.scores.map((x) => h('span', x.active ? 'act' : '', x.text))) : null;
   const sections = [];
   // poza swoją turą: podgląd na żywo osi gracza, który odpowiada – widać, gdzie kładzie kartę (np. czy rzucić wyzwanie)
-  if (!myView && active && active !== mine) {
-    const w = vTimeline(active, false, active.slot != null ? T('👀 {0} wskazuje miejsce na swojej osi:', active.name) : T('👀 Oś gracza {0} – czeka na wybór miejsca', active.name));
+  if (!myView && !shared && active && active !== mine) {
+    const w = vTimeline(active, false, active.slot != null ? T('👀 {0} wskazuje miejsce na swojej osi:', active.name)
+      : (s.mode === 'teams' ? T('👀 Oś drużyny {0} – czeka na wybór miejsca', active.name) : T('👀 Oś gracza {0} – czeka na wybór miejsca', active.name)));
     w.classList.add('watch');
     sections.push(w);
   }
