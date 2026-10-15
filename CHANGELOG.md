@@ -453,7 +453,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   (tym samym sposobem co gra, z limitem zapytań) i zapisuje raport piosenek bez fragmentu w `PREVIEW-REPORT.md`;
   na GitHubie uruchamia się codziennie (150 piosenek dziennie).
 
-## 5.19.2 – 15.10.2026 (`HASH`)
+## 5.19.2 – 15.10.2026 (`b4c7fab`)
 
 - Poprawka: zmiana roku lub kraju w ustawieniach („Poprawki dat”) mogła zgłaszać błąd przy przejściu do kolejnego pola
   – lista odświeża się teraz po zakończeniu edycji.
