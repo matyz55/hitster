@@ -17,6 +17,8 @@ const setMe = (name) => { me = name; try { localStorage.setItem(meKey, name); } 
 let audioState = { playing: false, progress: 0 };
 let tvCode = ''; // kod tego dużego ekranu (połączenie z telefonem)
 if (PLAYER) document.body.classList.add('player');
+// karta specjalna „Mgła”: rok widzi tylko właściciel osi (na swoim telefonie)
+const yearOf = (c) => (c.fog && !(PLAYER && c.fog === me) ? '🌫️' : c.y);
 const h = (tag, cls, ...kids) => {
   const n = document.createElement(tag);
   if (cls) n.className = cls;
@@ -39,8 +41,8 @@ function flag(cc) {
   return img;
 }
 function card(c) {
-  if (c.start) return h('div', 'card start', h('div', 'lbl', T('karta startowa')), h('div', 'y', c.y));
-  return h('div', 'card' + (c.new ? ' new' : ''), h('div', 'y', c.y), h('div', 't', c.t), h('div', 'a', c.a), flag(c.cc));
+  if (c.start) return h('div', 'card start', h('div', 'lbl', T('karta startowa')), h('div', 'y', yearOf(c)));
+  return h('div', 'card' + (c.new ? ' new' : ''), h('div', 'y', yearOf(c)), h('div', 't', c.t), h('div', 'a', c.a), flag(c.cc));
 }
 // karta z pytajnikiem w miejscu, które wybrał gracz (albo wyzywający) – jeszcze przed odkryciem
 const mystery = (who, ch) => h('div', 'card mystery' + (ch ? ' ch' : ''), h('div', 'q', '?'), h('div', 'who', who));
@@ -337,7 +339,7 @@ function render(s) {
   const hint = h('div', 'hint', s.hint || '');
   // Melodia krok po kroku: 1 s · 2 s · 4 s · 8 s
   const steps = s.steps ? h('div', 'steps', s.steps.items.map((x, i) => h('div', 'step' + (i < s.steps.current ? ' done' : '') + (i === s.steps.current ? ' current' : ''),
-    h('b', '', `${x.len} s`), h('small', '', T('{0} pkt', x.pts))))) : null;
+    h('b', '', x.label || `${x.len} s`), h('small', '', T('{0} pkt', x.pts))))) : null;
   // Kto pierwszy?: przyciski graczy (na telefonie gracza – jeden duży przycisk „swój”)
   let buzzers = null;
   if (s.buzzers) {
@@ -379,7 +381,7 @@ function render(s) {
   const keep = app.querySelector('.guess-form');
   const bingo = s.bingo ? h('div', 'bingo-boards', s.bingo.boards.map((b) => h('div', 'bingo-board' + (b.won ? ' won' : ''),
     h('div', 'bingo-name', b.name, b.pick != null ? ' ✔' : ''), bingoGrid(b, false, false)))) : null;
-  const card = h('section', 'turn-card', head, main, steps, buzzers, bingo, hint, guess, actions);
+  const card = h('section', 'turn-card', head, coverFog(s), main, steps, buzzers, bingo, hint, guess, actions);
   app.replaceChildren(...[who, scoresRow, card, tls, others].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
   fit();
@@ -425,7 +427,7 @@ function vTimeline(t, pick, title) {
       if (t.marks.challengeSlot === i) box.append(h('div', 'vrow vmark challenge', `✘ ${t.marks.challenger}`));
       if (t.marks.correct === i) box.append(h('div', 'vrow vmark ok', `✔ ${t.marks.year}`));
     }
-    if (pick && t.slot !== i && t.challengeSlot !== i) {
+    if (pick && t.slot !== i && t.challengeSlot !== i && !(t.challenges || []).some((c) => c.slot === i)) {
       const b = h('button', 'vslot', T('＋ tutaj'));
       b.addEventListener('click', () => { b.classList.add('chosen'); send({ slot: i }); });
       box.append(b);
@@ -433,8 +435,8 @@ function vTimeline(t, pick, title) {
     if (i < t.cards.length) {
       const c = t.cards[i];
       box.append(c.start
-        ? h('div', 'vrow vcard vstart', h('span', 'y', c.y), h('span', 'ta', T('karta startowa')))
-        : h('div', 'vrow vcard' + (c.new ? ' vnew' : ''), h('span', 'y', c.y), h('span', 'ta', h('b', '', c.t), h('small', '', c.a)), flag(c.cc)));
+        ? h('div', 'vrow vcard vstart', h('span', 'y', yearOf(c)), h('span', 'ta', T('karta startowa')))
+        : h('div', 'vrow vcard' + (c.new ? ' vnew' : ''), h('span', 'y', yearOf(c)), h('span', 'ta', h('b', '', c.t), h('small', '', c.a)), flag(c.cc)));
     }
   }
   box.append(h('div', 'vtl-hint', T('↓ nowsze')));
@@ -497,8 +499,9 @@ function renderPlayer(s) {
   const skipB = myView ? btns.find((b) => /^⏭/.test(b.text)) : null;
   // wyzwanie „dokładny rok” – pole roku u wyzywającego (zamiast przycisku „Odkryj kartę” gospodarza)
   const yearForm = s.challengeInput && ids.includes(s.challengeInput.who) ? challengeYearForm(T('⚔ Twoje wyzwanie: podaj dokładny rok wydania'), 'challengeYear')
-    : (s.yearAsk && s.yearAsk.who.includes(me) ? challengeYearForm(T('📅 W którym roku wydano tę piosenkę?'), 'yearAnswer') : null);
-  const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text) && !(yearForm && b.cls.includes('primary')) && !(s.sort && SORT_BTN.test(b.cls)));
+    : (s.yearAsk && s.yearAsk.who.includes(me) ? challengeYearForm(T('📅 W którym roku wydano tę piosenkę?'), 'yearAnswer')
+      : (s.royale && s.royale.pending.includes(me) ? challengeYearForm(T('🏁 W którym roku wydano tę piosenkę? (kto pomyli się najbardziej, traci serce)'), 'royaleYear') : null));
+  const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text) && !(yearForm && b.cls.includes('primary')) && !(s.sort && SORT_BTN.test(b.cls)) && !/\broyale-ok\b/.test(b.cls));
   const myChallenge = ids.includes(s.challenger) || (s.challengers || []).some((n) => ids.includes(n));
   const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || myChallenge));
   // karta tury – jak na urządzeniu gospodarza
@@ -510,7 +513,7 @@ function renderPlayer(s) {
   const body = h('div', 'ht-body', h('div', 'ht-status', s.reveal ? '' : (s.status || '')),
     play || skipB ? h('div', 'ht-controls', play, skipB ? mk(skipB, 'ghost') : null) : null, s.hasSong ? prog : null);
   const steps = s.steps ? h('div', 'ht-steps', s.steps.items.map((x, i) => h('div', (i < s.steps.current ? 'done' : '') + (i === s.steps.current ? ' current' : ''),
-    h('b', '', `${x.len} s`), h('small', '', ` ${T('{0} pkt', x.pts)}`)))) : null;
+    h('b', '', x.label || `${x.len} s`), h('small', '', ` ${T('{0} pkt', x.pts)}`)))) : null;
   const reveal = s.reveal ? h('div', 'ht-reveal', h('div', 'y', s.reveal.y), h('div', 't', h('b', '', s.reveal.t), ' — ', s.reveal.a, ' ', flag(s.reveal.cc)),
     h('div', 'lines', (s.reveal.lines || []).map((l) => h('div', '', l)))) : null;
   // w swojej turze oś z miejscami „＋ tutaj” jest w karcie (jak u gospodarza)
@@ -519,7 +522,7 @@ function renderPlayer(s) {
   const turnTl = (myView || shared) && active ? vTimeline(active, pick, null) : null;
   const card = h('section', 'ht-card' + (rest.length ? ' with-actions' : ''),
     h('div', 'ht-head', h('h2', '', s.title || ''), h('span', 'ht-info', s.info || '')),
-    h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess, yearForm, bingoBoard(s),
+    coverFog(s), h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess, yearForm, bingoBoard(s),
     s.challenge ? h('p', 'ht-hint', s.challenge) : null, s.hint ? h('p', 'ht-hint', s.hint) : null,
     s.sort ? sortBox(s, myView) : null, turnTl, rest.length ? h('div', 'ht-actions', rest.map((b) => mk(b))) : null);
   const board = (s.scores || []).length ? h('div', 'ht-scores', s.scores.map((x) => h('span', x.active ? 'act' : '', x.text))) : null;
@@ -552,6 +555,15 @@ function renderPlayer(s) {
 let lastMark = '';
 
 // Bingo: własna plansza gracza na telefonie (stuknięcie = zaznaczenie pola), na dużym ekranie – plansze wszystkich
+// Okładka z mgły: duża rozmyta okładka (rozmycie jako ułamek szerokości – liczone po wstawieniu na ekran)
+function coverFog(s) {
+  if (!s.cover) return null;
+  const img = h('div', '');
+  img.style.backgroundImage = `url("${sharpArt(s.cover.art)}")`;
+  const box = h('div', 'cover-fog', img);
+  requestAnimationFrame(() => { img.style.filter = s.cover.blur ? `blur(${Math.round(box.offsetWidth * s.cover.blur)}px)` : ''; });
+  return box;
+}
 function bingoGrid(b, mine, open) {
   // plansza 3×3, 4×4 albo 5×5 – liczba kolumn z liczby pól
   const n = Math.round(Math.sqrt(b.cells.length)) || 3;
@@ -658,12 +670,25 @@ music.preload = 'auto';
 let musicUntil = null;
 let fadeTimer = null;
 const blobs = new Map();
+// bufor pobranych fragmentów: 8 ostatnich (w „Ułóż piątkę” gracz przełącza się między 5 fragmentami jednej tury)
+const BLOB_LIMIT = 8;
+function trimBlobs() {
+  for (const [k, v] of blobs) {
+    if (blobs.size <= BLOB_LIMIT) break;
+    if (v === null || k === music.dataset.url) continue; // jeszcze się pobiera albo właśnie gra – zostaje
+    URL.revokeObjectURL(v);
+    blobs.delete(k);
+  }
+}
 function loadTrack(url) {
   if (!url || blobs.has(url)) return;
   blobs.set(url, null);
-  fetch(url).then((r) => r.blob()).then((b) => blobs.set(url, URL.createObjectURL(b))).catch(() => blobs.delete(url));
-  // pamiętamy tylko kilka ostatnich fragmentów
-  while (blobs.size > 4) { const [k, v] = blobs.entries().next().value; if (v) URL.revokeObjectURL(v); blobs.delete(k); }
+  fetch(url).then((r) => r.blob()).then((b) => {
+    // wpis usunięty w międzyczasie – nie tworzymy adresu, którego nikt by nie zwolnił
+    if (!blobs.has(url)) return;
+    blobs.set(url, URL.createObjectURL(b));
+    trimBlobs();
+  }).catch(() => blobs.delete(url));
 }
 function fadeTo(to, ms, then) {
   clearInterval(fadeTimer);

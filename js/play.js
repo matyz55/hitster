@@ -67,11 +67,16 @@ function startGame(over = {}) {
   state.expert = isTimeline() && !party ? expertParts() : [];
   state.letterHint = filterState.letterHint;
   const plShare = poolValue() === 'ALL' ? filterState.plShare / 100 : (poolValue() === 'PL' ? 1 : 0);
-  const needed = state.mode === 'buzz' || state.mode === 'bingo' ? state.rounds : state.mode === 'sort5' ? names.length * state.rounds * 5
+  const needed = state.mode === 'royale' || state.mode === 'bomb' ? 30 : state.mode === 'buzz' || state.mode === 'bingo' ? state.rounds : state.mode === 'sort5' ? names.length * state.rounds * 5
     : (state.hiloMulti ? names.length * state.rounds + 2 : (isTimeline() || state.mode === 'hilo' ? names.length * 3 : names.length * state.rounds));
   let base = songPool();
   // tryby quizowe: podpowiedzi z tej samej puli; „Skąd jest wykonawca?” – tylko piosenki z flagą kraju
   if (state.mode === 'country') base = base.filter((s) => s.cc && hasFlag(s.cc));
+  // „Kto za tym stoi?” – tylko piosenki, o które da się zadać pytanie (z 3 błędnymi odpowiedziami)
+  if (state.mode === 'who') {
+    if (!window.SONG_FACTS) { loadFacts().then(() => (window.SONG_FACTS ? startGame(over) : alert(T('Nie udało się wczytać danych o piosenkach – spróbuj ponownie.')))); return; }
+    base = base.filter((s) => whoQuestions(s).length);
+  }
   state.quizPool = base;
   if (state.mode === 'duel') {
     state.duel = pickDuelDecades(base, needed, !!party);
@@ -89,7 +94,7 @@ function startGame(over = {}) {
   }
   state.timeLimit = over.timeLimit || filterState.timeLimit || 120;
   state.timeLeft = state.timeLimit * 1000;
-  state.specials = isTimeline() && !party ? (filterState.specials || []).filter((k) => isMulti() || k === 'double') : [];
+  state.specials = isTimeline() && !party ? (filterState.specials || []).filter((k) => isMulti() || k === 'double' || k === 'golden') : [];
   state.startedAt = Date.now();
   state.buzz = null;
   state.ref = null;
@@ -103,6 +108,9 @@ function startGame(over = {}) {
   state.moments = [];
   state.bigMiss = 0;
   if (state.mode === 'bingo') startBingo();
+  if (state.mode === 'royale') startRoyale();
+  if (state.mode === 'bomb') startBomb();
+  state.secsStart = null;
   state.turn = Math.floor(Math.random() * names.length);
   state.turnsPlayed = 0;
   state.history = [];
@@ -364,6 +372,7 @@ function setAudioSource(preview) {
   if (currentBlobUrl && currentBlobUrl !== preview.blobUrl) URL.revokeObjectURL(currentBlobUrl);
   currentBlobUrl = preview.blobUrl || null;
   $('#audio').src = preview.blobUrl || preview.url;
+  delete $('#audio').dataset.rev;
   $('#audio').load();
   // urządzenia, które mogą grać muzykę, pobierają fragment z wyprzedzeniem
   remoteSend({ audioCmd: 'load', url: preview.url });
@@ -397,13 +406,17 @@ async function drawSong() {
     if (myDraw !== state.drawId) return; // gra została przerwana
     // „pomijaj niecenzuralne”: piosenka bez oznaczenia w bazie, ale oznaczona w Apple Music – losujemy inną
     if (preview && preview.ex && filterState.noExplicit) continue;
+    // „Okładka z mgły” – tylko piosenki z okładką w iTunes
+    if (preview && state.mode === 'cover' && !preview.art) continue;
     if (preview) {
       markPlayed(song);
       state.current = song;
       state.preview = preview;
-      if (state.mode === 'steps') {
-        const maxLen = STEPS[STEPS.length - 1].len;
-        Object.assign(state, { step: 0, solved: {}, hintCost: 0, clipLen: STEPS[0].len });
+      // Krzywe zwierciadło: efekt losowany dla piosenki
+      state.mirror = state.mode === 'mirror' ? shuffle(Object.keys(MIRROR_FX))[0] : null;
+      if (isSteps()) {
+        const maxLen = stepsList()[stepsList().length - 1].len;
+        Object.assign(state, { step: 0, solved: {}, hintCost: 0, clipLen: stepsList()[0].len });
         state.clipStart = filterState.random ? Math.random() * (29 - maxLen) : 0;
       } else if (state.mode === 'daily') {
         // wyzwanie dnia: dla wszystkich tak samo – cały fragment od początku
@@ -415,23 +428,36 @@ async function drawSong() {
       }
       setAudioSource(preview);
       if (isQuiz()) prepareQuiz(song);
+      if (state.mode === 'royale') state.royale = { answers: {} };
+      if (state.mode === 'seconds') startSecsRound();
+      if (state.mode === 'bomb') bombRound();
+      if (state.mode === 'mashup') { state.mashup = null; state.clipLen = 10; $('#btn-play').disabled = true; mashupPrepare(myDraw).then(() => { $('#btn-play').disabled = !state.mashup; if (!state.mashup) $('#mystery-status').textContent = T('Nie udało się znaleźć drugiej piosenki – spróbuj następnej.'); }); }
       const status = isQuiz() ? QUIZ[state.mode].status() : {
-        steps: T('Posłuchaj {0} sekundy i zgaduj – albo wydłuż fragment.', STEPS[0].len),
+        steps: T('Posłuchaj {0} sekundy i zgaduj – albo wydłuż fragment.', stepsList()[0].len),
+        cover: T('Przyjrzyj się rozmytej okładce i zgaduj – na razie bez dźwięku.'),
+        mirror: T('Krzywe zwierciadło: {0} {1}. Posłuchaj i zgaduj – z każdym krokiem mniej zniekształceń.', MIRROR_FX[state.mirror || 'wall'].icon, MIRROR_FX[state.mirror || 'wall'].name),
         melody: T('Posłuchaj i wpisz odpowiedź.'),
         buzz: T('Włącz fragment – kto pierwszy naciśnie swój przycisk, ten odpowiada.'),
         hilo: T('Posłuchaj: starsza czy nowsza od poprzedniej karty?'),
         duel: T('Posłuchaj i wybierz dekadę.'),
         bingo: T('Posłuchaj i zaznacz na swojej planszy pole, które pasuje do tej piosenki.'),
+        royale: T('Wszyscy naraz: wpiszcie rok wydania. Kto pomyli się najbardziej, traci serce.'),
+        seconds: T('Licytacja: ile sekund wystarczy, by odgadnąć tytuł? Muzyka zagra po licytacji.'),
+        bomb: T('Gorąca bomba: odpowiadaj szybko i podawaj bombę dalej, zanim wybuchnie!'),
+        mashup: T('Mikser: dwie piosenki naraz – szukam drugiej…'),
       }[state.mode] || T('Posłuchaj i wybierz miejsce na swojej osi czasu.');
       $('#mystery-status').replaceChildren(status);
       // karta specjalna: co ok. piąta karta na osi czasu (jeśli włączone)
       if (state.specials && state.specials.length && Math.random() < SPECIAL_CHANCE) {
-        state.special = state.specials[Math.floor(Math.random() * state.specials.length)];
+        // magnes – tylko dla gracza na ostatnim miejscu (najmniej kart, przy co najmniej 2 graczach)
+        const last = state.players.length > 1 && activePlayer().timeline.length < Math.min(...state.players.filter((x) => x !== activePlayer()).map((x) => x.timeline.length));
+        const pool = state.specials.filter((k) => k !== 'magnet' || last);
+        state.special = pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
       }
       if (isMelody() && filterState.hint) {
         $('#mystery-status').append(' ', el('span', { class: 'decade-hint' }, T('Podpowiedź: {0}', decadeRange(decadeOf(song)))));
       }
-      $('#btn-play').disabled = false;
+      $('#btn-play').disabled = state.mode === 'seconds' || state.mode === 'bomb' || state.mode === 'mashup';
       render();
       // autoodtwarzanie (zawsze w trybie na czas, w innych – opcja w ustawieniach); przeglądarka może je zablokować,
       // wtedy gracz po prostu klika ▶

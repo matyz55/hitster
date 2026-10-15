@@ -24,13 +24,18 @@ function keepPlayingAfterReveal() {
 const FADE = 0.15;
 audio.crossOrigin = 'anonymous';
 let musicGain = null;
+let musicFilter = null;
 function musicGraph() {
   if (musicGain) return musicGain;
   try {
     sfxCtx = sfxCtx || new (window.AudioContext || window.webkitAudioContext)();
     const src = sfxCtx.createMediaElementSource(audio);
     musicGain = sfxCtx.createGain();
-    src.connect(musicGain).connect(sfxCtx.destination);
+    // filtr dolnoprzepustowy dla „Krzywego zwierciadła” – na co dzień otwarty (przezroczysty)
+    musicFilter = sfxCtx.createBiquadFilter();
+    musicFilter.type = 'lowpass';
+    musicFilter.frequency.value = 22000;
+    src.connect(musicFilter).connect(musicGain).connect(sfxCtx.destination);
   } catch (e) { musicGain = null; }
   return musicGain;
 }
@@ -84,6 +89,8 @@ function audioTargets() {
     const channel = tvWindowSeen && !!tvChannel && !channelBlocked;
     return tvs.length || channel ? { remotes: tvs, channel } : null;
   }
+  // Krzywe zwierciadło: efekty dźwięku są tylko na tym urządzeniu
+  if (state.mode === 'mirror' || state.mode === 'mashup') return null;
   if (out === 'player' && state.players.length) {
     const p = activePlayer();
     // w drużynach – telefon członka, który teraz odpowiada (albo telefon z nazwą drużyny)
@@ -203,4 +210,55 @@ function setVinyl(art) {
   const v = $('#vinyl');
   v.classList.toggle('cover', !!art);
   v.style.backgroundImage = art ? `url("${art}")` : '';
+}
+
+/* --- Krzywe zwierciadło: zniekształcenie dźwięku zależne od kroku (po odkryciu – oryginał) --- */
+const reversedCache = new Map(); // adres fragmentu → adres odwróconej wersji (WAV)
+async function reversedUrl(preview) {
+  if (reversedCache.has(preview.url)) return reversedCache.get(preview.url);
+  const buf = await (await fetch(preview.blobUrl || preview.url)).arrayBuffer();
+  sfxCtx = sfxCtx || new (window.AudioContext || window.webkitAudioContext)();
+  const data = await sfxCtx.decodeAudioData(buf);
+  const ch = data.numberOfChannels;
+  const len = data.length;
+  const chans = [...Array(ch).keys()].map((c) => data.getChannelData(c).slice().reverse());
+  // WAV 16-bit
+  const out = new DataView(new ArrayBuffer(44 + len * ch * 2));
+  const w = (o, t) => [...t].forEach((x, i) => out.setUint8(o + i, x.charCodeAt(0)));
+  w(0, 'RIFF'); out.setUint32(4, 36 + len * ch * 2, true); w(8, 'WAVE'); w(12, 'fmt '); out.setUint32(16, 16, true);
+  out.setUint16(20, 1, true); out.setUint16(22, ch, true); out.setUint32(24, data.sampleRate, true);
+  out.setUint32(28, data.sampleRate * ch * 2, true); out.setUint16(32, ch * 2, true); out.setUint16(34, 16, true);
+  w(36, 'data'); out.setUint32(40, len * ch * 2, true);
+  let o = 44;
+  for (let i = 0; i < len; i++) for (let c = 0; c < ch; c++) { out.setInt16(o, Math.max(-1, Math.min(1, chans[c][i])) * 0x7fff, true); o += 2; }
+  const url = URL.createObjectURL(new Blob([out], { type: 'audio/wav' }));
+  reversedCache.set(preview.url, url);
+  if (reversedCache.size > 3) { const [k, v] = reversedCache.entries().next().value; URL.revokeObjectURL(v); reversedCache.delete(k); }
+  return url;
+}
+let mirrorKey = '';
+async function applyMirror() {
+  const fx = state.mode === 'mirror' && state.phase === 'listen' && state.current && state.mirror ? MIRROR_FX[state.mirror] : null;
+  const i = fx ? state.step : -1;
+  const key = fx ? `${state.preview.url}|${state.mirror}|${i}` : (state.preview ? state.preview.url : '');
+  if (key === mirrorKey) return;
+  mirrorKey = key;
+  const rate = fx && fx.rate ? fx.rate[i] : 1;
+  audio.preservesPitch = rate === 1;
+  audio.mozPreservesPitch = rate === 1;
+  audio.webkitPreservesPitch = rate === 1;
+  audio.playbackRate = rate;
+  musicGraph();
+  if (musicFilter) musicFilter.frequency.value = fx && fx.lowpass && fx.lowpass[i] ? fx.lowpass[i] : 22000;
+  // wspak – podmiana źródła na odwróconą wersję; po odkryciu albo w późniejszych krokach – oryginał
+  const want = fx && fx.reverse && fx.reverse[i] ? 'rev' : 'orig';
+  const now = audio.dataset.rev ? 'rev' : 'orig';
+  if (!state.preview || want === now) return;
+  const playing = !audio.paused;
+  const src = want === 'rev' ? await reversedUrl(state.preview).catch(() => null) : (state.preview.blobUrl || state.preview.url);
+  if (!src || key !== mirrorKey) return;
+  audio.src = src;
+  if (want === 'rev') audio.dataset.rev = '1'; else delete audio.dataset.rev;
+  audio.load();
+  if (playing || state.phase === 'revealed') { audio.currentTime = state.phase === 'revealed' ? 0 : state.clipStart; playClip(); }
 }

@@ -23,6 +23,13 @@ const QUIZ = {
     hint: () => T('Kto to śpiewa?'),
     max: () => 1,
   },
+  // Kto za tym stoi?: pytanie z ciekawostek o piosence (facts.js) – autor tekstu, kompozytor, album, producent,
+  // miejscowość wykonawcy, prawdziwe nazwisko; 4 odpowiedzi do wyboru
+  who: {
+    status: () => T('Posłuchaj i odpowiedz na pytanie o piosenkę.'),
+    hint: () => (state.quiz && state.quiz.q ? state.quiz.q : ''),
+    max: () => 1,
+  },
   country: {
     status: () => T('Posłuchaj i wybierz kraj wykonawcy.'),
     hint: () => T('Skąd jest wykonawca tej piosenki?'),
@@ -39,9 +46,9 @@ const isQuiz = () => !!QUIZ[state.mode];
 const isYearQuiz = () => !!(QUIZ[state.mode] && QUIZ[state.mode].kind === 'year');
 
 // pula do podpowiedzi (wykonawcy, kraje) – piosenki z ustawień gry
-function quizOptions(song) {
+function quizOptions(song, mode = state.mode) {
   const pool = state.quizPool || window.SONGS;
-  if (state.mode === 'artist') {
+  if (mode === 'artist') {
     const want = mainArtist(song);
     const near = shuffle(pool.filter((s) => s.c === song.c && Math.abs(s.y - song.y) <= 12));
     const names = [want];
@@ -75,8 +82,59 @@ function quizOptions(song) {
   }
   return [];
 }
+// Kto za tym stoi? – pytania, na które dane o tej piosence znają odpowiedź
+function whoQuestions(song) {
+  const out = [];
+  const sf = (window.SONG_FACTS && window.SONG_FACTS[songKey(song)]) || [];
+  const af = (window.ARTIST_FACTS && window.ARTIST_FACTS[mainArtist(song)]) || [];
+  for (const [k, a, b] of sf) {
+    if (k === 'ml') out.push({ kind: 'lyr', answer: a });
+    if (k === 'm' && b) out.push({ kind: 'lyr', answer: b });
+    if (k === 'm' && a) out.push({ kind: 'mus', answer: a });
+    if (k === 'al') out.push({ kind: 'al', answer: a });
+    if (k === 'pr') out.push({ kind: 'pr', answer: a });
+  }
+  for (const [k, a] of af) {
+    if (k === 'bp' || k === 'fp') out.push({ kind: 'city', answer: a });
+    if (k === 'bn') out.push({ kind: 'bn', answer: a });
+  }
+  // wykonawca nie może być odpowiedzią na pytanie o swoją piosenkę (np. „Muzyka: Elton John” przy Eltonie Johnie)
+  return out.filter((x) => !artistKeys(song).some((k) => norm(x.answer).includes(k)));
+}
+const WHO_QUESTIONS = {
+  lyr: () => T('Kto napisał tekst tej piosenki?'),
+  mus: () => T('Kto skomponował muzykę do tej piosenki?'),
+  al: () => T('Z którego albumu pochodzi to nagranie?'),
+  pr: () => T('Kto wyprodukował to nagranie?'),
+  city: () => T('Skąd pochodzi wykonawca (miejsce urodzenia albo powstania zespołu)?'),
+  bn: () => T('Jak naprawdę nazywa się wykonawca?'),
+};
+function whoOptions(song) {
+  const qs = whoQuestions(song);
+  if (!qs.length) return null;
+  const q = qs[Math.floor(Math.random() * qs.length)];
+  const pool = state.quizPool || window.SONGS;
+  // błędne odpowiedzi – ten sam rodzaj danych z innych piosenek, najchętniej z tego samego kraju i podobnych lat
+  const near = shuffle(pool.filter((s) => s !== song && s.c === song.c && Math.abs(s.y - song.y) <= 15));
+  const far = shuffle(window.SONGS.filter((s) => s !== song));
+  const labels = [q.answer];
+  for (const s of [...near, ...far]) {
+    if (labels.length >= 4) break;
+    for (const x of whoQuestions(s)) {
+      if (x.kind === q.kind && !labels.some((l) => norm(l) === norm(x.answer))) { labels.push(x.answer); break; }
+    }
+  }
+  if (labels.length < 4) return null;
+  return { q: WHO_QUESTIONS[q.kind](), options: shuffle(labels).map((l) => ({ label: l, ok: l === q.answer })) };
+}
 // nowa piosenka w trybie quizowym
 function prepareQuiz(song) {
+  if (state.mode === 'who') {
+    // brak 3 błędnych odpowiedzi tego rodzaju – pytanie o wykonawcę
+    const w = whoOptions(song) || { q: T('Kto to śpiewa?'), options: quizOptions(song, 'artist') };
+    state.quiz = { options: w.options, q: w.q, bet: 0, year: null };
+    return;
+  }
   state.quiz = { options: quizOptions(song), bet: 0, year: null };
 }
 
@@ -498,4 +556,401 @@ function momentsBox() {
   if (!lines.length) return null;
   return el('div', { class: 'moments-box' }, el('h3', {}, T('✨ Najciekawsze momenty')),
     el('ul', { class: 'moments' }, lines.map((m) => el('li', {}, `${m.icon} ${m.text}`))));
+}
+
+/* ---------- Ostatni na placu boju ---------- */
+// Wszyscy naraz podają rok tej samej piosenki (na swoich telefonach albo kolejno na tym urządzeniu).
+// Kto pomylił się najbardziej (albo nie odpowiedział), traci serce; bez serc – odpada. Wygrywa ostatni przy stole.
+const ROYALE_HEARTS = 3;
+const royaleAlive = () => state.players.map((p, i) => i).filter((i) => state.players[i].hearts > 0);
+function startRoyale() {
+  for (const p of state.players) { p.hearts = ROYALE_HEARTS; p.score = 0; }
+}
+function royaleAnswer(i, value) {
+  const y = parseInt(value, 10);
+  if (state.mode !== 'royale' || !state.royale || state.phase !== 'listen' || !state.current) return;
+  if (!(y >= 1900 && y <= new Date().getFullYear()) || !(state.players[i] && state.players[i].hearts > 0)) return;
+  if (state.royale.answers[i] != null) return;
+  state.royale.answers[i] = y;
+  if (royaleAlive().every((j) => state.royale.answers[j] != null)) royaleReveal();
+  else render();
+}
+function royaleReveal() {
+  if (!state.royale || state.phase !== 'listen' || !state.current) return;
+  const song = state.current;
+  const alive = royaleAlive();
+  const diff = (i) => (state.royale.answers[i] == null ? Infinity : Math.abs(state.royale.answers[i] - song.y));
+  const worst = Math.max(...alive.map(diff));
+  // wszyscy dokładnie – nikt nie traci serca
+  const losers = worst === 0 ? [] : alive.filter((i) => diff(i) === worst);
+  for (const i of losers) state.players[i].hearts -= 1;
+  for (const i of alive) if (state.players[i].hearts > 0) state.players[i].score += 1;
+  state.turnsPlayed += 1;
+  const out = losers.filter((i) => state.players[i].hearts <= 0);
+  state.history.push({ song, preview: state.preview, player: '', ok: !losers.length,
+    note: losers.length ? T('💔 {0}', losers.map((i) => state.players[i].name).join(', ')) : T('nikt nie traci serca') });
+  recordAnswer(song, true);
+  fx(losers.length ? 'bad' : 'good');
+  const lines = alive.map((i) => {
+    const d = diff(i);
+    const p = state.players[i];
+    const ans = state.royale.answers[i];
+    return el('div', { class: 'verdict small-verdict ' + (losers.includes(i) ? 'bad' : 'ok') },
+      `${losers.includes(i) ? '💔' : (d === 0 ? '🎯' : '✔')} ${p.name}: ${ans == null ? T('bez odpowiedzi') : ans}${d && d !== Infinity ? T(' (o {0} lat)', d) : ''} · ${'❤️'.repeat(Math.max(0, p.hearts)) || '💀'}`);
+  });
+  if (out.length) {
+    lines.push(el('div', { class: 'verdict bad' }, T('💀 Odpada: {0}', out.map((i) => state.players[i].name).join(', '))));
+    for (const i of out) addMoment('💀', T('{0} odpada w rundzie {1} („{2}”, {3})', state.players[i].name, state.turnsPlayed, song.t, song.y), 2);
+  }
+  showReveal(...lines);
+}
+function royaleActions() {
+  const btns = [];
+  const r = state.royale;
+  if (state.phase === 'listen' && state.current && r) {
+    const phones = remoteNames();
+    // gracze bez telefonu wpisują rok tutaj (kolejno); gracze z telefonami – u siebie
+    for (const i of royaleAlive()) {
+      const p = state.players[i];
+      if (phones.has(p.name) || r.answers[i] != null) continue;
+      const input = el('input', { type: 'number', min: '1900', max: String(new Date().getFullYear()), inputmode: 'numeric', class: 'royale-year',
+        placeholder: T('Rok – {0}', p.name), 'aria-label': T('Rok – {0}', p.name),
+        onkeydown: (e) => { if (e.key === 'Enter') royaleAnswer(i, e.target.value); } });
+      btns.push(el('div', { class: 'royale-row' }, el('b', {}, p.name), input,
+        el('button', { class: 'royale-ok', onclick: () => royaleAnswer(i, input.value) }, T('✔ OK'))));
+    }
+    btns.push(el('button', { class: 'ghost royale-ok', onclick: royaleReveal }, T('⏩ Odkryj teraz (brak odpowiedzi = największa pomyłka)')));
+  }
+  if (state.phase === 'revealed') {
+    const last = royaleAlive().length <= 1;
+    btns.push(el('button', { class: 'primary', onclick: () => (last ? endGame() : startTurn()) }, last ? T('Zobacz wyniki →') : T('Następna runda →')));
+  }
+  return btns;
+}
+function royaleStatus() {
+  const r = state.royale;
+  if (!r || state.phase !== 'listen') return '';
+  const alive = royaleAlive();
+  const done = alive.filter((i) => r.answers[i] != null).map((i) => state.players[i].name);
+  const wait = alive.filter((i) => r.answers[i] == null).map((i) => state.players[i].name);
+  return T('W którym roku wydano tę piosenkę? Odpowiedzieli: {0} · czekamy na: {1}', done.join(', ') || '–', wait.join(', ') || '–');
+}
+
+/* ---------- Licytacja sekund ---------- */
+// Przed muzyką: profil piosenki (rok, kraj, gatunek, autor tekstu). Gracze po kolei licytują w dół, ile sekund wystarczy
+// im do odgadnięcia tytułu (albo pasują). Najkrótsza stawka gra: słyszy dokładnie tyle i zgaduje tytuł.
+// Trafienie: +2 pkt; pudło: +1 pkt dla gracza, który licytował tuż przed nim.
+const SECS_BIDS = [8, 6, 5, 4, 3, 2, 1.5, 1, 0.5];
+const secsLabel = (v) => `${String(v).replace('.', ',')} s`;
+function startSecsRound() {
+  const n = state.players.length;
+  const start = state.secsStart == null ? state.turn : (state.secsStart + 1) % n;
+  state.secsStart = start;
+  state.turn = start;
+  state.secs = { bid: null, active: [...Array(n).keys()].map((k) => (start + k) % n), last: null, prev: null, phase: 'bid' };
+  state.clipLen = 0;
+  state.clipStart = 0;
+}
+function secsProfile(song) {
+  const parts = [T('Rok: {0}', song.y), song.cc ? T('Kraj: {0}', countryName(song)) : null,
+    (song.g || []).length ? T('Gatunek: {0}', song.g.map(genreName).join(', ')) : null];
+  const sf = (window.SONG_FACTS && window.SONG_FACTS[songKey(song)]) || [];
+  const m = sf.find((x) => x[0] === 'm' && x[2]) || sf.find((x) => x[0] === 'ml');
+  if (m) parts.push(T('Autor tekstu: {0}', m[0] === 'ml' ? m[1] : m[2]));
+  return parts.filter(Boolean).join(' · ');
+}
+function secsNextBidder() {
+  const s = state.secs;
+  const at = s.active.indexOf(state.turn);
+  state.turn = s.active[(at + 1) % s.active.length];
+}
+function secsBid(v) {
+  const s = state.secs;
+  if (!s || s.phase !== 'bid' || (s.bid != null && v >= s.bid)) return;
+  s.prev = s.last;
+  s.last = state.turn;
+  s.bid = v;
+  if (v === SECS_BIDS[SECS_BIDS.length - 1] || s.active.length === 1) return secsPlay();
+  secsNextBidder();
+  render();
+}
+function secsPass() {
+  const s = state.secs;
+  if (!s || s.phase !== 'bid' || s.bid == null) return;
+  const me = state.turn;
+  secsNextBidder();
+  s.active = s.active.filter((i) => i !== me);
+  if (s.active.length === 1) return secsPlay();
+  render();
+}
+function secsPlay() {
+  const s = state.secs;
+  s.phase = 'play';
+  state.turn = s.last;
+  state.clipLen = s.bid;
+  $('#mystery-status').textContent = T('{0} gra za {1} – posłuchaj i wpisz tytuł.', state.players[s.last].name, secsLabel(s.bid));
+  $('#btn-play').disabled = false;
+  render();
+}
+function revealSecs(gaveUp) {
+  const s = state.secs;
+  if (!s || s.phase !== 'play' || state.phase !== 'listen') return;
+  const song = state.current;
+  const p = state.players[s.last];
+  const g = guessParts(song);
+  const ok = !gaveUp && checkTitle(g.title, song);
+  const lines = [el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') }, `${ok ? '✔' : '✘'} ${T('Tytuł')}: ${g.title.trim() ? `„${g.title.trim()}”` : '—'} (${secsLabel(s.bid)})`)];
+  if (ok) {
+    p.score += 2;
+    lines.push(el('div', { class: 'muted' }, T('+2 pkt dla: {0}', p.name)));
+    if (s.bid <= 1) addMoment('⚡', T('{0} odgadł(a) „{1}” w {2}', p.name, song.t, secsLabel(s.bid)), 3);
+  } else if (s.prev != null) {
+    state.players[s.prev].score += 1;
+    lines.push(el('div', { class: 'muted' }, T('Pudło – +1 pkt dla gracza, który licytował wcześniej: {0}', state.players[s.prev].name)));
+  }
+  state.turnsPlayed += 1;
+  recordAnswer(song, ok);
+  state.history.push({ song, preview: state.preview, player: p.name, ok, note: `${p.name}: ${secsLabel(s.bid)} ${ok ? '✔' : '✘'}` });
+  fx(ok ? 'good' : 'bad');
+  showReveal(...lines);
+}
+function secsActions() {
+  const btns = [];
+  const s = state.secs;
+  if (state.phase === 'listen' && state.current && s && s.phase === 'bid') {
+    for (const v of SECS_BIDS.filter((x) => s.bid == null || x < s.bid)) {
+      btns.push(el('button', { class: 'big-choice secs-bid', onclick: () => secsBid(v) }, secsLabel(v)));
+    }
+    if (s.bid != null) btns.push(el('button', { class: 'ghost', onclick: secsPass }, T('🏳 Pas')));
+  }
+  if (state.phase === 'listen' && s && s.phase === 'play') {
+    btns.push(el('button', { class: 'ghost', onclick: () => revealSecs(true) }, T('🏳 Nie wiem')));
+  }
+  if (state.phase === 'revealed') {
+    const last = state.turnsPlayed >= state.rounds * state.players.length;
+    btns.push(el('button', { class: 'primary', onclick: () => (last ? endGame() : startTurn()) }, last ? T('Zobacz wyniki →') : T('Następna piosenka →')));
+  }
+  return btns;
+}
+function secsStatus() {
+  const s = state.secs;
+  if (!s || !state.current || state.phase !== 'listen') return '';
+  const head = secsProfile(state.current);
+  if (s.phase === 'bid') {
+    return `${head} — ${s.bid == null ? T('{0}: ile sekund wystarczy Ci na tytuł?', activePlayer().name)
+      : T('Stawka: {0} ({1}). {2}: mniej czy pas?', secsLabel(s.bid), state.players[s.last].name, activePlayer().name)}`;
+  }
+  return `${head} — ${T('{0} gra za {1}', state.players[s.last].name, secsLabel(s.bid))}`;
+}
+
+/* ---------- Gorąca bomba ---------- */
+// Gra muzyka i tyka bomba (coraz szybciej). Kto ją trzyma, odpowiada na szybkie pytanie o piosenkę (dwie odpowiedzi):
+// dobrze – bomba idzie do następnego gracza, źle – 3 s blokady. Wybuch w losowej chwili (25–50 s) zabiera serce
+// trzymającemu; bez serc – odpada. Wygrywa ostatni przy stole.
+const BOMB_MIN = 25000;
+const BOMB_MAX = 50000;
+const BOMB_LOCK = 3000;
+let bombTimer = null;
+function bombAlive() { return state.players.map((p, i) => i).filter((i) => state.players[i].hearts > 0); }
+function startBomb() {
+  for (const p of state.players) { p.hearts = ROYALE_HEARTS; p.score = 0; }
+}
+function bombRound() {
+  clearTimeout(bombTimer);
+  const alive = bombAlive();
+  if (!alive.includes(state.turn)) state.turn = alive[0];
+  state.bomb = { phase: 'wait', q: null, lockUntil: 0, explodeAt: 0, startedAt: 0 };
+}
+// szybkie pytanie o graną piosenkę: dwie odpowiedzi, jedna prawdziwa
+function bombQuestion(song) {
+  const kinds = ['year', 'pl', 'decade', 'artist'];
+  const kind = kinds[Math.floor(Math.random() * kinds.length)];
+  if (kind === 'year') {
+    let pivot = song.y + (Math.floor(Math.random() * 13) - 6);
+    if (pivot === song.y) pivot += 1;
+    return { q: T('Wydana przed {0} czy później?', pivot), options: [{ label: T('Przed {0}', pivot), ok: song.y < pivot }, { label: T('{0} lub później', pivot), ok: song.y >= pivot }] };
+  }
+  if (kind === 'pl') return { q: T('Polska czy zagraniczna?'), options: [{ label: T('Polska'), ok: song.c === 'PL' }, { label: T('Zagraniczna'), ok: song.c !== 'PL' }] };
+  if (kind === 'decade') {
+    const real = decadeOf(song);
+    const d = Math.random() < 0.5 ? real : real + (Math.random() < 0.5 ? -10 : 10);
+    return { q: T('Wydana w latach: {0}?', decadeLabelLong(d)), options: [{ label: T('Tak'), ok: d === real }, { label: T('Nie'), ok: d !== real }] };
+  }
+  const opts = quizOptions(song, 'artist').filter((o) => o.ok).concat(shuffle(quizOptions(song, 'artist').filter((o) => !o.ok)).slice(0, 1));
+  return { q: T('Kto to śpiewa?'), options: shuffle(opts) };
+}
+function bombStart() {
+  const b = state.bomb;
+  if (!b || b.phase !== 'wait' || !state.current) return;
+  b.phase = 'run';
+  b.startedAt = Date.now();
+  b.explodeAt = b.startedAt + BOMB_MIN + Math.random() * (BOMB_MAX - BOMB_MIN);
+  b.q = bombQuestion(state.current);
+  state.clipLen = 30;
+  playClip();
+  bombTick();
+  render();
+}
+function bombTick() {
+  clearTimeout(bombTimer);
+  const b = state.bomb;
+  if (state.mode !== 'bomb' || !b || b.phase !== 'run' || state.phase !== 'listen') return;
+  const now = Date.now();
+  if (now >= b.explodeAt) { bombExplode(); return; }
+  fx('tick');
+  // tykanie przyspiesza: od 900 ms do 150 ms (wg czasu od startu, nie wg chwili wybuchu – ta jest tajemnicą)
+  const gap = Math.max(150, 900 - (now - b.startedAt) / 60);
+  bombTimer = setTimeout(bombTick, Math.min(gap, b.explodeAt - now + 5));
+}
+function bombAnswer(choice) {
+  const b = state.bomb;
+  if (!b || b.phase !== 'run' || state.phase !== 'listen' || Date.now() < b.lockUntil) return;
+  const opt = b.q.options[choice];
+  if (!opt) return;
+  if (opt.ok) {
+    fx('place');
+    const alive = bombAlive();
+    state.turn = alive[(alive.indexOf(state.turn) + 1) % alive.length];
+    b.q = bombQuestion(state.current);
+  } else {
+    fx('bad');
+    b.lockUntil = Date.now() + BOMB_LOCK;
+    setTimeout(() => { if (state.bomb === b) { b.q = bombQuestion(state.current); render(); } }, BOMB_LOCK);
+  }
+  render();
+}
+function bombExplode() {
+  clearTimeout(bombTimer);
+  const b = state.bomb;
+  b.phase = 'boom';
+  fx('boom');
+  const p = activePlayer();
+  p.hearts -= 1;
+  for (const i of bombAlive()) if (state.players[i] !== p) state.players[i].score += 1;
+  state.turnsPlayed += 1;
+  const song = state.current;
+  state.history.push({ song, preview: state.preview, player: p.name, ok: false, note: T('💥 {0}', p.name) });
+  const lines = [el('div', { class: 'verdict bad' }, T('💥 Bomba wybuchła u: {0}! {1}', p.name, '❤️'.repeat(Math.max(0, p.hearts)) || '💀'))];
+  if (p.hearts <= 0) {
+    lines.push(el('div', { class: 'verdict bad' }, T('💀 Odpada: {0}', p.name)));
+    addMoment('💥', T('{0} odpada – bomba wybuchła przy „{1}”', p.name, song.t), 2);
+  }
+  // następną rundę zaczyna kolejny gracz (bomba „idzie dalej” od tego, u kogo wybuchła)
+  const alive = bombAlive();
+  if (alive.length) state.turn = alive.find((i) => i > state.players.indexOf(p)) ?? alive[0];
+  showReveal(...lines);
+}
+function bombActions() {
+  const btns = [];
+  const b = state.bomb;
+  if (state.phase === 'listen' && state.current && b) {
+    if (b.phase === 'wait') btns.push(el('button', { class: 'primary', onclick: bombStart }, T('💣 Start – podaj bombę dalej!')));
+    if (b.phase === 'run' && b.q) {
+      const locked = Date.now() < b.lockUntil;
+      b.q.options.forEach((o, i) => btns.push(el('button', { class: 'big-choice', disabled: locked, onclick: () => bombAnswer(i) }, o.label)));
+    }
+  }
+  if (state.phase === 'revealed') {
+    const last = bombAlive().length <= 1;
+    btns.push(el('button', { class: 'primary', onclick: () => (last ? endGame() : startTurn()) }, last ? T('Zobacz wyniki →') : T('Następna runda →')));
+  }
+  return btns;
+}
+function bombStatus() {
+  const b = state.bomb;
+  if (!b || state.phase !== 'listen' || !state.current) return '';
+  if (b.phase === 'wait') return T('💣 Bombę trzyma: {0}. Naciśnij Start – zacznie grać muzyka i tykać bomba.', activePlayer().name);
+  if (Date.now() < b.lockUntil) return T('🔒 {0}: zła odpowiedź – 3 s blokady!', activePlayer().name);
+  return `💣 ${activePlayer().name}: ${b.q ? b.q.q : ''}`;
+}
+
+/* ---------- Mikser (dwie piosenki naraz) ---------- */
+// Grają jednocześnie dwa 10-sekundowe fragmenty różnych piosenek; gracz wpisuje kolejno oba tytuły (albo obu
+// wykonawców – wg ustawienia „Co zgadujemy?”), po 1 pkt za każdą odgadniętą. Muzyka gra na tym urządzeniu.
+const audio2 = new Audio();
+audio2.crossOrigin = 'anonymous';
+async function mashupPrepare(myDraw) {
+  // druga piosenka: innego wykonawcy, najchętniej z innej dekady
+  const first = state.current;
+  for (let tries = 0; tries < 6; tries++) {
+    const song = state.deck.draw(null);
+    if (!song) break;
+    const preview = await withAudio(await findPreview(song));
+    if (myDraw !== state.drawId) return;
+    if (preview && !preview.gone && !artistKeys(song).some((k) => artistKeys(first).includes(k))) {
+      markPlayed(song);
+      audio2.src = preview.blobUrl || preview.url;
+      audio2.load();
+      state.mashup = { b: { song, preview }, solved: { a: false, b: false }, start2: Math.random() * 15 };
+      render();
+      return;
+    }
+  }
+  state.mashup = null;
+}
+// odtwarzanie i pauza obu fragmentów razem
+audio.addEventListener('play', () => {
+  if (state.mode !== 'mashup' || !state.mashup || state.phase !== 'listen') return;
+  audio2.currentTime = state.mashup.start2 + Math.max(0, audio.currentTime - state.clipStart);
+  audio2.volume = 0.85;
+  audio2.play().catch(() => {});
+});
+audio.addEventListener('pause', () => { if (!audio2.paused) audio2.pause(); });
+function mashupGuess() {
+  const m = state.mashup;
+  if (!m || state.phase !== 'listen') return;
+  const g = guessParts(state.current);
+  const text = state.guessType === 'artist' ? g.artist : g.title;
+  const check = state.guessType === 'artist' ? checkArtist : checkTitle;
+  let hit = null;
+  if (!m.solved.a && check(text, state.current)) hit = 'a';
+  else if (!m.solved.b && check(text, m.b.song)) hit = 'b';
+  if (hit) {
+    m.solved[hit] = true;
+    fx('good');
+    clearGuess();
+    if (m.solved.a && m.solved.b) { revealMashup(false); return; }
+    $('#mystery-status').textContent = T('✔ Jedna piosenka odgadnięta – zgaduj drugą!');
+  } else {
+    fx('bad');
+    $('#mystery-status').textContent = T('✘ Żadna z dwóch – spróbuj jeszcze raz.');
+  }
+  render();
+}
+function revealMashup(gaveUp) {
+  const m = state.mashup;
+  if (!m || state.phase !== 'listen') return;
+  audio2.pause();
+  const p = activePlayer();
+  const pts = (m.solved.a ? 1 : 0) + (m.solved.b ? 1 : 0);
+  p.score += pts;
+  state.turnsPlayed += 1;
+  const b = m.b.song;
+  for (const [s, pr, ok] of [[state.current, state.preview, m.solved.a], [b, m.b.preview, m.solved.b]]) {
+    state.history.push({ song: s, preview: pr, player: p.name, ok, note: `${p.name}: ${ok ? '✔' : '✘'}` });
+    recordAnswer(s, ok);
+  }
+  fx(pts === 2 ? 'good' : 'bad');
+  showReveal(
+    el('div', { class: 'verdict ' + (m.solved.a ? 'ok' : 'bad') }, `${m.solved.a ? '✔' : '✘'} ${state.current.t} — ${artistLine(state.current)} (${state.current.y})`),
+    el('div', { class: 'verdict ' + (m.solved.b ? 'ok' : 'bad') }, `${m.solved.b ? '✔' : '✘'} ${b.t} — ${artistLine(b)} (${b.y})`),
+    el('div', { class: 'muted' }, state.players.length > 1 ? T('+{0} pkt dla: {1}', pts, p.name) : T('+{0} pkt', pts)),
+    gaveUp ? null : null,
+  );
+}
+function mashupActions() {
+  const btns = [];
+  if (state.phase === 'listen' && state.current && state.mashup) btns.push(el('button', { class: 'ghost', onclick: () => revealMashup(true) }, T('🏳 Nie wiem')));
+  if (state.phase === 'revealed') {
+    const last = state.turnsPlayed >= state.rounds * state.players.length;
+    btns.push(el('button', { class: 'primary', onclick: nextTurn }, last ? T('Zobacz wyniki →')
+      : (state.players.length > 1 ? T('Następny gracz →') : T('Następna para →'))));
+  }
+  return btns;
+}
+function mashupStatus() {
+  const m = state.mashup;
+  if (!m || state.phase !== 'listen') return '';
+  const n = (m.solved.a ? 1 : 0) + (m.solved.b ? 1 : 0);
+  return T('Dwie piosenki naraz – {0}. Odgadnięte: {1}/2', state.guessType === 'artist' ? T('wpisz obu wykonawców') : T('wpisz oba tytuły'), n);
 }

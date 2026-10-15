@@ -93,6 +93,8 @@ function handleRemote(msg, from) {
   if (msg.bingoPick != null && from && state.mode === 'bingo') { const i = playerIndexOf(from.name); if (i >= 0) bingoPick(i, msg.bingoPick); }
   // „Rok co do roku”: rok wpisany na telefonie gracza z turą
   if (msg.yearAnswer != null && from && controlNames().includes(from.name) && isYearQuiz()) answerQuiz(msg.yearAnswer);
+  // Ostatni na placu boju: rok z telefonu gracza
+  if (msg.royaleYear != null && from && from.name) royaleAnswer(playerIndexOf(from.name), msg.royaleYear);
   // rok podany przez wyzywającego na jego telefonie (wariant wyzwania „dokładny rok”)
   if (msg.challengeYear != null && from && state.phase === 'challenge' && state.challengeMode === 'year'
     && state.challenger != null && playerIndexOf(from.name) === state.challenger) {
@@ -251,6 +253,9 @@ function tvSync() {
         ? { who: state.players[state.challenger].name } : null,
       // „Rok co do roku”: pole roku na telefonie gracza z turą
       bingo: bingoSnapshot(),
+      // Ostatni na placu boju: kto jeszcze nie podał roku (pole roku na jego telefonie)
+      royale: state.mode === 'royale' && state.royale && state.phase === 'listen' && state.current
+        ? { pending: royaleAlive().filter((i) => state.royale.answers[i] == null).map((i) => state.players[i].name) } : null,
       // „Ułóż piątkę”: kolejność fragmentów na liście (przeciąganie na telefonie gracza z turą)
       sort: state.mode === 'sort5' && state.sort && state.phase === 'listen'
         ? { rows: state.sort.order.map((k) => ({ letter: SORT_LETTERS[k], playing: state.sort.playing === k })) } : null,
@@ -264,7 +269,10 @@ function tvSync() {
       challengeAll: state.challengeMode === 'all',
       slots: remoteSlotsAllowed(),
       // pasek kroków (Melodia krok po kroku): 1 s · 2 s · 4 s · 8 s
-      steps: state.mode === 'steps' && state.current ? { current: state.step, items: STEPS.map((x) => ({ len: x.len, pts: x.pts })) } : null,
+      steps: isSteps() && state.current ? { current: state.step, items: stepsList().map((x) => ({ len: x.len, pts: x.pts, label: stepLabel(x) })) } : null,
+      // Okładka z mgły: rozmyta okładka przed odkryciem (stopień rozmycia z kroku)
+      cover: state.mode === 'cover' && state.current && state.phase === 'listen' && state.preview && state.preview.art
+        ? { art: state.preview.art, blur: COVER_STEPS[state.step].blur } : null,
       // przyciski graczy (Kto pierwszy?)
       buzzers: state.mode === 'buzz' && state.buzz ? {
         open: !!state.current && state.phase === 'listen' && state.buzz.answering == null,
@@ -277,7 +285,14 @@ function tvSync() {
         submit: isMelody(), who: state.mode === 'buzz' && state.buzz && state.buzz.answering != null ? state.players[state.buzz.answering].name : activePlayer().name,
       } : null,
     });
-    const card = (c) => (c.start ? { y: c.y, start: true } : { y: c.y, t: c.t, a: c.a, cc: c.cc, new: revealed && c === state.current });
+    // mgła: lata na osi gracza ukryte dla innych (duży ekran i telefony – poza telefonem właściciela)
+    const fogged = (p) => p && p.fogUntil > state.turnsPlayed ? p.name : null;
+    const card = (c, p) => {
+      const fog = fogged(p);
+      const out = c.start ? { y: c.y, start: true } : { y: c.y, t: c.t, a: c.a, cc: c.cc, new: revealed && c === state.current };
+      if (fog) out.fog = fog;
+      return out;
+    };
     if (isTimeline()) {
       // aktywny gracz na górze, potem pozostali
       const order = state.players.map((p, i) => ({ p, i })).sort((x, y) => (y.i === state.turn) - (x.i === state.turn));
@@ -286,7 +301,7 @@ function tvSync() {
       snap.timelines = order.map(({ p, i }) => {
         // stan gracza (karty, żetony) z tablicy wyników – na dużym ekranie pokazywany przy jego osi zamiast u góry
         const sc = $$('#scoreboard .score')[i];
-        const tl = { name: p.name, active: i === state.turn, cards: p.timeline.map(card), sub: sc ? sc.textContent.replace(`${p.name}: `, '').trim() : '' };
+        const tl = { name: p.name, active: i === state.turn, cards: p.timeline.map((c) => card(c, p)), sub: sc ? sc.textContent.replace(`${p.name}: `, '').trim() : '' };
         if (i !== state.turn) return tl;
         // gdzie gracz (i ewentualnie wyzywający) położył kartę, a po pomyłce – gdzie było jej miejsce
         if (choosing) {

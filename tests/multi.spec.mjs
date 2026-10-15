@@ -29,6 +29,8 @@ test('oś czasu multiplayer: wyzwanie – pretendent trafia, gracz się myli', a
   // gracz kładzie kartę w złym miejscu, pretendent – w dobrym
   await page.evaluate(() => {
     const tl = activePlayer().timeline;
+    // ten sam rok na osi i w nowej karcie – oba miejsca byłyby dobre
+    if (tl.some((c) => c.y === state.current.y)) tl.forEach((c) => { c.y = state.current.y - 5; });
     const good = correctSlot(tl, state.current.y);
     onSlotClick(good === 0 ? 1 : 0);
   });
@@ -282,3 +284,119 @@ for (const n of [4, 5]) {
     await expect(page.locator('#reveal')).toContainText('BINGO');
   });
 }
+
+test('karty specjalne: tarcza, mgła, złoty strzał i magnes', async ({ page }) => {
+  await lobby(page, 2);
+  await page.click('.mode[data-mode=multi]');
+  await page.click('#btn-start');
+  await ready(page);
+  const placeGood = () => page.evaluate(() => onSlotClick(correctSlot(activePlayer().timeline, state.current.y)));
+  // złoty strzał: pole roku, dokładny rok = +2 żetony
+  await page.evaluate(() => { state.special = 'golden'; render(); });
+  await expect(page.locator('#guess-year')).toBeVisible();
+  const t0 = await page.evaluate(() => activePlayer().tokens);
+  await page.evaluate(() => { $('#guess-year').value = String(state.current.y); });
+  await placeGood();
+  await page.click('#actions button.primary');
+  await expect.poll(() => page.evaluate(() => state.phase)).toBe('revealed');
+  expect(await page.evaluate(() => activePlayer().tokens)).toBe(Math.min(5, t0 + 2));
+  await expect(page.locator('#reveal')).toContainText('Złoty strzał');
+  // tarcza chroni przed kradzieżą żetonu
+  const r = await page.evaluate(() => {
+    const [a, b] = state.players;
+    a.shield = true; a.tokens = 4; b.tokens = 1;
+    state.special = 'steal';
+    const line = applySpecial(b).textContent;
+    return { line, a: a.tokens, b: b.tokens, shield: a.shield };
+  });
+  expect(r).toEqual({ line: expect.stringContaining('Tarcza'), a: 4, b: 1, shield: false });
+  // mgła: znacznik przy graczu do jego następnej tury; magnes: darmowa karta z rokiem
+  const m = await page.evaluate(() => {
+    const p = state.players[1];
+    state.special = 'fog'; applySpecial(p);
+    const fog = p.fogUntil > state.turnsPlayed;
+    const before = p.timeline.length;
+    state.special = 'magnet'; applySpecial(p);
+    return { fog, added: p.timeline.length - before, start: p.timeline.some((c) => c.start) };
+  });
+  expect(m).toEqual({ fog: true, added: 1, start: true });
+});
+
+test('Ostatni na placu boju: największa pomyłka traci serce, wygrywa ostatni', async ({ page }) => {
+  await lobby(page, 3);
+  await page.click('.mode[data-mode=royale]');
+  await page.click('#btn-start');
+  await ready(page);
+  await expect(page.locator('#scoreboard')).toContainText('❤️❤️❤️');
+  await expect(page.locator('#actions .royale-row')).toHaveCount(3);
+  const y = await page.evaluate(() => state.current.y);
+  const rows = page.locator('#actions .royale-row');
+  // gracz 1 – dokładnie, gracz 2 – o 2 lata, gracz 3 – o 10 lat
+  for (const [i, v] of [[0, y], [1, y - 2], [2, y + 10]]) {
+    await rows.nth(0).locator('input').fill(String(v));
+    await rows.nth(0).locator('button').click();
+    if (i < 2) await expect(page.locator('#actions .royale-row')).toHaveCount(2 - i);
+  }
+  await expect.poll(() => page.evaluate(() => state.phase)).toBe('revealed');
+  expect(await page.evaluate(() => state.players.map((p) => p.hearts))).toEqual([3, 3, 2]);
+  await expect(page.locator('#reveal')).toContainText('💔');
+  // dwóch graczy z jednym sercem nie odpowiada → odpadają, wygrywa pierwszy
+  await page.click('#actions button.primary');
+  await ready(page);
+  await page.evaluate(() => { state.players[1].hearts = 1; state.players[2].hearts = 1; royaleAnswer(0, state.current.y); royaleReveal(); });
+  await expect(page.locator('#reveal')).toContainText('Odpada');
+  await page.click('#actions button.primary');
+  await expect.poll(() => screen(page)).toBe('end');
+  await expect(page.locator('#winner-title')).toContainText('Ostatni na placu boju');
+});
+
+test('Licytacja sekund: licytacja w dół, najkrótsza stawka gra; trafienie +2, pudło +1 dla poprzedniego', async ({ page }) => {
+  await lobby(page, 3);
+  await page.click('.mode[data-mode=seconds]');
+  await page.fill('#rounds', '2');
+  await page.click('#btn-start');
+  await page.waitForFunction(() => state.current && state.secs && state.phase === 'listen', null, { timeout: 30000 });
+  await expect(page.locator('#btn-play')).toBeDisabled();
+  await expect(page.locator('#hint')).toContainText('Rok:');
+  const first = await page.evaluate(() => state.turn);
+  await page.click('#actions .secs-bid >> text="4 s"');
+  const second = await page.evaluate(() => state.turn);
+  expect(second).not.toBe(first);
+  await page.click('#actions .secs-bid >> text="2 s"');
+  // trzeci i pierwszy pasują – gra drugi za 2 s
+  await page.click('#actions button.ghost >> text=Pas');
+  await page.click('#actions button.ghost >> text=Pas');
+  await expect.poll(() => page.evaluate(() => state.secs.phase)).toBe('play');
+  expect(await page.evaluate(() => [state.turn, state.clipLen])).toEqual([second, 2]);
+  await expect(page.locator('#btn-play')).toBeEnabled();
+  await expect(page.locator('#guess-song')).toBeVisible();
+  // pudło – punkt dla poprzedniego licytującego (pierwszego)
+  await page.fill('#guess-song', 'zupełnie nie ten tytuł xyz');
+  await page.press('#guess-song', 'Enter');
+  await expect.poll(() => page.evaluate(() => state.phase)).toBe('revealed');
+  expect(await page.evaluate((i) => state.players[i].score, first)).toBe(1);
+  expect(await page.evaluate((i) => state.players[i].score, second)).toBe(0);
+});
+
+test('Gorąca bomba: dobra odpowiedź podaje bombę dalej, zła blokuje, wybuch zabiera serce', async ({ page }) => {
+  await lobby(page, 3);
+  await page.click('.mode[data-mode=bomb]');
+  await page.click('#btn-start');
+  await page.waitForFunction(() => state.current && state.bomb && state.phase === 'listen', null, { timeout: 30000 });
+  await page.click('#actions button.primary');
+  await expect.poll(() => page.evaluate(() => state.bomb.phase)).toBe('run');
+  await expect(page.locator('#actions button.big-choice')).toHaveCount(2);
+  const holder = await page.evaluate(() => state.turn);
+  await page.evaluate(() => bombAnswer(state.bomb.q.options.findIndex((o) => o.ok)));
+  expect(await page.evaluate(() => state.turn)).not.toBe(holder);
+  // zła odpowiedź – blokada (przyciski wyłączone)
+  await page.evaluate(() => bombAnswer(state.bomb.q.options.findIndex((o) => !o.ok)));
+  await expect(page.locator('#actions button.big-choice').first()).toBeDisabled();
+  // wybuch
+  const now = await page.evaluate(() => state.turn);
+  await page.evaluate(() => { state.bomb.explodeAt = Date.now() - 1; bombTick(); });
+  await expect.poll(() => page.evaluate(() => state.phase)).toBe('revealed');
+  expect(await page.evaluate((i) => state.players[i].hearts, now)).toBe(2);
+  await expect(page.locator('#reveal')).toContainText('Bomba wybuchła');
+  await expect(page.locator('#scoreboard')).toContainText('❤️❤️');
+});

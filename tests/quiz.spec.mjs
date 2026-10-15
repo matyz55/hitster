@@ -178,3 +178,90 @@ for (const [mode, answer] of [
     await expect.poll(() => page.evaluate(() => audio.paused)).toBe(true);
   });
 }
+
+test('Kto za tym stoi?: pytanie z ciekawostek, 4 różne odpowiedzi, jedna właściwa', async ({ page }) => {
+  await start(page, 'who', '3');
+  const q = await page.evaluate(() => ({ q: state.quiz.q, opts: state.quiz.options.map((o) => ({ label: o.label, ok: o.ok })) }));
+  expect(q.q.length).toBeGreaterThan(5);
+  expect(q.opts).toHaveLength(4);
+  expect(new Set(q.opts.map((o) => o.label)).size).toBe(4);
+  expect(q.opts.filter((o) => o.ok)).toHaveLength(1);
+  await expect(page.locator('#hint')).toContainText(q.q);
+  await page.click(`#actions button.big-choice >> nth=${q.opts.findIndex((o) => o.ok)}`);
+  await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(1);
+  // właściwa odpowiedź pochodzi z danych o tej piosence
+  expect(await page.evaluate(() => whoQuestions(state.current).some((x) => state.quiz.options.find((o) => o.ok).label === x.answer)
+    || state.quiz.q === T('Kto to śpiewa?'))).toBe(true);
+});
+
+test('Okładka z mgły: rozmyta okładka bez dźwięku, z każdym krokiem ostrzejsza; odgadnięcie po okładce = 4 pkt', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=cover]');
+  await page.fill('#rounds', '2');
+  await page.click('#btn-start');
+  await page.waitForFunction(() => state.current && state.preview && state.phase === 'listen', null, { timeout: 30000 });
+  await expect(page.locator('#cover-fog')).toBeVisible();
+  await expect(page.locator('#btn-play')).toBeDisabled();
+  const blur0 = await page.locator('#cover-fog > div').evaluate((n) => parseFloat(n.style.filter.replace(/[^\d.]/g, '')) || 0);
+  expect(blur0).toBeGreaterThan(10);
+  await expect(page.locator('#steps-bar .step').first()).toContainText('🖼');
+  // wydłużenie: krok 2 – mniejsze rozmycie i 1 s dźwięku
+  await page.click('#actions button.gold');
+  await expect.poll(() => page.evaluate(() => state.step)).toBe(1);
+  const blur1 = await page.locator('#cover-fog > div').evaluate((n) => parseFloat(n.style.filter.replace(/[^\d.]/g, '')) || 0);
+  expect(blur1).toBeLessThan(blur0);
+  await expect(page.locator('#btn-play')).toBeEnabled();
+  // następna piosenka: odgadnięcie tytułu przy samej okładce
+  await page.evaluate(() => revealSteps(true));
+  await page.click('#actions button.primary');
+  await page.waitForFunction(() => state.current && state.phase === 'listen' && state.step === 0, null, { timeout: 30000 });
+  await page.evaluate(() => { const t = state.current.t; $('#guess-song').value = t; guessPick = null; });
+  await page.evaluate(() => stepsGuess());
+  await expect.poll(() => page.evaluate(() => state.solved.title)).toBe(4);
+});
+
+for (const fx of ['wall', 'helium', 'slow', 'reverse']) {
+  test(`Krzywe zwierciadło (${fx}): zniekształcenie słabnie z krokami, po odkryciu oryginał`, async ({ page }) => {
+    await page.goto('/');
+    await page.click('#btn-single');
+    await page.click('.mode[data-mode=mirror]');
+    await page.fill('#rounds', '2');
+    await page.click('#btn-start');
+    await ready(page);
+    // wymuszamy efekt
+    await page.evaluate((f) => { state.mirror = f; mirrorKey = ''; render(); }, fx);
+    await page.click('#btn-play');
+    const read = () => page.evaluate(() => ({ rate: audio.playbackRate, lp: musicFilter ? musicFilter.frequency.value : 22000, rev: !!audio.dataset.rev }));
+    const s0 = await (await expect.poll(read).not.toEqual({ rate: 1, lp: 22000, rev: false }), read());
+    if (fx === 'wall') expect(s0.lp).toBe(250);
+    if (fx === 'helium') expect(s0.rate).toBe(1.75);
+    if (fx === 'slow') expect(s0.rate).toBe(0.6);
+    if (fx === 'reverse') expect(s0.rev).toBe(true);
+    for (let i = 0; i < 3; i++) await page.evaluate(() => stepsExtend(''));
+    await expect.poll(read).toEqual({ rate: 1, lp: 22000, rev: false });
+    await page.evaluate(() => revealSteps(true));
+    await expect.poll(read).toEqual({ rate: 1, lp: 22000, rev: false });
+    await expect(page.locator('#reveal')).toBeVisible();
+  });
+}
+
+test('Mikser: dwie piosenki naraz, oba tytuły – 2 pkt', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=mashup]');
+  await page.fill('#rounds', '2');
+  await page.click('#btn-start');
+  await page.waitForFunction(() => state.mashup && state.phase === 'listen' && !$('#btn-play').disabled, null, { timeout: 30000 });
+  await page.click('#btn-play');
+  await expect.poll(() => page.evaluate(() => !audio.paused && !audio2.paused)).toBe(true);
+  const [a, b] = await page.evaluate(() => [state.current.t, state.mashup.b.song.t]);
+  await page.fill('#guess-song', b);
+  await page.press('#guess-song', 'Enter');
+  await expect.poll(() => page.evaluate(() => state.mashup.solved.b)).toBe(true);
+  await page.fill('#guess-song', a);
+  await page.press('#guess-song', 'Enter');
+  await expect.poll(() => page.evaluate(() => state.phase)).toBe('revealed');
+  expect(await page.evaluate(() => state.players[0].score)).toBe(2);
+  await expect(page.locator('#reveal .verdict.ok')).toHaveCount(2);
+});

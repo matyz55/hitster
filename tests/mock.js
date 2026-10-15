@@ -24,7 +24,8 @@
       const results = song ? [{
         wrapperType: 'track', kind: 'song', artistName: song.ia || M.mainArtist(song), trackName: song.m || song.t, collectionName: song.al || song.t,
         releaseDate: `${song.y}-01-01T00:00:00Z`, previewUrl: `https://audio.test/${encodeURIComponent(term)}.wav`,
-        artworkUrl100: '', trackViewUrl: 'https://music.apple.com/test',
+        // okładka: mały obrazek SVG (tryb „Okładka z mgły”)
+        artworkUrl100: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 10 10%22%3E%3Crect width=%2210%22 height=%2210%22 fill=%22%23e33%22/%3E%3C/svg%3E#100x100bb', trackViewUrl: 'https://music.apple.com/test',
       }] : [];
       return new Response(JSON.stringify({ resultCount: results.length, results }), { headers: { 'content-type': 'application/json' } });
     }

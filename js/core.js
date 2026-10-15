@@ -1,7 +1,7 @@
 'use strict';
 
 // aktualna wersja gry – ta sama co ostatni wpis w CHANGELOG.md (pokazywana na dole ekranu startowego)
-const GAME_VERSION = '5.23.0';
+const GAME_VERSION = '5.24.0';
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -67,6 +67,9 @@ const SOUNDS = {
   bad: () => { tone(220, 0, 0.35, { type: 'sawtooth', vol: 0.08, slide: 0.6 }); },
   place: () => { tone(880, 0, 0.06, { type: 'triangle', vol: 0.12 }); },
   win: () => { [523, 659, 784, 1047, 784, 1047].forEach((f, i) => tone(f, i * 0.11, 0.2, { type: 'triangle', vol: 0.15 })); },
+  // Gorąca bomba: tykanie i wybuch
+  tick: () => { tone(1500, 0, 0.03, { type: 'square', vol: 0.06 }); },
+  boom: () => { tone(90, 0, 0.9, { type: 'sawtooth', vol: 0.25, slide: 0.3 }); tone(60, 0.05, 1.1, { type: 'square', vol: 0.15, slide: 0.5 }); },
 };
 function fx(kind) {
   if (!store.get('sounds', true) || !SOUNDS[kind]) return;
@@ -178,10 +181,23 @@ function streamUrl(song, preview, platform) {
   sc.src = 'songs-sp.js';
   document.head.append(sc);
   // ciekawostki z Wikidata (tools/facts.mjs) – potrzebne dopiero po odkryciu karty
-  const fc = document.createElement('script');
-  fc.src = 'facts.js';
-  document.head.append(fc);
+  loadFacts();
 });
+// ciekawostki (facts.js) – potrzebne też od razu na starcie trybu „Kto za tym stoi?”
+let factsPromise = null;
+function loadFacts() {
+  if (!factsPromise) {
+    factsPromise = new Promise((resolve) => {
+      if (window.SONG_FACTS) { resolve(); return; }
+      const fc = document.createElement('script');
+      fc.src = 'facts.js';
+      fc.onload = () => resolve();
+      fc.onerror = () => { factsPromise = null; resolve(); };
+      document.head.append(fc);
+    });
+  }
+  return factsPromise;
+}
 const PLATFORM_NAMES = { youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple Music' };
 // Android: kliknięcie ikonki otwiera od razu aplikację linkiem „intent://” – w tej samej karcie i bezpośrednio
 // po kliknięciu (w nowej karcie przeglądarki, np. Brave, nie przekazują go do aplikacji). Bez adresu zastępczego:
@@ -440,6 +456,8 @@ const MODES = {
   teams: { title: T('Oś czasu – drużyny'), minPlayers: 2, maxPlayers: MAX_TEAMS, teams: true },
   melody: { title: 'Jaka to melodia', minPlayers: 1, maxPlayers: MAX_PLAYERS },
   steps: { title: 'Melodia krok po kroku', minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  cover: { title: T('Okładka z mgły'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  mirror: { title: T('Krzywe zwierciadło'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   timed: { title: 'Na czas', minPlayers: 1, maxPlayers: 1 },
   hilo: { title: T('Starsza czy nowsza?'), minPlayers: 1, maxPlayers: 1 },
   duel: { title: T('Pojedynek dekad'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
@@ -449,6 +467,11 @@ const MODES = {
   year: { title: T('Rok co do roku'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   artist: { title: T('Kto to śpiewa?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   country: { title: T('Skąd jest wykonawca?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  who: { title: T('Kto za tym stoi?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  royale: { title: T('Ostatni na placu boju'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
+  seconds: { title: T('Licytacja sekund'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
+  bomb: { title: T('Gorąca bomba'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
+  mashup: { title: T('Mikser'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   bid: { title: T('Licytacja'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   daily: { title: T('Wyzwanie dnia'), minPlayers: 1, maxPlayers: 1 },
   sort5: { title: T('Ułóż piątkę'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
@@ -464,10 +487,13 @@ const minPlayersFor = (mode) => (playCtx === 'single' ? 1 : MODES[mode].minPlaye
 const PARTY_GAMES = {
   melody: { icon: '🎤', name: 'Jaka to melodia', mode: () => 'melody', opts: (n) => ({ rounds: n === 1 ? 3 : 1 }) },
   steps: { icon: '⏱️', name: 'Melodia krok po kroku', mode: () => 'steps', opts: (n) => ({ rounds: n === 1 ? 2 : 1 }) },
+  cover: { icon: '🌫️', name: T('Okładka z mgły'), mode: () => 'cover', opts: (n) => ({ rounds: n === 1 ? 2 : 1 }) },
+  mirror: { icon: '🪞', name: T('Krzywe zwierciadło'), mode: () => 'mirror', opts: (n) => ({ rounds: n === 1 ? 2 : 1 }) },
   duel: { icon: '🥊', name: T('Pojedynek dekad'), mode: () => 'duel', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
   year: { icon: '📅', name: T('Rok co do roku'), mode: () => 'year', opts: (n) => ({ rounds: n === 1 ? 4 : 1 }) },
   artist: { icon: '🎙️', name: T('Kto to śpiewa?'), mode: () => 'artist', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
   country: { icon: '🌍', name: T('Skąd jest wykonawca?'), mode: () => 'country', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
+  who: { icon: '🕵️', name: T('Kto za tym stoi?'), mode: () => 'who', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
   hilo: { icon: '↕️', name: T('Starsza czy nowsza?'), mode: () => 'hilo', opts: (n) => ({ rounds: n === 1 ? 0 : 2 }) },
   buzz: { icon: '🔔', name: 'Kto pierwszy?', min: 2, mode: () => 'buzz', opts: (n) => ({ rounds: Math.min(8, Math.max(4, n + 2)) }) },
   // oś czasu: dla jednej osoby – minuta na czas, dla kilku – wyścig do 4 kart (przy wielu graczach trwałoby to za długo)
@@ -499,9 +525,28 @@ const SPECIALS = {
   double: { icon: '✨', name: T('Karta podwójna'), desc: T('dobre ułożenie daje dodatkową kartę') },
   steal: { icon: '🪙', name: T('Kradzież żetonu'), desc: T('dobre ułożenie zabiera żeton graczowi, który ma ich najwięcej') },
   swap: { icon: '🔄', name: T('Zamiana osi'), desc: T('po dobrym ułożeniu możesz zamienić się osią z innym graczem') },
+  shield: { icon: '🛡️', name: T('Tarcza'), desc: T('dobre ułożenie daje tarczę – jednorazowo chroni przed zamianą osi, kradzieżą żetonu i utratą karty przy wyzwaniu „dokładny rok”') },
+  fog: { icon: '🌫️', name: T('Mgła'), desc: T('dobre ułożenie ukrywa lata na Twojej osi przed innymi graczami (na dużym ekranie i ich telefonach) do Twojej następnej tury') },
+  golden: { icon: '🎯', name: T('Złoty strzał'), desc: T('możesz też wpisać dokładny rok – trafienie daje +2 żetony') },
+  magnet: { icon: '🧲', name: T('Magnes'), desc: T('tylko dla gracza na ostatnim miejscu – dobre ułożenie daje darmową kartę z samym rokiem') },
 };
 // „Melodia krok po kroku”: długość fragmentu i punkty za odgadnięcie na danym kroku
 const STEPS = [{ len: 1, pts: 4 }, { len: 2, pts: 3 }, { len: 4, pts: 2 }, { len: 8, pts: 1 }];
+// Okładka z mgły: najpierw sama rozmyta okładka (bez dźwięku), potem coraz ostrzejsza i coraz dłuższy fragment
+// blur – rozmycie jako ułamek szerokości obrazka (tak samo mocne na telefonie i na dużym ekranie)
+const COVER_STEPS = [{ len: 0, pts: 4, blur: 0.09 }, { len: 1, pts: 3, blur: 0.05 }, { len: 4, pts: 2, blur: 0.022 }, { len: 10, pts: 1, blur: 0 }];
+// tryby „krok po kroku” (wspólne zasady: odgadnięcie w kroku daje jego punkty, błąd albo „wydłuż” – następny krok)
+// Krzywe zwierciadło: ten sam 10-sekundowy fragment, z każdym krokiem mniej zniekształcony; efekt losowany dla piosenki:
+// za ścianą (filtr dolnoprzepustowy), hel (szybciej i wyżej), slowed (wolniej i niżej), wspak (od tyłu)
+const MIRROR_STEPS = [{ len: 10, pts: 4 }, { len: 10, pts: 3 }, { len: 10, pts: 2 }, { len: 10, pts: 1 }];
+const MIRROR_FX = {
+  wall: { icon: '🧱', name: T('Za ścianą'), lowpass: [250, 700, 2200, 0] },
+  helium: { icon: '🎈', name: T('Hel'), rate: [1.75, 1.45, 1.2, 1] },
+  slow: { icon: '🐢', name: T('Slowed'), rate: [0.6, 0.72, 0.86, 1] },
+  reverse: { icon: '⏪', name: T('Wspak'), reverse: [true, true, false, false], lowpass: [0, 0, 1200, 0] },
+};
+const isSteps = () => ['steps', 'cover', 'mirror'].includes(state.mode);
+const stepsList = () => (state.mode === 'cover' ? COVER_STEPS : state.mode === 'mirror' ? MIRROR_STEPS : STEPS);
 
 const state = {
   mode: null,
@@ -538,7 +583,7 @@ const isQuick = () => state.mode === 'hilo' || state.mode === 'duel';
 const isMultiMode = (m) => m === 'multi' || m === 'teams';
 const isMulti = () => isMultiMode(state.mode);
 const timeLabel = (sec) => (sec % 60 ? `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}` : T('{0} min', sec / 60));
-const isMelody = () => ['melody', 'steps', 'buzz'].includes(state.mode);
+const isMelody = () => ['melody', 'steps', 'cover', 'mirror', 'buzz', 'seconds', 'mashup'].includes(state.mode);
 // kto teraz odpowiada: w drużynach członkowie zmieniają się co turę drużyny
 function answering(p) {
   return (state.mode === 'teams' || state.coop) && p.members && p.members.length ? p.members[p.member % p.members.length] : null;

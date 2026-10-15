@@ -164,6 +164,26 @@
         <b>Kto to śpiewa?</b>
         <span class="muted">Czterech wykonawców do wyboru – łatwe, dobre dla dzieci i na duży ekran.</span>
       </button>
+      <button class="mode" data-mode="seconds" data-ctx="multi">
+        <span class="mode-icon">⏱️</span>
+        <b>Licytacja sekund</b>
+        <span class="muted">Widzicie profil piosenki (rok, kraj, gatunek, autor tekstu) i licytujecie w dół, ile sekund wystarczy na tytuł. Najkrótsza stawka gra – trafienie 2 pkt, pudło – punkt dla poprzedniego licytującego.</span>
+      </button>
+      <button class="mode" data-mode="bomb" data-ctx="multi">
+        <span class="mode-icon">💣</span>
+        <b>Gorąca bomba</b>
+        <span class="muted">Gra muzyka i tyka bomba. Kto ją trzyma, odpowiada na szybkie pytanie o piosenkę – dobrze: bomba idzie dalej, źle: 3 s blokady. U kogo wybuchnie, traci serce.</span>
+      </button>
+      <button class="mode" data-mode="royale" data-ctx="multi">
+        <span class="mode-icon">🏁</span>
+        <b>Ostatni na placu boju</b>
+        <span class="muted">Wszyscy naraz wpisują rok tej samej piosenki (najlepiej na telefonach). Kto pomyli się najbardziej, traci serce – wygrywa ostatni przy stole.</span>
+      </button>
+      <button class="mode" data-mode="who" data-ctx="single multi">
+        <span class="mode-icon">🕵️</span>
+        <b>Kto za tym stoi?</b>
+        <span class="muted">Kto napisał tekst, skomponował muzykę, wyprodukował nagranie? Z jakiego albumu, skąd pochodzi wykonawca, jak naprawdę się nazywa? Cztery odpowiedzi do wyboru.</span>
+      </button>
       <button class="mode" data-mode="country" data-ctx="single multi">
         <span class="mode-icon">🌍</span>
         <b>Skąd jest wykonawca?</b>
@@ -177,7 +197,7 @@
       <button class="mode" data-mode="bingo" data-ctx="single multi">
         <span class="mode-icon">🟩</span>
         <b>Bingo muzyczne</b>
-        <span class="muted">Plansza 3×3 z kategoriami (dekady, gatunki, kraje…). Przy każdej piosence zaznacz pasujące pole – trzy w linii to BINGO.</span>
+        <span class="muted">Plansza 3×3, 4×4 albo 5×5 z kategoriami (dekady, gatunki, kraje…). Przy każdej piosence zaznacz pasujące pole – cały wiersz, kolumna albo przekątna to BINGO.</span>
       </button>
       <button class="mode" data-mode="bid" data-ctx="single multi">
         <span class="mode-icon">💰</span>
@@ -196,6 +216,21 @@
         <span class="mode-icon">⏱️</span>
         <b>Melodia krok po kroku</b>
         <span class="muted">Najpierw tylko 1 sekunda, potem 2, 4 i 8 s. Im szybciej zgadniesz, tym więcej punktów.</span>
+      </button>
+      <button class="mode" data-mode="mashup" data-ctx="single multi">
+        <span class="mode-icon">🎛️</span>
+        <b>Mikser</b>
+        <span class="muted">Dwie piosenki grają naraz przez 10 sekund – wpisz oba tytuły (albo obu wykonawców). Punkt za każdą.</span>
+      </button>
+      <button class="mode" data-mode="cover" data-ctx="single multi">
+        <span class="mode-icon">🌫️</span>
+        <b>Okładka z mgły</b>
+        <span class="muted">Najpierw sama rozmyta okładka płyty – bez dźwięku. Z każdym krokiem ostrzejszy obraz i dłuższy fragment.</span>
+      </button>
+      <button class="mode" data-mode="mirror" data-ctx="single multi">
+        <span class="mode-icon">🪞</span>
+        <b>Krzywe zwierciadło</b>
+        <span class="muted">Piosenka zza ściany, na helu, zwolniona albo od tyłu – z każdym krokiem mniej zniekształceń.</span>
       </button>
       <button class="mode" data-mode="buzz" data-ctx="multi">
         <span class="mode-icon">🔔</span>
@@ -260,7 +295,7 @@
 
     <section class="card">
       <h2>Odtwarzanie</h2>
-      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist country bid coop bingo">Długość fragmentu
+      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist who country bid coop bingo royale">Długość fragmentu
         <select id="clip-length">
           <option value="30">30 s (cały)</option>
           <option value="15">15 s</option>
@@ -274,13 +309,15 @@
       <div class="seg" id="audio-out">
         <label><input type="radio" name="audio-out" value="host" checked> Tym urządzeniu</label>
         <label id="audio-out-tv"><input type="radio" name="audio-out" value="tv"> Dużym ekranie (TV)</label>
-        <label data-for="multi teams melody steps duel party year artist country bid coop sort5" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
+        <label data-for="multi teams melody steps cover duel party year artist who country bid coop sort5" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
       </div>
       <p class="muted small" id="audio-out-desc">Duży ekran i telefony graczy łączy się w oknie 📺. Gdy wybranego urządzenia nie ma, muzyka gra na tym urządzeniu.</p>
       </div>
-      <label class="check" data-for="melody steps buzz party"><input type="checkbox" id="hint-decade"> Podpowiedź: pokazuj dekadę piosenki</label>
-      <label class="check" data-for="steps"><input type="checkbox" id="hint-letter"> Podpowiedź z pierwszą literą (kosztuje 1 punkt)</label>
+      <label class="check" data-for="melody steps cover mirror buzz party"><input type="checkbox" id="hint-decade"> Podpowiedź: pokazuj dekadę piosenki</label>
+      <label class="check" data-for="steps cover mirror"><input type="checkbox" id="hint-letter"> Podpowiedź z pierwszą literą (kosztuje 1 punkt)</label>
       <p class="muted small" data-for="steps">Kroki: 1 s → 2 s → 4 s → 8 s. Odgadnięcie przy 1 s daje 4 pkt, przy 2 s – 3 pkt, przy 4 s – 2 pkt, przy 8 s – 1 pkt (za każdą zgadywaną część). Błędna odpowiedź od razu wydłuża fragment.</p>
+      <p class="muted small" data-for="cover">Kroki: sama rozmyta okładka (bez dźwięku) → mniej rozmyta + 1 s → 4 s → ostra okładka i 10 s. Odgadnięcie daje 4, 3, 2 albo 1 pkt (za każdą zgadywaną część). Błędna odpowiedź od razu przechodzi do następnego kroku.</p>
+      <p class="muted small" data-for="mirror">Ten sam 10-sekundowy fragment, z każdym krokiem mniej zniekształcony – 4, 3, 2 albo 1 pkt. Efekt losowany dla każdej piosenki: 🧱 za ścianą (stłumiony dźwięk), 🎈 hel (szybciej i wyżej), 🐢 slowed (wolniej i niżej) albo ⏪ wspak. Muzyka gra na tym urządzeniu.</p>
     </section>
 
     <section class="card">
@@ -345,6 +382,10 @@
           <label><input type="checkbox" id="sp-double"> ✨ Podwójna</label>
           <label data-for="multi teams"><input type="checkbox" id="sp-steal"> 🪙 Kradzież żetonu</label>
           <label data-for="multi teams"><input type="checkbox" id="sp-swap"> 🔄 Zamiana osi</label>
+          <label data-for="multi teams"><input type="checkbox" id="sp-shield"> 🛡️ Tarcza</label>
+          <label data-for="multi teams"><input type="checkbox" id="sp-fog"> 🌫️ Mgła</label>
+          <label><input type="checkbox" id="sp-golden"> 🎯 Złoty strzał</label>
+          <label data-for="multi teams"><input type="checkbox" id="sp-magnet"> 🧲 Magnes</label>
         </div>
         <p class="muted small" id="special-desc"></p>
       </div>
@@ -384,7 +425,7 @@
         <div class="seg" id="party-pick"></div>
         <p class="muted small" id="party-desc"></p>
       </div>
-      <div data-for="melody steps buzz party">
+      <div data-for="melody steps cover mirror mashup buzz party">
         <p class="label">Co zgadujemy?</p>
         <div class="seg">
           <label><input type="radio" name="guess" value="title" checked> Tytuł</label>
@@ -401,7 +442,7 @@
         </div>
         <p class="muted small">Większa plansza – więcej kategorii i dłuższa gra (BINGO to cały wiersz, kolumna albo przekątna).</p>
       </div>
-      <div data-for="melody steps buzz duel year artist country bid sort5 bingo">
+      <div data-for="melody steps cover mirror mashup buzz duel year artist who country bid sort5 bingo seconds">
         <label class="row" style="margin-top:12px"><span id="rounds-label">Piosenek na gracza</span>
           <input type="number" id="rounds" min="1" max="30" value="5">
         </label>
@@ -426,6 +467,7 @@
         <div id="turn-info" class="tokens"></div>
       </div>
 
+      <div id="cover-fog" class="cover-fog hidden" aria-label="Rozmyta okładka"></div>
       <div class="mystery">
         <div class="vinyl" id="vinyl"><div class="label">?</div></div>
         <div class="mystery-body">
@@ -542,7 +584,7 @@
     <ol>
       <li>Każdy gracz zaczyna z kartą startową – samym rokiem (bez piosenki) – na osi czasu.</li>
       <li>Słuchasz fragmentu piosenki (bez tytułu i roku) i wskazujesz, gdzie pasuje na Twojej osi – przed, między albo po kartach.</li>
-      <li>Multiplayer: inni gracze mogą rzucić <b>wyzwanie</b> (1 żeton). W wariancie „inne miejsce” pretendent wskazuje inne miejsce na Twojej osi – jeśli Ty się pomylisz, a on trafi, zabiera kartę. W wariancie „dokładny rok” pretendent podaje rok wydania – jeśli trafi co do roku, zabiera kartę niezależnie od Twojego ruchu.</li>
+      <li>Multiplayer: inni gracze mogą rzucić <b>wyzwanie</b> (1 żeton). W wariancie „inne miejsce” pretendent wskazuje inne miejsce na Twojej osi – jeśli Ty się pomylisz, a on trafi, zabiera kartę. W wariancie „dokładny rok” pretendent podaje rok wydania – jeśli trafi co do roku, zabiera kartę niezależnie od Twojego ruchu. W wariancie „wszyscy naraz” wyzwanie może rzucić każdy, kto ma żeton – każdy wskazuje własne miejsce na Twojej osi, a kartę zabiera ten, kto pierwszy wskazał dobre miejsce (gdy Ty się pomylisz).</li>
       <li>Za odgadnięcie wykonawcy i tytułu dostajesz żeton (maks. 5). 1 żeton = pominięcie piosenki (gra pokaże, co to był za utwór), 3 żetony = kupienie karty: przed odkryciem na oś trafia właśnie grana piosenka, po odkryciu – losowa karta z talii.</li>
       <li>Wygrywa pierwsza osoba z ustaloną liczbą kart. W trybie 1 gracza masz ograniczoną liczbę pomyłek; w grze bez końca grasz do ich wyczerpania i bijesz swój rekord.</li>
       <li><b>Tryb ekspert</b>: oprócz miejsca na osi trzeba podać wybrane dane – tytuł, wykonawcę i/lub dokładny rok. Bez tego karta przepada.</li>
@@ -571,7 +613,7 @@
     </ol>
     <h3>Kto pierwszy?</h3>
     <ol>
-      <li>Każdy gracz ma swój przycisk na ekranie i klawisz (domyślnie 1–8, w ustawieniach gry każdy może przypisać sobie dowolny). Kto pierwszy naciśnie, ten odpowiada – muzyka się zatrzymuje.</li>
+      <li>2–16 graczy – każdy ma swój przycisk na ekranie (albo na swoim telefonie) i klawisz: domyślnie 1–8, przy większej liczbie graczy kolejno 9, 0, Q, P, Z, M, A, L, W, O; w ustawieniach gry każdy może przypisać sobie dowolny. Kto pierwszy naciśnie, ten odpowiada – muzyka się zatrzymuje.</li>
       <li>Dobra odpowiedź: +1 punkt. Zła: −1 punkt, a pozostali mogą odpowiadać dalej.</li>
     </ol>
     <h3>Jeden gracz i multiplayer</h3>
@@ -585,9 +627,73 @@
       <li>Kilku graczy: za każdą minigrę 1. miejsce daje 3 pkt, 2. – 2 pkt, 3. – 1 pkt (remis – tyle samo, wynik 0 – bez punktów). W „Starsza czy nowsza?” gracze odpowiadają po kolei, a pomyłka nie kończy gry.</li>
       <li>Jedna osoba: wyniki z minigier (punkty, seria, ułożone karty) sumują się – bij swój rekord.</li>
     </ol>
+    <h3>Współpraca</h3>
+    <ol>
+      <li>Wszyscy razem przeciw grze: jedna wspólna oś czasu i wspólny limit pomyłek. Odpowiadacie po kolei.</li>
+    </ol>
+    <h3>Rok co do roku</h3>
+    <ol>
+      <li>Wpisz rok wydania piosenki: dokładnie – 3 pkt, do 2 lat różnicy – 1 pkt.</li>
+    </ol>
+    <h3>Wyzwanie dnia</h3>
+    <ol>
+      <li>10 piosenek – ten sam zestaw dla wszystkich danego dnia. Wpisujesz rok wydania; wynik (🟩 dokładnie, 🟨 do 2 lat różnicy) można udostępnić znajomym. Liczy się pierwsze podejście danego dnia.</li>
+    </ol>
+    <h3>Kto to śpiewa? · Skąd jest wykonawca?</h3>
+    <ol>
+      <li>Cztery odpowiedzi do wyboru: wykonawcy albo kraje (z flagami). Dobra odpowiedź – 1 pkt.</li>
+    </ol>
+    <h3>Licytacja</h3>
+    <ol>
+      <li>Najpierw stawiasz 1–3 pkt na swoją pewność, potem wskazujesz dekadę. Dobrze – zyskujesz stawkę, źle – tracisz ją.</li>
+    </ol>
+    <h3>Ułóż piątkę</h3>
+    <ol>
+      <li>Pięć krótkich fragmentów (A–E) na liście – przeciągnij je (albo przesuń ▲▼) od najstarszego do najnowszego. Masz 90 sekund od pierwszego odtworzenia.</li>
+      <li>Punkt za każdą dobrze ułożoną sąsiednią parę i punkt premii za całą piątkę – razem do 5 pkt.</li>
+    </ol>
+    <h3>Bingo muzyczne</h3>
+    <ol>
+      <li>Każdy ma planszę 3×3, 4×4 albo 5×5 (w ustawieniach) z kategoriami: dekady, gatunki, kraje, polska/zagraniczna, długość tytułu…</li>
+      <li>Przy każdej piosence zaznaczasz jedno pole, które – Twoim zdaniem – do niej pasuje. Trafione pole zostaje skreślone; cały wiersz, kolumna albo przekątna to BINGO.</li>
+    </ol>
+    <h3>Kto za tym stoi?</h3>
+    <ol>
+      <li>Pytanie o graną piosenkę z czterema odpowiedziami: kto napisał tekst, kto skomponował muzykę, kto wyprodukował nagranie, z jakiego albumu pochodzi, skąd jest wykonawca albo jak naprawdę się nazywa (dane z Wikidata). Dobra odpowiedź – 1 pkt.</li>
+    </ol>
+    <h3>Okładka z mgły</h3>
+    <ol>
+      <li>Najpierw widać tylko rozmytą okładkę płyty (bez dźwięku) – odgadnięcie daje 4 pkt. Potem okładka jest coraz ostrzejsza, a fragment dłuższy (1 s, 4 s, 10 s) – 3, 2, 1 pkt.</li>
+    </ol>
+    <h3>Krzywe zwierciadło</h3>
+    <ol>
+      <li>Fragment jest zniekształcony: zza ściany, na helu (szybciej i wyżej), zwolniony albo od tyłu. Z każdym krokiem zniekształcenie słabnie – 4, 3, 2, 1 pkt. Muzyka gra na urządzeniu gospodarza.</li>
+    </ol>
+    <h3>Mikser</h3>
+    <ol>
+      <li>Dwie różne piosenki grają naraz przez 10 sekund. Wpisz oba tytuły (albo obu wykonawców) – punkt za każdą.</li>
+    </ol>
+    <h3>Licytacja sekund (multiplayer)</h3>
+    <ol>
+      <li>Przed muzyką widać profil piosenki: rok, kraj, gatunek, autora tekstu. Gracze po kolei licytują w dół, ile sekund wystarczy im na tytuł (8 s … 0,5 s), albo pasują.</li>
+      <li>Gra najkrótsza stawka: trafiony tytuł – 2 pkt, pudło – 1 pkt dla gracza, który licytował tuż wcześniej.</li>
+    </ol>
+    <h3>Gorąca bomba (multiplayer)</h3>
+    <ol>
+      <li>Gra muzyka i tyka bomba. Kto ją trzyma, odpowiada na szybkie pytanie o piosenkę (przed/po roku, polska/zagraniczna, dekada, wykonawca). Dobrze – bomba idzie do następnego gracza, źle – 3 sekundy blokady.</li>
+      <li>Bomba wybucha w losowej chwili (25–50 s) – trzymający traci serce. Bez serc się odpada; wygrywa ostatni.</li>
+    </ol>
+    <h3>Ostatni na placu boju (multiplayer)</h3>
+    <ol>
+      <li>Wszyscy naraz wpisują rok tej samej piosenki (na swoich telefonach albo kolejno na urządzeniu gospodarza). Kto pomylił się najbardziej (albo nie odpowiedział), traci serce; bez serc się odpada. Wygrywa ostatni przy stole.</li>
+    </ol>
+    <h3>Liga wieczoru</h3>
+    <ul>
+      <li>Kolejne gry w tym samym lobby (multiplayer) składają się na ligę: za każdą grę 1. miejsce daje 3 pkt, 2. – 2 pkt, 3. – 1 pkt. Tabela ligi jest pod wynikami każdej gry.</li>
+    </ul>
     <h3>Karty specjalne</h3>
     <ul>
-      <li>Do wyboru w ustawieniach gry osi czasu – co mniej więcej piąta karta jest specjalna: <b>podwójna</b> (dobre ułożenie daje dodatkową kartę), <b>kradzież żetonu</b> (zabierasz żeton graczowi, który ma ich najwięcej) albo <b>zamiana osi</b> (możesz zamienić się osią z innym graczem).</li>
+      <li>Do wyboru w ustawieniach gry osi czasu – co mniej więcej piąta karta jest specjalna: <b>podwójna</b> (dobre ułożenie daje dodatkową kartę), <b>kradzież żetonu</b> (zabierasz żeton graczowi, który ma ich najwięcej) albo <b>zamiana osi</b> (możesz zamienić się osią z innym graczem). Do tego: <b>🛡️ tarcza</b> (jednorazowa ochrona przed zamianą osi, kradzieżą żetonu i utratą karty przy wyzwaniu „dokładny rok”), <b>🌫️ mgła</b> (do Twojej następnej tury inni nie widzą lat na Twojej osi – na dużym ekranie i swoich telefonach), <b>🎯 złoty strzał</b> (możesz też wpisać dokładny rok – trafienie daje +2 żetony) i <b>🧲 magnes</b> (tylko dla gracza na ostatnim miejscu – dobre ułożenie daje darmową kartę z samym rokiem).</li>
     </ul>
     <h3>Melodia krok po kroku</h3>
     <ol>

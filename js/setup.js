@@ -318,7 +318,7 @@ $$('input[name=audio-out]').forEach((r) => {
 // • „muzyka gra na” – tylko gdy jest podłączony duży ekran albo (w multiplayerze) telefon gracza
 function updatePlaybackOptions() {
   if (!state.mode || !MODES[state.mode]) return;
-  $('#clip-random-row').classList.toggle('hidden', !(state.mode === 'steps' || state.mode === 'party' || filterState.clip < 30));
+  $('#clip-random-row').classList.toggle('hidden', !(isSteps() || state.mode === 'party' || filterState.clip < 30));
   const display = tvWindowSeen || [...remotes].some((r) => r.role === 'tv');
   const phones = playCtx === 'multi' && [...remotes].some((r) => r.role === 'player' && r.name);
   const playerOk = phones && $('#audio-out-player').dataset.for.split(' ').includes(state.mode);
@@ -348,7 +348,7 @@ function updateModeOptions() {
     ? (rec ? T('Twój rekord na poziomie „{0}” – ułożone piosenki: {1}.', (LEVELS[filterState.level] || LEVELS[1]).name, rec) : T('Nie masz jeszcze rekordu na tym poziomie.'))
     : '';
   $('#expert-opts').classList.toggle('hidden', !filterState.expert);
-  const sp = (filterState.specials || []).filter((k) => isMultiMode(state.mode) || k === 'double');
+  const sp = (filterState.specials || []).filter((k) => isMultiMode(state.mode) || k === 'double' || k === 'golden');
   $('#special-desc').textContent = sp.length
     ? sp.map((k) => `${SPECIALS[k].icon} ${T(SPECIALS[k].name)}: ${T(SPECIALS[k].desc)}`).join(' · ') : '';
   const lvlName = (LEVELS[filterState.level] || LEVELS[1]).name;
@@ -394,7 +394,7 @@ $$('input[name=time-limit]').forEach((r) => {
   r.checked = Number(r.value) === (filterState.timeLimit || 120);
   r.addEventListener('change', () => { filterState.timeLimit = Number(r.value); saveFilters(); updateModeOptions(); });
 });
-for (const [id, key] of [['#sp-double', 'double'], ['#sp-steal', 'steal'], ['#sp-swap', 'swap']]) {
+for (const [id, key] of [['#sp-double', 'double'], ['#sp-steal', 'steal'], ['#sp-swap', 'swap'], ['#sp-shield', 'shield'], ['#sp-fog', 'fog'], ['#sp-golden', 'golden'], ['#sp-magnet', 'magnet']]) {
   $(id).checked = !!(filterState.specials || []).includes(key);
   $(id).addEventListener('change', (e) => {
     const set = new Set(filterState.specials || []);

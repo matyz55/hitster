@@ -43,12 +43,46 @@ Na ekranie startowym wybiera się **Jeden gracz** albo **Multiplayer**:
 - **Starsza czy nowsza?** – czy piosenka jest starsza, czy nowsza od poprzedniej karty;
   seria bez pomyłki i rekord.
 - **Pojedynek dekad** – dwie dekady (losowe lub wybrane), trzeba wskazać, z której jest piosenka.
-- **Kto pierwszy?** – 2–16 osób przy jednym urządzeniu, każda ma przycisk i klawisz (domyślnie 1–8, w ustawieniach każdy gracz może przypisać własny);
-  kto pierwszy naciśnie, ten odpowiada: +1 pkt za dobrą odpowiedź, −1 za złą.
+- **Kto pierwszy?** – 2–16 osób przy jednym urządzeniu albo na telefonach, każda ma przycisk i klawisz (domyślnie 1–8,
+  przy większej liczbie graczy kolejno 9, 0, Q, P, Z, M, A, L, W, O; w ustawieniach każdy gracz może przypisać własny);
+  kto pierwszy naciśnie, ten odpowiada: +1 pkt za dobrą odpowiedź, −1 za złą. O kolejności decyduje czas naciśnięcia
+  z poprawką na opóźnienie połączenia telefonu.
+- **Współpraca** – wszyscy razem przeciw grze: wspólna oś czasu i wspólny limit pomyłek, odpowiedzi po kolei.
+- **Rok co do roku** – wpisz rok wydania: dokładnie 3 pkt, do 2 lat różnicy 1 pkt.
+- **Wyzwanie dnia** – 10 piosenek, ten sam zestaw dla wszystkich danego dnia; wpisuje się rok, wynik (🟩/🟨/⬛)
+  można udostępnić; liczy się pierwsze podejście dnia.
+- **Kto to śpiewa?** i **Skąd jest wykonawca?** – cztery odpowiedzi do wyboru (wykonawcy / kraje z flagami), 1 pkt za dobrą.
+- **Licytacja** – najpierw stawka 1–3 pkt, potem wybór dekady; dobrze – zyskujesz stawkę, źle – tracisz.
+- **Ułóż piątkę** – pięć krótkich fragmentów (A–E) na liście do przeciągania (albo przesuwania ▲▼) od najstarszego
+  do najnowszego, 90 s od pierwszego odtworzenia; punkt za każdą dobrze ułożoną sąsiednią parę + premia za całość (do 5 pkt).
+- **Bingo muzyczne** – plansza 3×3, 4×4 albo 5×5 (w ustawieniach) z kategoriami; przy każdej piosence zaznacza się
+  pasujące pole, cały wiersz, kolumna albo przekątna to BINGO.
+- **Liga wieczoru** – kolejne gry w tym samym lobby: 3/2/1 pkt za miejsca w każdej grze, tabela pod wynikami.
+- **Kto za tym stoi?** – pytanie z danych Wikidata o graną piosenkę (autor tekstu, kompozytor, producent, album,
+  miejscowość wykonawcy, prawdziwe nazwisko), cztery odpowiedzi.
+- **Okładka z mgły** – najpierw sama rozmyta okładka (bez dźwięku, 4 pkt), potem ostrzejsza i 1/4/10 s fragmentu (3/2/1 pkt).
+- **Krzywe zwierciadło** – fragment zza ściany (filtr dolnoprzepustowy Web Audio), na helu / zwolniony
+  (`playbackRate` bez zachowania wysokości) albo od tyłu (odwrócony bufor PCM zapisany jako WAV); z każdym krokiem słabiej.
+- **Mikser** – dwie piosenki naraz przez 10 s (drugi element `<audio>`), punkt za każdy odgadnięty tytuł / wykonawcę.
+- **Licytacja sekund** (multiplayer) – profil piosenki, licytacja w dół (8 s … 0,5 s), najkrótsza stawka zgaduje tytuł:
+  trafienie 2 pkt, pudło – 1 pkt dla poprzedniego licytującego.
+- **Gorąca bomba** (multiplayer) – tykająca bomba (oscylator Web Audio) i szybkie pytania o piosenkę; dobrze – bomba idzie
+  dalej, źle – 3 s blokady; wybuch w losowej chwili 25–50 s zabiera serce.
+- **Ostatni na placu boju** (multiplayer) – wszyscy naraz podają rok; największa pomyłka traci serce, wygrywa ostatni.
 
-**Karty specjalne** (modyfikatory osi czasu, do wyboru): podwójna, kradzież żetonu, zamiana osi.
+W multiplayerze wyzwanie na osi czasu ma trzy warianty: inne miejsce na osi, dokładny rok albo **wszyscy naraz**
+(każdy z żetonem wskazuje własne miejsce, kartę bierze pierwszy trafny).
 
-**Ciekawostki** po odkryciu karty: nagrody z Wikidata – Oscar i Złoty Glob za piosenkę, Grammy, Grammy Hall of Fame,
+**Karty specjalne** (modyfikatory osi czasu, do wyboru): podwójna, kradzież żetonu, zamiana osi, tarcza (jednorazowa
+ochrona), mgła (ukryte lata na osi dla innych do następnej tury), złoty strzał (dokładny rok = +2 żetony) i magnes
+(tylko dla ostatniego gracza – darmowa karta z rokiem).
+
+**Ciekawostki** po odkryciu karty – jedna, w zestawie tematycznym pasująca do niego (Eurowizja, Opole, Trójka, film).
+Z Wikidata (`tools/facts.mjs`, lista ze źródłami w [FACTS.md](FACTS.md)): kompozytor i autor tekstu, film/serial/gra,
+album, producent, utwór, na którym piosenka jest oparta, prawdziwe imię i nazwisko wykonawcy, rok i miejscowość
+urodzenia, rok i miejsce powstania zespołu – z kontrolą homonimów (wykonawca musi pasować do swoich piosenek: daty,
+kraj przy nazwach jednowyrazowych) i zawodów (producent/kompozytor/autor tekstu to muzyk, poeta albo zespół).
+Także preselekcje do Eurowizji (Polska) i nagrody z Wikidata – Oscar i Złoty Glob za piosenkę, Grammy, Grammy Hall of Fame,
 Latin Grammy (tylko z datą przyznania; lista ze źródłami w [AWARDS.md](AWARDS.md), skrypt `tools/awards.mjs`); zwycięstwo lub miejsce na Eurowizji, 1. miejsce Listy
 Przebojów Trójki, festiwal w Opolu, miejsce na Billboard Year-End Hot 100, nr 1 w Polsce.
 

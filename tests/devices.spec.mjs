@@ -184,7 +184,12 @@ test('@net wyzwanie „wszyscy naraz” z dwóch telefonów', async ({ browser }
   await host.check('input[name=challenge][value=all]');
   await host.click('#btn-start');
   await ready(host);
-  await host.evaluate(() => { state.turn = state.players.findIndex((p) => p.name === 'Gracz 1'); startTurn(); });
+  // dłuższa oś – każdy wyzywający musi mieć wolne miejsce (zajętych przez innych nie można wskazać)
+  await host.evaluate(() => {
+    const p = state.players.find((x) => x.name === 'Gracz 1');
+    p.timeline = [{ y: 1950, start: true }, { y: 1980, start: true }, { y: 2010, start: true }];
+    state.turn = state.players.indexOf(p); startTurn();
+  });
   await ready(host);
   await host.evaluate(() => onSlotClick(0));
   await ania.click('.ht-actions button.gold'); // ⚔ Wyzwanie – Ania od razu wyzywająca
@@ -194,6 +199,8 @@ test('@net wyzwanie „wszyscy naraz” z dwóch telefonów', async ({ browser }
   await ania.click('.vslot >> nth=0');
   await bartek.click('.vslot >> nth=0');
   await expect.poll(() => host.evaluate(() => state.challenges.every((x) => x.slot != null))).toBe(true);
+  // każdy wskazał inne miejsce (zajęte miejsca są zablokowane także na pionowej osi telefonu)
+  expect(await host.evaluate(() => new Set([state.slot, ...state.challenges.map((x) => x.slot)]).size)).toBe(3);
   await host.click('#actions button.primary');
   await expect.poll(() => host.evaluate(() => state.phase)).toBe('revealed');
   noErrors(host, ania, bartek);
@@ -224,5 +231,26 @@ test('@net Ułóż piątkę: lista na telefonie gracza z turą – przeciąganie
   await ania.mouse.up();
   await expect.poll(() => host.evaluate(() => state.sort.order.join(''))).toBe('41023');
   await expect(ania.locator('.sort-row .drag-grip b').first()).toHaveText('Fragment E');
+  noErrors(host, ania);
+});
+
+test('@net Ostatni na placu boju: rok z telefonu gracza trafia do gospodarza', async ({ browser }) => {
+  const { host, code } = await hostLobby(browser);
+  const ania = await join(browser, code, 'Ania');
+  await host.click('#btn-lobby-next');
+  await host.click('.mode[data-mode=royale]');
+  await host.click('#btn-start');
+  await ready(host);
+  // gracz bez telefonu wpisuje rok tutaj, Ania – na swoim telefonie
+  await expect(host.locator('#actions .royale-row')).toHaveCount(1);
+  const y = await host.evaluate(() => state.current.y);
+  await ania.waitForSelector('.year-form input');
+  await ania.fill('.year-form input', String(y - 7));
+  await ania.click('.year-form button');
+  await expect.poll(() => host.evaluate(() => Object.keys(state.royale.answers).length)).toBe(1);
+  await host.fill('#actions .royale-row input', String(y));
+  await host.click('#actions .royale-row button');
+  await expect.poll(() => host.evaluate(() => state.phase)).toBe('revealed');
+  expect(await host.evaluate(() => state.players.find((p) => p.name === 'Ania').hearts)).toBe(2);
   noErrors(host, ania);
 });

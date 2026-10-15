@@ -4,6 +4,8 @@
 /* ---------- renderowanie gry ---------- */
 // które pola odpowiedzi są na ekranie
 function guessFields() {
+  // Licytacja sekund: tylko tytuł i dopiero po licytacji
+  if (state.mode === 'seconds') return state.secs && state.secs.phase === 'play' ? { title: true, artist: false, year: false } : {};
   if (isMelody()) {
     const t = state.guessType;
     return { title: t !== 'artist', artist: t !== 'title', year: false };
@@ -11,7 +13,7 @@ function guessFields() {
   if (!isTimeline()) return {};
   const ex = state.expert || [];
   const solo = state.mode === 'solo';
-  return { title: solo || ex.includes('title'), artist: solo || ex.includes('artist'), year: ex.includes('year') };
+  return { title: solo || ex.includes('title'), artist: solo || ex.includes('artist'), year: ex.includes('year') || state.special === 'golden' };
 }
 
 function render() {
@@ -21,12 +23,14 @@ function render() {
 
   renderHeader(p, timeline);
 
-  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !['steps', 'buzz', 'hilo', 'duel', 'sort5', 'bingo'].includes(state.mode) && !isQuiz();
+  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !(isSteps() || ['buzz', 'hilo', 'duel', 'sort5', 'bingo', 'royale', 'seconds', 'bomb', 'mashup'].includes(state.mode)) && !isQuiz();
   $('#btn-skip').textContent = timeline ? T('⏭ Pomiń ({0} żeton)', SKIP_COST) : T('⏭ Inna piosenka');
   $('#btn-skip').disabled = !canSkip || (timeline && p.tokens < SKIP_COST);
-  $('#btn-skip').classList.toggle('hidden', ['steps', 'buzz', 'hilo', 'duel', 'sort5', 'bingo'].includes(state.mode) || isQuiz());
+  $('#btn-skip').classList.toggle('hidden', (isSteps() || ['buzz', 'hilo', 'duel', 'sort5', 'bingo', 'royale', 'seconds', 'bomb', 'mashup'].includes(state.mode)) || isQuiz());
   // Ułóż piątkę: każdy fragment ma własny przycisk ▶
   $('#btn-play').classList.toggle('hidden', state.mode === 'sort5');
+  renderCoverFog();
+  applyMirror();
 
   // pola odpowiedzi: zawsze w „Jaka to melodia”; przy osi czasu – w trybie ekspert (wymagane)
   // i w solo (tytuł + wykonawca opcjonalnie, za żeton)
@@ -48,7 +52,7 @@ function render() {
     $('#guess-year').placeholder = T('Dokładny rok wydania (wymagany)');
     $('#btn-guess').classList.toggle('hidden', !isMelody());
     $('#btn-giveup').classList.toggle('hidden', state.mode !== 'melody');
-    if (state.mode === 'steps') renderStepsGuess();
+    if (isSteps()) renderStepsGuess();
   }
   renderStepsBar();
   renderBuzzers();
@@ -74,9 +78,13 @@ function render() {
   if (state.mode === 'hilo') hints.listen = T('Ta piosenka jest starsza czy nowsza od karty poniżej?');
   if (state.mode === 'duel') hints.listen = T('Z której dekady jest ta piosenka?');
   if (isQuiz()) hints.listen = QUIZ[state.mode].hint();
+  if (state.mode === 'royale') hints.listen = royaleStatus();
+  if (state.mode === 'seconds') hints.listen = secsStatus();
+  if (state.mode === 'bomb') hints.listen = bombStatus();
+  if (state.mode === 'mashup') hints.listen = mashupStatus();
   if (state.mode === 'sort5') hints.listen = sortHint();
   if (state.mode === 'bingo') hints.listen = T('Każdy zaznacza na swojej planszy jedno pole, które pasuje do tej piosenki. Trzy skreślone w linii – BINGO!');
-  if (state.mode === 'hilo' || state.mode === 'duel' || isQuiz() || state.mode === 'sort5' || state.mode === 'bingo') $('#hint').textContent = state.current && state.phase === 'listen' ? hints.listen : '';
+  if (state.mode === 'hilo' || state.mode === 'duel' || isQuiz() || state.mode === 'sort5' || state.mode === 'bingo' || state.mode === 'royale' || state.mode === 'seconds' || state.mode === 'bomb' || state.mode === 'mashup') $('#hint').textContent = state.current && state.phase === 'listen' ? hints.listen : '';
 
   const tl = $('#timeline');
   tl.classList.toggle('hidden', !timeline && state.mode !== 'hilo');
@@ -94,7 +102,7 @@ function render() {
 // tablica wyników i tytuł tury – zależnie od trybu
 function renderHeader(p, timeline) {
   const sb = $('#scoreboard');
-  sb.classList.toggle('hidden', state.players.length === 1 && !isMelody() && state.mode !== 'duel' && !isQuiz() && state.mode !== 'sort5' && state.mode !== 'bingo');
+  sb.classList.toggle('hidden', state.players.length === 1 && !isMelody() && state.mode !== 'duel' && !isQuiz() && state.mode !== 'sort5' && state.mode !== 'bingo' && state.mode !== 'royale' && state.mode !== 'bomb');
   // impreza: która minigra i ile zostało
   const pt = state.party;
   $('#party-bar').classList.toggle('hidden', !pt);
@@ -106,15 +114,20 @@ function renderHeader(p, timeline) {
     class: 'score' + (i === state.turn && state.mode !== 'buzz' && state.mode !== 'bingo' ? ' active' : ''),
     style: state.mode === 'buzz' ? `border-color:${BUZZ_COLORS[i]}` : null,
   }, pl.name, ': ', timeline
-    ? [el('b', {}, String(pl.timeline.length)), T('/{0} kart · ', state.winTarget), el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || '–')]
+    ? [el('b', {}, String(pl.timeline.length)), T('/{0} kart · ', state.winTarget), el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || '–'),
+      pl.shield ? ' 🛡️' : '', pl.fogUntil > state.turnsPlayed ? ' 🌫️' : '']
+    : state.mode === 'royale' || state.mode === 'bomb' ? ['❤️'.repeat(Math.max(0, pl.hearts)) || '💀', state.mode === 'bomb' && i === state.turn && state.bomb && state.bomb.phase !== 'boom' ? ' 💣' : '']
     : [el('b', {}, String(pl.score)), T(' pkt')])));
   const title = $('#turn-title');
   const info = $('#turn-info');
   info.classList.toggle('tokens', timeline);
   const songNo = state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1);
-  if (state.mode === 'bingo') {
+  if (state.mode === 'royale' || state.mode === 'bomb') {
+    title.textContent = T('Runda {0}', songNo);
+    info.textContent = T('W grze: {0} z {1}', royaleAlive().length, state.players.length);
+  } else if (state.mode === 'bingo') {
     title.textContent = T('Piosenka {0} z {1}', Math.min(songNo, state.rounds), state.rounds);
-    info.textContent = T('Trzy w linii – BINGO!');
+    info.textContent = T('Cały wiersz, kolumna albo przekątna – BINGO!');
   } else if (state.mode === 'buzz') {
     title.textContent = T('Piosenka {0} z {1}', Math.min(songNo, state.rounds), state.rounds);
     info.textContent = TOUCH_ONLY ? T('Dotknij swojego pola, gdy znasz odpowiedź') : T('Naciśnij swój przycisk albo klawisz, gdy znasz odpowiedź');
@@ -283,7 +296,15 @@ function renderTimeline(container, timeline, interactive, marks) {
 function renderActions() {
   const p = activePlayer();
   const btns = [];
-  if (state.mode === 'bingo') {
+  if (state.mode === 'mashup') {
+    btns.push(...mashupActions());
+  } else if (state.mode === 'bomb') {
+    btns.push(...bombActions());
+  } else if (state.mode === 'seconds') {
+    btns.push(...secsActions());
+  } else if (state.mode === 'royale') {
+    btns.push(...royaleActions());
+  } else if (state.mode === 'bingo') {
     btns.push(...bingoActions());
   } else if (state.mode === 'sort5') {
     btns.push(...sortActions());
@@ -292,7 +313,7 @@ function renderActions() {
   } else if (state.mode === 'hilo' || state.mode === 'duel' || state.mode === 'buzz') {
     btns.push(...quickActions(p));
   } else if (isMelody()) {
-    if (state.mode === 'steps' && state.phase === 'listen' && state.current) {
+    if (isSteps() && state.phase === 'listen' && state.current) {
       btns.push(...stepsActions());
     }
     if (state.phase === 'revealed' && state.skipped) {
@@ -385,4 +406,19 @@ function renderActions() {
 
 function onConfirmPlacement() {
   revealTimeline();
+}
+
+// Okładka z mgły: rozmyta okładka przed odkryciem; w pierwszym kroku bez dźwięku
+function renderCoverFog() {
+  const box = $('#cover-fog');
+  const on = state.mode === 'cover' && state.phase === 'listen' && !!state.current && !!state.preview && !!state.preview.art;
+  box.classList.toggle('hidden', !on);
+  if (!on) return;
+  let img = box.firstElementChild;
+  if (!img) { img = el('div'); box.append(img); }
+  const art = state.preview.art.replace(/\/\d+x\d+bb\./, '/600x600bb.');
+  if (img.dataset.art !== art) { img.dataset.art = art; img.style.backgroundImage = `url("${art}")`; }
+  const f = COVER_STEPS[state.step].blur;
+  img.style.filter = f ? `blur(${Math.round((box.offsetWidth || 280) * f)}px)` : '';
+  $('#btn-play').disabled = state.clipLen === 0;
 }

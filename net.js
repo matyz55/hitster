@@ -55,8 +55,11 @@
     if (!mqttClientP) {
       mqttClientP = loadScript(MQTTJS).then(() => new Promise((resolve, reject) => {
         const c = window.mqtt.connect(MQTT_URL, { ...MQTT_AUTH, clientId: 'songster-' + rand(10), reconnectPeriod: 2000, connectTimeout: 10000 });
+        // po krótkim zerwaniu MQTT.js łączy się ponownie sam (reconnectPeriod) i odnawia subskrypcje (resubscribe – domyślnie
+        // włączone); gdy klient zostanie zamknięty na dobre, następne połączenie tworzy nowego klienta
         c.once('connect', () => resolve(c));
         c.once('error', (e) => { mqttClientP = null; reject(e); });
+        c.on('end', () => { mqttClientP = null; });
       }));
     }
     return mqttClientP;
@@ -234,12 +237,12 @@
 
   // wersja aplikacji (taka sama jak pamięć podręczna w sw.js) – gdy gospodarz ma nowszą, duży ekran i telefony graczy
   // same się odświeżają (inaczej np. telewizor otwarty przed aktualizacją nie zna nowych ekranów)
-  const version = '31';
+  const version = '33';
   // pobranie świeżych plików (z pominięciem pamięci podręcznej przeglądarki) i przeładowanie strony – raz na wersję
   async function updateTo(ver) {
     const key = 'songster.reloadedFor';
     try { if (sessionStorage.getItem(key) === ver) return false; sessionStorage.setItem(key, ver); } catch (e) { return false; }
-    const files = ['tv.html', 'tv.js', 'net.js', 'i18n.js', 'i18n-en.js', 'match.js', 'songs.js', 'flags/codes.js'];
+    const files = ['tv.html', 'tv.js', 'net.js', 'dragsort.js', 'i18n.js', 'i18n-en.js', 'match.js', 'songs.js', 'flags/codes.js'];
     await Promise.all(files.map((f) => fetch(f, { cache: 'reload' }).catch(() => null)));
     window.location.reload();
     return true;

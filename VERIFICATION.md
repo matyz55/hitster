@@ -6165,3 +6165,130 @@ Piosenki, dla których rok ze Spotify okazał się datą reedycji – wcześniej
 | Łąki Łan | LASS | 2019 | Spotify + MusicBrainz | – | 2019 | 2019 | PL |
 | Śmierć Kliniczna | Jestem ziarnkiem piasku | 1984 | Discogs + Wikipedia | 1984 | – | – | PL |
 | Śmierć Kliniczna | Nienormalny świat | 1983 | Wikipedia | 1996 | – | – | PL |
+
+## Weryfikacja dat – październik 2026 (wersja 5.24.0)
+
+Piosenki wytypowane automatycznie (Wikidata: rok po śmierci wykonawcy, przed powstaniem zespołu albo inna data publikacji; MusicBrainz: wcześniejsze wydanie nagrania; daty tylko ze Spotify odstające od innych piosenek wykonawcy) i sprawdzone ręcznie w Wikipedii. Zasada: rok pierwszego wydania nagrania danego wykonawcy (albo pierwszego wykonania w filmie/serialu), a nie składanki, reedycji czy roku, w którym piosenka stała się przebojem; przy coverach – rok wersji tego wykonawcy.
+
+| Wykonawca | Tytuł | Było | Jest | Źródło | Cytat |
+|---|---|---|---|---|---|
+| VOX | Masz w oczach dwa nieba | 1980 | 1979 | https://www.discogs.com/release/9471913-Various-Opole-79-Premiery | Opole 79 Premiery (Wifon, 1979) ... B5 Masz W Oczach Dwa Nieba / VOX |
+| Budka Suflera | Memu miastu na do widzenia | 1981 | 1976 | https://pl.wikipedia.org/wiki/Memu_miastu_na_do_widzenia | Utwór nagrany w listopadzie 1974 roku ... pierwotnie wydany został w 1976 roku na płycie winylowej "Polskie Targi Estradowe 1975" |
+| 2 plus 1 | Nic nie boli | 1983 | 1982 | https://pl.wikipedia.org/wiki/Nic_nie_boli | utwór muzyczny polskiego zespołu 2 plus 1 z 1982 roku ... pojawiła się na polskich listach przebojów już w roku 1982 |
+| Budka Suflera | Jolka Jolka pamiętasz | 1983 | 1982 | https://pl.wikipedia.org/wiki/Jolka,_Jolka_pamiętasz | wydana w 1982 roku jako ósmy singel zespołu |
+| Wanda i Banda | Nie będę Julią / Chcę zapomnieć | 1984 | 1983 | https://www.discogs.com/release/1057738-Banda-Wanda-Hi-Fi | Banda & Wanda - Hi-Fi, Vinyl 7" Single, Tonpress, 1983; B Nie Będę Julią |
+| Maryla Rodowicz | Niech Żyje Bal | 1986 | 1984 | https://pl.wikipedia.org/wiki/Niech_żyje_bal | utwór muzyczny z 1984 ... W sierpniu 1984 Rodowicz wykonała piosenkę na XXI Międzynarodowym Festiwalu Piosenki w Sopocie |
+| Jacek Kaczmarski & Przemyslaw Gintrowski | Mury | 1987 | 1981 | https://pl.wikipedia.org/wiki/Mury_(album) | Nagrania zrealizowano ... 12–16 września 1980 roku ... wydany w 1981 roku przez Wifon |
+| Marek Grechuta | Wiosna - ach to ty | 1987 | 1986 | https://pl.wikipedia.org/wiki/Wiosna,_ach_to_ty | wydana w 1986 roku |
+| Sztywny Pal Azji | Wieża radości, wieża samotności | 1988 | 1987 | https://pl.wikipedia.org/wiki/Europa_i_Azja | Europa i Azja wyd. MC Polton 1987 ... „Wieża radości, wieża samotności” (1987) |
+| Bajm | Biała armia | 1990 | 1989 | https://pl.wikipedia.org/wiki/Biała_armia_(singel) | Biała armia – szósty singel zespołu Bajm pochodzący z albumu Biała armia, wydany w 1989 roku. |
+| Marek Grechuta | Gdzieś w nas | 1991 | 1972 | https://www.discogs.com/release/1180730-Marek-Grechuta-Droga-Za-Widnokres | Marek Grechuta - Droga Za Widnokres, Vinyl LP, Polskie Nagrania Muza, 1972; B3 Gdzieś W Nas |
+| Marek Grechuta | Wędrówka | 1991 | 1972 | https://www.discogs.com/release/1180730-Marek-Grechuta-Droga-Za-Widnokres | Marek Grechuta - Droga Za Widnokres, Vinyl LP, Polskie Nagrania Muza, 1972; A4 Wędrówka |
+| Armia | Jeżeli | 1992 | 1986 | https://www.discogs.com/release/9775482-Various-I-Inni | I Inni (Sonus, 1986) ... A3 Jeżeli / Armia |
+| Armia | Niezwyciężony | 1992 | 1991 | https://www.discogs.com/release/1897935-Armia-Legenda | Armia - Legenda, CD Album, 1991; Recorded at Studio Wawrzyszew and Studio Złota Skała, 7-12 1990; 14 Niezwyciężony |
+| Czerwone Gitary | Gdy kiedyś znów zawołam cię | 1994 | 1968 | https://pl.wikipedia.org/wiki/Czerwone_Gitary_(3) | Czerwone Gitary 3 – album zespołu Czerwone Gitary wydany w 1968 roku |
+| Edyta Górniak | Jestem kobietą | 1995 | 1994 | https://pl.wikipedia.org/wiki/Jestem_kobietą | singel ... pochodzący z płyty Dotyk, wydany 30 września 1994 roku |
+| Justyna Steczkowska | Dziewczyna Szamana | 1996 | 1995 | https://pl.wikipedia.org/wiki/Dziewczyna_Szamana_(piosenka) | Dziewczyna Szamana – singel Justyny Steczkowskiej z 1995 roku ... wydany = listopad 1995 |
+| Jerzy Połomski | To ostatnia niedziela | 1999 | 1972 | https://www.discogs.com/release/2588466-Jerzy-Po%C5%82omski-Kiedy-Zn%C3%B3w-Zakwitn%C4%85-Bia%C5%82e-Bzy | Kiedy Znów Zakwitną Białe Bzy, Vinyl LP, 1972 ... B6 Ta Ostatnia Niedziela |
+| Sława Przybylska | Okularnicy | 1999 | 1964 | https://pl.wikipedia.org/wiki/Ballady_i_piosenki | album studyjny Sławy Przybylskiej wydany 21 lutego 1964 roku przez Pronit ... Okularnicy |
+| Brygada Kryzys | To co czujesz, to co wiesz | 2000 | 1992 | https://pl.wikipedia.org/wiki/To_co_czujesz,_to_co_wiesz | jego studyjna (różniąca się od oryginału) wersja ukazała się dopiero w 1992 roku na albumie Cosmopolis |
+| Skaldowie & Stanislaw Wenglorz | Nie widzę ciebie w swych marzeniach | 2000 | 1979 | https://pl.wikipedia.org/wiki/Rezerwat_miłości | Rezerwat miłości – dziesiąty album zespołu Skaldowie, wydany w 1979 roku ... piosenka „Nie widzę Ciebie w swych marzeniach” |
+| Tilt | Tak jak ja kocham cię | 2000 | 1988 | https://pl.wikipedia.org/wiki/Tilt_(album) | Tilt – debiutancki album zespołu Tilt wydany w 1988 r. nakładem wydawnictwa Tonpress |
+| Edyta Geppert | Życie, kocham cię nad życie | 2001 | 1986 | https://pl.wikipedia.org/wiki/Och,_życie_kocham_cię_nad_życie | debiutancki studyjny longplay Edyty Geppert wydany w 1986 roku przez Arston |
+| Republika | Śmierć na pięć (New) | 2003 | 2002 | https://pl.wikipedia.org/wiki/Ostatnia_płyta_(album_Republiki) | wydany = 23 marca 2002 ... 1. singel = Śmierć na pięć |
+| Andrzej Zaucha & Anawa | Abyś czuł | 2004 | 1973 | https://pl.wikipedia.org/wiki/Anawa_(album) | wydany = 1973 ... /3//„Abyś czuł” |
+| Andrzej Zaucha & Anawa | Ta wiara | 2004 | 1973 | https://pl.wikipedia.org/wiki/Anawa_(album) | wydany = 1973 ... /5//„Ta wiara” |
+| Andrzej Zaucha & Anawa | Tańcząc w powietrzu | 2004 | 1973 | https://pl.wikipedia.org/wiki/Anawa_(album) | wydany = 1973 ... /8//„Tańcząc w powietrzu” |
+| Golden Life | 24.11.94 | 2004 | 1995 | https://pl.wikipedia.org/wiki/24.11.94 | 24.11.94 – singel grupy Golden Life wydany w 1995 roku |
+| Klaus Mitffoch & Lech Janerka | Konstytucje | 2005 | 1986 | https://pl.wikipedia.org/wiki/Historia_podwodna | Historia podwodna – pierwszy solowy album Lecha Janerki, nagrany po jego odejściu z grupy Klaus Mitffoch w 1986 roku. ... # „Konstytucje” – 3:28 |
+| Magda Umer | Koncert Jesienny na Dwa Świerszcze | 2008 | 1972 | https://www.discogs.com/release/4973238-Magda-Umer-Magda-Umer | A1 Koncert Jesienny Na Dwa Świerszcze I Wiatr W Kominie |
+| Marek Grechuta | Chodźmy / Świecie nasz | 2008 | 1971 | https://pl.wikipedia.org/wiki/Korowód_(album) | Został nagrany w studio Polskich Nagrań w Warszawie w kwietniu 1971 roku i w tym samym roku wydany ... # Chodźmy ... # Świecie nasz |
+| Magdalena Tul | Jestem | 2011 | 2010 | https://pl.wikipedia.org/wiki/Jestem_(utwór_muzyczny_Magdaleny_Tul) | wydany cyfrowo 30 grudnia 2010 i w 2011 w formie singla |
+| Kabaret Starszych Panow | Jezeli Kochac To Nie Indywidualnie | 2015 | 1963 | https://www.discogs.com/release/1440276-Kabaret-Starszych-Panów-Piosenki-Wybrane-Cykl-II | Piosenki Wybrane Cykl II / 1963 ... B3 Jeżeli Kochać / Wiesław Michnikowski |
+| Antek Smykiewicz | Pomimo Burz | 2016 | 2015 | https://pl.wikipedia.org/wiki/Pomimo_burz | Singel miał swoją premierę 10 sierpnia 2015 |
+| Michał Szpak | Color of Your Life | 2016 | 2015 | https://pl.wikipedia.org/wiki/Byle_być_sobą | wydany 13 listopada 2015 ... 21 grudnia 2015 ukazał się lyric video do utworu „Color of Your Life” |
+| Mata | Patointeligencja | 2020 | 2019 | https://pl.wikipedia.org/wiki/Patointeligencja | wydany = 11 grudnia 2019 |
+| Bryska | Odbicie (Mark Neve Remix) | 2022 | 2021 | https://pl.wikipedia.org/wiki/Odbicie_(singel) | Singel został wydany 29 grudnia 2021. |
+| Lanberry | Dzięki, że jesteś | 2024 | 2023 | https://pl.wikipedia.org/wiki/Dzięki,_że_jesteś | wydany = 5 października 2023 |
+| Quebonafide | Futurama 3 (fanserwis) | 2025 | 2024 | https://pl.wikipedia.org/wiki/Quebonafide | 21 listopada 2024 wydał singel „Futurama 3 (fanserwis)” |
+| Wiktor Dyduła | Tam słońce, gdzie my | 2025 | 2024 | https://pl.wikipedia.org/wiki/Wiktor_Dyduła | W czerwcu 2024 wydał singel „Tam słońce, gdzie my” |
+| Eddie Heywood & Hugo Winterhalter | Canadian Sunset | 1957 | 1956 | https://en.wikipedia.org/wiki/Canadian_Sunset | released = July 1956 |
+| Jim Lowe | Green Door | 1957 | 1956 | https://en.wikipedia.org/wiki/Green_Door | released = August 1956 |
+| Kay Starr | (The) Rock and Roll Waltz | 1958 | 1955 | https://en.wikipedia.org/wiki/Rock_and_Roll_Waltz | released = December 1955 |
+| Laurie London | He's Got the Whole World in His Hands | 1958 | 1957 | https://en.wikipedia.org/wiki/He's_Got_the_Whole_World_in_His_Hands | a 1957 recording by British singer Laurie London ... reached #12 on the UK singles chart in late 1957 |
+| The Everly Brothers | Bye Bye Love | 1958 | 1957 | https://en.wikipedia.org/wiki/Bye_Bye_Love_(The_Everly_Brothers_song) | Released: March 1957 |
+| The Everly Brothers | Wake Up Little Susie | 1958 | 1957 | https://en.wikipedia.org/wiki/Wake_Up_Little_Susie | Released: September 2, 1957 |
+| Jack Scott | What in the World's Come Over You | 1960 | 1959 | https://en.wikipedia.org/wiki/What_in_the_World%27s_Come_Over_You | Released: December 1959 |
+| Muddy Waters | I'm Your Hoochie Coochie Man | 1960 | 1954 | https://en.wikipedia.org/wiki/Hoochie_Coochie_Man | Released: January 1954 |
+| Conway Twitty | It's Only Make Believe | 1961 | 1958 | https://en.wikipedia.org/wiki/It%27s_Only_Make_Believe | released by MGM Records on side B of "I'll Try" on July 14, 1958 |
+| Bruce Channel | Hey! Baby | 1962 | 1961 | https://en.wikipedia.org/wiki/Hey!_Baby | Released: December 1961 |
+| Dick and Dee Dee | The Mountain's High | 1962 | 1961 | https://en.wikipedia.org/wiki/The_Mountain%27s_High | July 1961 (US Liberty release) |
+| Morris Stoloff | Moonglow and Theme from ''Picnic'' | 1963 | 1956 | https://en.wikipedia.org/wiki/Moonglow_and_Theme_from_Picnic | 1956-released medley |
+| The Del-Vikings | Come Go with Me | 1964 | 1957 | https://en.wikipedia.org/wiki/Come_Go_with_Me | January 1957 (Fee Bee/Dot) |
+| The Kingston Trio | Tom Dooley | 1964 | 1958 | https://en.wikipedia.org/wiki/The_Kingston_Trio_(album) | Released: June 1, 1958 |
+| Jim Reeves | He'll Have to Go | 1965 | 1959 | https://en.wikipedia.org/wiki/He%27ll_Have_to_Go | Released: November 1959 (U.S.) |
+| Ricky Nelson | A Teenager's Romance | 1965 | 1957 | https://en.wikipedia.org/wiki/A_Teenager%27s_Romance | Released: April 27, 1957 |
+| The Righteous Brothers | You've Lost That Lovin' Feelin' | 1965 | 1964 | https://en.wikipedia.org/wiki/You%27ve_Lost_That_Lovin%27_Feelin%27 | released = November 1964 / recorded = September 26, 1964 |
+| Etta James | I'd Rather Go Blind | 1968 | 1967 | https://en.wikipedia.org/wiki/I%27d_Rather_Go_Blind | It was first recorded by Etta James in 1967, released the same year |
+| The Platters | (You've Got) The Magic Touch | 1968 | 1956 | https://en.wikipedia.org/wiki/(You%27ve_Got)_The_Magic_Touch | released = February 20, 1956 / recorded = February 14, 1956 |
+| Elvis Presley | Don't | 1970 | 1958 | https://en.wikipedia.org/wiki/Don%27t_(Elvis_Presley_song) | "Don't" is a song recorded by Elvis Presley and released in 1958 |
+| Bob Marley & The Wailers | I Shot The Sheriff | 1974 | 1973 | https://en.wikipedia.org/wiki/I_Shot_the_Sheriff | The song was first released in 1973 on the Wailers' album Burnin' |
+| Johnny Mathis | It's Not for Me to Say | 1974 | 1957 | https://en.wikipedia.org/wiki/It%27s_Not_for_Me_to_Say | released = February 25, 1957 |
+| The Hollywood Argyles | Alley Oop | 1974 | 1960 | https://en.wikipedia.org/wiki/Alley_Oop_(song) | released = May 1960 |
+| Bill Haley & His Comets | See You Later Alligator | 1975 | 1956 | https://en.wikipedia.org/wiki/See_You_Later,_Alligator | released = January 1956 |
+| Harry Belafonte | Day-O (The Banana Boat Song) | 1975 | 1956 | https://en.wikipedia.org/wiki/Day-O_(The_Banana_Boat_Song) | artist = Harry Belafonte / album = Calypso / released = 1956 |
+| Smokie | Living Next Door to Alice | 1975 | 1976 | https://en.wikipedia.org/wiki/Living_Next_Door_to_Alice | artist = Smokie / released = 12 November 1976 |
+| The Chiffons | He's So Fine | 1975 | 1963 | https://en.wikipedia.org/wiki/He%27s_So_Fine | artist = the Chiffons / released = January 1963 |
+| King Crimson | Epitaph | 1976 | 1969 | https://en.wikipedia.org/wiki/Epitaph_(song) | album = In the Court of the Crimson King / released = 10 October 1969 |
+| The Doors | L.A. Woman | 1976 | 1971 | https://en.wikipedia.org/wiki/L.A._Woman_(song) | released = April 19, 1971 |
+| Fats Domino | I'm in Love Again | 1977 | 1956 | https://en.wikipedia.org/wiki/I%27m_in_Love_Again_(song) | "I'm in Love Again" is a 1956 single by Fats Domino |
+| Ottawan | D.I.S.C.O | 1980 | 1979 | https://en.wikipedia.org/wiki/D.I.S.C.O. | released = 1979 |
+| Pat Boone | Ain't That a Shame | 1980 | 1955 | https://en.wikipedia.org/wiki/Ain%27t_That_a_Shame | artist = Pat Boone / released = 26 May 1955 |
+| Pat Boone | Don't Forbid Me | 1980 | 1956 | https://en.wikipedia.org/wiki/Don%27t_Forbid_Me | released = November 1956 |
+| Pat Boone | I'll Be Home | 1982 | 1956 | https://en.wikipedia.org/wiki/I'll_Be_Home | Boone's version was released as a single with "Tutti Frutti" as the B-side in January 1956. |
+| The Everly Brothers | Cathy's Clown | 1982 | 1960 | https://en.wikipedia.org/wiki/Cathy's_Clown | released = April 1960 |
+| The Righteous Brothers | (You're My) Soul and Inspiration | 1982 | 1966 | https://en.wikipedia.org/wiki/(You're_My)_Soul_and_Inspiration | released = February 26, 1966 |
+| Sam Cooke | (What A) Wonderful World | 1985 | 1960 | https://en.wikipedia.org/wiki/Wonderful_World_(Sam_Cooke_song) | released = {{Start date/1960/04/14}} |
+| Fats Domino | I'm Walkin' | 1986 | 1957 | https://en.wikipedia.org/wiki/I'm_Walkin' | released = {{Start date/1957/02/23}} |
+| Jamiroquai | Cosmic Girl | 1987 | 1996 | https://en.wikipedia.org/wiki/Cosmic_Girl_(song) | released = {{start date/1996/11/25}} (single); album Travelling Without Moving released {{Start date/1996/8/28}} |
+| Chaka Khan | Ain't Nobody | 1989 | 1983 | https://en.wikipedia.org/wiki/Ain't_Nobody | released = November 4, 1983 |
+| Depeche Mode | Enjoy the Silence | 1989 | 1990 | https://en.wikipedia.org/wiki/Enjoy_the_Silence | released = {{start date/1990/2/5}} recorded = 1989 |
+| Kate Bush | This Woman's Work | 1989 | 1988 | https://en.wikipedia.org/wiki/This_Woman's_Work | It was initially featured on the soundtrack of the American film She's Having a Baby (1988). The song was released in November 1989 |
+| Deep Purple | Sometimes I Feel Like Screaming | 1990 | 1996 | https://en.wikipedia.org/wiki/Purpendicular | Purpendicular ... released = 5 February 1996 |
+| The Ventures | Walk, Don't Run | 1990 | 1960 | https://en.wikipedia.org/wiki/Walk,_Don't_Run_(instrumental) | released = May 1960 |
+| Londonbeat | I've Been Thinking About You | 1991 | 1990 | https://en.wikipedia.org/wiki/I've_Been_Thinking_About_You | released = {{start date/1990/08}} |
+| Connie Francis | Everybody's Somebody's Fool | 1992 | 1960 | https://en.wikipedia.org/wiki/Everybody's_Somebody's_Fool | released = April 7, 1960 recorded = 1960 |
+| Eric Clapton | My Father's Eyes | 1992 | 1998 | https://en.wikipedia.org/wiki/Pilgrim_(Eric_Clapton_album) | Pilgrim ... released = {{Start date/1998/3/10}} |
+| Nina Simone | Ain't Got No | 1992 | 1968 | https://en.wikipedia.org/wiki/Ain't_Got_No,_I_Got_Life | released = 1968 |
+| Audrey Hepburn | Moon River | 1993 | 1961 | https://en.wikipedia.org/wiki/Moon_River | It was originally performed by Audrey Hepburn in the 1961 film Breakfast at Tiffany's ... In 1993, following Hepburn's death, her version was released on an album |
+| Jan and Dean | Dead Man's Curve | 1996 | 1963 | https://en.wikipedia.org/wiki/Dead_Man's_Curve_(song) | Released as a single in December 1963 |
+| The Supremes | Stop! In the Name of Love | 1996 | 1965 | https://en.wikipedia.org/wiki/Stop!_In_the_Name_of_Love | released = February 8, 1965 |
+| Ross Bagdasarian | Witch Doctor | 1997 | 1958 | https://en.wikipedia.org/wiki/Witch_Doctor_(song) | "Witch Doctor" is a 1958 American novelty song written and recorded by Ross Bagdasarian |
+| Eva Cassidy | Fields Of Gold (Songbird) | 1998 | 1996 | https://en.wikipedia.org/wiki/Songbird_(Eva_Cassidy_album) | Four tracks ("Fields of Gold", "Autumn Leaves", ...) are from her album Live at Blues Alley. |
+| Santana | Europa (Earth's Cry Heaven's Smile) | 1998 | 1976 | https://en.wikipedia.org/wiki/Europa_(Earth's_Cry_Heaven's_Smile) | album = Amigos ... released = 26 March 1976 |
+| MGMT | Kids | 2005 | 2007 | https://en.wikipedia.org/wiki/Kids_(MGMT_song) | The version of the song that appears on Oracular Spectacular is updated from earlier versions that appear on the band's EPs Time to Pretend (2005) |
+| OneRepublic | Apologize | 2005 | 2006 | https://en.wikipedia.org/wiki/Apologize_(song) | released = April 30, 2006 |
+| Chris Rea | The Road to Hell, Pt. 1 & 2 | 2008 | 1989 | https://en.wikipedia.org/wiki/The_Road_to_Hell_(song) | released = {{Start date/1989/10/2}} |
+| Betty Everett | It's In The Kiss (The Shoop Shoop Song) | 2010 | 1964 | https://en.wikipedia.org/wiki/The_Shoop_Shoop_Song_(It's_in_His_Kiss) | released = {{Start date/1964/1}} / recorded = {{Start date/1963/11/26}} |
+| Tom Boxer & Antonia | Morena | 2010 | 2009 | https://en.wikipedia.org/wiki/Morena_(Tom_Boxer_song) | released = October 2009 |
+| Peter, Paul and Mary | Puff, the Magic Dragon | 2011 | 1963 | https://en.wikipedia.org/wiki/Puff,_the_Magic_Dragon | released = January 1963 |
+| Capital Cities | Safe and Sound | 2012 | 2011 | https://en.wikipedia.org/wiki/Safe_and_Sound_(Capital_Cities_song) | released = {{Start date/2011/01/06}} |
+| Lana Del Rey | Born To Die | 2012 | 2011 | https://en.wikipedia.org/wiki/Born_to_Die_(Lana_Del_Rey_song) | "Born to Die" was first released on December 30, 2011 |
+| will.i.am & Britney Spears | Scream & Shout | 2013 | 2012 | https://en.wikipedia.org/wiki/Scream_%26_Shout | released = {{Start date/2012/11/19}} |
+| BØRNS | Electric Love | 2015 | 2014 | https://en.wikipedia.org/wiki/Electric_Love_(song) | "Electric Love" was originally released on November 10, 2014, on Børns' second EP, Candy. |
+| Imany | Don't Be So Shy | 2016 | 2015 | https://en.wikipedia.org/wiki/Don't_Be_So_Shy | In August 2015, the song was remixed by the Russian DJ duo Filatov & Karas ... released = 18 September 2015 |
+| Dennis Lloyd | Nevermind | 2017 | 2016 | https://en.wikipedia.org/wiki/Nevermind_(Dennis_Lloyd_song) | released = {{Start date/2016/12/5}} |
+| Elton John & Dua Lipa | Cold Heart | 2017 | 2021 | https://en.wikipedia.org/wiki/Cold_Heart_(Pnau_remix) | released = {{start date/df=yes/2021/8/13}} |
+| Maroon 5 & Cardi B | Girls Like You | 2017 | 2018 | https://en.wikipedia.org/wiki/Girls_Like_You | released = {{start date/2018/05/31}} |
+| Lizzo | Truth Hurts | 2019 | 2017 | https://en.wikipedia.org/wiki/Truth_Hurts_(song) | It was originally released on September 19, 2017 ... re-released as a radio single on May 28, 2019. |
+| Dotan | Numb | 2020 | 2019 | https://en.wikipedia.org/wiki/Dotan_(singer) | Singles table: "Numb" (2019); "On 22 May 2020, Dotan released the EP Numb." |
+| Dua Lipa | Don't Start Now | 2020 | 2019 | https://en.wikipedia.org/wiki/Don't_Start_Now | released for digital download and streaming by Warner Records on 31 October 2019 |
+| Saint Jhn | Roses (Imanbek remix) | 2020 | 2019 | https://en.wikipedia.org/wiki/Roses_(Saint_Jhn_song) | released as a single on September 18, 2019 |
+| Sam Smith | Promises | 2020 | 2018 | https://en.wikipedia.org/wiki/Promises_(Calvin_Harris_and_Sam_Smith_song) | It was released by Columbia Records and Sony Music on 17 August 2018. |
+| Smith & Thell | Forgive Me Friend | 2021 | 2018 | https://en.wikipedia.org/wiki/Forgive_Me_Friend | released as a single on 10 August 2018 |
+| We Are Domi | Lights Off | 2022 | 2021 | https://en.wikipedia.org/wiki/Lights_Off_(We_Are_Domi_song) | Released: 6 December 2021 (infobox) |
+| Bambie Thug | Doomsday Blue | 2024 | 2023 | https://en.wikipedia.org/wiki/Doomsday_Blue | The song was self-released on 13 October 2023, as part of their first extended play, Cathexis. |
+| Brenda Lee | Sweet Nothin's | 2024 | 1959 | https://en.wikipedia.org/wiki/Sweet_Nothin's | Released: 28 September 1959 |
+| Slimane | Mon amour | 2024 | 2023 | https://en.wikipedia.org/wiki/Mon_amour_(Slimane_song) | released on 8 November 2023 by Noé Music |
+| Laura Thorn | La poupée monte le son | 2025 | 2024 | https://en.wikipedia.org/wiki/La_poupée_monte_le_son | the song was released on 20 December 2024 |
+| Teddy Swims | Bad Dreams | 2025 | 2024 | https://en.wikipedia.org/wiki/Bad_Dreams_(Teddy_Swims_song) | It was released on September 13, 2024, through Warner Records as the first single from his second studio album. |
