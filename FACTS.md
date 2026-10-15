@@ -8,22 +8,27 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Katarzyna Sobczyk – O mnie się nie martw (Q20035332): m ·  · Kazimierz Winkler
 - Edmund Fetting – Nim Wstanie Dzień (Q11792270): m · Krzysztof Komeda · Agnieszka Osiecka
 - Jeremi Przybora – Nad Prosną (Q11788722): m · Jerzy Wasowski · Jeremi Przybora
+- Czesław Niemen – Sen O Warszawie (Q9335238): m · Czesław Niemen · 
 - Tercet Egzotyczny – Pamelo, żegnaj (Q11802443): m · Zbigniew Dziewiątkowski · 
 - Czerwone Gitary – Dzień jeden w roku (Q104377406): m · Seweryn Krajewski · Krzysztof Dzikowski
 - Czesław Niemen – Dziwny jest ten świat (Q9249000): ml · Czesław Niemen | al · Dziwny jest ten świat… · 1967
 - Ewa Demarczyk – Wiersze wojenne (Q9373273): al · Ewa Demarczyk śpiewa piosenki Zygmunta Koniecznego · 1967
 - Halina Kunicka – Niech no tylko zakwitną jabłonie (Q11791306): m · Janusz Hajdun · Jerzy Afanasjew
 - Czerwone Gitary – Anna Maria (Q9155423): m · Seweryn Krajewski · Krzysztof Dzikowski
+- Czesław Niemen & Akwarele – Pod Papugami (Q11820159): m · Mateusz Święcicki · Jan Gałkowski, Bogusław Choiński | al · Czy mnie jeszcze pamiętasz? · 1969
 - Skaldowie – Wszystko mi mówi, że mnie ktoś pokochał (Q11838032): al · Wszystko mi mówi, że mnie ktoś pokochał · 1968
+- Czesław Niemen – Jednego serca (Q24948618): al · Enigmatic · 1970
 - Skaldowie – Króliczek (Q11750169): m · Andrzej Zieliński · Agnieszka Osiecka | al · Cała jesteś w skowronkach · 1969
 - Skaldowie – Medytacje wiejskiego listonosza (Q11776888): al · Cała jesteś w skowronkach · 1969
 - Skaldowie – Prześliczna wiolonczelistka (Q25404446): al · Cała jesteś w skowronkach · 1969
+- Andrzej Dąbrowski – Zielono Mi (Q18431873): m · Jan Wróblewski · Agnieszka Osiecka
 - Edmund Fetting – Ballada o pancernych (Q9164651): m · Adam Walaciński · Agnieszka Osiecka
 - Marek Grechuta – Świecie nasz (Q25415536): m · Jan Kanty Pawluśkiewicz · Marek Grechuta | al · Korowód · 1971
 - Skaldowie – Od wschodu do zachodu słońca (Q25413091): al · Od wschodu do zachodu słońca · 1970
 - Marek Grechuta – Dni, których nie znamy (Q16540251): al · Korowód · 1971
 - 2 plus 1 – Czerwone słoneczko (Q19947025): al · Nowy wspaniały świat · 1972
 - 2 plus 1 – Hej, dogonię lato (Q19947027): al · Nowy wspaniały świat · 1972
+- 2 plus 1 – Wstawaj szkoda dnia (Q9378728): al · Nowy wspaniały świat · 1972
 - Skaldowie – Jeszcze kocham (Q11725907): al · Krywań, Krywań · 1972
 - Skaldowie – Juhas zmarł (Q11728913): al · Krywań, Krywań · 1972
 - Skaldowie – Krywaniu, Krywaniu (Q11748890): al · Krywań, Krywań · 1972
@@ -36,6 +41,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Anna Jantar – Radość najpiękniejszych lat (Q15618127): m · Jarosław Kukulski · 
 - Halina Kunicka – Od nocy do nocy (Q11795828): m · Waldemar Kazanecki · Agnieszka Osiecka
 - 2 plus 1 – California mon amour (Q9184268): m · Janusz Kruk ·  | al · Teatr na drodze · 1978
+- Elżbieta Wojnowska – Zaproście mnie do stołu (Q67858546): m · Henryk Alber · Włodzimierz Szymanowicz
 - Bogusław Mec – Jej portret (Q19947078): m · Włodzimierz Nahorny · Jonasz Kofta
 - Maryla Rodowicz & Alibabki – Wielka Woda (Q134456589): m · Katarzyna Gärtner · Agnieszka Osiecka
 - 2 plus 1 – Iść w stronę słońca (Q11715006): m · Janusz Kruk · 
@@ -58,6 +64,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Kombi – Kochać cię – za późno (Q24948692): al · Nowy rozdział · 1984
 - 2 plus 1 – Chińskie latawce (Q9189861): al · Video · 1985
 - Aya RL – Skóra (Q97285345): al · Aya RL · 1985
+- Bolter – Daj mi tę noc (Q9200844): m · Sławomir Sokołowski · 
 - Budka Suflera – Moja Alabama (Q15919483): al · Giganci tańczą · 1986
 - Edyta Geppert – Jaka Róża Taki Cierń (Q16560958): al · Och, życie kocham cię nad życie · 1986
 - Maryla Rodowicz – Niech Żyje Bal (Q11791310): m · Seweryn Krajewski · Agnieszka Osiecka
@@ -116,17 +123,22 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Ralph Kaminski – 2009 (Q134437108): ml · Ralph Kaminski
 - Sorry Boys – Absolutnie, absolutnie (Q136746925): pr · Marek Dziedzic
 - Viki Gabor – Superhero (Q76424139): al · Getaway · 2020
+- Sarsa – Tęskno Mi (Q134454745): m · Paweł Smakulski, Sarsa · Sarsa
 - Paweł Domagała – Popatrz na mnie (Q134447435): ml · Paweł Domagała
 - Daria Zawiałow – Metropolis (Q134444312): m · Daria Zawiałow, Michał Kush · Daria Zawiałow
 - Dawid Kwiatkowski – Proste (Q134470633): m · Lanberry, Dominic Buczkowski-Wojtaszek, Dawid Kwiatkowski · Lanberry, Dawid Kwiatkowski, Patryk Kumór | pr · Dominic Buczkowski-Wojtaszek
 - Kaśka Sochacka – Niebo było różowe (Q134446819): ml · Kaśka Sochacka
+- Kaśka Sochacka – Spaleni słońcem (Q134455973): m · Kaśka Sochacka, Olek Świerkot · Kaśka Sochacka, Daria ze Śląska
+- Daria Zawiałow – Żółta Taksówka (Q134444705): m ·  · Daria Zawiałow
+- Smolasty & francis – Duże Oczy (Q134436590): m ·  · Smolasty
+- Natalia Szroeder & Ralph Kaminski – Przypływy (Q109652734): ml · Natalia Szroeder
 - B.R.O – Jeszcze będzie pięknie (Q134444756): ml · B.R.O
 - Blanka – Solo (Q116919895): m · Blanka Stajkow, Tribbs · 
-- Bryska – Kraksa (Q134469580): m · Magdalena Wójcik, Bryska, Jakub Galiński · Bryska, Magdalena Wójcik | pr · Jakub Galiński
+- Bryska – Kraksa (Q134469580): m · Bryska, Magdalena Wójcik, Jakub Galiński · Bryska, Magdalena Wójcik | pr · Jakub Galiński
 - Bryska – Na legalu (Q134466527): ml · Bryska
 - Bryska – Odbicie (Mark Neve Remix) (Q134469701): ml · Bryska
-- Dawid Podsiadło – Mori (Q134466525): m · Dawid Podsiadło, Jakub Galiński · Dawid Podsiadło | pr · Jakub Galiński
-- Dawid Podsiadło – Post (Q134469641): m · Dawid Podsiadło, Jakub Galiński · Dawid Podsiadło | pr · Jakub Galiński
+- Dawid Podsiadło – Mori (Q134466525): m · Jakub Galiński, Dawid Podsiadło · Dawid Podsiadło | pr · Jakub Galiński
+- Dawid Podsiadło – Post (Q134469641): m · Jakub Galiński, Dawid Podsiadło · Dawid Podsiadło | pr · Jakub Galiński
 - Dawid Podsiadło – To co masz Ty! (Q131286836): m · Dawid Podsiadło, Jakub Galiński · 
 - Grzegorz Hyży – Kochanie to ja! (Q134444724): m ·  · Grzegorz Hyży
 - Kabe – Rarara (Q134456359): m ·  · Kabe
@@ -139,6 +151,12 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Pezet & Auer – Dom Nad Wodą (Q134460189): m ·  · Pezet
 - Skolim – Wyglądasz Idealnie (Q134446644): m ·  · Skolim
 - Vito Bambino – Poszło (Q134459882): ml · Vito Bambino | pr · Vito Bambino
+- Dawid Podsiadło – D I A B L E (Q134466071): m · Jakub Galiński, Dawid Podsiadło · Dawid Podsiadło | pr · Jakub Galiński
+- Jann – Gladiator (Q116975067): m · Jann · 
+- Agnieszka Chylińska – Jest nas więcej (Q134437122): ml · Agnieszka Chylińska
+- Dawid Podsiadło – TAZOSy (Q134466318): ml · Dawid Podsiadło | pr · Dawid Podsiadło
+- Oskar Cyms – Daj mi znać (Q134437207): m · Damian Skoczyk, Emilian Waluchowski, Dominic Buczkowski-Wojtaszek · Marissa, Patryk Kumór, Oskar Cyms | pr · Dominic Buczkowski-Wojtaszek, Patryk Kumór
+- Rubens – Wszystko OK? (Q134444765): ml · Rubens
 - Daria Zawiałow – Ballada o niej (Q134464194): m · Daria Zawiałow, Bartosz Dziedzic · Daria Zawiałow | pr · Bartosz Dziedzic
 - Daria Zawiałow – Fifi Hollywood (Q134466288): m · Daria Zawiałow, Bartosz Dziedzic · Daria Zawiałow | pr · Bartosz Dziedzic
 - Daria Zawiałow – Z Tobą na chacie (Q134466330): m · Daria Zawiałow, Bartosz Dziedzic · Daria Zawiałow | pr · Bartosz Dziedzic
@@ -146,17 +164,21 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Dawid Kwiatkowski – Café de Paris (Q134436034): m ·  · Dawid Kwiatkowski
 - L.U.C. – Jesień – tańcuj (Q134466079): m · L.U.C. · Kayah, L.U.C. | pr · L.U.C.
 - L.U.C. – Koniec lata (Q131742024): m · L.U.C., Jacek Sienkiewicz · Bela Komoszyńska, L.U.C., Katarzyna Sienkiewicz | pr · L.U.C.
-- Oskar Cyms – Na niebie (Q134437284): m · Damian Skoczyk, Emilian Waluchowski, Dominic Buczkowski-Wojtaszek · Marissa, Carla Fernandes, Oskar Cyms | pr · Emilian Waluchowski, Dominic Buczkowski-Wojtaszek, Patryk Kumór
+- Oskar Cyms – Na niebie (Q134437284): m · Damian Skoczyk, Emilian Waluchowski, Marissa · Marissa, Carla Fernandes, Patryk Kumór | pr · Emilian Waluchowski, Dominic Buczkowski-Wojtaszek, Patryk Kumór
 - PRO8L3M – Nicea (Q134455935): m ·  · PRO8L3M
 - ReTo – Fluid (Q134456414): m ·  · ReTo
 - Vito Bambino – Etna (Q134428380): m ·  · Vito Bambino
+- Wojciech Baranowski – Sierpień (Q134466055): ml · Wojciech Baranowski | pr · Wojciech Baranowski
+- Kasia Lins – Po trupach do Ciebie (Q134459853): ml · Kasia Lins | pr · Kasia Lins
+- Kaśka Sochacka – Madison (Q131536613): m · Olek Świerkot, Kaśka Sochacka · Kaśka Sochacka | pr · Olek Świerkot, Kaśka Sochacka
+- Natalia Nykiel – Bye Bye (Q134466368): ml · Natalia Nykiel
 - Chivas – Prawie straciłem głos (Q134455444): ml · Chivas | pr · Chivas
 - Dawid Podsiadło – Pięknie płyniesz (Q133888161): ml · Dawid Podsiadło
 - Justyna Steczkowska – Gaja (Q132222214): ml · Justyna Steczkowska | al · Witch Tarohoro · 2024
 - Kaśka Sochacka – Spokojnie (Q137707404): ml · Kaśka Sochacka | pr · Olek Świerkot
 - Kaśka Sochacka – Szum (Q131755823): m · Olek Świerkot, Kaśka Sochacka · Kaśka Sochacka | pr · Olek Świerkot
-- Kizo & Bletka – 100 BPM (Q134465880): m ·  · Bletka, Kizo
-- Kizo & Bletka – Hero (Q134465856): m ·  · Bletka, Kizo
+- Kizo & Bletka – 100 BPM (Q134465880): m ·  · Kizo, Bletka
+- Kizo & Bletka – Hero (Q134465856): m ·  · Kizo, Bletka
 - Lanberry – Co ja robię tu (Q131729432): ml · Lanberry
 - Mata – Lloret de Mar (Q134455089): ml · Mata
 - Modelki – Trochę Za Blisko (Q137707603): ml · Modelki
@@ -168,33 +190,46 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Sylwia Grzeszczak – Och i ach (Q131749544): m · Sylwia Grzeszczak · Magdalena Wójcik, Liber
 - White 2115 – 1 na 100 (Q134455761): m ·  · Mata, Sebastian Czekaj
 - Zalia – Diament (Q134455269): ml · Zalia
-- Ania Karwan – W to mi graj (Q137824305): m · Ania Karwan · Wiktor Dyduła, Ania Karwan, Magdalena Wójcik
-- Bletka – Komu miałabym powiedzieć? (Q137732646): m · Magdalena Wójcik, Bletka · Bletka, Magdalena Wójcik
+- Arek Kłusowski – Pop I Disco (Q134455106): ml · Arek Kłusowski
+- Dawid Kwiatkowski – Co zostało mi? (Q131742061): m · Dawid Kwiatkowski · 
+- Kaśka Sochacka – Komary (Q131755888): m · Olek Świerkot, Kaśka Sochacka · Kaśka Sochacka | pr · Olek Świerkot
+- Mery Spolsky – SANTORINI (Q134455286): ml · Mery Spolsky
+- PRO8L3M & Daria Zawiałow – Na ostatnią chwilę (Q134464111): m ·  · Daria Zawiałow, PRO8L3M
+- Sara James – TINY HEART (Q134602098): ml · Sara Egwu James
+- Sarsa – Puch (Q134463761): m · Paweł Smakulski, Sarsa · Sarsa | pr · Paweł Smakulski
+- Sylwia Grzeszczak – Latawce (Q134464280): m · Sylwia Grzeszczak · Liber | pr · Jakub Galiński
+- Ania Karwan – W to mi graj (Q137824305): m · Ania Karwan · Ania Karwan, Wiktor Dyduła, Magdalena Wójcik
+- Bletka – Komu miałabym powiedzieć? (Q137732646): ml · Bletka, Magdalena Wójcik
 - Dawid Kwiatkowski – Proszę tańcz (Q134463796): m · Dominic Buczkowski-Wojtaszek, Dawid Kwiatkowski, Patryk Kumór · Kayah, Dawid Kwiatkowski | pr · Dominic Buczkowski-Wojtaszek, Patryk Kumór
 - Dawid Podsiadło – Samoloty (Q134710933): ml · Kaśka Sochacka, Dawid Podsiadło
 - Dawid Podsiadło – W kilometrach (Q136746953): ml · Kaśka Sochacka, Dawid Podsiadło
 - Fagata – Mama mówiła (Q137707491): m ·  · Fagata
 - Fagata & Sentino – Trójkąt (Q137707459): m ·  · Fagata, Sentino
 - Fukaj & Vito Bambino – Zabiorę Cię Tam (Q136746931): m ·  · Vito Bambino, Fukaj
-- Julia Wieniawa – Kocham (Q135474210): m · Julia Wieniawa · Monika Wydrzyńska, Julia Wieniawa
+- Julia Wieniawa – Kocham (Q135474210): m · Julia Wieniawa · Julia Wieniawa, Monika Wydrzyńska
 - Kacperczyk – Gdzie trafia miłość, gdy umiera (Q136746910): m · Daria Zawiałow · Kacperczyk, Daria Zawiałow | pr · Kacperczyk
-- Kuban & Zalia – Kyoto (Q135474665): m · Kuban · Zalia, Kuban
+- Kuban & Zalia – Kyoto (Q135474665): m · Kuban · Kuban, Zalia
 - Mata & Skolim – Kamikaze (Q136747064): m ·  · Skolim, Mata
 - Miü & Zalia – Dopóki się nie znudzisz (Q137707526): m ·  · Zalia, Miü
 - Modelki – Czego chcesz? (Q137707516): ml · Modelki
 - Mrozu & Zalia – Odpowiedni moment (Q136806032): m · Mrozu · Zalia, Mrozu | pr · Mrozu
-- Oskar Cyms – Co noc (Q134503614): m · Dominic Buczkowski-Wojtaszek, Patryk Kumór, Oskar Cyms · Oskar Cyms, Patryk Kumór | pr · Dominic Buczkowski-Wojtaszek, Patryk Kumór
+- Oskar Cyms – Co noc (Q134503614): m · Dominic Buczkowski-Wojtaszek, Patryk Kumór, Oskar Cyms · Patryk Kumór, Oskar Cyms | pr · Dominic Buczkowski-Wojtaszek, Patryk Kumór
 - Quebonafide – Futurama 3 (fanserwis) (Q134464221): m · Gedz · Quebonafide | pr · Gedz
 - Sobel – Cha cha (Q134503608): m ·  · Sobel
 - Sobel – Z tyłu głowy (Q134503550): m ·  · Sobel
 - Wiktor Dyduła & Kasia Sienkiewicz – Nie mówię tak, nie mówię nie (Q135012629): ml · Wiktor Dyduła
 - Young Leosia – Ej Agatka (Q137707528): ml · Young Leosia | pr · Young Leosia
+- Dawid Podsiadło & Kaśka Sochacka – nadprzestrzenie (Q134710937): ml · Kaśka Sochacka, Dawid Podsiadło
+- Kuban & Mrozu – zanim spadnie deszcz (Q137707483): m · Kuban · Mrozu
+- Wiktor Dyduła – Szybkie tempo (Q135214227): ml · Wiktor Dyduła
 - Dawid Kwiatkowski & Margaret – Później Ci opowiem (Q140367896): m · Margaret, Dawid Kwiatkowski, Patryk Kumór · Margaret, Dawid Kwiatkowski | pr · Patryk Kumór, Dominic Buczkowski-Wojtaszek
 - Ma Rainey – See See Rider (Q1022445): ml · Lena Arant, Ma Rainey | bo · Easy Rider · 
 - Ethel Merman – Anything Goes (Q4778332): ml · Cole Porter
 - Ethel Merman – I Get a Kick Out of You (Q1108383): ml · Cole Porter
 - Glenn Miller – In the Mood (Q1413725): m · Joe Garland, Wingy Manone · Andy Razaf
+- Cliff Edwards – When You Wish Upon a Star (Q2734098): m · Leigh Harline · Ned Washington | w · Pinokio · 2022
 - Gene Kelly – Singin' In The Rain (Q131631671): w · Deszczowa piosenka · 1952
+- Dean Martin – That's Amore (Q1605189): m · Harry Warren · Jack Brooks | pr · Jack Brooks
 - The Chordettes – Mr. Sandman (Q931296): pr · Archie Bleyer
 - Chuck Berry – Maybellene (Q2080355): pr · Leonard Chess
 - Johnny Cash – Folsom Prison Blues (Q109501850): pr · Bob Johnston
@@ -271,6 +306,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Martha and the Vandellas – Heat Wave (Q104794808): pr · Holland & Dozier
 - Roy Orbison – In Dreams (Q6009358): m ·  · Roy Orbison | al · In Dreams · 1963 | pr · Fred Foster
 - The Ronettes – Be My Baby (Q812819): m ·  · Phil Spector | pr · Phil Spector
+- Henry Mancini – The Pink Panther Theme (Q3510916): ml · Henry Mancini | pr · Joe Reisman
+- Boots Randolph – Yakety Sax (Q2557461): m · Boots Randolph ·  | bo · Yakety Yak · 1958
 - Barbra Streisand – People (Q3899333): m · Jule Styne · Bob Merrill
 - Bob Dylan – The Times They Are A-Changin' (Q2006225): ml · Bob Dylan | al · The Times They Are a-Changin' · 1964
 - Gary Lewis & the Playboys – This Diamond Ring (Q7785680): al · This Diamond Ring · 1964
@@ -302,6 +339,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Monkees – Last Train to Clarksville (Q2708096): ml · Tommy Boyce, Bobby Hart
 - The Rolling Stones – Paint It Black (Q1046717): ml · Mick Jagger, Keith Richards | al · Aftermath · 1966 | pr · Andrew Loog Oldham
 - The Troggs – Wild Thing (Q225027): m ·  · Chip Taylor
+- Aretha Franklin – Baby, I Love You (Q3632443): pr · Jerry Wexler
 - Aretha Franklin – (You Make Me Feel Like) A Natural Woman (Q3596307): m ·  · Gerry Goffin | pr · Jerry Wexler
 - Frank Sinatra & Nancy Sinatra – Somethin' Stupid (Q134567374): pr · Jimmy Bowen, Lee Hazlewood
 - Lulu – To Sir With Love (Q2916924): pr · Mickie Most
@@ -323,6 +361,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Mary Hopkin – Those Were The Days (Q88229004): pr · Paul McCartney
 - Stevie Wonder – For Once In My Life (Q3747882): pr · Henry Cosby
 - The Zombies – Time of the Season (Q3772309): m ·  · Rod Argent
+- The Doors – Touch Me (Q1988263): ml · Robby Krieger | al · The Soft Parade · 1969 | pr · Paul A. Rothchild
 - B.B. King – The Thrill Is Gone (Q3523013): m ·  · Roy Hawkins | pr · Bill Szymczyk
 - Cass Elliot – Make Your Own Kind Of Music (Q6126616): al · Bubblegum, Lemonade, and... Something for Mama · 1969 | pr · Steve Barri
 - David Bowie – Space Oddity (Q581952): ml · David Bowie | al · Space Oddity · 1969 | pr · Gus Dudgeon
@@ -348,6 +387,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Everly Brothers – Let It Be Me (Q111648361): pr · Archie Bleyer
 - The Jackson 5 – I'll Be There (Q1073719): m ·  · Berry Gordy | al · Third Album · 1970 | pr · Berry Gordy
 - The Kinks – Lola (Q2706015): m ·  · Ray Davies | pr · Ray Davies
+- The Doors – Peace Frog (Q3898458): ml · Jim Morrison | al · Morrison Hotel · 1970 | pr · Paul A. Rothchild
+- Eric Clapton – Let It Rain (Q18628518): al · Eric Clapton · 1970
 - Carole King – It's Too Late (Q11977632): m · Carole King ·  | pr · Lou Adler
 - Deep Purple – Fireball (Q1418848): m ·  · Ritchie Blackmore
 - Don McLean – Vincent (Q920366): m ·  · Don McLean
@@ -366,6 +407,9 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Doors – Riders on the Storm (Q510066): m ·  · Ray Manzarek | al · L.A. Woman · 1971 | pr · Bruce Botnick
 - Uriah Heep – Lady In Black (Q1411340): pr · Gerry Bron
 - Yes – Roundabout (Q1078140): pr · Eddie Offord
+- David Bowie – Changes (Q1950768): ml · David Bowie | pr · David Bowie, Ken Scott
+- David Bowie – Kooks (Q6430557): al · Hunky Dory · 1971
+- Shirley Bassey – Diamonds Are Forever (Q15805662): m · John Barry · Don Black
 - David Bowie – Starman (Q2455256): m ·  · David Bowie | al · The Rise and Fall of Ziggy Stardust and the Spiders from Mars · 1972 | pr · Ken Scott, David Bowie
 - Deep Purple – Highway Star (Q1417325): ml · Ritchie Blackmore, Ian Gillan, Ian Paice | al · Machine Head · 1972
 - Elton John – Crocodile Rock (Q2321252): m ·  · Bernie Taupin | pr · Gus Dudgeon
@@ -412,6 +456,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Hollies – The Air That I Breathe (Q66459084): pr · Ron Richards
 - The Hollywood Argyles – Alley Oop (Q4732199): m · Dallas Frazier ·  | pr · Gary S. Paxton | bo · Alley Oop · 1969
 - The Rolling Stones – Time Waits For No One (Q7805192): al · It's Only Rock'n Roll · 1974 | pr · The Glimmer Twins
+- Aerosmith – Same Old Song and Dance (Q917552): m ·  · Steven Tyler | al · Get Your Wings · 1974 | pr · Jack Douglas
+- David Bowie – Rebel Rebel (Q2190364): m ·  · David Bowie
 - Billy Ocean – Love Really Hurts Without You (Q15878874): al · Billy Ocean · 1976
 - Bob Dylan – Hurricane (Q1419882): ml · Bob Dylan | al · Desire · 1976 | pr · Don DeVito
 - Carpenters – Solitaire (Q7558181): m ·  · Neil Sedaka | pr · Richard Carpenter
@@ -427,6 +473,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Rod Stewart – Sailing (Q102004750): pr · Tom Dowd
 - Roxy Music – Love Is The Drug (Q4846342): m · Andy Mackay · Bryan Ferry | pr · Chris Thomas
 - Slik – Forever And ever (Q5469483): pr · Bill Martin
+- AC/DC – It's a Long Way to the Top (If You Wanna Rock 'N' Roll) (Q2550514): ml · Bon Scott, Angus Young, Malcolm Young | al · T.N.T. · 1975
+- Aerosmith – Sweet Emotion (Q2520996): m ·  · Steven Tyler
 - The Chiffons – He's So Fine (Q5688613): pr · Philip Margo
 - Van McCoy – The Hustle (Q7741159): pr · Hugo Peretti
 - Blue Öyster Cult – (Don't Fear) The Reaper (Q2667755): pr · Sandy Pearlman
@@ -455,6 +503,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Marvin Gaye – Got To Give It Up (Q1027675): ml · Marvin Gaye
 - Neil Diamond & Barbra Streisand – You Don't Bring Me Flowers (Q2601110): m · Michel Legrand · Alan Bergman, Marilyn Bergman | pr · Bob Gaudio
 - Talking Heads – Psycho Killer (Q1625706): m ·  · David Byrne | pr · Tony Bongiovi
+- Electric Light Orchestra – Sweet Talkin' Woman (Q3506540): m ·  · Jeff Lynne | pr · Jeff Lynne
 - Billy Joel – Honesty (Q3288620): m ·  · Billy Joel | pr · Phil Ramone
 - Billy Joel – My Life (Q5973399): pr · Phil Ramone
 - Chaka Khan – I'm Every Woman (Q1589449): m ·  · Ashford & Simpson | pr · Arif Mardin
@@ -468,11 +517,14 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Patrick Hernandez – Born to Be Alive (Q893931): m ·  · Patrick Hernandez
 - Sister Sledge – He's the Greatest Dancer (Q5688657): m ·  · Bernard Edwards | pr · Bernard Edwards
 - Suzi Quatro & Chris Norman – Stumblin' In (Q3497668): m ·  · Mike Chapman | pr · Mike Chapman, Suzi Quatro, Chris Norman
+- Toto – Georgy Porgy (Q2578892): pr · David Paich
+- Toto – Hold the Line (Q2319497): m ·  · David Paich | pr · David Paich
 - The Doobie Brothers – What a Fool Believes (Q1174634): m · Kenny Loggins, Michael McDonald · Michael McDonald
 - The Police – Can't Stand Losing You (Q2608791): m ·  · Sting | pr · Stewart Copeland
 - The Rolling Stones – Miss You (Q2312462): m ·  · Mick Jagger
 - Van Halen – Ain't Talkin' 'Bout Love (Q3302552): al · Van Halen · 1978 | pr · Ted Templeman
 - Van Halen – Runnin' with the Devil (Q2414965): pr · Ted Templeman
+- Giorgio Moroder – Chase (Q2961324): m · Giorgio Moroder ·  | pr · Giorgio Moroder
 - Bee Gees – Tragedy (Q2323852): m ·  · Barry Gibb | pr · Bee Gees
 - Cliff Richard – We Don't Talk Anymore (Q262640): pr · Bruce Welch
 - Diana Ross – The Boss (Q3520065): m ·  · Ashford & Simpson
@@ -497,6 +549,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Sugarhill Gang – Rapper's Delight (Q944039): m · Nile Rodgers · Bernard Edwards | pr · Sylvia Robinson
 - The Whispers – And the Beat Goes On (Q489606): pr · Dick Griffey
 - Village People – In The Navy (Q625452): m ·  · Jacques Morali | pr · Jacques Morali
+- Lipps Inc. – Funkytown (Q1474712): m ·  · Steven Greenberg
+- Miki Matsubara – Mayonaka no Door / Stay With Me (Q11582998): m · Tetsuji Hayashi · Yoshiko Miura
 - AC/DC – Back In Black (Q2466691): ml · Angus Young | pr · Robert John Lange
 - AC/DC – You Shook Me All Night Long (Q2337709): m · Angus Young · Brian Johnson | al · Back in Black · 1980 | pr · Robert John Lange
 - Barbra Streisand – Woman in Love (Q2297799): ml · Barry Gibb | al · Guilty · 1980 | pr · Barry Gibb
@@ -520,6 +574,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Jam – That's Entertainment (Q7710897): m ·  · Paul Weller
 - Ultravox – Vienna (Q9304410): m · Chris Cross, Midge Ure, Warren Cann · Midge Ure, Warren Cann, Billy Currie | al · Vienna · 1980
 - Yes – Into the Lens (Q6058054): al · Drama · 1980
+- Queen – Flash (Q1001928): ml · Brian May | al · Flash Gordon · 1980 | pr · Reinhold Mack
 - Aneka – Japanese Boy (Q3807289): al · Japanese Boy · 1981
 - Foreigner – Waiting for a Girl like You (Q3607139): pr · Robert John Lange
 - Phil Collins – In the Air Tonight (Q546425): m ·  · Phil Collins | pr · Dame Grease
@@ -548,11 +603,14 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Roxy Music – Avalon (Q4827555): pr · Rhett Davies
 - Roxy Music – More Than This (Q1633686): m ·  · Bryan Ferry | pr · Rhett Davies
 - Steve Miller Band – Abracadabra (Q323324): m ·  · Steve Miller | pr · Steve Miller
+- Toto – Rosanna (Q525539): m ·  · David Paich | pr · Toto
 - The Alan Parsons Project – Eye In The Sky (Q1338015): m · Eric Woolfson, Alan Parsons · Alan Parsons | al · Eye in the Sky · 1982 | pr · Alan Parsons
 - The Everly Brothers – Cathy's Clown (Q1051161): ml · Don Everly | pr · Wesley Rose
 - The Jam – Town Called Malice (Q7829909): pr · Peter Wilson
 - The Psychedelic Furs – Love My Way (Q6691114): pr · Todd Rundgren
 - Whitesnake – Here I Go Again (Q1589092): m ·  · David Coverdale | pr · Martin Birch
+- Phil Collins – I Don't Care Anymore (Q1577677): ml · Phil Collins
+- Musical Youth – Pass the Dutchie (Q144464): m ·  · Leroy Sibbles, Jackie Mittoo
 - Accept – Balls to the Wall (Q2881392): m ·  · Udo Dirkschneider
 - Billy Idol – Rebel Yell (Q2134998): pr · Keith Forsey
 - David Bowie – China Girl (Q2551963): m ·  · David Bowie | pr · David Bowie
@@ -572,6 +630,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - UB40 – Red Red Wine (Q61457500): pr · UB40, Pablo Falconer
 - Van Halen – Jump (Q93895896): pr · Ted Templeman
 - ZZ Top – Gimme All Your Lovin' (Q3106671): m · Frank Beard, Billy Gibbons, Dusty Hill · Billy Gibbons | pr · Bill Ham
+- Rita Coolidge – All Time High (Q2837540): m · John Barry · Tim Rice
+- Paul Engemann – Push It to the Limit (Q2747740): m ·  · Giorgio Moroder | al · Scarface – Music From the Original Motion Picture Soundtrack · 1983 | pr · Giorgio Moroder
 - Bon Jovi – Runaway (Q2539410): m ·  · Jon Bon Jovi | pr · Tony Bongiovi
 - Bruce Springsteen – I'm On Fire (Q1115168): ml · Bruce Springsteen | pr · Jon Landau
 - Bryan Adams – Run To You (Q2176004): m ·  · Bryan Adams
@@ -590,8 +650,11 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Sade – Smooth Operator (Q4049660): m ·  · Sade Adu | al · Diamond Life · 1984
 - Stevie Wonder – I Just Called To Say I Love You (Q1655199): ml · Stevie Wonder | pr · Stevie Wonder
 - Talk Talk – It's My Life (Q1675420): m ·  · Mark Hollis | pr · Tim Friese-Greene
+- Tears for Fears – Shout (Q950244): m · Roland Orzabal, Ian Stanley · Roland Orzabal | pr · Chris Hughes
 - The Cars – Drive (Q169987): m · Ric Ocasek ·  | pr · Robert John Lange
 - Van Halen – Hot for Teacher (Q4356796): pr · Ted Templeman
+- The Smiths – Heaven Knows I'm Miserable Now (Q3784027): m ·  · Johnny Marr | al · Hatful of Hollow · 1984 | pr · John Porter
+- Deniece Williams – Let's Hear It for the Boy (Q1821312): pr · George Duke
 - Bryan Ferry – Don't Stop The Dance (Q16988927): al · Boys and Girls · 1985
 - C.C. Catch – I Can Lose My Heart Tonight (Q2986907): m ·  · Dieter Bohlen | al · Catch the Catch · 1986 | pr · Dieter Bohlen
 - Dire Straits – Brothers In Arms (Q990847): m ·  · Mark Knopfler | al · Brothers in Arms · 1985 | pr · Mark Knopfler
@@ -611,6 +674,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Starship – Sara (Q602645): al · Knee Deep in the Hoopla · 1985
 - Starship – We Built This City (Q221314): m ·  · Bernie Taupin
 - ZZ Top – Rough Boy (Q7370805): m · Frank Beard, Billy Gibbons, Dusty Hill ·  | pr · Bill Ham
+- John Parr – St. Elmos Fire (Man in Motion) (Q1276930): m · John Parr, David Foster · David Foster | pr · David Foster
+- Survivor – Burning Heart (Q1016791): m · Jim Peterik, Frankie Sullivan · Jim Peterik | pr · Jim Peterik
 - Berlin – Take My Breath Away (Q2298481): ml · Giorgio Moroder | al · Top Gun – Original Motion Picture Soundtrack · 1986 | pr · Giorgio Moroder
 - Bon Jovi – Livin' on a Prayer (Q1894466): m · Jon Bon Jovi · Richie Sambora | pr · Bruce Fairbairn
 - Bon Jovi – Wanted Dead Or Alive (Q2307249): m ·  · Richie Sambora | pr · Bruce Fairbairn
@@ -634,6 +699,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Moody Blues – Your Wildest Dreams (Q4023091): pr · Tony Visconti
 - The Stranglers – Always the Sun (Q449707): m ·  · Hugh Cornwell
 - XTC – Dear God (Q2380912): m ·  · Andy Partridge | pr · Todd Rundgren
+- New Order – Bizarre Love Triangle (Q2567279): m ·  · Bernard Sumner
+- Kenny Loggins – Danger Zone (Q5216027): m · Giorgio Moroder · Tom Whitlock | w · Top Gun: Maverick · 2022
 - Aerosmith – Dude (Looks Like A Lady) (Q2313633): pr · Bruce Fairbairn
 - Aerosmith – Rag Doll (Q2635014): pr · Bruce Fairbairn
 - C.C. Catch – Soul Survivor (Q12981799): m ·  · Dieter Bohlen | al · Like a Hurricane · 1987 | pr · Dieter Bohlen
@@ -646,6 +713,18 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - INXS – Mystify (Q6949014): pr · Chris Thomas
 - INXS – Need You Tonight (Q1163830): pr · Chris Thomas
 - INXS – Never Tear Us Apart (Q2708325): m ·  · Michael Hutchence | pr · Chris Thomas
+- Pet Shop Boys – Domino Dancing (Q2309963): m ·  · Neil Tennant
+- INXS – Suicide Blonde (Q7635325): pr · Chris Thomas
+- Pearl Jam – Garden (Q5522191): m · Jeff Ament ·  | pr · Rick Parashar
+- Paul McCartney – Hope Of Deliverance (Q5899727): pr · Paul McCartney
+- The Prodigy – Out of Space (Q2003432): m ·  · Liam Howlett | al · Experience · 1992 | pr · Liam Howlett
+- Whitney Houston – Queen of the Night (Q1407945): m · Babyface, L.A. Reid, Daryl Simmons · Babyface, L.A. Reid, Whitney Houston | pr · Babyface, L.A. Reid
+- Whitney Houston – Run to You (Q2304718): pr · David Foster
+- Los del Río – Macarena (Q1149738): ml · Antonio Romero | al · A mí me gusta · 1993 | pr · Los Del Río
+- Stone Temple Pilots – Interstate Love Song (Q3391483): pr · Brendan O'Brien
+- Pink Floyd – Poles Apart (Q2745212): ml · David Gilmour | al · The Division Bell · 1994 | pr · Bob Ezrin
+- Randy Newman – You've Got a Friend in Me (Q3302365): ml · Randy Newman | pr · Randy Newman, Don Was
+- Shaggy – Boombastic (Q3642293): pr · Shaun Pizzonia
 - Jane's Addiction – Jane Says (Q6152728): al · Nothing's Shocking · 1988
 - Los Lobos – La Bamba (Q641677): m ·  · Ritchie Valens
 - Madonna – Who's That Girl (Q1509118): m ·  · Patrick Leonard, Madonna | al · Who's That Girl — Original Motion Picture Soundtrack · 1987 | pr · Patrick Leonard, Madonna
@@ -701,6 +780,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Phil Collins – I Wish It Would Rain Down (Q2980090): m ·  · Phil Collins | pr · Phil Collins, Hugh Padgham
 - Pixies – Monkey Gone to Heaven (Q3300137): m ·  · Frank Black | pr · Gil Norton
 - Queen – I Want It All (Q544294): m ·  · Brian May | al · The Miracle · 1989
+- Tears for Fears & Oleta Adams – Woman In Chains (Q1610871): m ·  · Roland Orzabal
 - Tesla – Love Song (Q6691268): pr · Steve Thompson
 - The B-52's – Love Shack (Q51622): ml · Kate Pierson | pr · Don Was
 - The Go-Betweens – Love Goes On! (Q20874838): al · 16 Lovers Lane · 1988
@@ -731,6 +811,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Dire Straits – You And Your Friend (Q2048549): pr · Mark Knopfler
 - Enya – Caribbean Blue (Q734813): ml · Enya | al · Shepherd Moons · 1991 | pr · Nicky Ryan
 - Guns N' Roses – Don't Cry (Q1242271): m · Izzy Stradlin, Axl Rose · Izzy Stradlin | al · Use Your Illusion I · 1991 | pr · Mike Clink
+- IRA – Nie zatrzymam się (Q11791237): al · Mój dom · 1991
 - Londonbeat – I've Been Thinking About You (Q10532748): m · Jimmy Helms · 
 - Massive Attack & Shara Nelson – Unfinished Sympathy (Q951962): pr · Massive Attack
 - Mr. Big – To Be With You (Q3586050): pr · Kevin Elson
@@ -752,6 +833,10 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Bon Jovi – Keep The Faith (Q1737747): m ·  · Jon Bon Jovi | pr · Bob Rock
 - Dr. Alban – It's My Life (Q558000): m ·  · Dr Alban | pr · RedOne
 - Dr. Dre & Snoop Dogg – Nuthin' But A "G" Thang (Q1933481): m ·  · Dr. Dre | pr · Dr. Dre
+- Bryan Adams – 18 Til I Die (Q4557541): pr · Robert John Lange
+- Faith No More – Stripsearch (Q7624171): pr · Roli Mosimann
+- Robbie Williams – Let Me Entertain You (Q943976): pr · Guy Chambers
+- Backstreet Boys – As Long as You Love Me (Q2234335): m ·  · Max Martin | al · Backstreet's Back · 1997
 - Haddaway – What Is Love (Q550158): m ·  · Tony Hendrik | w · Odlotowy duet · 1998
 - Kris Kross – Jump (Q15635928): ml · Jermaine Dupri | pr · Jermaine Dupri
 - Manic Street Preachers – Motorcycle Emptiness (Q2214059): m · James Dean Bradfield, Sean Moore, Nicky Wire · 
@@ -870,6 +955,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Offspring – The Kids Aren't Alright (Q2417725): ml · Dexter Holland | pr · Dave Jerden
 - The Offspring – Why Don't You Get A Job (Q2722036): m ·  · Dexter Holland | pr · Dave Jerden
 - U2 – The Sweetest Thing (Q2656095): pr · Steve Lillywhite
+- Whitney Houston & Mariah Carey – When You Believe (Q676098): m ·  · Stephen Schwartz | w · Książę Egiptu · 1998 | pr · Babyface
+- ATB – 9 PM (Till I Come) (Q4178824): pr · André Tanneberger
 - Anastacia – I'm Outta Love (Q1086374): m ·  · Anastacia | al · Not That Kind · 2000
 - Aphex Twin – Windowlicker (Q1970645): pr · Aphex Twin
 - Bloodhound Gang – The Bad Touch (Q2302236): m ·  · Jimmy Pop | pr · Jimmy Pop
@@ -881,6 +968,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Dr. Dre & Snoop Dogg – Still D.R.E. (Q370983): m ·  · Dr. Dre | al · 2001 · 1999 | pr · Dr. Dre
 - Dr. Dre & Snoop Dogg – The Next Episode (Q978310): m ·  · Dr. Dre | pr · Dr. Dre
 - Faith Hill – Breathe (Q904020): m ·  · Stephanie Bentley, Holly Lamar | pr · Byron Gallimore, Faith Hill
+- Gigi D'Agostino – L'Amour Toujours (Q2601602): m · Gigi d'Agostino ·  | pr · Gigi d'Agostino
 - Incubus – Drive (Q2708696): pr · Scott Litt
 - Jamiroquai – Canned Heat (Q1448275): m · Jamiroquai · Jay Kay, Jamiroquai
 - Jennifer Lopez – Let's Get Loud (Q1067049): m · Kike Santander, Gloria Estefan · Gloria Estefan | al · On the 6 · 1999 | pr · Emilio Estefan
@@ -891,6 +979,11 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Santana & Rob Thomas – Smooth (Q1036227): m · Rob Thomas, Itaal Shur · Rob Thomas | pr · Matt Serletic
 - Sting & Cheb Mami – Desert Rose (Q679769): pr · Sting
 - Toploader – Dancing in the Moonlight (Q102327109): bo · Dancing in the Moonlight · 1973
+- Foo Fighters – Learn to Fly (Q2454549): m ·  · Taylor Hawkins, Nate Mendel, Dave Grohl
+- Smash Mouth – All Star (Q1404968): ml · Greg Camp | al · Astro Lounge · 1999 | pr · Eric Valentine
+- Garbage – The World Is Not Enough (Q623156): m · David Arnold · Don Black | pr · Butch Vig
+- Tenacious D – Tribute (Q3110340): m ·  · Jack Black, Kyle Gass | pr · The Dust Brothers
+- Limp Bizkit – Break Stuff (Q2260730): pr · Limp Bizkit
 - Aaliyah – Try Again (Q1077678): m ·  · Timbaland | pr · Timbaland
 - All Saints – Pure Shores (Q3655662): pr · William Orbit
 - Björk – I’ve Seen It All (Q5967375): al · Selmasongs · 2000
@@ -905,6 +998,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Mark Knopfler – What It Is (Q14518806): ml · Mark Knopfler | pr · Mark Knopfler
 - Nelly Furtado – I'm Like A Bird (Q1996003): m ·  · Nelly Furtado | al · Whoa, Nelly! · 2000
 - No Doubt – It's My Life (Q3803977): pr · Nellee Hooper
+- OutKast – Ms. Jackson (Q527234): m ·  · André 3000 | al · Stankonia · 2000
 - Richard Ashcroft – A Song For The Lovers (Q4659695): pr · Chris Potter
 - Ricky Martin – Nobody Wants to Be Lonely (Q1942058): al · Sound Loaded · 2000 | pr · Walter Afanasieff
 - Robbie Williams – Supreme (Q385523): al · Sing When You're Winning · 2000 | pr · Guy Chambers
@@ -912,6 +1006,10 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - U2 – Beautiful Day (Q926435): m ·  · Bono | al · All That You Can't Leave Behind · 2000 | pr · Brian Eno
 - U2 – Walk On (Q2567145): pr · Daniel Lanois
 - a-ha – Summer Moved On (Q1376537): ml · Paul Waaktaar-Savoy
+- Robbie Williams – Rock DJ (Q640517): al · Sing When You're Winning · 2000 | pr · Guy Chambers
+- Baha Men – Who Let the Dogs Out (Q286163): pr · Desmond Child
+- Fatboy Slim & Bootsy Collins – Weapon of Choice (Q48767503): m · Bootsy Collins, Sly Stone, Ashley Slater ·  | al · Halfway Between the Gutter and the Stars · 2000 | pr · Fatboy Slim
+- Disturbed – Down with the Sickness (Q372114): pr · Johnny K
 - Alicia Keys – Fallin' (Q995862): ml · Alicia Keys | al · Songs in A Minor · 2001 | pr · Alicia Keys
 - Archive – Again (Q65130728): al · You All Look the Same to Me · 2002
 - Bran Van 3000 – Astounded (Q3627598): pr · Michael Diamond
@@ -936,6 +1034,11 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Strokes – Last Nite (Q676313): m ·  · Julian Casablancas | pr · Gordon Raphael
 - Weezer – Island In The Sun (Q2724785): pr · Ric Ocasek
 - t.A.T.u. – Nas nie dogoniat (Q596029): m ·  · Sergio Galoyan, Elena Kiper, Valery Polienko | pr · Iwan Szapowałow
+- Daft Punk – Veridis Quo (Q131844223): al · Discovery · 2001
+- Gorillaz & Miho Hatori – 19-2000 (Q2314986): m ·  · Damon Albarn | pr · Dan the Automator
+- Smash Mouth – I'm A Believer (Q3788314): pr · Eric Valentine
+- Howard Shore – Concerning Hobbits (Q5158471): m · Howard Shore · 
+- Vitas – The 7th Element (Q97369849): ml · Vitas
 - t.A.T.u. – Nas Ne Dogonyat (Q596029): m ·  · Sergio Galoyan, Elena Kiper, Valery Polienko | pr · Iwan Szapowałow
 - 3 Doors Down – Here Without You (Q1032020): m · Chris Henderson, Todd Harrell, Brad Arnold · 
 - 50 Cent – In Da Club (Q673947): m ·  · Dr. Dre | al · Get Rich or Die Tryin' · 2003 | pr · Dr. Dre
@@ -957,12 +1060,18 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The White Stripes – I Just Don't Know What to Do With Myself (Q126777305): pr · Jack White
 - a-ha – Lifelines (Q384492): pr · Stephen Hague, Martin Landquist
 - t.A.T.u. – All The Things She Said (Q654353): m ·  · Sergio Galoyan, Trevor Horn, Elena Kiper | pr · Trevor Horn
+- Eminem & Nate Dogg – 'Till I Collapse (Q28004): ml · Eminem | al · The Eminem Show · 2002 | pr · Eminem
+- Las Ketchup – The Ketchup Song (Aserejé) (Q375632): ml · Manuel Ruiz Queco | pr · Manuel Ruiz Queco
+- Benny Benassi – Satisfaction (Q2709654): pr · Benny Benassi
+- Vanessa Carlton – A Thousand Miles (Q2219037): m ·  · Vanessa Carlton | pr · Ron Fair
+- Simple Plan – I'm Just a Kid (Q2419257): m ·  · Pierre Bouvier | pr · Arnold Lanni
 - Alicia Keys – If I Ain't Got You (Q256085): m ·  · Alicia Keys | pr · Alicia Keys
 - The Black Eyed Peas – Where Is the Love? (Q1460758): m ·  · apl.de.ap | pr · will.i.am
 - Blur – Out of Time (Q2616166): pr · Ben Hillier
 - Céline Dion – Tout l’or des hommes (Q3276964): pr · Erick Benzi
 - Dido – Life for Rent (Q2463838): ml · Dido | al · Life for Rent · 2003 | pr · Dido
 - Hoobastank – The Reason (Q1025631): m · Dan Estrin, Markku Lappalainen, Douglas Robb ·  | pr · Howard Benson
+- Jay-Z – 99 Problems (Q9136676): m ·  · Jay-Z | pr · Rick Rubin
 - Jamelia – Superstar (Q13599443): bo · Superstar · 2003
 - Keane – Everybody's Changing (Q1812482): m ·  · Tim Rice-Oxley
 - Kelis – Milkshake (Q1761593): m · Kelis, Chad Hugo, Pharrell Williams · Kelis
@@ -970,6 +1079,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - O-Zone – Dragostea din tei (Q161407): m ·  · Dan Bălan | al · DiscO-Zone · 2003 | pr · Dan Bălan
 - OutKast – Hey Ya! (Q281085): m ·  · André 3000 | al · Speakerboxxx/The Love Below · 2003 | pr · André 3000
 - OutKast & Sleepy Brown – The Way You Move (Q662760): m ·  · Big Boi | al · Speakerboxxx/The Love Below · 2003
+- OutKast – Roses (Q7368646): m · Big Boi, André 3000 · André 3000
 - Petey Pablo – Freek-a-Leek (Q5500936): pr · Lil Jon
 - The White Stripes – Seven Nation Army (Q1420378): ml · Jack White | pr · Jack White
 - Twista & Kanye West – Slow Jamz (Q385204): al · The College Dropout · 2004 | pr · Kanye West
@@ -977,6 +1087,9 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Usher – Confessions Part II (Q1878135): m ·  · Jermaine Dupri | pr · Jermaine Dupri
 - Usher & Lil Jon – Yeah! (Q744297): m ·  · Lil Jon | al · Confessions · 2004 | pr · Lil Jon
 - Yeah Yeah Yeahs – Maps (Q607626): pr · David Sitek
+- Counting Crows – Accidentally In Love (Q2417567): m ·  · Adam Duritz | pr · Adam Duritz
+- Ludovico Einaudi – Una Mattina (Q124014085): m · Ludovico Einaudi ·  | pr · Ludovico Einaudi
+- 50 Cent – Many Men (Wish Death) (Q14103342): m ·  · 50 Cent | al · Get Rich or Die Tryin' · 2003 | pr · Eminem
 - Amel Bent – Ma philosophie (Q3273560): m ·  · Amel Bent
 - Anastacia – Left Outside Alone (Q1128617): m ·  · Glen Ballard, Dallas Austin, Anastacia | al · Anastacia · 2004 | pr · Glen Ballard, Dallas Austin
 - Ciara & Missy Elliott – 1, 2 Step (Q161567): m ·  · Missy Elliott, Jazze Pha, Ciara | pr · Jazze Pha
@@ -984,6 +1097,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Daniel Powter – Bad Day (Q2081392): m ·  · Daniel Powter
 - Eric Prydz – Call on Me (Q2227079): m ·  · Steve Winwood | pr · Eric Prydz
 - Gwen Stefani – Hollaback Girl (Q1067025): m · Gwen Stefani, Chad Hugo, Pharrell Williams · Gwen Stefani | pr · The Neptunes
+- Jay-Z & Linkin Park – Numb / Encore (Q19979): pr · Mike Shinoda
 - KT Tunstall – Suddenly I See (Q525320): m ·  · KT Tunstall | pr · Steve Osborne
 - Keane – Somewhere Only We Know (Q2267706): m ·  · Tim Rice-Oxley | al · Hopes and Fears · 2004
 - Kelly Clarkson – Since U Been Gone (Q1423509): m · Max Martin, Dr. Luke · Max Martin | al · Breakaway · 2004 | pr · Max Martin
@@ -996,6 +1110,10 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - U2 – Vertigo (Q2085194): m ·  · Bono | pr · Steve Lillywhite
 - Usher – Burn (Q2722509): m ·  · Jermaine Dupri | al · Confessions · 2004 | pr · Jermaine Dupri
 - Wig Wam – In My Dreams (Q12810051): al · Hard to Be a Rock'n Roller · 2005
+- Kasabian – Club Foot (Q2327037): pr · Jim Abbiss
+- LCD Soundsystem – Daft Punk Is Playing at My House (Q3011850): pr · James Murphy
+- Eminem – Mockingbird (Q2164631): m · Luis Resto, Eminem · Eminem | al · Encore · 2004 | pr · Eminem
+- Simple Plan – Untitled (How Could This Happen to Me?) (Q2304276): pr · Bob Rock
 - Arctic Monkeys – I Bet You Look Good On The Dancefloor (Q2030955): m ·  · Alex Turner | pr · Jim Abbiss
 - Carrie Underwood – Before He Cheats (Q2605535): al · Some Hearts · 2005 | pr · Mark Bright
 - Chamillionaire & Krayzie Bone – Ridin' (Q2608386): m ·  · Chamillionaire
@@ -1007,6 +1125,12 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Imogen Heap – Hide and Seek (Q603753): pr · Imogen Heap
 - Katie Melua – Nine Million Bicycles (Q725336): m ·  · Mike Batt | pr · Mike Batt
 - Katie Melua – Spider's Web (Q3966698): pr · Mike Batt
+- Daft Punk – Technologic (Q569815): m ·  · Thomas Bangalter | al · Human After All · 2005
+- Cascada – Everytime We Touch (Q993833): al · Everytime We Touch · 2006
+- Panic! at the Disco – I Write Sins Not Tragedies (Q2616910): m ·  · Ryan Ross | al · A Fever You Can't Sweat Out · 2005
+- Basshunter – DotA (Q98737641): m · David Le Roy, Jean Christophe Belval · 
+- Alex Gaudino & Crystal Waters – Destination Calabria (Q2553366): m ·  · Alex Gaudino | pr · Alex Gaudino
+- Three Days Grace – Animal I Have Become (Q2603655): m ·  · Adam Gontier
 - Madonna – Hung Up (Q1407276): m · Benny Andersson, Stuart Price, Madonna · Madonna | al · Confessions on a Dance Floor · 2005 | pr · Stuart Price, Madonna
 - Madonna – Sorry (Q1646862): m ·  · Stuart Price, Madonna | al · Confessions on a Dance Floor · 2005
 - Mariah Carey – We Belong Together (Q129158): m · Jermaine Dupri, Mariah Carey, Seal · Jermaine Dupri | al · The Emancipation of Mimi · 2005
@@ -1060,6 +1184,11 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Timbaland & Keri Hilson – The Way I Are (Q786292): m ·  · Timbaland | pr · Timbaland
 - Usher & Young Jeezy – Love in This Club (Q945932): m ·  · Usher | pr · Polow da Don
 - Verka Serduchka – Dancing Lasha Tumbai (Q2618657): ml · Wierka Serdiuczka
+- Fall Out Boy – Thnks fr th Mmrs (Q2609005): m · Peter Wentz ·  | pr · Babyface, Neal Avron
+- Linkin Park – Bleed It Out (Q19981): pr · Rick Rubin, Mike Shinoda
+- Tay Zonday – Chocolate Rain (Q2964291): pr · Tay Zonday
+- Soulja Boy – Crank That (Soulja Boy) (Q2329163): m ·  · Soulja Boy Tell 'Em | pr · Soulja Boy Tell 'Em
+- Sean Kingston – Beautiful Girls (Q195534): pr · J.R. Rotem
 - Beyoncé – Halo (Q147734): m · Beyoncé, Ryan Tedder, E. Kidd Bogart · Ryan Tedder | al · I Am… Sasha Fierce · 2008 | pr · Beyoncé
 - Beyoncé – Single Ladies (Put a Ring on It) (Q147409): ml · Beyoncé, Kuk Harrell, Tricky Stewart | al · I Am… Sasha Fierce · 2008
 - Coldplay – Life in Technicolor II (Q371528): m ·  · Chris Martin
@@ -1075,6 +1204,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Mumford & Sons – Little Lion Man (Q2279438): pr · Markus Dravs
 - Rihanna – Disturbia (Q853621): m ·  · Rihanna | al · Good Girl Gone Bad · 2007 | pr · Brian Kennedy
 - The Killers – Human (Q919463): m ·  · Brandon Flowers | al · Day & Age · 2008 | pr · Stuart Price
+- Toby Fox – Megalovania (Q85978483): m · Toby Fox · 
+- Michael Hunter – Soviet Connection (Q131219549): m · Michael Hunter · 
 - Alicia Keys – Empire State of Mind (Part II) Broken Down (Q2713322): m ·  · Alicia Keys | al · The Element of Freedom · 2009
 - The Black Eyed Peas – Meet Me Halfway (Q957341): pr · will.i.am
 - David Guetta & Kelly Rowland – When Love Takes Over (Q540744): al · One Love · 2009 | pr · David Guetta
@@ -1082,13 +1213,14 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Flo Rida – Right Round (Q2005943): m ·  · Bruno Mars
 - Grizzly Bear – Two Weeks (Q7859322): pr · Chris Taylor
 - Hadise – Düm Tek Tek (Q2383004): m ·  · Hadise Açıkgöz | pr · Sinan Akçıl
+- Jay-Z & Alicia Keys – Empire State Of Mind (Q21123): m ·  · Jane't Sewell-Ulepic, Jay-Z | pr · Al Shux
 - Jason Derulo – In My Head (Q1660651): m ·  · Jason Derülo, Claude Kelly, J.R. Rotem | pr · J.R. Rotem
 - Jay-Z & Mr. Hudson – Young Forever (Q284580): m · Kanye West · Jay-Z | pr · Kanye West
 - Keri Hilson – I Like (Q573572): m · David Jost · 
 - Kesha – Tik Tok (Q164100): m · Dr. Luke · Kesha Sebert | al · Animal · 2010 | pr · Dr. Luke
 - Lady Gaga – Alejandro (Q153044): m ·  · RedOne | al · The Fame Monster · 2009 | pr · RedOne
 - Lady Gaga – Bad Romance (Q153064): m · Lady Gaga, RedOne · RedOne | al · The Fame Monster · 2009 | pr · RedOne
-- Lady Gaga & Beyoncé – Telephone (Q188770): m ·  · Beyoncé, LaShawn Daniels, Rodney Jerkins | al · The Fame Monster · 2009 | pr · Rodney Jerkins
+- Lady Gaga & Beyoncé – Telephone (Q188770): m ·  · Lady Gaga, Beyoncé, LaShawn Daniels | al · The Fame Monster · 2009 | pr · Rodney Jerkins
 - Linkin Park – New Divide (Q19985): ml · Linkin Park | pr · Mike Shinoda
 - Mike Posner & Gigamesh – Cooler Than Me (Q2439004): m ·  · Mike Posner | pr · Mike Posner
 - OneRepublic – All The Right Moves (Q2610145): m ·  · Ryan Tedder | pr · Ryan Tedder
@@ -1105,7 +1237,17 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The xx – Intro (Q18795343): al · xx · 2009
 - Tiësto & Nelly Furtado – Who Wants to Be Alone (Q2742811): m ·  · Nelly Furtado
 - Yeah Yeah Yeahs – Heads Will Roll (Q3115869): m ·  · Nick Zinner | pr · Nick Launay
+- Kasabian – Fire (Q783320): pr · Dan the Automator
+- Owl City – Fireflies (Q1165917): m ·  · Adam Young | pr · Adam Young
+- Two Door Cinema Club – What You Know (Q7991485): pr · Eliot James
 - The Black Eyed Peas – I Gotta Feeling (Q778849): m ·  · David Guetta | al · The E.N.D · 2009 | pr · David Guetta
+- Miley Cyrus – Party In The U.S.A. (Q547537): m · Dr. Luke, Jessie J, Claude Kelly · Jessie J, Dr. Luke, Claude Kelly | pr · Dr. Luke
+- Pitbull – I Know You Want Me (Calle Ocho) (Q765675): m ·  · Pitbull | pr · Lil Jon
+- Shakira – She Wolf (Q1775611): m ·  · Shakira | al · She Wolf · 2009 | pr · Shakira
+- Yolanda Be Cool & DCup – We No Speak Americano (Q701226): m · Renato Carosone, DCUP, Nicola Salerno · Nicola Salerno
+- Pitbull – Hotel Room Service (Q2404200): m · Pitbull, Nile Rodgers · Pitbull | pr · Jim Jonsin
+- Skillet – Monster (Q180820): pr · Howard Benson
+- Kana Hanazawa – Renai Circulation (Q121494486): m · Satoru Kōsaki · Megumi Hinata
 - Alexandra Stan – Mr. Saxobeat (Q1508133): al · Saxobeats · 2009
 - Armin van Buuren – Not Giving Up on Love (Q2437008): m ·  · Sophie Ellis-Bextor | pr · Armin van Buuren
 - B.o.B & Bruno Mars – Nothin' on You (Q1123388): m · Bruno Mars, B.o.B, Philip Lawrence · Bruno Mars | al · B.o.B Presents: The Adventures of Bobby Ray · 2010
@@ -1113,23 +1255,23 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Bruno Mars – Grenade (Q166791): m ·  · Bruno Mars | al · Doo-Wops & Hooligans · 2010
 - Bruno Mars – Just the Way You Are (Q170183): m ·  · Bruno Mars | al · Doo-Wops & Hooligans · 2010 | pr · Needlz
 - Duck Sauce – Barbra Streisand (Q596113): m ·  · A-Trak | pr · Duck Sauce
-- Enrique Iglesias & Ludacris – Tonight (I'm Lovin' You) (Q916231): m ·  · DJ Frank E, Enrique Iglesias, Lauren Christy | pr · DJ Frank E
+- Enrique Iglesias & Ludacris – Tonight (I'm Lovin' You) (Q916231): m ·  · Jacob Luttrell, DJ Frank E, Enrique Iglesias | pr · DJ Frank E
 - Enrique Iglesias & Pitbull – I Like It (Q2179388): m ·  · Lionel Richie | pr · RedOne
 - Flo Rida – Club Can’t Handle Me (Q225346): m ·  · David Guetta | pr · David Guetta
 - Kanye West & Pusha T – Runaway (Q2664309): ml · Kanye West | al · My Beautiful Dark Twisted Fantasy · 2010 | pr · Kanye West
 - Katie Melua – The Flood (Q2058445): pr · William Orbit
-- Katy Perry – Firework (Q163412): m · Katy Perry, Tor Erik Hermansen, Sandy Vee · Katy Perry, Sandy Vee, Ester Dean | al · Teenage Dream · 2010
+- Katy Perry – Firework (Q163412): m · Katy Perry, Tor Erik Hermansen, Sandy Vee · Tor Erik Hermansen, Katy Perry, Sandy Vee | al · Teenage Dream · 2010
 - Katy Perry – Last Friday Night (T.G.I.F.) (Q746875): m · Dr. Luke, Katy Perry, Max Martin · Max Martin | al · Teenage Dream · 2010 | pr · Dr. Luke
 - Katy Perry – Teenage Dream (Q835192): m · Benny Blanco, Dr. Luke, Katy Perry · Dr. Luke, Katy Perry, Max Martin | al · Teenage Dream · 2010 | pr · Max Martin
 - Katy Perry & Kanye West – E.T. (Q124967): m · Dr. Luke, Katy Perry, Max Martin · Dr. Luke, Max Martin | al · Teenage Dream · 2010 | pr · Dr. Luke
-- Katy Perry & Snoop Dogg – California Gurls (Q155586): m · Snoop Dogg, Dr. Luke, Katy Perry · Max Martin | al · Teenage Dream · 2010 | pr · Max Martin
+- Katy Perry & Snoop Dogg – California Gurls (Q155586): m · Dr. Luke, Katy Perry, Snoop Dogg · Max Martin | al · Teenage Dream · 2010 | pr · Max Martin
 - Maroon 5 & Christina Aguilera – Moves Like Jagger (Q309727): m ·  · Adam Levine | al · Hands All Over · 2010 | pr · Shellback
 - PJ Harvey – The Glorious Land (Q7736819): pr · Flood
 - Robyn – Dancing On My Own (Q3488185): m ·  · Robyn
 - Sabaton – Uprising (Q61730290): m · Joakim Brodén · Joakim Brodén, Pär Sundström
 - Shakira – Addicted to You (Q2698787): m ·  · Shakira | al · Sale el Sol · 2010 | pr · Shakira
 - Shakira & Dizzee Rascal – Loca (Q1415322): m · El Cata, Dizzee Rascal, Shakira · Shakira | al · Sale el Sol · 2010 | pr · Shakira
-- Shakira & Freshlyground – Waka Waka (This Time for Africa) (Q155894): m · Shakira, John Hill, Freshlyground · Shakira, Golden Sounds | pr · Shakira, John Hill
+- Shakira & Freshlyground – Waka Waka (This Time for Africa) (Q155894): m · Shakira, John Hill, Freshlyground · Golden Sounds, Shakira | pr · Shakira, John Hill
 - Taio Cruz – Dynamite (Q1269045): m ·  · Max Martin | pr · Benny Blanco
 - The Black Eyed Peas – Just Can't Get Enough (Q1714098): m ·  · Rodney Jerkins | al · The Beginning · 2010 | pr · will.i.am
 - Tom Boxer & Antonia – Morena (Q10968113): pr · Tom Boxer
@@ -1137,10 +1279,14 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Usher & Pitbull – DJ Got Us Fallin' in Love (Q1116206): m ·  · Max Martin | pr · Max Martin
 - Usher & will.i.am – OMG (Q1923082): m ·  · will.i.am | pr · will.i.am
 - Zaz – Je veux (Q3163598): m ·  · Kerredine Soltani | pr · Kerredine Soltani
+- Bruno Mars – The Lazy Song (Q194499): m ·  · Bruno Mars | al · Doo-Wops & Hooligans · 2010
+- Wiz Khalifa – Black and Yellow (Q168183): m ·  · Wiz Khalifa | al · Rolling Papers · 2011
+- Skrillex – Scary Monsters and Nice Sprites (Q174795): ml · Skrillex | pr · Skrillex
+- Kevin MacLeod – Fluffing a Duck (Q55180395): m · Kevin MacLeod · 
 - Aura Dione & Rock Mafia – Friends (Q5012900): m ·  · Tim James, Aura Dione, David Jost | pr · Tim James, David Jost, Antonina Armato
 - Avicii – Levels (Q2315784): pr · Avicii
 - Calvin Harris – Feel So Close (Q1400956): m ·  · Calvin Harris | pr · Calvin Harris
-- Carly Rae Jepsen – Call Me Maybe (Q326835): ml · Carly Rae Jepsen, Tavish Crowe, Josh Ramsay
+- Carly Rae Jepsen – Call Me Maybe (Q326835): m · Carly Rae Jepsen, Tavish Crowe, Josh Ramsay · Tavish Crowe, Josh Ramsay, Carly Rae Jepsen
 - David Guetta & Sia – Titanium (Q535566): m ·  · Sia Furler | al · Nothing but the Beat · 2011 | pr · David Guetta
 - Flo Rida – Good Feeling (Q701966): m ·  · Avicii | pr · Dr. Luke
 - Flo Rida & Sia – Wild Ones (Q1333322): m ·  · Flo Rida | pr · Axwell
@@ -1161,6 +1307,14 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Rihanna – We Found Love (Q725334): m ·  · Calvin Harris | al · Talk That Talk · 2011 | pr · Calvin Harris
 - Rihanna – Where Have You Been (Q557553): m ·  · Calvin Harris | al · Talk That Talk · 2011 | pr · Dr. Luke
 - The Black Keys – Lonely Boy (Q2481819): m ·  · Dan Auerbach | pr · Brian Burton
+- Bastille – Things We Lost In The Fire (Q14071835): ml · Dan Smith
+- Jessie J – Nobody's Perfect (Q934751): m ·  · Jessie J | pr · Dr. Luke
+- Lady Gaga – Judas (Q188766): m · Lady Gaga, RedOne · RedOne | al · Born This Way · 2011 | pr · RedOne
+- Pitbull & Chris Brown – International Love (Q772186): m ·  · Pitbull | al · Planet Pit · 2011 | pr · RedOne
+- Snoop Dogg & Wiz Khalifa – Young, Wild & Free (Q2696997): m ·  · Bruno Mars
+- Christina Perri – A Thousand Years (Q82123): m · Christina Perri, David Hodges · Christina Perri
+- Skrillex & Sirah – Bangarang (Q806469): m · Skrillex ·  | pr · Skrillex
+- Lady Gaga – Bloody Mary (Q4035220): al · Born This Way · 2011
 - Alicia Keys – Girl on Fire (Q376611): m ·  · Alicia Keys, Nicki Minaj | al · Girl on Fire · 2012
 - Asaf Avidan – One Day / Reckoning Song (Wankelmut Rmx) (Q2089368): m ·  · Asaf Avidan | pr · Asaf Avidan
 - Avicii & Nicky Romero – I Could Be the One (Q2944106): pr · Avicii
@@ -1178,12 +1332,21 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Mumford & Sons – I Will Wait (Q5979848): al · Babel · 2012 | pr · Markus Dravs
 - Nicki Minaj – Starships (Q903409): m ·  · RedOne | al · Pink Friday: Roman Reloaded · 2012 | pr · Rami Yacoub
 - Pitbull – Back in Time (Q2702607): m ·  · Pitbull
-- Pitbull – Feel This Moment (Q1660308): m ·  · Chantal Kreviazuk, Morten Harket, Paul Waaktaar-Savoy | pr · Nasri, Sir Nolan, Adam Messinger
+- Pitbull – Feel This Moment (Q1660308): m ·  · Chantal Kreviazuk, Nasri, Morten Harket | pr · Nasri, Sir Nolan, Adam Messinger
 - Rihanna – Diamonds (Q74038): m · Tor Erik Hermansen · Sia Furler | al · Unapologetic · 2012 | pr · Benny Blanco
 - Rihanna & Mikky Ekko – Stay (Q248210): m · Justin Parker, Mikky Ekko · Mikky Ekko | al · Unapologetic · 2012 | pr · Mikky Ekko
 - Roman Lob – Standing Still (Q73795): ml · Jamie Cullum
 - Tom Odell – Another Love (Q16758395): ml · Tom Odell
 - Train – Drive By (Q1259386): m ·  · Espen Lind
+- American Authors – Best Day Of My Life (Q16243728): pr · Aaron Accetta
+- Arctic Monkeys – R U Mine? (Q2786363): m · Nick O'Malley, Jamie Cook, Alex Turner · Alex Turner | al · AM · 2013
+- Calvin Harris & Florence Welch – Sweet Nothing (Q126287): ml · Calvin Harris, Florence Welch, Kid Harpoon | pr · Calvin Harris
+- Tame Impala – Elephant (Q17001765): m ·  · Kevin Parker | al · Lonerism · 2012 | pr · Kevin Parker
+- Maroon 5 – One More Night (Q210452): m ·  · Max Martin | al · Overexposed · 2012 | pr · Shellback
+- Maroon 5 & Wiz Khalifa – Payphone (Q738895): m · Benny Blanco, Shellback, Adam Levine · Benny Blanco, Wiz Khalifa, Adam Levine | al · Overexposed · 2012 | pr · Benny Blanco, Robopop, Shellback
+- Taylor Swift – I Knew You Were Trouble. (Q276585): m ·  · Max Martin | al · Red · 2012 | pr · Max Martin
+- Bruno Mars – When I Was Your Man (Q7480014): m ·  · Andrew Wyatt, Bruno Mars | al · Unorthodox Jukebox · 2012
+- Swedish House Mafia & John Martin – Don't You Worry Child (Q1242395): m · Axwell, Steve Angello, Sebastian Ingrosso · Michel Zitron, John Martin, Axwell | pr · Swedish House Mafia
 - Arcade Fire – Reflektor (Q15059203): pr · Markus Dravs
 - Arctic Monkeys – Do I Wanna Know? (Q13511812): m · Nick O'Malley, Jamie Cook, Alex Turner · Alex Turner | al · AM · 2013
 - Bastille – Pompeii (Q7227455): ml · Dan Smith | al · Bad Blood · 2013
@@ -1196,11 +1359,11 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Ellie Goulding – Burn (Q14200893): m ·  · Ryan Tedder | al · Halcyon Days · 2013 | pr · Greg Kurstin
 - George Ezra – Budapest (Q16467392): m ·  · George Ezra, Joel Pott | pr · Cam Blackwood
 - Hozier – Take Me To Church (Q18220127): ml · Hozier
-- Jason Derulo & 2 Chainz – Talk Dirty (Q14530695): m · Ori Kaplan, Jason Evigan, Sean Douglas · Ori Kaplan, Jason Evigan, Tomer Yosef | al · Tattoos · 2013
+- Jason Derulo & 2 Chainz – Talk Dirty (Q14530695): m · Ori Kaplan, Jason Evigan, Sean Douglas · Ori Kaplan, Tomer Yosef, Tamir Muskat | al · Tattoos · 2013
 - John Legend – All of Me (Q15427702): ml · John Legend
-- Katy Perry & Juicy J – Dark Horse (Q14927695): m · Max Martin, Cirkut, Sarah Hudson · Katy Perry, Max Martin, Cirkut | al · Prism · 2013 | pr · Dr. Luke
+- Katy Perry & Juicy J – Dark Horse (Q14927695): m · Max Martin, Cirkut, Sarah Hudson · Max Martin, Sarah Hudson, Dr. Luke | al · Prism · 2013 | pr · Dr. Luke
 - Klingande – Jubel (Q15702941): pr · Klingande
-- Lana Del Rey – Young And Beautiful (Q12252332): m · Rick Nowels, Lana Del Rey · Lana Del Rey, Rick Nowels | pr · Lana Del Rey
+- Lana Del Rey – Young And Beautiful (Q12252332): ml · Rick Nowels, Lana Del Rey | pr · Lana Del Rey
 - Magic! – Rude (Q17111037): m · Nasri, Adam Messinger · Adam Messinger | pr · Adam Messinger
 - Marco Mengoni – L'essenziale (Q5621290): m ·  · Marco Mengoni | pr · Michele Canova
 - Margaret Berger – I Feed You My Love (Q4502829): m ·  · Karin Park
@@ -1219,32 +1382,66 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - U2 – Ordinary Love (Q15256297): m · Bono, Brian Burton, U2 · Bono | pr · Brian Burton
 - Vance Joy – Riptide (Q17151064): m ·  · Vance Joy
 - will.i.am & Britney Spears – Scream & Shout (Q81275): m ·  · Basto | pr · Basto
+- Arcade Fire – Afterlife (Q15357783): pr · James Murphy
+- Arctic Monkeys – Snap Out Of It (Q17035890): al · AM · 2013
+- Bastille – Of The Night (Q15708715): pr · Dan Smith
+- Birdy – Wings (Q14899801): m · Ryan Tedder, Birdy ·  | pr · Ryan Tedder
+- Empire of the Sun – Alive (Q13405765): ml · Luke Steele, Nick Littlemore, Peter Mayes
+- Fall Out Boy – My Songs Know What You Did In The Dark (Light Em Up) (Q4312732): m ·  · Peter Wentz | pr · Butch Walker
+- Paramore – Ain't It Fun (Q15284481): m ·  · Hayley Williams | pr · Justin Meldal-Johnsen
+- Martin Garrix – Animals (Q14565308): m ·  · Martin Garrix | pr · Martin Garrix
+- Arctic Monkeys – I Wanna Be Yours (Q105085558): m ·  · Alex Turner | al · AM · 2013
+- Ylvis – The Fox (What Does the Fox Say?) (Q14865006): m · Tor Erik Hermansen ·  | pr · M4SONIC
+- Katy Perry – Roar (Q14559271): m · Dr. Luke, Katy Perry, Max Martin · Max Martin | al · Prism · 2013 | pr · Dr. Luke, Katy Perry, Max Martin
+- Kanye West – On Sight (Q17141348): al · Yeezus · 2013
+- Kevin MacLeod – Hitman (Q56847616): m · Kevin MacLeod · 
 - Aram Mp3 – Not Alone (Q15941417): m · Aram Mp3 · 
 - Calvin Harris – Summer (Q15982968): m ·  · Calvin Harris | al · Motion · 2014 | pr · Calvin Harris
 - Calvin Harris & Ellie Goulding – Outside (Q18338254): al · Motion · 2014 | pr · Calvin Harris
 - Carl Espen – Silent Storm (Q15948804): ml · Josefin Winther
+- Charli XCX – Boom Clap (Q17181141): m ·  · Charli XCX | al · The Fault in Our Stars · 2014
+- Charli XCX – Break the Rules (Q18159769): m ·  · Charli XCX
 - Ed Sheeran – Thinking out Loud (Q17332468): m ·  · Ed Sheeran, Amy Wadge | al · X · 2014 | pr · Jake Gosling, Benny Blanco
 - Elaiza – Is it Right (Q15936096): pr · Ingo Politz
 - Elle King – Ex's & Oh's (Q19961280): ml · Elle King | al · Love Stuff · 2015
 - Fetty Wap – Trap Queen (Q19961416): m ·  · Fetty Wap
 - Iggy Azalea & Charli XCX – Fancy (Q15891138): m · John Turner, Iggy Azalea, Charli XCX · Iggy Azalea | al · The New Classic · 2014
 - Iggy Azalea & Rita Ora – Black Widow (Q16952111): m · Sarah Hudson · Iggy Azalea | al · The New Classic · 2014
-- Jessie Ware – Say You Love Me (Q18636121): ml · Benny Blanco, Ed Sheeran, Jessie Ware
+- Jessie Ware – Say You Love Me (Q18636121): m · Benny Blanco, Ed Sheeran, Jessie Ware · Ed Sheeran, Two Inch Punch, Benny Blanco
 - Kygo & Conrad Sewell – Firestone (Q20012345): m ·  · Kygo | al · Cloud Nine · 2016 | pr · Kygo
-- Kygo & Parson James – Stole the Show (Q19954816): m ·  · Michael Harwood, Kygo, Parson James | pr · Kygo
+- Kygo & Parson James – Stole the Show (Q19954816): m ·  · Kygo, Parson James, Kyle Kelso | pr · Kygo
 - Lenny Kravitz – The Chamber (Q17989897): pr · Lenny Kravitz
 - Lost Frequencies – Are You With Me (Q134999592): m ·  · Shane McAnally, Terry McBride, Tommy Lee James | pr · Lost Frequencies | bo · Are You with Me · 2012
-- Mark Ronson – Uptown Funk (Q18559542): m ·  · Philip Lawrence, Mark Ronson, Trinidad James | pr · Mark Ronson
+- Mark Ronson – Uptown Funk (Q18559542): m ·  · Bruno Mars, Philip Lawrence, Jeff Bhasker | pr · Mark Ronson
 - Maroon 5 – Sugar (Q18763681): m · Dr. Luke, Adam Levine, Cirkut ·  | al · V · 2014 | pr · Ammo
 - Meghan Trainor – All About That Bass (Q17489280): m ·  · Meghan Trainor, Kevin Kadish | al · Title · 2015 | pr · Kevin Kadish
 - Paolo Nutini – Iron Sky (Q18161520): pr · Paolo Nutini
 - Ruth Lorenzo – Dancing in the Rain (Q15797801): ml · Jim Irvin, Julian Emery, Ruth Lorenzo
-- Sam Smith – Stay with Me (Q16326586): m · Sam Smith, Jimmy Napes · Sam Smith, Tom Petty, Jeff Lynne | pr · Sam Smith
+- Sam Smith – Stay with Me (Q16326586): m · Sam Smith, Jimmy Napes · Sam Smith, William Phillips, Tom Petty | pr · Sam Smith
 - Sia – Chandelier (Q16028874): ml · Sia Furler, Jesse Shatkin | pr · Greg Kurstin
-- Taylor Swift – Blank Space (Q18441355): m ·  · Shellback, Max Martin, Taylor Swift | al · 1989 · 2014 | pr · Shellback, Max Martin
-- Taylor Swift – Shake It Off (Q17544624): m ·  · Shellback, Max Martin, Taylor Swift | al · 1989 · 2014 | pr · Shellback, Max Martin
+- Taylor Swift – Blank Space (Q18441355): m ·  · Taylor Swift, Shellback, Max Martin | al · 1989 · 2014 | pr · Shellback, Max Martin
+- Taylor Swift – Shake It Off (Q17544624): m ·  · Taylor Swift, Shellback, Max Martin | al · 1989 · 2014 | pr · Shellback, Max Martin
 - The Weeknd – Earned It (Q18786541): m ·  · The Weeknd | al · Fifty Shades of Grey – Original Motion Picture Soundtrack · 2015 | pr · Stephan Moccio
 - X Ambassadors – Unsteady (Q25217416): m ·  · X Ambassadors, Alex da Kid | pr · X Ambassadors, Alex da Kid
+- 5 Seconds of Summer – She Looks So Perfect (Q15839122): m ·  · Jake Sinclair, Michael Clifford, Ashton Irwin | pr · Eric Valentine, Jake Sinclair
+- Fall Out Boy – Centuries (Q18149349): m ·  · Jake Sinclair, Raja Kumari, Omega | pr · Omega, J.R. Rotem, Jake Sinclair
+- Galantis – Runaway (U & I) (Q18912825): pr · Galantis
+- Hozier – From Eden (Q19892891): al · Hozier · 2014
+- Kasabian – stevie (Q19896185): al · 48:13 · 2014 | pr · Sergio Pizzorno
+- Maroon 5 – Maps (Q17255424): m ·  · Adam Levine | al · V · 2014 | pr · Benny Blanco
+- Meghan Trainor – Dear Future Husband (Q19594680): m ·  · Meghan Trainor, Kevin Kadish | al · Title · 2015 | pr · Kevin Kadish
+- Noel Gallagher's High Flying Birds – In The Heat Of The Moment (Q18358157): pr · Noel Gallagher
+- U2 – Song For Someone (Q20800613): pr · Brian Burton
+- U2 – Every Breaking Wave (Q19159154): m · The Edge, Bono ·  | pr · Brian Burton
+- Maroon 5 – Animals (Q17716087): m ·  · Adam Levine | al · V · 2014 | pr · Shellback
+- OneRepublic – Love Runs Out (Q16519587): pr · Ryan Tedder
+- Pitbull & Ne-Yo – Time of Our Lives (Q18710204): pr · Dr. Luke
+- Taylor Swift – Bad Blood (Q19892111): m ·  · Shellback, Kendrick Lamar, Max Martin | al · 1989 · 2014 | pr · Shellback, Max Martin, Ilya Salmanzadeh
+- Taylor Swift – Style (Q18786715): m ·  · Ali Payami, Taylor Swift, Shellback | al · 1989 · 2014 | pr · Ali Payami, Shellback, Max Martin
+- James Newton Howard & Jennifer Lawrence – The Hanging Tree (Q18601898): m · James Newton Howard ·  | al · The Hunger Games: Mockingjay - Part 1 · 2014 | pr · James Newton Howard
+- Avicii – The Nights (Q18786734): m · John Feldmann, Avicii, Infinity ·  | pr · Avicii
+- Lin-Manuel Miranda & Daveed Diggs – My Shot (Q23763167): m · Lin-Manuel Miranda ·  | al · Hamilton · 2015
+- Kevin MacLeod – Monkeys Spinning Monkeys (Q57521396): m · Kevin MacLeod · 
 - Alabama Shakes – Don't Wanna Fight (Q19627410): al · Sound & Color · 2015 | pr · Blake Mills
 - DNCE – Cake By The Ocean (Q21427193): m ·  · Joe Jonas, Justin Tranter
 - Desiigner – Panda (Q23936885): m ·  · Desiigner
@@ -1254,20 +1451,24 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Jason Derulo – Want to Want Me (Q19829431): m ·  · Sam Martin, Jason Derülo, Mitch Allan
 - Jess Glynne – Hold My Hand (Q19627449): m ·  · Jin Jin | al · I Cry When I Laugh · 2015 | pr · Clean Bandit
 - LP – Lost on You (Q27094741): m · LP · LP, Mike Del Rio | pr · Mike Del Rio
-- Lost Frequencies & Janieck Devy – Reality (Q21727564): m ·  · Lost Frequencies, Janieck Devy, Solar State | pr · Solar State, Lost Frequencies
+- Lost Frequencies & Janieck Devy – Reality (Q21727564): m ·  · Lost Frequencies, Janieck Devy, Solar State | pr · Lost Frequencies, Solar State
 - Major Lazer & DJ Snake – Lean On (Q19627479): m ·  · Diplo, MØ, DJ Snake | al · Peace Is the Mission · 2015 | pr · Major Lazer, DJ Snake
-- Meghan Trainor & John Legend – Like I'm Gonna Lose You (Q20203901): m ·  · Meghan Trainor, Caitlyn Smith, Justin Weaver | pr · Chris Gelbuda
+- Meghan Trainor & John Legend – Like I'm Gonna Lose You (Q20203901): m ·  · Justin Weaver, Meghan Trainor, Caitlyn Smith | pr · Chris Gelbuda
 - Nadav Guedj – Golden Boy (Q19368726): ml · Doron Medalie
 - Rag'n'Bone Man – Human (Q27921626): m ·  · Rag’n’Bone Man, Jamie Hartman | pr · Two Inch Punch
 - Robin Schulz & Francesco Yates – Sugar (Q20720799): pr · Robin Schulz
 - Tame Impala – Let It Happen (Q20856956): al · Currents · 2015 | pr · Kevin Parker
 - Tame Impala – The Less I Know The Better (Q23763048): m ·  · Kevin Parker | al · Currents · 2015 | pr · Kevin Parker
 - Wiz Khalifa & Charlie Puth – See You Again (Q19756862): m ·  · Charlie Puth | w · Szybcy i Wściekli · 2015 | pr · Wiz Khalifa, Charlie Puth, Andrew Cedar | bo · Szybcy i Wściekli · 2015
-- X Ambassadors – Renegades (Q20648386): m ·  · Alex da Kid, X Ambassadors | pr · X Ambassadors, Alex da Kid
+- X Ambassadors – Renegades (Q20648386): m ·  · X Ambassadors, Alex da Kid | pr · X Ambassadors, Alex da Kid
 - Zara Larsson – Lush Life (Q20735591): al · So Good · 2017
 - Zaz – Si jamais j'oublie (Q22249293): m ·  · Ycare
 - Álvaro Soler – Agosto (Q25410921): ml · Alexander Zuckowski, Simon Triebel, Álvaro Soler
 - Álvaro Soler – El mismo sol (Q20200782): ml · Alexander Zuckowski, Simon Triebel, Álvaro Soler | pr · Simon Triebel
+- American Authors – Pride (Q28451439): al · What We Live For · 2016 | pr · Aaron Accetta
+- Shawn Mendes – Stitches (Q20058686): al · Handwritten · 2015
+- Leslie Odom Jr. & Original Broadway Cast of Hamilton – Wait for It (Q25217627): m · Lin-Manuel Miranda ·  | al · Hamilton · 2015 | bo · Bitwa o Monmouth · 
+- Leslie Odom Jr. & Lin-Manuel Miranda – Dear Theodosia (Q23763143): m · Lin-Manuel Miranda ·  | al · Hamilton · 2015
 - Billie Eilish – ocean eyes (Q30603613): ml · Finneas O'Connell | pr · Finneas O'Connell
 - Bruno Mars – 24K Magic (Q27126911): al · 24K Magic · 2016
 - Bruno Mars – That's What I Like (Q28452709): al · 24K Magic · 2016
@@ -1289,8 +1490,19 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Rihanna & Drake – Work (Q22305868): al · Anti · 2016 | pr · Boi-1da
 - Sergey Lazarev – You Are the Only One (Q23007715): m · Dimitris Kontopoulos, Filipp Kirkorow ·  | pr · Dimitris Kontopoulos
 - The Chainsmokers & Daya – Don't Let Me Down (Q23013594): m · Andrew Taggart, Scott Harris, Emily Warren ·  | pr · The Chainsmokers
-- The Chainsmokers & Halsey – Closer (Q26257738): m ·  · Halsey, Shaun Frank, Andrew Taggart | pr · The Chainsmokers
+- The Chainsmokers & Halsey – Closer (Q26257738): m ·  · Andrew Taggart, Frederic Kennett, Joe King | pr · The Chainsmokers
 - Álvaro Soler – Sofia (Q24238979): ml · RedOne, Alexander Zuckowski, Simon Triebel | pr · RedOne
+- The 1975 – Somebody Else (Q30525257): al · I like it when you sleep, for you are so beautiful yet so unaware of it · 2016
+- Ariana Grande – Dangerous Woman (Q23034430): ml · Ross Golan, Johan Carlsson, Max Martin | al · Dangerous Woman · 2016 | pr · Johan Carlsson, Max Martin
+- Bastille – Good Grief (Q25219012): m ·  · Dan Smith | al · Wild World · 2016
+- Birdy – Keeping Your Head Up (Q22675032): m ·  · Birdy | pr · Birdy
+- Empire of the Sun – High And Low (Q28429667): al · Two Vines · 2016
+- The Lumineers – Sleep On The Floor (Q85801582): al · Cleopatra · 2016
+- The xx – On Hold (Q28806246): pr · Jamie xx
+- Shawn Mendes – There's Nothing Holdin' Me Back (Q29998244): al · Illuminate · 2016 | pr · Teddy Geiger
+- Shakira – Try Everything (Q23017971): m · Tor Erik Hermansen · Sia Furler
+- Vicetone & Tony Igy – Astronomia (Q89656832): m · Tony Igy · 
+- Kanye West & Sia & Vic Mensa – Wolves (Q19264075): m · Frank Ocean ·  | pr · Cashmere Cat
 - Arcade Fire – Everything Now (Q30610211): al · Everything Now · 2017
 - Calvin Harris & Pharrell Williams – Feels (Q30303535): al · Funk Wav Bounces Vol. 1 · 2017 | pr · Calvin Harris
 - Camila Cabello – Never Be the Same (Q44953189): m · Sasha Alex Sloan, Jarami, Camila Cabello ·  | al · Camila · 2018 | pr · Jarami, Frank Dukes
@@ -1305,23 +1517,44 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Ed Sheeran – Perfect (Q29051557): ml · Ed Sheeran | al · ÷ · 2017 | pr · Ed Sheeran
 - Ed Sheeran – Shape of You (Q28132505): m ·  · Ed Sheeran | al · ÷ · 2017 | pr · Steve Mac
 - Ella Mai – Boo'd Up (Q55158454): m · DJ Mustard, 1500 or Nothin', Ella Mai ·  | pr · DJ Mustard
+- Harry Styles – Sweet Creature (Q42529756): al · Harry Styles · 2017 | pr · Jeff Bhasker
+- Keala Settle & The Greatest Showman Ensemble – This Is Me (Q47166818): al · The Greatest Showman: Original Motion Picture Soundtrack · 2018 | pr · Greg Wells
+- Linkin Park – Talking to Myself (Q31354866): pr · Brad Delson, Mike Shinoda
+- Linkin Park & Kiiara – Heavy (Q28778484): pr · Brad Delson, Mike Shinoda
+- Linkin Park – One More Light (Q35092276): pr · Brad Delson, Mike Shinoda
+- Logic & Alessia Cara – 1-800-273-8255 (Q30606332): m ·  · Logic | pr · Logic, 6ix
+- Sam Smith – Too Good At Goodbyes (Q39030406): al · The Thrill of It All · 2017 | pr · Jimmy Napes, Steve Fitzmaurice
+- Loren Allred – Never Enough (Q106899363): al · The Greatest Showman: Original Motion Picture Soundtrack · 2018
+- Billie Eilish & Khalid – lovely (Q59771981): ml · Khalid, Finneas O'Connell, Billie Eilish | pr · Finneas O'Connell
+- Kirin J. Callinan & Alex Cameron & Molly Lewis & Jimmy Barnes – Big Enough (Q60752654): al · Bravado · 2017
+- Jack Stauber – Buttercup (Q114570117): al · Pop Food · 2017
+- Kodaline – Follow Your Fire (Q96378080): pr · Steve Mac
+- Lady Gaga & Bradley Cooper – I'll Never Love Again (Q57246187): al · A Star Is Born · 2018
+- Doja Cat – Mooo! (Q86602579): al · Amala · 2018
+- XXXTENTACION – Moonlight (Q55623722): m ·  · XXXTENTACION | al · ? · 2018 | pr · XXXTENTACION
+- Lewis Capaldi – Before You Go (Q79879927): al · Divinely Uninspired to a Hellish Extent · 2019 | pr · TMS
+- The Lumineers – Gloria (Q85763717): al · III · 2019
+- Cynthia Erivo – Stand Up (Q81825427): ml · Cynthia Erivo, Joshuah Brian Campbell | w · Harriet · 2019 | al · Harriet – Original Motion Picture Soundtrack · 2019
+- AC/DC – Shot In The Dark (Q100141824): pr · Brendan O'Brien
+- Tiësto – The Business (Q101131196): m ·  · Tiësto
+- Don Toliver – After Party (Q95977850): pr · Travis Scott, Cubeatz, Sonny Digital
 - Francesco Gabbani – Occidentali's Karma (Q28735791): ml · Francesco Gabbani | pr · Luca Chiaravalli
 - Halsey – Bad at Love (Q35266003): m ·  · Halsey
-- Harry Styles – Sign of the Times (Q29341805): m ·  · Jeff Bhasker, Alex Salibian, Tyler Johnson | al · Harry Styles · 2017 | pr · Jeff Bhasker
+- Harry Styles – Sign of the Times (Q29341805): m ·  · Harry Styles, Jeff Bhasker, Alex Salibian | al · Harry Styles · 2017 | pr · Jeff Bhasker
 - Jax Jones & Ina Wroldsen – Breathe (Q48469141): m ·  · Jax Jones | pr · Jax Jones, Mark Ralph
-- Katy Perry & Skip Marley – Chained to the Rhythm (Q28737113): m · Max Martin, Ali Payami · Skip Marley, Katy Perry, Sia Furler | al · Witness · 2017 | pr · Max Martin
+- Katy Perry & Skip Marley – Chained to the Rhythm (Q28737113): m · Max Martin, Ali Payami · Sia Furler, Skip Marley, Katy Perry | al · Witness · 2017 | pr · Max Martin
 - Kristian Kostov – Beautiful Mess (Q28938022): m ·  · Borislaw Milanow
 - Lil Uzi Vert – XO Tour Llif3 (Q29344769): m ·  · Lil Uzi Vert | pr · TM88
 - Lost Frequencies & Zonderling – Crazy (Q50600016): m ·  · Allan Eshuijs, Lost Frequencies, Gia Koka | pr · Lost Frequencies, Zonderling
 - Maroon 5 & Cardi B – Girls Like You (Q41642884): m · Cirkut · Adam Levine | al · Red Pill Blues · 2017 | pr · Cirkut
 - Pascal Letoublon & Leony – Friendships (Lost My Love) (Q120823984): m · Pascal Letoublon · Nea, Kiddo
-- Portugal. The Man – Feel It Still (Q30595883): m ·  · John Hill, Freddie Gorman, John Gourley | pr · John Hill, Asa Taccone
+- Portugal. The Man – Feel It Still (Q30595883): m ·  · John Hill, Portugal. The Man, Asa Taccone | pr · John Hill, Asa Taccone
 - Post Malone & 21 Savage – Rockstar (Q41553138): m ·  · Post Malone | al · Beerbongs & Bentleys · 2018
 - Rita Ora – Anywhere (Q42953317): al · Phoenix · 2018 | pr · Alesso
-- Robin Schulz & James Blunt – OK (Q30080289): m ·  · Robin Schulz, James Blunt, Steve Mac | pr · Robin Schulz
+- Robin Schulz & James Blunt – OK (Q30080289): m ·  · James Blunt, Steve Mac, Robin Schulz | pr · Robin Schulz
 - Sam Hunt – Body Like a Back Road (Q28753325): m ·  · Zach Crowell, Sam Hunt, Josh Osborne | pr · Zach Crowell
 - Shakira – Me Enamoré (Q29637184): al · El Dorado · 2017
-- Taylor Swift – Delicate (Q50413227): m ·  · Taylor Swift, Shellback, Max Martin | al · Reputation · 2017 | pr · Shellback, Max Martin
+- Taylor Swift – Delicate (Q50413227): m ·  · Shellback, Max Martin, Taylor Swift | al · Reputation · 2017 | pr · Shellback, Max Martin
 - Tom Walker – Leave a Light On (Q47539392): m ·  · Tom Walker
 - Zedd & Alessia Cara – Stay (Q28842326): pr · Zedd
 - 5 Seconds of Summer – Youngblood (Q54869051): m · Luke Hemmings, Ali Tamposi, Andrew Watt ·  | al · Youngblood · 2018 | pr · Andrew Watt
@@ -1330,7 +1563,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Calvin Harris – Promises (Q56233312): m ·  · Calvin Harris, Sam Smith, Jessie Reyez | al · Love Goes · 2020 | pr · Calvin Harris
 - Calvin Harris & Dua Lipa – One Kiss (Q51546867): al · Dua Lipa · 2017 | pr · Calvin Harris
 - Cardi B & Bad Bunny – I Like It (Q54805365): al · Invasion of Privacy · 2018
-- Dermot Kennedy – Power Over Me (Q85794229): m ·  · Dermot Kennedy, Stephen Kozmeniuk, Scott Harris | pr · Stephen Kozmeniuk
+- Dermot Kennedy – Power Over Me (Q85794229): m ·  · Stephen Kozmeniuk, Dermot Kennedy, Scott Harris | pr · Stephen Kozmeniuk
 - George Ezra – Shotgun (Q55064455): m ·  · George Ezra
 - Jessica Mauboy – We Got Love (Q50351362): m · Anthony Egizii · 
 - Juice Wrld – Lucid Dreams (Q54869141): m ·  · Sting, Juice Wrld | al · Goodbye & Good Riddance · 2018
@@ -1345,7 +1578,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Marshmello & Anne-Marie – Friends (Q48861844): al · Speak Your Mind · 2018 | pr · Marshmello
 - Marshmello & Bastille – Happier (Q57655857): pr · Marshmello
 - Meek Mill & Drake – Going Bad (Q62586511): m ·  · Meek Mill | al · Championships · 2018
-- Michael Schulte – You Let Me Walk Alone (Q49923996): ml · Nina Müller, Thomas Stengaard, Michael Schulte
+- Michael Schulte – You Let Me Walk Alone (Q49923996): m · Nina Müller, Thomas Stengaard, Michael Schulte · Michael Schulte, Nina Müller, Thomas Stengaard
 - Post Malone – Better Now (Q55196213): m ·  · Frank Dukes, Post Malone, Louis Bell | al · Beerbongs & Bentleys · 2018
 - Post Malone – Wow (Q60097328): m ·  · Frank Dukes, Post Malone, Louis Bell | al · Hollywood's Bleeding · 2019 | pr · Frank Dukes, Louis Bell
 - Post Malone & Swae Lee – Sunflower (Q57939337): m ·  · Louis Bell, Post Malone, Swae Lee | pr · Louis Bell, Carter Lang
@@ -1353,9 +1586,10 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Post Malone & Ty Dolla Sign – Psycho (Q50130770): ml · Post Malone, Ty Dolla Sign, Louis Bell | al · Beerbongs & Bentleys · 2018 | pr · Post Malone, Louis Bell
 - Rita Ora – Let You Love Me (Q56703413): m ·  · Rita Ora, Ilsey Juber, Noonie Bao | al · Phoenix · 2018
 - Travis Scott – Sicko Mode (Q56145698): al · Astroworld · 2018 | pr · Hit-Boy
+- XXXTENTACION – Sad! (Q51269207): m ·  · XXXTENTACION, John Cunningham | al · ? · 2018 | pr · John Cunningham
 - Ava Max – So Am I (Q61992565): al · Heaven & Hell · 2020 | pr · Cirkut
 - Billie Eilish – Everything I Wanted (Q74459564): m ·  · Billie Eilish | pr · Finneas O'Connell
-- Camila Cabello – Liar (Q67020368): m ·  · Lionel Richie, Jenny Berggren, Ulf Ekberg | al · Romance · 2019
+- Camila Cabello – Liar (Q67020368): m ·  · Ali Tamposi, Jon Bellion, Camila Cabello | al · Romance · 2019
 - Danny Vera – Roller Coaster (Q77714425): m ·  · Danny Vera
 - Doja Cat – Say So (Q83634294): al · Hot Pink · 2019 | pr · Dr. Luke
 - Ed Sheeran & Justin Bieber – I Don't Care (Q63602156): m ·  · Justin Bieber, Ed Sheeran | al · No.6 Collaborations Project · 2019 | pr · Fred Again, Shellback, Max Martin
@@ -1364,6 +1598,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - J. Cole – Middle Child (Q62129661): al · Revenge of the Dreamers III · 2019
 - Jonas Brothers – Sucker (Q61971037): m ·  · Nick Jonas | pr · Ryan Tedder
 - Kate Miller-Heidke – Zero Gravity (Q61653211): ml · Kate Miller-Heidke
+- KEiiNO – Spirit in the Sky (Q61022284): m · Alexandra Rotan, Tom Hugo, Fred-René Buljo · KEiiNO
 - Lizzo – Juice (Q60772052): m ·  · Lizzo, Ricky Reed | pr · Ricky Reed
 - Lizzo – Truth Hurts (Q65034919): al · Cuz I Love You · 2019
 - Luca Hänni – She Got Me (Q61990618): m · Laurell, Luca Hänni · Laurell
@@ -1373,50 +1608,51 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Nea – Some Say (Q89036049): m ·  · Nea, Bryn Christopher | bo · Blue · 1998
 - Post Malone – Circles (Q66839247): m ·  · Louis Bell, Frank Dukes, Post Malone | al · Hollywood's Bleeding · 2019 | pr · Louis Bell, Frank Dukes, Post Malone
 - Sam Smith & Normani – Dancing with a Stranger (Q60768341): al · Love Goes · 2020
-- Shawn Mendes & Camila Cabello – Señorita (Q64729088): ml · Ali Tamposi, Shawn Mendes, Cashmere Cat | al · Shawn Mendes · 2018 | pr · Benny Blanco
+- Shawn Mendes & Camila Cabello – Señorita (Q64729088): m · Ali Tamposi, Shawn Mendes, Cashmere Cat · Ali Tamposi, Shawn Mendes, Camila Cabello | al · Shawn Mendes · 2018 | pr · Benny Blanco
 - Tiësto & Jonas Blue – Ritual (Q64210815): al · Blue · 2018
 - Ava Max – Who's Laughing Now (Q95782968): al · Heaven & Hell · 2020
 - Barbara Pravi – Voilà (Q105137334): m · Igit · Barbara Pravi
 - Billie Eilish – No Time To Die (Q84761142): m · Finneas O'Connell, Billie Eilish · Finneas O'Connell | pr · Stephen Lipson, Finneas O'Connell
 - Conan Gray – Heather (Q98546644): al · Kid Krow · 2020
-- Dotan – Numb (Q65593974): m ·  · Dotan, Neil Ormandy | pr · Martin Wave
+- Dotan – Numb (Q65593974): m ·  · Neil Ormandy, Dotan | pr · Martin Wave
 - Go_A – Solovey (Q85962802): m ·  · Go_A
 - Joel Corry & MNEK – Head & Heart (Q97153993): m ·  · Joel Corry, Robert Harvey, MNEK
 - Kali Uchis – telepatía (Q105691008): pr · Tainy
 - Little Big – Uno (Q87598125): m ·  · Ilja Prusykin
 - Luke Combs – Forever After All (Q101096052): m ·  · Luke Combs
 - Megan Thee Stallion & Beyoncé – Savage (Q89019004): al · Suga · 2020
-- Michele Morrone – Feel It (Q105756068): m · Dominic Buczkowski-Wojtaszek, Patryk Kumór · Patryk Kumór, Dominic Buczkowski-Wojtaszek, Michele Morrone | pr · Dominic Buczkowski-Wojtaszek, Patryk Kumór
+- Michele Morrone – Feel It (Q105756068): m · Dominic Buczkowski-Wojtaszek, Patryk Kumór · Dominic Buczkowski-Wojtaszek, Michele Morrone, Patryk Kumór | pr · Dominic Buczkowski-Wojtaszek, Patryk Kumór
 - Miley Cyrus – Angels Like You (Q105626158): al · Plastic Hearts · 2020
 - Ofenbach & Norma Jean Martine – Head Shoulders Knees & Toes (Q102226847): pr · Ofenbach
 - Robin Schulz – All We Got (Q100871528): al · IIII · 2021
 - Sam Smith – Promises (Q56233312): m ·  · Calvin Harris, Sam Smith, Jessie Reyez | al · Love Goes · 2020 | pr · Calvin Harris
 - Selena Gomez – Feel Me (Q85811624): al · Rare · 2020
-- Taylor Swift – cardigan (Q97631372): m ·  · Taylor Swift, Aaron Dessner | al · Folklore · 2020 | pr · Aaron Dessner
+- Taylor Swift – cardigan (Q97631372): m ·  · Aaron Dessner, Taylor Swift | al · Folklore · 2020 | pr · Aaron Dessner
 - The Kid Laroi – Without You (Q104213408): al · F*ck Love · 2020
 - Zoe Wees – Control (Q96072235): m ·  · Zoe Wees
 - Becky Hill & David Guetta – Remember (Q107750470): m ·  · Karen Poole | al · Only Honest on the Weekend · 2021 | pr · David Guetta
 - Becky Hill & Topic – My Heart Goes (La Di Da) (Q108603186): al · Only Honest on the Weekend · 2021 | pr · Topic
 - Blind Channel – Dark Side (Q104996560): al · Lifestyles of the Sick & Dangerous · 2022
-- Doja Cat – Need to Know (Q107182489): m ·  · Dr. Luke, Doja Cat | al · Planet Her · 2021 | pr · Dr. Luke
+- Doja Cat – Need to Know (Q107182489): m ·  · Doja Cat, Dr. Luke | al · Planet Her · 2021 | pr · Dr. Luke
 - Doja Cat – Woman (Q108199109): al · Planet Her · 2021
 - Doja Cat & SZA – Kiss Me More (Q106421322): al · Planet Her · 2021
-- Ed Sheeran – Bad Habits (Q107341752): m ·  · Johnny McDaid, Ed Sheeran, Fred Again | al · = · 2021 | pr · Ed Sheeran, Fred Again, Johnny McDaid
+- Ed Sheeran – Bad Habits (Q107341752): m ·  · Ed Sheeran, Fred Again, Johnny McDaid | al · = · 2021 | pr · Ed Sheeran, Fred Again, Johnny McDaid
 - Ed Sheeran – Shivers (Q108489043): al · = · 2021 | pr · Ed Sheeran, Fred Again, Steve Mac
 - Gjon's Tears – Tout l'univers (Q105858065): m · Gjon's Tears · 
 - Imagine Dragons – Follow You (Q105961104): al · Mercury – Act 1 · 2021
 - Latto – Big Energy (Q110514272): pr · Dr. Luke
-- Lil Nas X – MONTERO (Call Me By Your Name) (Q105865170): m ·  · Omer Fedi, Lil Nas X, Roy Lenzo | al · Montero · 2021
+- Lil Nas X – MONTERO (Call Me By Your Name) (Q105865170): m ·  · Omer Fedi, Roy Lenzo, Denzel Baptiste | al · Montero · 2021
 - Lost Frequencies & Calum Scott – Where Are You Now (Q108537511): pr · Lost Frequencies
-- Morgan Wallen – Wasted on You (Q105038625): m ·  · Morgan Wallen, Josh Thompson
+- Morgan Wallen – Wasted on You (Q105038625): m ·  · Josh Thompson, Morgan Wallen
 - Måneskin – I WANNA BE YOUR SLAVE (Q107214597): al · Teatro d'ira: Vol. I · 2021
 - Ofenbach – Wasted Love (Q105822834): pr · Ofenbach
-- Olivia Rodrigo – deja vu (Q106291700): m ·  · Dan Nigro, Taylor Swift, Olivia Rodrigo | al · Sour · 2021 | pr · Dan Nigro
+- Olivia Rodrigo – deja vu (Q106291700): m ·  · Olivia Rodrigo, Jack Antonoff, Dan Nigro | al · Sour · 2021 | pr · Dan Nigro
 - Olivia Rodrigo – drivers license (Q104774451): al · Sour · 2021 | pr · Dan Nigro
-- Olivia Rodrigo – good 4 u (Q106830344): m ·  · Dan Nigro, Olivia Rodrigo, Hayley Williams | al · Sour · 2021 | pr · Alexander 23, Dan Nigro
+- Olivia Rodrigo – good 4 u (Q106830344): m ·  · Olivia Rodrigo, Hayley Williams, Dan Nigro | al · Sour · 2021 | pr · Alexander 23, Dan Nigro
 - OneRepublic – Run (Q106764553): m ·  · Ryan Tedder | pr · Ryan Tedder
-- The Kid Laroi & Justin Bieber – Stay (Q107439752): m ·  · Charlie Puth, Justin Bieber, The Kid Laroi | al · F*ck Love 3: Over You · 2021 | pr · Cashmere Cat
+- The Kid Laroi & Justin Bieber – Stay (Q107439752): m ·  · Justin Bieber, The Kid Laroi, Cashmere Cat | al · F*ck Love 3: Over You · 2021 | pr · Cashmere Cat
 - Tix – Fallen Angel (Q105282769): ml · Tix
+- The Roop – Discoteque (Q105011410): m · Vaidotas Valiukevičius, Ilkka Wirtanen, Mantas Banišauskas · Vaidotas Valiukevičius, Kalle Lindroth, Mantas Banišauskas | pr · Vaidotas Valiukevičius
 - Måneskin – MAMMAMIA (Q108833231): ml · Måneskin | pr · Måneskin, Fabrizio Ferraguzzo
 - Måneskin – CORALINE (Q107366467): al · Teatro d'ira: Vol. I · 2021
 - Olivia Rodrigo – jealousy, jealousy (Q107193262): ml · Olivia Rodrigo, Casey Smith, Dan Nigro | al · Sour · 2021 | pr · Dan Nigro, Jam City
@@ -1452,6 +1688,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Tove Lo – How Long (Q112701669): m ·  · Tove Lo
 - Sabrina Carpenter – Nonsense (Q116453699): al · Emails I Can't Send · 2022
 - Rihanna – Lift Me Up (Q114878437): pr · Ludwig Göransson
+- Imagine Dragons – Bones (Q111271165): al · Mercury – Act 2 · 2022
 - Billie Eilish – What Was I Made For? (Q120638205): m ·  · Finneas O'Connell, Billie Eilish | al · Barbie: The Album · 2023 | pr · Mark Ronson, Andrew Wyatt, Finneas O'Connell
 - David Kushner – Daylight (Q118316199): m ·  · David Kushner
 - Doja Cat – Paint The Town Red (Q121167968): m · Burt Bacharach, Hal David · Doja Cat | al · Scarlet · 2023
@@ -1482,7 +1719,9 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Rolling Stones – Angry (Q122285084): m · Jagger/Richards, Andrew Watt · 
 - The Rolling Stones – Mess It Up (Q124060444): pr · Andrew Watt
 - Olivia Rodrigo – bad idea right? (Q121289849): m ·  · Olivia Rodrigo | al · Guts · 2023 | pr · Dan Nigro
+- Lauv – Steal The Show (Q119716622): m · Michael Matosic, Lauv · Thomas Newman, Lauv | pr · Thomas Newman, Lauv
 - Olivia Rodrigo – Can’t Catch Me Now (Q123313708): m ·  · Dan Nigro | al · Music From & Inspired by The Hunger Games: The Ballad of Songbirds & Snakes · 2023 | pr · Dan Nigro
+- Ryan Gosling – I'm Just Ken (Q120799552): m ·  · Mark Ronson | al · Barbie: The Album · 2023
 - Kylie Minogue – Padam Padam (Q118534203): m ·  · Ina Wroldsen, Lostboy | pr · Lostboy
 - Alyona Alyona & Jerry Heil – Teresa & Maria (Q124413120): ml · Ivan Klymenko
 - Angelina Mango – La noia (Q124444683): ml · Madame, Dardust | al · Poké melodrama · 2024 | pr · Dardust
@@ -1529,61 +1768,71 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Olivia Rodrigo – The Cure (Q139852871): ml · Dan Nigro, Olivia Rodrigo | al · You Seem Pretty Sad for a Girl So in Love · 2026 | pr · Dan Nigro
 - Satoshi – Viva, Moldova! (Q137804481): m ·  · Satoshi
 - Senhit – Superstar (Q138601679): m · Thomas Stengaard, Julie Aagaard, Senhit · 
-- wykonawca Krystyna Prońko (Q11748758): bp · Gorzów Wielkopolski · 1947
-- wykonawca Hanna Rek (Q11708567): bp · Warszawa · 1937
-- wykonawca Halina Kunicka (Q11708445): bp · Lwów · 1938
-- wykonawca Jeremi Przybora (Q10781586): bp · Warszawa · 1915
-- wykonawca Tadeusz Woźniak (Q9355020): bp · Warszawa · 1947
 - wykonawca Wojciech Młynarski (Q1709537): bp · Warszawa · 1941
 - wykonawca Magda Umer (Q1965113): bp · Warszawa · 1949
-- wykonawca Sława Przybylska (Q455801): bp · Międzyrzec Podlaski · 1932
 - wykonawca Wanda Warska (Q2547872): bp · Poznań · 1932
 - wykonawca Katarzyna Sobczyk (Q434528): bp · Tyczyn · 1945
 - wykonawca Edmund Fetting (Q4483327): bp · Warszawa · 1927
 - wykonawca Anna Jantar (Q455443): bn · Anna Maria Szmeterling | bp · Poznań · 1950
-- wykonawca Czesław Niemen (Q458213): bn · Czesław Juliusz Wydrzycki | bp · Stare Wasiliszki · 1939
+- wykonawca Hanna Rek (Q11708567): bp · Warszawa · 1937
+- wykonawca Krystyna Prońko (Q11748758): bp · Gorzów Wielkopolski · 1947
 - wykonawca Rena Rolska (Q9306294): bn · Regina Maria Rollinger | bp · Warszawa · 1932
-- wykonawca Izabela Trojanowska (Q461879): bn · Izabela Ludwika Schütz | bp · Olsztyn · 1955
+- wykonawca Halina Frąckowiak (Q3126002): bp · Poznań · 1947
+- wykonawca Halina Kunicka (Q11708445): bp · Lwów · 1938
 - wykonawca Krzysztof Klenczon (Q4223352): bp · Pułtusk · 1942
+- wykonawca Sława Przybylska (Q455801): bp · Międzyrzec Podlaski · 1932
 - wykonawca Anna German (Q298022): bn · Anna Viktoria Hörmann | bp · Urgencz · 1936
 - wykonawca Irena Jarocka (Q338492): bp · Srebrna Góra · 1946
 - wykonawca Violetta Villas (Q217750): bn · Czesława Maria Cieślak | bp · Heusy · 1938
-- wykonawca Maryla Rodowicz (Q464531): bn · Maria Antonina Rodowicz | bp · Zielona Góra · 1945
 - wykonawca Urszula Dudziak (Q386539): bp · Straconka · 1943
 - wykonawca Ewa Demarczyk (Q443436): bp · Kraków · 1941
 - wykonawca Hanka Ordonówna (Q453555): bn · Maria Anna Pietrusińska | bp · Warszawa · 1902
 - wykonawca Krzysztof Jaryczewski (Q11749298): bp · Warszawa · 1960
+- wykonawca Izabela Trojanowska (Q461879): bn · Izabela Ludwika Schütz | bp · Olsztyn · 1955
 - wykonawca Krzysztof Krawczyk (Q1380592): bp · Katowice · 1946
 - wykonawca Marek Grechuta (Q361642): bp · Zamość · 1945
 - wykonawca Krystyna Konarska (Q11748711): bp · Berlin · 1941
+- wykonawca Andrzej Dąbrowski (Q9151947): bp · Wilno · 1938
+- wykonawca Elżbieta Wojnowska (Q9253302): bp · Częstochowa · 1948
+- wykonawca Jeremi Przybora (Q10781586): bp · Warszawa · 1915
+- wykonawca Tadeusz Woźniak (Q9355020): bp · Warszawa · 1947
 - wykonawca Karin Stanek (Q538292): bp · Bytom · 1946
 - wykonawca Grażyna Łobaszewska (Q9276117): bp · Gdańsk · 1952
 - wykonawca Krzysztof Komeda (Q633180): bp · Poznań · 1931
 - wykonawca Bogusław Mec (Q9175851): bp · Tomaszów Mazowiecki · 1947
 - wykonawca Urszula Sipińska (Q53198): bp · Poznań · 1947
+- wykonawca Mira Kubasińska (Q571224): bp · Bodzechów · 1944
+- wykonawca Andrzej Rosiewicz (Q9153398): bp · Warszawa · 1944
+- wykonawca Czesław Niemen (Q458213): bn · Czesław Juliusz Wydrzycki | bp · Stare Wasiliszki · 1939
 - wykonawca Danuta Rinn (Q8864639): bp · Kraków · 1936
 - wykonawca Zbigniew Wodecki (Q9388403): bp · Kraków · 1950
 - wykonawca Łucja Prus (Q7945474): bp · Białystok · 1942
 - wykonawca Stan Borys (Q508747): bp · Rzeszów · 1941
+- wykonawca Maryla Rodowicz (Q464531): bn · Maria Antonina Rodowicz | bp · Zielona Góra · 1945
 - wykonawca Teresa Tutinas (Q766624): bp · Zdołbunów · 1943
 - wykonawca Alicja Majewska (Q743473): bp · Olbierzowice · 1948
 - wykonawca Irena Santor (Q55787): bp · Papowo Biskupie · 1934
 - wykonawca Jerzy Połomski (Q63512): bn · Jerzy Pająk | bp · Radom · 1933
 - wykonawca Piotr Szczepanik (Q7197012): bp · Lublin · 1942
+- wykonawca Bohdan Łazuka (Q9176260): bp · Lublin · 1938
 - wykonawca Mieczysław Fogg (Q652292): bp · Warszawa · 1901
+- wykonawca Fryderyk Chopin (Q1268): bp · Żelazowa Wola · 1810
 - wykonawca 2 plus 1 (Q222896): fp · Warszawa · 1971
 - wykonawca Czerwone Gitary (Q549593): fp · Gdańsk · 1965
 - wykonawca Skaldowie (Q529192): fp · Kraków · 1965
-- wykonawca Małgorzata Ostrowska (Q11772350): bp · Szczecinek · 1958
+- wykonawca Majka Jeżowska (Q55736): bp · Nowy Sącz · 1960
 - wykonawca Andrzej Rybiński (Q9153438): bp · Łódź · 1949
-- wykonawca Maria Koterbska (Q11768962): bp · Bielsko · 1924
 - wykonawca Basia (Q444573): bp · Jaworzno · 1954
 - wykonawca Urszula (Q261886): bp · Lublin · 1960
 - wykonawca Jolanta Jaszkowska (Q11728065): bp · Szczecin · 1957
+- wykonawca Maria Koterbska (Q11768962): bp · Bielsko · 1924
 - wykonawca Kapitan Nemo (Q11735058): bn · Bogdan Gajkowski | bp · Warszawa · 1950
 - wykonawca Kayah (Q433111): bp · Warszawa · 1967
 - wykonawca Jacek Skubikowski (Q11715570): bp · Warszawa · 1954
 - wykonawca Grzegorz Turnau (Q322422): bp · Kraków · 1967
+- wykonawca Małgorzata Ostrowska (Q11772350): bp · Szczecinek · 1958
+- wykonawca Marek Biliński (Q1894563): bp · Szczecin · 1953
+- wykonawca Renata Przemyk (Q538442): bp · Bielsko-Biała · 1966
 - wykonawca Martyna Jakubowicz (Q11770802): bp · Kraków · 1955
 - wykonawca Andrzej Zaucha (Q1882115): bp · Kraków · 1949
 - wykonawca Anna Jurksztowicz (Q9155266): bp · Szczecin · 1963
@@ -1592,12 +1841,11 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Seweryn Krajewski (Q719489): bp · Nowa Sól · 1947
 - wykonawca Tadeusz Nalepa (Q721006): bp · Zgłobień · 1943
 - wykonawca Edyta Geppert (Q467456): bp · Nowa Ruda · 1953
-- wykonawca Majka Jeżowska (Q55736): bp · Nowy Sącz · 1960
 - wykonawca Lech Janerka (Q638931): bp · Wrocław · 1953
 - wykonawca Elżbieta Mielczarek (Q9253206): bp · Łódź · 1958
 - wykonawca Michał Bajor (Q325177): bp · Głuchołazy · 1957
-- wykonawca Lady Pank (Q571303): fp · Warszawa · 1981
 - wykonawca Kult (Q572179): fp · Warszawa · 1982
+- wykonawca Lady Pank (Q571303): fp · Warszawa · 1981
 - wykonawca T.Love (Q2997872): fp · Częstochowa · 1982
 - wykonawca Republika (Q1417456): fp · Toruń · 1981
 - wykonawca Siekiera (Q694182): fp · Puławy · 1982
@@ -1606,731 +1854,805 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Justyna Steczkowska (Q286298): bp · Rzeszów · 1972
 - wykonawca Anna Maria Jopek (Q40890): bp · Warszawa · 1970
 - wykonawca Anna Szałapak (Q9155738): bp · Kraków · 1952
+- wykonawca Hanna Banaszak (Q733916): bp · Poznań · 1957
+- wykonawca Maciej Maleńczuk (Q6723963): bp · Wojcieszów · 1961
 - wykonawca Anita Lipnicka (Q525977): bp · Piotrków Trybunalski · 1975
+- wykonawca Robert Gawliński (Q7344697): bp · Warszawa · 1963
 - wykonawca Robert Kasprzycki (Q9310888): bp · Śrem · 1969
 - wykonawca Ryszard Rynkowski (Q55785): bp · Elbląg · 1951
 - wykonawca Marek Jackowski (Q11768173): bp · Stary Olsztyn · 1946
 - wykonawca Gabriel Fleszar (Q9265099): bp · Złotoryja · 1979
+- wykonawca Peja (Q53169): bn · Ryszard Waldemar Andrzejewski | bp · Poznań · 1976
 - wykonawca Natalia Kukulska (Q456038): bp · Warszawa · 1976
 - wykonawca Wiesław Gołas (Q4141313): bp · Kielce · 1930
 - wykonawca Reni Jusis (Q274033): bp · Konin · 1974
 - wykonawca Andrzej Piaseczny (Q515408): bp · Pionki · 1971
-- wykonawca Hanna Banaszak (Q733916): bp · Poznań · 1957
 - wykonawca Edyta Bartosiewicz (Q286754): bp · Warszawa · 1965
-- wykonawca Maciej Maleńczuk (Q6723963): bp · Wojcieszów · 1961
 - wykonawca Zdzisława Sośnicka (Q8068133): bp · Kalisz · 1945
-- wykonawca Renata Przemyk (Q538442): bp · Bielsko-Biała · 1966
+- wykonawca Liroy (Q3242356): bp · Busko-Zdrój · 1971
+- wykonawca Antonina Krzysztoń (Q3563240): bp · Kraków · 1954
 - wykonawca Kasia Kowalska (Q293102): bn · Katarzyna Kowalska | bp · Sulejówek · 1973
 - wykonawca Norbi (Q11792852): bp · Ostróda · 1972
 - wykonawca Michał Lorenc (Q1930563): bp · Warszawa · 1955
+- wykonawca Kalina Jędrusik (Q274295): bp · Częstochowa · 1931
 - wykonawca Ewa Bem (Q274380): bp · Warszawa · 1951
 - wykonawca Artur Gadowski (Q4801614): bp · Szydłowiec · 1967
 - wykonawca Edyta Górniak (Q236121): bp · Ziębice · 1972
 - wykonawca Katarzyna Groniec (Q11736964): bp · Zabrze · 1972
 - wykonawca Pidżama Porno (Q1231208): fp · Poznań · 1987
 - wykonawca Acid Drinkers (Q53176): fp · Poznań · 1986
-- wykonawca Paktofonika (Q1413674): fp · Katowice · 1998
 - wykonawca Czerwony Tulipan (Q9198919): fp · Olsztyn · 1985
-- wykonawca Gosia Andrzejewicz (Q2594319): bp · Bytom · 1984
-- wykonawca Magda Femme (Q11765985): bp · Zduńska Wola · 1971
-- wykonawca Eugeniusz Bodo (Q117444): bn · Bohdan Eugène Junod
-- wykonawca Tabb (Q9353905): bp · Poznań · 1984
-- wykonawca MBrother (Q11764826): bp · Oświęcim · 1981
-- wykonawca Marek Dyjak (Q11768109): bp · Świdnik · 1975
+- wykonawca Łona (Q345434): bp · Szczecin · 1982
+- wykonawca Agnieszka Chylińska (Q4693230): bp · Gdańsk · 1976
+- wykonawca Mezo (Q11778157): bp · Poznań · 1982
 - wykonawca Patrycja Markowska (Q11813576): bp · Warszawa · 1979
+- wykonawca Dorota Miśkiewicz (Q5298220): bp · Kłodzko · 1973
+- wykonawca Artur Rojek (Q2883872): bp · Mysłowice · 1972
+- wykonawca Jan Kanty Pawluśkiewicz (Q3806898): bp · Nowy Targ · 1942
+- wykonawca Ewelina Flinta (Q3735761): bp · Lubsko · 1979
+- wykonawca Janusz Grzywacz (Q11720180): bp · Zakopane · 1947
+- wykonawca MBrother (Q11764826): bp · Oświęcim · 1981
+- wykonawca Abradab (Q9138356): bp · Katowice · 1978
+- wykonawca Sylwia Wiśniewska (Q9348861): bp · Warszawa · 1977
+- wykonawca Piotr Bukartyk (Q11817341): bp · Zielona Góra · 1964
+- wykonawca Mandaryna (Q447387): bp · Łódź · 1978
+- wykonawca Magda Femme (Q11765985): bp · Zduńska Wola · 1971
+- wykonawca Tede (Q7694132): bn · Jacek Maciej Szymon Graniecki | bp · Warszawa · 1976
+- wykonawca Ania Dąbrowska (Q438463): bp · Chełm · 1981
+- wykonawca C-BooL (Q29077894): bp · Pyskowice · 1981
+- wykonawca Marek Dyjak (Q11768109): bp · Świdnik · 1975
+- wykonawca Stachursky (Q1764137): bp · Czechowice-Dziedzice · 1966
+- wykonawca Mietek Szcześniak (Q1344567): bn · Mieczysław Wojciech Szcześniak | bp · Kalisz · 1964
+- wykonawca Eugeniusz Bodo (Q117444): bn · Bohdan Eugène Junod | bp · Genewa · 1899
+- wykonawca Maria Peszek (Q274836): bp · Wrocław · 1973
 - wykonawca Marcin Rozynek (Q1893583): bp · Żywiec · 1971
 - wykonawca Sidney Polak (Q2281975): bp · Warszawa · 1972
+- wykonawca Pezet (Q11816074): bp · Warszawa · 1980
 - wykonawca O.S.T.R. (Q1931736): bn · Adam Andrzej Ostrowski | bp · Łódź · 1980
 - wykonawca Fisz (Q1362691): bp · Warszawa · 1978
-- wykonawca Mezo (Q11778157): bp · Poznań · 1982
-- wykonawca Piotr Bukartyk (Q11817341): bp · Zielona Góra · 1964
-- wykonawca Tede (Q7694132): bn · Jacek Maciej Szymon Graniecki | bp · Warszawa · 1976
+- wykonawca Krzysztof Kiljański (Q2677631): bp · Nowa Sól · 1967
 - wykonawca Jan Kaczmarek (Q11717864): bp · Lwówek · 1945
-- wykonawca Maria Sadowska (Q2141861): bp · Warszawa · 1976
-- wykonawca Janusz Grzywacz (Q11720180): bp · Zakopane · 1947
 - wykonawca Kasia Klich (Q11736988): bp · Poznań · 1973
 - wykonawca Brodka (Q149703): bp · Żywiec · 1988
-- wykonawca Łona (Q345434): bp · Szczecin · 1982
-- wykonawca Pati Yang (Q524690): bp · Wrocław · 1980
-- wykonawca Agnieszka Chylińska (Q4693230): bp · Gdańsk · 1976
-- wykonawca Maria Peszek (Q274836): bp · Wrocław · 1973
-- wykonawca Artur Rojek (Q2883872): bp · Mysłowice · 1972
-- wykonawca Ewelina Flinta (Q3735761): bp · Lubsko · 1979
-- wykonawca Krzysztof Kiljański (Q2677631): bp · Nowa Sól · 1967
-- wykonawca Kasia Cerekwicka (Q446548): bp · Koszalin · 1980
-- wykonawca Abradab (Q9138356): bp · Katowice · 1978
-- wykonawca Mandaryna (Q447387): bp · Łódź · 1978
-- wykonawca Peja (Q53169): bn · Ryszard Waldemar Andrzejewski | bp · Poznań · 1976
-- wykonawca Ania Dąbrowska (Q438463): bp · Chełm · 1981
 - wykonawca Lao Che (Q4810466): fp · Płock · 1999
 - wykonawca Kalwi & Remi (Q6354814): fp · Poznań · 2003
-- wykonawca Riverside (Q268612): fp · Warszawa · 2001
 - wykonawca Sumptuastic (Q9348121): fp · Bolesławiec · 2000
 - wykonawca Virgin (Q466355): fp · Warszawa · 2000
 - wykonawca Łzy (Q384299): fp · Pszów · 1996
+- wykonawca Paktofonika (Q1413674): fp · Katowice · 1998
 - wykonawca Farben Lehre (Q3246955): fp · Płock · 1986
-- wykonawca Piotr Rogucki (Q11818010): bp · Łódź · 1978
-- wykonawca Marika (Q11769944): bn · Marta Zarębska | bp · Białystok · 1980
-- wykonawca Paulla (Q16586679): bp · Pleszew · 1979
-- wykonawca Kuba Badach (Q11716359): bp · Krasnystaw · 1976
-- wykonawca Igor Herbut (Q16559507): bp · Przemków · 1990
-- wykonawca Mela Koteluk (Q11777008): bn · Malwina Koteluk | bp · Sulechów · 1985
-- wykonawca Liber (Q11755652): bp · Oborniki · 1981
-- wykonawca Numer Raz (Q11794141): bp · Warszawa · 1977
-- wykonawca Ewelina Lisowska (Q654872): bp · Cerekwica · 1991
-- wykonawca Jula (Q1443854): bp · Łomża · 1991
-- wykonawca Mesajah (Q11777529): bp · Wrocław · 1985
-- wykonawca Krzysztof Zalewski (Q6440240): bp · Lublin · 1984
-- wykonawca Elżbieta Adamiak (Q9253083): bp · Łódź · 1955
-- wykonawca Mrozu (Q11786389): bp · Wrocław · 1986
-- wykonawca Sebastian Riedel (Q9334780): bp · Tychy · 1978
-- wykonawca Natalia Lesz (Q3030373): bp · Warszawa · 1981
-- wykonawca Kamil Bednarek (Q11734500): bp · Brzeg · 1991
+- wykonawca Gosia Andrzejewicz (Q2594319): bp · Bytom · 1984
 - wykonawca Zbigniew Zamachowski (Q55367): bp · Brzeziny · 1961
+- wykonawca Pati Yang (Q524690): bp · Wrocław · 1980
 - wykonawca Artur Andrus (Q9160540): bp · Lesko · 1971
 - wykonawca Czesław Śpiewa (Q5202137): bp · Zabrze · 1979
 - wykonawca Ramona Rey (Q9303886): bp · Gryfice · 1983
 - wykonawca Hania Stach (Q5648189): bp · Warszawa · 1981
-- wykonawca Dawid Podsiadło (Q5242353): bp · Dąbrowa Górnicza · 1993
+- wykonawca Mesajah (Q11777529): bp · Wrocław · 1985
 - wykonawca Wojciech Waglewski (Q9376941): bp · Nowy Sącz · 1953
 - wykonawca Natasza Urbańska (Q936281): bp · Warszawa · 1977
 - wykonawca Magdalena Tul (Q237078): bp · Gdańsk · 1980
 - wykonawca Łukasz Zagrobelny (Q9394753): bp · Wrocław · 1975
-- wykonawca Donatan (Q9210012): bp · Kraków · 1984
+- wykonawca Ewa Farna (Q242302): bp · Trzyniec · 1993
 - wykonawca Agnieszka Włodarczyk (Q394923): bp · Sławno · 1980
+- wykonawca Natalia Lesz (Q3030373): bp · Warszawa · 1981
+- wykonawca Kasia Cerekwicka (Q446548): bp · Koszalin · 1980
 - wykonawca Sasha Strunin (Q466906): bp · Petersburg · 1989
+- wykonawca Mrozu (Q11786389): bp · Wrocław · 1986
 - wykonawca Sylwia Grzeszczak (Q287553): bp · Poznań · 1989
-- wykonawca Lidia Kopania (Q231733): bp · Koluszki · 1978
 - wykonawca Andrzej Sikorowski (Q515594): bp · Kraków · 1949
 - wykonawca Grubson (Q7342385): bp · Rybnik · 1986
 - wykonawca Włodzimierz Korcz (Q2597269): bp · Łódź · 1943
-- wykonawca Rafał Brzozowski (Q9302874): bp · Warszawa · 1981
+- wykonawca Paulla (Q16586679): bp · Pleszew · 1979
 - wykonawca Kasia Wilk (Q4990565): bp · Lubin · 1982
+- wykonawca Numer Raz (Q11794141): bp · Warszawa · 1977
+- wykonawca Marika (Q11769944): bn · Marta Zarębska | bp · Białystok · 1980
+- wykonawca Kuba Badach (Q11716359): bp · Krasnystaw · 1976
+- wykonawca Tabb (Q9353905): bp · Poznań · 1984
+- wykonawca Eldo (Q3050508): bn · Leszek Kaźmierczak | bp · Warszawa · 1979
+- wykonawca Sokół (Q3489066): bp · Warszawa · 1977
+- wykonawca Liber (Q11755652): bp · Oborniki · 1981
+- wykonawca Pono (Q21529778): bn · Rafał Poniedzielski | bp · Warszawa · 1976
+- wykonawca Grzegorz Markowski (Q3118305): bp · Józefów · 1953
+- wykonawca Lidia Kopania (Q231733): bp · Koluszki · 1978
+- wykonawca Maria Sadowska (Q2141861): bp · Warszawa · 1976
+- wykonawca Elżbieta Adamiak (Q9253083): bp · Łódź · 1955
 - wykonawca Luxtorpeda (Q772174): fp · Poznań · 2010
-- wykonawca Marcin Sójka (Q61944232): bp · Siedlce · 1987
-- wykonawca Taco Hemingway (Q9383157): bp · Kair · 1990
-- wykonawca Viki Gabor (Q69349910): bn · Wiktoria Genowefa Gabor | bp · Hamburg · 2007
-- wykonawca Monika Lewczuk (Q6900207): bp · Łomża · 1988
-- wykonawca Grzegorz Hyży (Q16729472): bp · Gniezno · 1987
-- wykonawca Sarsa (Q20925336): bn · Marta Markiewicz | bp · Słupsk · 1989
-- wykonawca Ten Typ Mes (Q9356672): bp · Warszawa · 1982
-- wykonawca Kasia Popowska (Q6374513): bp · Łódź · 1989
-- wykonawca Lanberry (Q30112538): bn · Małgorzata Uściłowska | bp · Wyszków · 1987
-- wykonawca Otsochodzi (Q55392514): bp · Warszawa · 1994
-- wykonawca Barbara Wrońska (Q61944125): bp · Warszawa · 1983
-- wykonawca Czesław Mozil (Q5202137): bp · Zabrze · 1979
-- wykonawca Ania Karwan (Q60980809): bp · Łaszczów · 1985
+- wykonawca Riverside (Q268612): fp · Warszawa · 2001
+- wykonawca Piotr Rogucki (Q11818010): bp · Łódź · 1978
 - wykonawca Michał Szpak (Q6836064): bp · Jasło · 1990
-- wykonawca Kaśka Sochacka (Q84492182): bn · Katarzyna Sochacka-Kasznia | bp · Pradła · 1990
-- wykonawca Nowator (Q11793552): bp · Opoczno · 1985
+- wykonawca Katarzyna Łaska (Q11737116): bp · Tomaszów Mazowiecki · 1979
+- wykonawca Paluch (Q11802429): bp · Poznań · 1985
+- wykonawca Grzegorz Hyży (Q16729472): bp · Gniezno · 1987
+- wykonawca Mela Koteluk (Q11777008): bn · Malwina Koteluk | bp · Sulechów · 1985
+- wykonawca Paulina Przybysz (Q11813802): bp · Warszawa · 1985
+- wykonawca Monika Kuszyńska (Q11785133): bp · Łódź · 1980
+- wykonawca Olaf Deriglasoff (Q11797650): bp · Gdańsk · 1963
+- wykonawca Ewelina Lisowska (Q654872): bp · Cerekwica · 1991
+- wykonawca Jula (Q1443854): bp · Łomża · 1991
+- wykonawca Krzysztof Zalewski (Q6440240): bp · Lublin · 1984
 - wykonawca Miuosh (Q11783637): bn · Miłosz Paweł Borycki | bp · Katowice · 1986
+- wykonawca Sarsa (Q20925336): bn · Marta Markiewicz | bp · Słupsk · 1989
+- wykonawca Natalia Przybysz (Q11789992): bp · Warszawa · 1983
+- wykonawca Sebastian Riedel (Q9334780): bp · Tychy · 1978
+- wykonawca Kamil Bednarek (Q11734500): bp · Brzeg · 1991
+- wykonawca The Dumplings (Q17067363): fp · Zabrze · 2011
 - wykonawca Daria Zawiałow (Q29079940): bp · Koszalin · 1992
+- wykonawca Taco Hemingway (Q9383157): bp · Kair · 1990
 - wykonawca Julia Marcell (Q512974): bp · Chełmno · 1982
 - wykonawca Kaz Bałagane (Q48865990): bp · Warszawa · 1988
+- wykonawca Igor Herbut (Q16559507): bp · Przemków · 1990
+- wykonawca Te-Tris (Q9355960): bp · Siemiatycze · 1981
+- wykonawca Czarny HIFI (Q9198144): bp · Warszawa · 1986
+- wykonawca Kortez (Q24717997): bp · Krosno · 1989
+- wykonawca Antek Smykiewicz (Q24430797): bp · Warszawa · 1987
+- wykonawca Monika Lewczuk (Q6900207): bp · Łomża · 1988
+- wykonawca Dawid Podsiadło (Q5242353): bp · Dąbrowa Górnicza · 1993
+- wykonawca Piotr Zioła (Q24431057): bp · Opole · 1995
+- wykonawca Natalia Nykiel (Q19409854): bp · Mrągowo · 1995
+- wykonawca Donatan (Q9210012): bp · Kraków · 1984
+- wykonawca Bovska (Q27808278): bp · Warszawa · 1985
+- wykonawca Kasia Popowska (Q6374513): bp · Łódź · 1989
+- wykonawca KęKę (Q16570462): bp · Radom · 1983
+- wykonawca Lanberry (Q30112538): bn · Małgorzata Uściłowska | bp · Wyszków · 1987
+- wykonawca Czesław Mozil (Q5202137): bp · Zabrze · 1979
+- wykonawca Bedoes (Q48843274): bp · Bydgoszcz · 1998
+- wykonawca Rafał Brzozowski (Q9302874): bp · Warszawa · 1981
+- wykonawca Pawbeats (Q11767743): bp · Bydgoszcz · 1990
+- wykonawca Ten Typ Mes (Q9356672): bp · Warszawa · 1982
+- wykonawca WaluśKraksaKryzys (Q117751561): bn · Sebastian Łukasz Gugulski
+- wykonawca Alicja Szemplińska (Q85859170): bp · Ciechanów · 2002
+- wykonawca Monika Borzym (Q11785100): bp · Warszawa · 1990
+- wykonawca Vito Bambino (Q23061233): bp · Katowice · 1988
+- wykonawca Nowator (Q11793552): bp · Opoczno · 1985
+- wykonawca Hania Rani (Q65169465): bn · Hanna Maria Raniszewska | bp · Gdańsk · 1990
+- wykonawca Jan-Rapowanie (Q92941778): bp · Kraków · 1998
+- wykonawca Otsochodzi (Q55392514): bp · Warszawa · 1994
+- wykonawca Marcin Sójka (Q61944232): bp · Siedlce · 1987
+- wykonawca Białas (Q24644197): bp · Teresin · 1987
+- wykonawca Young Leosia (Q106697179): bp · Szczecin · 1998
 - wykonawca Mery Spolsky (Q48851392): bn · Maria Ewa Żak | bp · Warszawa · 1993
 - wykonawca Kasia Lins (Q22259986): bp · Poznań · 1990
-- wykonawca Kortez (Q24717997): bp · Krosno · 1989
 - wykonawca Quebonafide (Q19409897): bn · Kuba Grabowski | bp · Ciechanów · 1991
 - wykonawca Julia Wieniawa (Q48850120): bp · Warszawa · 1998
 - wykonawca Sosnowski (Q85868233): bp · Warszawa · 1983
-- wykonawca Antek Smykiewicz (Q24430797): bp · Warszawa · 1987
+- wykonawca Viki Gabor (Q69349910): bn · Wiktoria Genowefa Gabor | bp · Hamburg · 2007
 - wykonawca Gromee (Q28672611): bp · Kraków · 1978
-- wykonawca Monika Kuszyńska (Q11785133): bp · Łódź · 1980
-- wykonawca Olaf Deriglasoff (Q11797650): bp · Gdańsk · 1963
-- wykonawca Piotr Zioła (Q24431057): bp · Opole · 1995
-- wykonawca Grzegorz Markowski (Q3118305): bp · Józefów · 1953
-- wykonawca Natalia Nykiel (Q19409854): bp · Mrągowo · 1995
+- wykonawca Słoń (Q16609145): bp · Poznań · 1983
+- wykonawca Sara James (Q109664461): bp · Słubice · 2008
+- wykonawca Guzior (Q56328133): bp · Wrocław · 1992
+- wykonawca Dawid Kwiatkowski (Q15637422): bp · Gorzów Wielkopolski · 1996
+- wykonawca Deys (Q48841252): bp · Skarżysko-Kamienna · 1950
 - wykonawca Ralph Kaminski (Q29829086): bp · Jasło · 1990
 - wykonawca Paweł Domagała (Q17703451): bp · Wrocław · 1984
-- wykonawca Natalia Przybysz (Q11789992): bp · Warszawa · 1983
-- wykonawca Bedoes (Q48843274): bp · Bydgoszcz · 1998
+- wykonawca Bedoes 2115 (Q48843274): bp · Bydgoszcz · 1998
+- wykonawca Wojciech Baranowski (Q56338275): bp · Opoczno · 1991
+- wykonawca Barbara Wrońska (Q61944125): bp · Warszawa · 1983
+- wykonawca Sobel (Q106594291): bp · Świdnica · 2001
+- wykonawca Ania Karwan (Q60980809): bp · Łaszczów · 1985
+- wykonawca Mata (Q79343189): bp · Warszawa · 2000
 - wykonawca Błażej Król (Q19409890): bp · Gorzów Wielkopolski · 1984
-- wykonawca C-BooL (Q29077894): bp · Pyskowice · 1981
+- wykonawca Kaśka Sochacka (Q84492182): bn · Katarzyna Sochacka-Kasznia | bp · Pradła · 1990
+- wykonawca Natalia Szroeder (Q20851586): bp · Bytów · 1995
 - wykonawca Kasia Moś (Q23482845): bp · Ruda Śląska · 1987
 - wykonawca Kwiat Jabłoni (Q60824597): fp · Warszawa · 2018
+- wykonawca Kacperczyk (Q131782652): fp · Lublin · 2020
 - wykonawca L.Stadt (Q11752245): fp · Łódź · 2003
-- wykonawca The Dumplings (Q17067363): fp · Zabrze · 2011
+- wykonawca Lor (Q128938078): fp · Kraków · 2015
 - wykonawca Tulia (Q55289280): fp · Szczecin · 2017
-- wykonawca Fukaj (Q111033441): bp · Szczecin · 2003
-- wykonawca Young Leosia (Q106697179): bp · Szczecin · 1998
+- wykonawca Szpaku (Q56344784): bp · Morąg · 1994
+- wykonawca Zalia (Q131754383): bp · Warszawa · 2000
+- wykonawca Dobrawa Czocher (Q24427802): bp · Tczew · 1991
+- wykonawca Krzysztof Cugowski (Q11749153): bp · Lublin · 1950
+- wykonawca ReTo (Q9134374): bp · Piastów · 1995
+- wykonawca Paula Biskup (Q130998874): bp · Turek · 2006
+- wykonawca Kubi Producent (Q60832624): bp · Wadowice · 2000
+- wykonawca Smolasty (Q30231655): bp · Warszawa · 1995
+- wykonawca Bletka (Q122765776): bp · Kraków · 1999
+- wykonawca Felicjan Andrzejczak (Q11697781): bp · Pięczkowo · 1948
+- wykonawca Oskar Cyms (Q121199798): bp · Nowe · 2000
+- wykonawca Jann (Q116810483): bn · Jan Rozmanowski | bp · Lublin · 1999
+- wykonawca L.U.C. (Q6456319): bn · Łukasz Rostkowski | bp · Zielona Góra · 1981
+- wykonawca Kizo (Q65159869): bp · Gdańsk · 1994
+- wykonawca Arek Kłusowski (Q65163014): bp · Rzeszów · 1992
+- wykonawca B.R.O (Q9163346): bp · Warszawa · 1992
+- wykonawca Daria ze Śląska (Q125103145): bp · Katowice · 1990
+- wykonawca White 2115 (Q60831965): bn · Sebastian Czekaj | bp · Milanówek · 1996
+- wykonawca Michał Szczygieł (Q55392507): bp · Nowa Wieś · 1999
+- wykonawca Kuban (Q48844750): bp · Opoczno · 1993
+- wykonawca Zdechły Osa (Q112189388): bp · Wrocław · 1997
 - wykonawca Kabe (Q111135505): bp · Olsztyn · 2000
 - wykonawca Blanka (Q116524740): bp · Szczecin · 1999
-- wykonawca Pezet (Q11816074): bp · Warszawa · 1980
-- wykonawca Smolasty (Q30231655): bp · Warszawa · 1995
-- wykonawca Qry (Q108553313): bp · Jasło · 1999
-- wykonawca Sara James (Q109664461): bp · Słubice · 2008
-- wykonawca WaluśKraksaKryzys (Q117751561): bn · Sebastian Łukasz Gugulski
-- wykonawca Kuban (Q48844750): bp · Opoczno · 1993
 - wykonawca Chivas (Q108692300): bp · Łódź · 1998
-- wykonawca Vito Bambino (Q23061233): bp · Katowice · 1988
-- wykonawca Bletka (Q122765776): bp · Kraków · 1999
-- wykonawca Pawbeats (Q11767743): bp · Bydgoszcz · 1990
-- wykonawca Sobel (Q106594291): bp · Świdnica · 2001
-- wykonawca Mata (Q79343189): bp · Warszawa · 2000
-- wykonawca Wiktor Dyduła (Q120646405): bp · Gdańsk · 1997
-- wykonawca Monika Borzym (Q11785100): bp · Warszawa · 1990
 - wykonawca Ochman (Q108419943): bp · Melrose · 1999
-- wykonawca Szpaku (Q56344784): bp · Morąg · 1994
-- wykonawca Carla Fernandes (Q125658005): bp · Londyn · 2003
-- wykonawca Fagata (Q116453028): bp · Konin · 2000
-- wykonawca Zalia (Q131754383): bp · Warszawa · 2000
-- wykonawca ReTo (Q9134374): bp · Piastów · 1995
-- wykonawca Kubi Producent (Q60832624): bp · Wadowice · 2000
-- wykonawca Michał Szczygieł (Q55392507): bp · Nowa Wieś · 1999
-- wykonawca Kizo (Q65159869): bp · Gdańsk · 1994
-- wykonawca Dawid Kwiatkowski (Q15637422): bp · Gorzów Wielkopolski · 1996
-- wykonawca Filip Lato (Q55392721): bp · Warszawa · 1991
-- wykonawca Wojciech Baranowski (Q56338275): bp · Opoczno · 1991
-- wykonawca Alicja Szemplińska (Q85859170): bp · Ciechanów · 2002
-- wykonawca Oskar Cyms (Q121199798): bp · Nowe · 2000
-- wykonawca DJ Adamus (Q9200420): bp · Opole · 1975
-- wykonawca L.U.C. (Q6456319): bn · Łukasz Rostkowski | bp · Zielona Góra · 1981
-- wykonawca Jan-Rapowanie (Q92941778): bp · Kraków · 1998
-- wykonawca B.R.O (Q9163346): bp · Warszawa · 1992
-- wykonawca Natalia Szroeder (Q20851586): bp · Bytów · 1995
-- wykonawca Jeremi Sikorski (Q27971107): bp · Warszawa · 1999
-- wykonawca White 2115 (Q60831965): bn · Sebastian Czekaj | bp · Milanówek · 1996
-- wykonawca Kacperczyk (Q131782652): fp · Lublin · 2020
-- wykonawca Frank Sinatra (Q40912): bn · Francis Albert Sinatra | bp · Hoboken · 1915
-- wykonawca Johnny Maddox (Q1651518): bp · Gallatin · 1927
-- wykonawca Johnny Cash (Q42775): bn · J. R. Cash | bp · Kingsland · 1932
-- wykonawca Ma Rainey (Q239533): bn · Gertrude Melissa Nix Pridgett | bp · Columbus · 1886
-- wykonawca Dean Martin (Q215359): bn · Dino Paul Crocetti | bp · Steubenville · 1917
-- wykonawca Les Baxter (Q1820469): bn · Leslie Thompson Baxter | bp · Mexia · 1922
-- wykonawca Pat Boone (Q342778): bp · Jacksonville · 1934
-- wykonawca Gene Kelly (Q73089): bn · Eugene Curran Kelly | bp · Pittsburgh · 1912
-- wykonawca Doris Day (Q104372): bn · Doris Mary Anne Kappelhoff | bp · Cincinnati · 1922
-- wykonawca Ethel Merman (Q129087): bn · Ethel Agnes Zimmermann | bp · Astoria · 1908
-- wykonawca Bill Hayes (Q2026260): bn · William Foster Hayes III | bp · Harvey · 1925
-- wykonawca Maurice Chevalier (Q106001): bp · 20. dzielnica Paryża · 1888
-- wykonawca Perez Prado (Q154809): bp · Matanzas · 1916
-- wykonawca Nat King Cole (Q137042): bn · Nathaniel Adams Coles | bp · Montgomery · 1919
-- wykonawca Al Hibbler (Q1382711): bp · Little Rock · 1915
-- wykonawca Lys Assia (Q193687): bn · Rosa Mina Schärer
-- wykonawca Little Richard (Q82222): bn · Richard Wayne Penniman | bp · Macon · 1932
-- wykonawca Frankie Laine (Q342774): bn · Francesco Paolo LoVecchio | bp · Chicago · 1913
-- wykonawca Michał Wiśniewski (Q2920083): bp · Łódź · 1972
-- wykonawca Chuck Berry (Q5921): bn · Charles Edward Anderson Berry | bp · St. Louis · 1926
-- wykonawca Glenn Miller (Q103651): bp · Clarinda · 1904
-- wykonawca Marlene Dietrich (Q4612): bn · Marie Magdalene Dietrich | bp · Rote Insel · 1901
-- wykonawca The Platters (Q753905): fp · Los Angeles · 1952
-- wykonawca Bill Haley & His Comets (Q2914477): fp · Chester · 1949
-- wykonawca Elvis Presley (Q303): bp · Tupelo · 1935
-- wykonawca Gisele MacKenzie (Q5564917): bp · Winnipeg · 1927
-- wykonawca Bo Carter (Q323669): bp · Bolton · 1892
+- wykonawca Carl Orff (Q44086): bp · Monachium · 1895
 - wykonawca Art Mooney (Q705653): bp · Lowell · 1911
+- wykonawca Michał Wiśniewski (Q2920083): bp · Łódź · 1972
+- wykonawca Gene Kelly (Q73089): bn · Eugene Curran Kelly | bp · Pittsburgh · 1912
+- wykonawca Jacques Offenbach (Q41555): bp · Kolonia · 1819
+- wykonawca Louis Armstrong (Q1779): bp · Nowy Orlean · 1901
+- wykonawca Jaye P. Morgan (Q963270): bp · Mancos · 1931
+- wykonawca Hank Snow (Q648366): bn · Clarence Eugene Snow | bp · Liverpool · 1914
+- wykonawca Antonio Vivaldi (Q1340): bp · Wenecja · 1678
+- wykonawca Marilyn Monroe (Q4616): bn · Norma Jeane Mortenson | bp · Los Angeles · 1926
+- wykonawca Judy Garland (Q11637): bn · Frances Ethel Gumm | bp · Grand Rapids · 1922
+- wykonawca Cliff Edwards (Q950376): bn · Clifton Avon Edwards | bp · Hannibal · 1895
+- wykonawca Billy Vaughn (Q863257): bn · Richard Smith Vaughn | bp · Glasgow · 1919
+- wykonawca Bo Carter (Q323669): bp · Bolton · 1892
+- wykonawca Marcin Maciejczak (Q97162232): bp · Bartochów · 2006
+- wykonawca Wolfgang Amadeus Mozart (Q254): bn · Joannes Chrysostomus Wolfgangus Theophilus Mozart | bp · Salzburg · 1756
+- wykonawca Ella Fitzgerald (Q1768): bp · Newport News · 1917
+- wykonawca Frank Sinatra (Q40912): bn · Francis Albert Sinatra | bp · Hoboken · 1915
+- wykonawca Edvard Grieg (Q80621): bp · Bergen · 1843
+- wykonawca Carla Fernandes (Q125658005): bp · Londyn · 2003
+- wykonawca Bing Crosby (Q72984): bn · Harry Lillis Crosby | bp · Tacoma · 1903
+- wykonawca DJ Adamus (Q9200420): bp · Opole · 1975
+- wykonawca Marlene Dietrich (Q4612): bn · Marie Magdalene Dietrich | bp · Rote Insel · 1901
+- wykonawca Nat King Cole (Q137042): bn · Nathaniel Adams Coles | bp · Montgomery · 1919
+- wykonawca Édith Piaf (Q1631): bn · Édith Giovanna Gassion | bp · Paryż · 1915
+- wykonawca Wiktor Dyduła (Q120646405): bp · Gdańsk · 1997
+- wykonawca Fagata (Q116453028): bp · Konin · 2000
+- wykonawca Ma Rainey (Q239533): bn · Gertrude Melissa Nix Pridgett | bp · Columbus · 1886
+- wykonawca Fukaj (Q111033441): bp · Szczecin · 2003
+- wykonawca Dean Martin (Q215359): bn · Dino Paul Crocetti | bp · Steubenville · 1917
 - wykonawca Perry Como (Q333405): bn · Pierino Ronald Como
 - wykonawca Eddie Cantor (Q350472): bn · Edward Israel Iskowitz | bp · Manhattan · 1892
 - wykonawca Mel Tormé (Q470848): bn · Melvin Howard Tormé | bp · Chicago · 1925
 - wykonawca Fess Parker (Q553575): bp · Fort Worth · 1924
-- wykonawca Bill Doggett (Q326810): bn · William Ballard Doggett | bp · Filadelfia · 1916
-- wykonawca Jaye P. Morgan (Q963270): bp · Mancos · 1931
-- wykonawca Hank Snow (Q648366): bn · Clarence Eugene Snow | bp · Liverpool · 1914
-- wykonawca Judy Garland (Q11637): bn · Frances Ethel Gumm | bp · Grand Rapids · 1922
+- wykonawca Ethel Merman (Q129087): bn · Ethel Agnes Zimmermann | bp · Astoria · 1908
+- wykonawca Maurice Chevalier (Q106001): bp · 20. dzielnica Paryża · 1888
 - wykonawca Georgia Gibbs (Q3048518): bn · Frieda Lipschitz | bp · Worcester · 1919
-- wykonawca Billy Vaughn (Q863257): bn · Richard Smith Vaughn | bp · Glasgow · 1919
-- wykonawca Gene Vincent (Q82311): bn · Vincent Eugene Craddock | bp · Norfolk · 1935
-- wykonawca Buddy Holly (Q5977): bp · Lubbock · 1936
-- wykonawca Marcin Maciejczak (Q97162232): bp · Bartochów · 2006
-- wykonawca Gogi Grant (Q5577376): bp · Filadelfia · 1924
+- wykonawca Qry (Q108553313): bp · Jasło · 1999
 - wykonawca Adriana Caselotti (Q272143): bp · Bridgeport · 1916
-- wykonawca Tennessee Ernie Ford (Q963827): bn · Ernest Jennings Ford | bp · Bristol · 1919
-- wykonawca Ella Fitzgerald (Q1768): bp · Newport News · 1917
-- wykonawca George Cates (Q5537755): bp · Nowy Jork · 1911
-- wykonawca Bing Crosby (Q72984): bn · Harry Lillis Crosby | bp · Tacoma · 1903
-- wykonawca Franca Raimondi (Q288076): bp · Prowincja Miejska Bari · 1932
-- wykonawca Mitch Miller (Q709499): bp · Rochester · 1911
-- wykonawca Édith Piaf (Q1631): bn · Édith Giovanna Gassion | bp · Paryż · 1915
-- wykonawca Cathy Carr (Q4987969): bp · Bronx · 1936
-- wykonawca Johnny Preston (Q962128): bp · Port Arthur · 1939
-- wykonawca Miles Davis (Q93341): bp · Alton · 1926
-- wykonawca Sheb Wooley (Q1349284): bp · Erick · 1921
+- wykonawca Filip Lato (Q55392721): bp · Warszawa · 1991
+- wykonawca Alfred Newman (Q367032): bp · New Haven · 1900
+- wykonawca Piotr Czajkowski (Q7315): bp · Wotkińsk · 1840
+- wykonawca Glenn Miller (Q103651): bp · Clarinda · 1904
+- wykonawca Jeremi Sikorski (Q27971107): bp · Warszawa · 1999
+- wykonawca Blauka (Q86664407): fp · Warszawa · 2018
+- wykonawca Behemoth (Q272260): fp · Gdańsk · 1991
+- wykonawca Bill Haley & His Comets (Q2914477): fp · Chester · 1949
+- wykonawca Marty Robbins (Q919565): bp · Glendale · 1925
+- wykonawca Gene Vincent (Q82311): bn · Vincent Eugene Craddock | bp · Norfolk · 1935
 - wykonawca Bobby Day (Q1985556): bn · Robert James Byrd | bp · Fort Worth · 1928
+- wykonawca Perez Prado (Q154809): bp · Matanzas · 1916
+- wykonawca Buddy Holly (Q5977): bp · Lubbock · 1936
+- wykonawca Tennessee Ernie Ford (Q963827): bn · Ernest Jennings Ford | bp · Bristol · 1919
 - wykonawca Nunzio Gallo (Q970271): bp · Neapol · 1928
-- wykonawca Lloyd Price (Q958578): bp · Kenner · 1933
 - wykonawca Eddie Heywood (Q924783): bp · Atlanta · 1915
-- wykonawca Connie Francis (Q216341): bn · Concetta Rosa Maria Franconero | bp · Newark · 1937
-- wykonawca Tommy Edwards (Q2440977): bp · Richmond · 1922
+- wykonawca Little Richard (Q82222): bn · Richard Wayne Penniman | bp · Macon · 1932
+- wykonawca Chuck Berry (Q5921): bn · Charles Edward Anderson Berry | bp · St. Louis · 1926
+- wykonawca Johnny Maddox (Q1651518): bp · Gallatin · 1927
+- wykonawca Johnny Cash (Q42775): bn · J. R. Cash | bp · Kingsland · 1932
 - wykonawca Jim Lowe (Q1378364): bn · James Ellsworth Lowe | bp · Springfield · 1927
 - wykonawca Sam Cooke (Q295919): bn · Samuel Cooke | bp · Clarksdale · 1931
-- wykonawca Stonewall Jackson (Q323492): bp · Tabor City · 1932
-- wykonawca Patti Page (Q175759): bn · Clara Ann Fowler | bp · Claremore · 1927
-- wykonawca Bobby Darin (Q311267): bn · Walden Robert Cassotto | bp · East Harlem · 1936
-- wykonawca Jerry Lee Lewis (Q202729): bp · Ferriday · 1935
-- wykonawca Johnny Horton (Q1534428): bn · John LaGale Horton | bp · Los Angeles · 1925
+- wykonawca Pat Boone (Q342778): bp · Jacksonville · 1934
+- wykonawca Doris Day (Q104372): bn · Doris Mary Anne Kappelhoff | bp · Cincinnati · 1922
+- wykonawca Bill Hayes (Q2026260): bn · William Foster Hayes III | bp · Harvey · 1925
 - wykonawca Johnny Mathis (Q449612): bn · John Royce Mathis | bp · Gilmer · 1935
 - wykonawca Screamin' Jay Hawkins (Q455754): bp · Cleveland · 1929
+- wykonawca Al Hibbler (Q1382711): bp · Little Rock · 1915
 - wykonawca Corry Brokken (Q159475): bn · Cornelia Maria Brokken | bp · Breda · 1932
 - wykonawca Johnnie Ray (Q1198056): bp · Dallas · 1927
-- wykonawca Sandy Nelson (Q1076479): bn · Sander L. Nelson | bp · Santa Monica · 1938
-- wykonawca Frankie Avalon (Q468635): bn · Francis Thomas Avalone | bp · Filadelfia · 1940
-- wykonawca Domenico Modugno (Q201392): bp · Prowincja Miejska Bari · 1928
-- wykonawca Laurie London (Q1717740): bp · Londyn · 1944
+- wykonawca Frankie Laine (Q342774): bn · Francesco Paolo LoVecchio | bp · Chicago · 1913
+- wykonawca Les Baxter (Q1820469): bn · Leslie Thompson Baxter | bp · Mexia · 1922
 - wykonawca Ricky Nelson (Q303207): bn · Eric Hilliard Nelson | bp · Teaneck · 1940
-- wykonawca Lawrence Welk (Q676226): bp · Strasburg · 1903
+- wykonawca Jerry Lee Lewis (Q202729): bp · Ferriday · 1935
 - wykonawca Tab Hunter (Q725395): bn · Arthur Andrew Kelm | bp · Manhattan · 1931
+- wykonawca Elvis Presley (Q303): bp · Tupelo · 1935
+- wykonawca Gisele MacKenzie (Q5564917): bp · Winnipeg · 1927
 - wykonawca André Claveau (Q313986): bp · Paryż · 1911
 - wykonawca Sonny James (Q2302274): bn · James Hugh Loden | bp · Hackleburg · 1928
-- wykonawca Ritchie Valens (Q309725): bn · Richard Steven Valenzuela Reyes | bp · Pacoima · 1941
-- wykonawca Phil Phillips (Q7182272): bn · John Philip Baptiste | bp · Lake Charles · 1926
-- wykonawca Sammy Turner (Q7409851): bp · Paterson · 1932
-- wykonawca Marty Robbins (Q919565): bp · Glendale · 1925
-- wykonawca Connie Stevens (Q262507): bn · Concetta Rosalie Ann Ingoglia | bp · Brooklyn · 1938
+- wykonawca Patti Page (Q175759): bn · Clara Ann Fowler | bp · Claremore · 1927
+- wykonawca Bobby Darin (Q311267): bn · Walden Robert Cassotto | bp · East Harlem · 1936
 - wykonawca Jimmy Dorsey (Q560716): bn · James Francis Dorsey | bp · Shenandoah · 1904
+- wykonawca Bill Doggett (Q326810): bn · William Ballard Doggett | bp · Filadelfia · 1916
 - wykonawca Cozy Cole (Q430508): bp · East Orange · 1909
 - wykonawca Carl Dobkins Jr. (Q5040044): bp · Cincinnati · 1941
-- wykonawca Teddy Scholten (Q229964): bn · Dorothea Margaretha van Zwieteren | bp · Haga · 1926
 - wykonawca Gale Storm (Q466244): bn · Josephine Owaissa Cottle | bp · Bloomington · 1922
-- wykonawca Neil Sedaka (Q312743): bp · Brooklyn · 1939
+- wykonawca Gogi Grant (Q5577376): bp · Filadelfia · 1924
 - wykonawca Vic Damone (Q652295): bp · Brooklyn · 1928
-- wykonawca Kay Starr (Q469125): bn · Catherine Laverne Starks | bp · Dougherty · 1922
 - wykonawca Charlie Gracie (Q4148423): bn · Charles Anthony Graci | bp · Filadelfia · 1936
 - wykonawca Debbie Reynolds (Q263696): bn · Mary Frances Reynolds | bp · El Paso · 1932
 - wykonawca Martin Denny (Q557535): bp · Nowy Jork · 1911
+- wykonawca George Cates (Q5537755): bp · Nowy Jork · 1911
+- wykonawca Lys Assia (Q193687): bn · Rosa Mina Schärer
 - wykonawca Dodie Stevens (Q220066): bn · Geraldine Ann Pasquale | bp · Chicago · 1946
 - wykonawca Paul Anka (Q216563): bp · Ottawa · 1941
-- wykonawca Jimmy Clanton (Q6199827): bp · Raceland · 1938
 - wykonawca Alice Babs (Q256809): bn · Hildur Alice Nilson
-- wykonawca The Everly Brothers (Q690138): fp · Shenandoah · 1957
+- wykonawca Franca Raimondi (Q288076): bp · Prowincja Miejska Bari · 1932
+- wykonawca Mitch Miller (Q709499): bp · Rochester · 1911
+- wykonawca Cathy Carr (Q4987969): bp · Bronx · 1936
 - wykonawca The Coasters (Q1427216): fp · Los Angeles · 1955
-- wykonawca Dion and the Belmonts (Q1226925): fp · Nowy Jork · 1957
+- wykonawca The Platters (Q753905): fp · Los Angeles · 1952
 - wykonawca Danny & the Juniors (Q1164494): fp · Filadelfia · 1955
+- wykonawca Acker Bilk (Q45610): bn · Bernard Stanley Bilk | bp · Pensford · 1929
+- wykonawca Jack Scott (Q439267): bp · Windsor · 1936
+- wykonawca Ernie K-Doe (Q1356912): bp · Nowy Orlean · 1936
+- wykonawca Stonewall Jackson (Q323492): bp · Tabor City · 1932
+- wykonawca Steve Lawrence (Q1339107): bn · Sidney Liebowitz | bp · Brooklyn · 1935
+- wykonawca Etta James (Q182725): bn · Jamesetta Hawkins | bp · Los Angeles · 1938
+- wykonawca Lloyd Price (Q958578): bp · Kenner · 1933
+- wykonawca Bryan Johnson (Q549224): bp · Londyn · 1926
+- wykonawca Sheb Wooley (Q1349284): bp · Erick · 1921
+- wykonawca Bobby Vee (Q448336): bn · Robert Thomas Velline | bp · Fargo · 1943
+- wykonawca Johnny Horton (Q1534428): bn · John LaGale Horton | bp · Los Angeles · 1925
+- wykonawca Pearl Carr (Q16879265): bp · Exmouth · 1921
+- wykonawca Miles Davis (Q93341): bp · Alton · 1926
+- wykonawca Muddy Waters (Q220707): bp · Rolling Fork · 1913
+- wykonawca Sandy Nelson (Q1076479): bn · Sander L. Nelson | bp · Santa Monica · 1938
+- wykonawca Brook Benton (Q371493): bn · Benjamin Franklin Peay | bp · Lugoff · 1931
+- wykonawca Frankie Avalon (Q468635): bn · Francis Thomas Avalone | bp · Filadelfia · 1940
+- wykonawca Domenico Modugno (Q201392): bp · Prowincja Miejska Bari · 1928
+- wykonawca Laurie London (Q1717740): bp · Londyn · 1944
+- wykonawca Brian Hyland (Q912394): bp · Woodhaven · 1943
+- wykonawca Lawrence Welk (Q676226): bp · Strasburg · 1903
+- wykonawca Roy Orbison (Q188426): bp · Vernon · 1936
+- wykonawca Brenda Lee (Q230925): bn · Brenda Mae Tarpley | bp · Atlanta · 1944
+- wykonawca Ben E. King (Q356140): bn · Benjamin Earl Nelson | bp · Henderson · 1938
+- wykonawca Jacqueline Boyer (Q230747): bn · Jacqueline Lucienne Éliane Ducos | bp · 15. dzielnica Paryża · 1941
+- wykonawca Johnny Preston (Q962128): bp · Port Arthur · 1939
+- wykonawca Ritchie Valens (Q309725): bn · Richard Steven Valenzuela Reyes | bp · Pacoima · 1941
+- wykonawca Floyd Cramer (Q969629): bp · Shreveport · 1933
+- wykonawca Phil Phillips (Q7182272): bn · John Philip Baptiste | bp · Lake Charles · 1926
+- wykonawca Sammy Turner (Q7409851): bp · Paterson · 1932
+- wykonawca Connie Stevens (Q262507): bn · Concetta Rosalie Ann Ingoglia | bp · Brooklyn · 1938
+- wykonawca Percy Faith (Q712683): bp · Toronto · 1908
+- wykonawca Teddy Scholten (Q229964): bn · Dorothea Margaretha van Zwieteren | bp · Haga · 1926
+- wykonawca Wilbert Harrison (Q320452): bp · Charlotte · 1929
+- wykonawca Neil Sedaka (Q312743): bp · Brooklyn · 1939
+- wykonawca Betty Curtis (Q271346): bn · Roberta Corti | bp · Mediolan · 1936
+- wykonawca Connie Francis (Q216341): bn · Concetta Rosa Maria Franconero | bp · Newark · 1937
+- wykonawca Kay Starr (Q469125): bn · Catherine Laverne Starks | bp · Dougherty · 1922
+- wykonawca Renato Rascel (Q697383): bn · Renato Ranucci | bp · Turyn · 1912
+- wykonawca Chubby Checker (Q317254): bn · Ernest Evans | bp · Filadelfia · 1941
+- wykonawca Gene McDaniels (Q981373): bp · Kansas City · 1935
+- wykonawca Bobby Rydell (Q340196): bn · Robert Louis Ridarelli | bp · Filadelfia · 1942
+- wykonawca Dee Clark (Q3021106): bp · Blytheville · 1938
+- wykonawca Barry Mann (Q809067): bn · Barry Imberman | bp · Brooklyn · 1939
+- wykonawca Tommy Edwards (Q2440977): bp · Richmond · 1922
+- wykonawca Conchita Bautista (Q269787): bn · María de la Concepción Bautista Fernández | bp · Sevilla · 1936
+- wykonawca Conway Twitty (Q82250): bn · Harold Lloyd Jenkins | bp · Friars Point · 1933
+- wykonawca Jimmy Clanton (Q6199827): bp · Raceland · 1938
+- wykonawca Gene Chandler (Q711442): bp · Chicago · 1937
+- wykonawca Del Shannon (Q323456): bn · Charles Weedon Westover | bp · Grand Rapids · 1934
+- wykonawca Gary U.S. Bonds (Q339440): bn · Gary Levohn Anderson | bp · Jacksonville · 1939
+- wykonawca The Everly Brothers (Q690138): fp · Shenandoah · 1957
+- wykonawca Dion and the Belmonts (Q1226925): fp · Nowy Jork · 1957
 - wykonawca The Brothers Four (Q1749961): fp · Seattle · 1957
 - wykonawca Little Anthony and the Imperials (Q1364795): fp · Brooklyn · 1958
 - wykonawca The Shirelles (Q1353426): fp · Passaic · 1958
 - wykonawca Santo & Johnny (Q1473123): fp · Brooklyn · 1959
 - wykonawca John Lee Hooker (Q44570): bp · Clarksdale · 1917
-- wykonawca Acker Bilk (Q45610): bn · Bernard Stanley Bilk | bp · Pensford · 1929
 - wykonawca Solomon Burke (Q49888): bn · James Solomon McDonald | bp · Filadelfia · 1940
+- wykonawca Françoise Hardy (Q53939): bp · 9. dzielnica Paryża · 1944
 - wykonawca Joe Dowell (Q1691397): bp · Bloomington · 1940
-- wykonawca Gene McDaniels (Q981373): bp · Kansas City · 1935
+- wykonawca Hugues Aufray (Q50034): bn · Hugues Jean-Marie Auffray
 - wykonawca Freddy Cannon (Q962043): bn · Frederick Anthony Picariello Jr. | bp · Revere · 1936
-- wykonawca Jack Scott (Q439267): bp · Windsor · 1936
+- wykonawca Bob Dylan (Q392): bn · Robert Allen Zimmerman | bp · Duluth · 1941
+- wykonawca Gilbert Bécaud (Q160433): bn · François Gilbert Léopold Silly
+- wykonawca Barbra Streisand (Q4636): bn · Barbara Joan Streisand | bp · Brooklyn · 1942
 - wykonawca Kenny Ball (Q1364120): bn · Kenneth Daniel Ball | bp · Ilford · 1930
 - wykonawca Mary Wells (Q435857): bp · Detroit · 1943
-- wykonawca Ernie K-Doe (Q1356912): bp · Nowy Orlean · 1936
 - wykonawca Harry Belafonte (Q214959): bn · Harold George Bellanfanti | bp · Harlem · 1927
-- wykonawca Steve Lawrence (Q1339107): bn · Sidney Liebowitz | bp · Brooklyn · 1935
-- wykonawca Etta James (Q182725): bn · Jamesetta Hawkins | bp · Los Angeles · 1938
-- wykonawca Bryan Johnson (Q549224): bp · Londyn · 1926
-- wykonawca Muddy Waters (Q220707): bp · Rolling Fork · 1913
-- wykonawca Bobby Vee (Q448336): bn · Robert Thomas Velline | bp · Fargo · 1943
+- wykonawca Henry Mancini (Q185928): bn · Enrico Nicola Mancini | bp · Cleveland · 1924
+- wykonawca Alain Barrière (Q1364618): bn · Louis Alain Bellec
+- wykonawca Gigliola Cinquetti (Q229295): bp · Werona · 1947
+- wykonawca Tommy Roe (Q1335207): bn · Thomas David Roe | bp · Atlanta · 1942
+- wykonawca Morris Stoloff (Q1569339): bp · Filadelfia · 1898
 - wykonawca Sue Thompson (Q2363400): bn · Eva Sue McKee
+- wykonawca Quincy Jones (Q193645): bp · South Side · 1933
 - wykonawca Ronnie Carroll (Q725526): bp · Belfast · 1934
-- wykonawca Brook Benton (Q371493): bn · Benjamin Franklin Peay | bp · Lugoff · 1931
-- wykonawca Brian Hyland (Q912394): bp · Woodhaven · 1943
-- wykonawca Roy Orbison (Q188426): bp · Vernon · 1936
-- wykonawca Brenda Lee (Q230925): bn · Brenda Mae Tarpley | bp · Atlanta · 1944
+- wykonawca Gene Pitney (Q175238): bp · Hartford · 1941
+- wykonawca Gale Garnett (Q1281196): bp · Auckland · 1942
 - wykonawca Patsy Cline (Q273080): bn · Virginia Patterson Hensley | bp · Winchester · 1932
 - wykonawca Isabelle Aubret (Q229359): bn · Thérèse Coquerelle
-- wykonawca Ben E. King (Q356140): bn · Benjamin Earl Nelson | bp · Henderson · 1938
-- wykonawca Jacqueline Boyer (Q230747): bn · Jacqueline Lucienne Éliane Ducos | bp · 15. dzielnica Paryża · 1941
 - wykonawca Jean-Claude Pascal (Q312262): bn · Jean-Claude Villeminot | bp · 7. dzielnica Paryża · 1927
-- wykonawca Floyd Cramer (Q969629): bp · Shreveport · 1933
+- wykonawca Dionne Warwick (Q234695): bn · Marie Dionne Warrick | bp · East Orange · 1940
 - wykonawca Dee Dee Sharp (Q457393): bn · Dione LaRue | bp · Filadelfia · 1945
-- wykonawca Percy Faith (Q712683): bp · Toronto · 1908
 - wykonawca Shelley Fabares (Q456187): bn · Michele Ann Marie Fabares | bp · Santa Monica · 1944
 - wykonawca Claudio Villa (Q382099): bn · Claudio Pica | bp · Rzym · 1926
-- wykonawca Wilbert Harrison (Q320452): bp · Charlotte · 1929
+- wykonawca Billy J. Kramer (Q863140): bn · William Howard Ashton | bp · Liverpool · 1943
 - wykonawca Little Eva (Q450080): bn · Eva Narcissus Boyd | bp · Belhaven · 1943
 - wykonawca Eydie Gormé (Q262531): bp · Bronx · 1928
-- wykonawca Betty Curtis (Q271346): bn · Roberta Corti | bp · Mediolan · 1936
-- wykonawca Renato Rascel (Q697383): bn · Renato Ranucci | bp · Turyn · 1912
-- wykonawca Chubby Checker (Q317254): bn · Ernest Evans | bp · Filadelfia · 1941
-- wykonawca Bobby Rydell (Q340196): bn · Robert Louis Ridarelli | bp · Filadelfia · 1942
+- wykonawca Boots Randolph (Q781767): bp · Paducah · 1927
 - wykonawca Johnny Tillotson (Q600635): bp · Jacksonville · 1938
-- wykonawca Dee Clark (Q3021106): bp · Blytheville · 1938
-- wykonawca Barry Mann (Q809067): bn · Barry Imberman | bp · Brooklyn · 1939
-- wykonawca Conchita Bautista (Q269787): bn · María de la Concepción Bautista Fernández | bp · Sevilla · 1936
-- wykonawca Conway Twitty (Q82250): bn · Harold Lloyd Jenkins | bp · Friars Point · 1933
+- wykonawca Al Martino (Q380872): bp · Filadelfia · 1927
 - wykonawca Bruce Channel (Q328657): bn · Bruce McMeans | bp · Jacksonville · 1940
+- wykonawca Lesley Gore (Q272942): bn · Lesley Sue Goldstein | bp · Brooklyn · 1946
 - wykonawca Skeeter Davis (Q292412): bp · Dry Ridge · 1931
-- wykonawca Gene Chandler (Q711442): bp · Chicago · 1937
-- wykonawca Del Shannon (Q323456): bn · Charles Weedon Westover | bp · Grand Rapids · 1934
-- wykonawca Gary U.S. Bonds (Q339440): bn · Gary Levohn Anderson | bp · Jacksonville · 1939
+- wykonawca Al Hirt (Q658636): bp · Nowy Orlean · 1922
+- wykonawca The Four Seasons (Q687785): fp · Newark · 1960
+- wykonawca The Crystals (Q1475018): fp · Nowy Jork · 1961
+- wykonawca The Beach Boys (Q183048): fp · Hawthorne · 1961
+- wykonawca Martha and the Vandellas (Q1326522): fp · Detroit · 1962
+- wykonawca The Trashmen (Q1536429): fp · Minneapolis · 1962
 - wykonawca The Beatles (Q1299): fp · Liverpool · 1960
+- wykonawca Herman's Hermits (Q693597): fp · Manchester · 1963
 - wykonawca Jay and the Americans (Q1038771): fp · Nowy Jork · 1960
+- wykonawca Jan and Dean (Q1682401): fp · Los Angeles · 1958
 - wykonawca The Contours (Q1433621): fp · Detroit · 1959
 - wykonawca Booker T. & the M.G.'s (Q893007): fp · Memphis · 1962
 - wykonawca The Isley Brothers (Q178134): fp · Cincinnati · 1954
+- wykonawca The Ronettes (Q530886): fp · Nowy Jork · 1959
+- wykonawca Randy & the Rainbows (Q2130768): fp · Nowy Jork · 1962
+- wykonawca The Surfaris (Q2165679): fp · Glendora · 1962
+- wykonawca The Dave Clark Five (Q1141454): fp · Tottenham · 1957
+- wykonawca The Orlons (Q918624): fp · Filadelfia · 1960
+- wykonawca Lou Christie (Q675153): bn · Luigi Alfredo Giovanni Sacco | bp · Crescent Township · 1943
+- wykonawca Ennio Morricone (Q23848): bp · Rzym · 1928
+- wykonawca Leonard Cohen (Q1276): bp · Montreal · 1934
+- wykonawca Barry Sadler (Q809093): bp · Carlsbad · 1940
+- wykonawca Otis Redding (Q217839): bp · Dawson · 1941
+- wykonawca Marianne Faithfull (Q48280): bp · Hampstead · 1946
+- wykonawca Aretha Franklin (Q125121): bp · Memphis · 1942
+- wykonawca Bobbie Gentry (Q272253): bp · Woodland · 1942
+- wykonawca Jewel Akens (Q1688602): bp · Houston · 1933
+- wykonawca Bobby Hebb (Q513991): bp · Nashville · 1938
+- wykonawca Lee Dorsey (Q1356763): bp · Nowy Orlean · 1926
+- wykonawca Jeff Beck (Q192474): bp · Wallington · 1944
+- wykonawca Udo Jürgens (Q155236): bn · Jürgen Udo Bockelmann | bp · Klagenfurt am Wörthersee · 1934
+- wykonawca Shirley Bassey (Q234754): bp · Cardiff · 1937
+- wykonawca Mel Carter (Q4216191): bp · Cincinnati · 1939
+- wykonawca Johnny Rivers (Q1702399): bp · Nowy Jork · 1942
 - wykonawca Kathy Kirby (Q464324): bn · Catherine Ethel O'Rourke | bp · Chadwell Heath · 1938
 - wykonawca Nina Simone (Q174957): bn · Eunice Kathleen Waymon | bp · Tryon · 1933
-- wykonawca Dionne Warwick (Q234695): bn · Marie Dionne Warrick | bp · East Orange · 1940
+- wykonawca Eduard Khil (Q360190): bp · Smoleńsk · 1934
+- wykonawca Percy Sledge (Q445862): bp · Leighton · 1940
+- wykonawca Dusty Springfield (Q219782): bn · Mary Isobel Catherine Bernadette O'Brien | bp · Londyn · 1939
 - wykonawca Stan Getz (Q30587): bn · Stanley Gayetsky | bp · Filadelfia · 1927
-- wykonawca Barbra Streisand (Q4636): bn · Barbara Joan Streisand | bp · Brooklyn · 1942
+- wykonawca Herb Alpert (Q344822): bn · Herbert Alpert | bp · Los Angeles · 1935
+- wykonawca Jimmy Ruffin (Q179694): bp · Collinsville · 1939
 - wykonawca Petula Clark (Q236212): bn · Sally Clark | bp · Ewell · 1932
+- wykonawca Jimi Hendrix (Q5928): bn · Johnny Allen Hendrix | bp · Seattle · 1942
 - wykonawca France Gall (Q208258): bn · Isabelle Geneviève Marie Anne Gall | bp · 12. dzielnica Paryża · 1947
 - wykonawca Nancy Sinatra (Q233937): bp · Jersey City · 1940
-- wykonawca Al Martino (Q380872): bp · Filadelfia · 1927
-- wykonawca Gigliola Cinquetti (Q229295): bp · Werona · 1947
+- wykonawca Erma Franklin (Q446179): bp · Shelby · 1938
+- wykonawca Frankie Valli (Q465632): bn · Francesco Stephen Castelluccio | bp · Newark · 1934
 - wykonawca Terry Stafford (Q2405794): bp · Hollis · 1941
 - wykonawca Bobby Solo (Q447407): bn · Roberto Satti | bp · Rzym · 1945
-- wykonawca Bob Dylan (Q392): bn · Robert Allen Zimmerman | bp · Duluth · 1941
-- wykonawca Gene Pitney (Q175238): bp · Hartford · 1941
-- wykonawca Lesley Gore (Q272942): bn · Lesley Sue Goldstein | bp · Brooklyn · 1946
-- wykonawca Jewel Akens (Q1688602): bp · Houston · 1933
-- wykonawca Lou Christie (Q675153): bn · Luigi Alfredo Giovanni Sacco | bp · Crescent Township · 1943
-- wykonawca Louis Armstrong (Q1779): bp · Nowy Orlean · 1901
-- wykonawca Billy J. Kramer (Q863140): bn · William Howard Ashton | bp · Liverpool · 1943
-- wykonawca Françoise Hardy (Q53939): bp · 9. dzielnica Paryża · 1944
-- wykonawca Hugues Aufray (Q50034): bn · Hugues Jean-Marie Auffray
-- wykonawca Marianne Faithfull (Q48280): bp · Hampstead · 1946
-- wykonawca Gilbert Bécaud (Q160433): bn · François Gilbert Léopold Silly
-- wykonawca Al Hirt (Q658636): bp · Nowy Orlean · 1922
-- wykonawca Udo Jürgens (Q155236): bn · Jürgen Udo Bockelmann | bp · Klagenfurt am Wörthersee · 1934
-- wykonawca Alain Barrière (Q1364618): bn · Louis Alain Bellec
-- wykonawca Tommy Roe (Q1335207): bn · Thomas David Roe | bp · Atlanta · 1942
-- wykonawca Morris Stoloff (Q1569339): bp · Filadelfia · 1898
-- wykonawca Mel Carter (Q4216191): bp · Cincinnati · 1939
-- wykonawca The Four Seasons (Q687785): fp · Newark · 1960
+- wykonawca Buffalo Springfield (Q48992): fp · Los Angeles · 1966
+- wykonawca The Yardbirds (Q192725): fp · Londyn · 1963
 - wykonawca The Rolling Stones (Q11036): fp · Londyn · 1962
 - wykonawca The Who (Q93346): fp · Londyn · 1964
 - wykonawca The Byrds (Q211526): fp · Los Angeles · 1964
 - wykonawca The Kinks (Q188713): fp · Londyn · 1964
-- wykonawca The Crystals (Q1475018): fp · Nowy Jork · 1961
-- wykonawca The Beach Boys (Q183048): fp · Hawthorne · 1961
-- wykonawca Martha and the Vandellas (Q1326522): fp · Detroit · 1962
 - wykonawca The Kingston Trio (Q59965): fp · San Francisco Bay Area · 1957
-- wykonawca The Trashmen (Q1536429): fp · Minneapolis · 1962
+- wykonawca The Monkees (Q464036): fp · Los Angeles · 1966
 - wykonawca Simon & Garfunkel (Q484918): fp · Forest Hills · 1957
+- wykonawca Bee Gees (Q133405): fp · Los Hornos · 1958
 - wykonawca The Zombies (Q1163207): fp · St Albans · 1961
-- wykonawca Herman's Hermits (Q693597): fp · Manchester · 1963
-- wykonawca Jan and Dean (Q1682401): fp · Los Angeles · 1958
 - wykonawca The Dixie Cups (Q1433532): fp · Nowy Orlean · 1963
+- wykonawca Sam & Dave (Q1545232): fp · Miami · 1961
 - wykonawca Sonny & Cher (Q907445): fp · Nowy Jork · 1964
+- wykonawca ? and the Mysterians (Q1887722): fp · Flint · 1962
 - wykonawca The Supremes (Q218837): fp · Detroit · 1958
-- wykonawca The Ronettes (Q530886): fp · Nowy Jork · 1959
-- wykonawca Randy & the Rainbows (Q2130768): fp · Nowy Jork · 1962
+- wykonawca Jefferson Airplane (Q488260): fp · San Francisco · 1965
+- wykonawca Paul Revere & the Raiders (Q1026810): fp · Boise · 1958
 - wykonawca The Animals (Q131422): fp · Newcastle upon Tyne · 1962
-- wykonawca The Surfaris (Q2165679): fp · Glendora · 1962
-- wykonawca The Dave Clark Five (Q1141454): fp · Tottenham · 1957
-- wykonawca The Orlons (Q918624): fp · Filadelfia · 1960
-- wykonawca Lulu (Q229716): bn · Marie McDonald McLaughlin Lawrie | bp · Glasgow · 1948
-- wykonawca Barry Sadler (Q809093): bp · Carlsbad · 1940
-- wykonawca Jeff Beck (Q192474): bp · Wallington · 1944
-- wykonawca Cliff Richard (Q82238): bn · Harry Rodger Webb | bp · Lucknow · 1940
-- wykonawca Harry Nilsson (Q281034): bp · Brooklyn · 1941
-- wykonawca Johnny Rivers (Q1702399): bp · Nowy Jork · 1942
-- wykonawca Joe Cocker (Q190076): bn · John Robert Cocker | bp · Sheffield · 1944
-- wykonawca Aretha Franklin (Q125121): bp · Memphis · 1942
-- wykonawca Dusty Springfield (Q219782): bn · Mary Isobel Catherine Bernadette O'Brien | bp · Londyn · 1939
-- wykonawca Marvin Gaye (Q189758): bp · Waszyngton · 1939
-- wykonawca Joni Mitchell (Q205721): bn · Roberta Joan Anderson | bp · Fort Macleod · 1943
-- wykonawca Jimmy Ruffin (Q179694): bp · Collinsville · 1939
-- wykonawca Lee Dorsey (Q1356763): bp · Nowy Orlean · 1926
-- wykonawca Sandie Shaw (Q229356): bn · Sandra Ann Goodrich | bp · Dagenham · 1947
-- wykonawca Mary Hopkin (Q230594): bp · Pontardawe · 1950
-- wykonawca Stevie Wonder (Q714): bn · Stevland Hardaway Judkins | bp · Saginaw · 1950
-- wykonawca Otis Redding (Q217839): bp · Dawson · 1941
+- wykonawca The Troggs (Q943253): fp · Andover · 1964
+- wykonawca The Lovin' Spoonful (Q1053608): fp · Nowy Jork · 1965
+- wykonawca The Velvet Underground (Q103550): fp · Nowy Jork · 1965
+- wykonawca Serge Gainsbourg (Q1698): bn · Lucien Ginsburg | bp · 4. dzielnica Paryża · 1928
+- wykonawca Edwin Starr (Q708136): bn · Charles Edwin Hatcher | bp · Nashville · 1942
+- wykonawca John Lennon (Q1203): bp · Liverpool · 1940
+- wykonawca David Bowie (Q5383): bn · David Robert Jones | bp · Brixton · 1947
+- wykonawca Tiny Tim (Q979347): bn · Herbert Butros Khaury | bp · Manhattan · 1932
+- wykonawca George Harrison (Q2643): bp · Liverpool · 1943
 - wykonawca Sergio Endrigo (Q468789): bp · Pula · 1933
-- wykonawca Jimi Hendrix (Q5928): bn · Johnny Allen Hendrix | bp · Seattle · 1942
-- wykonawca B.B. King (Q188969): bn · Riley Ben King | bp · Berclair · 1925
+- wykonawca Cliff Richard (Q82238): bn · Harry Rodger Webb | bp · Lucknow · 1940
+- wykonawca Marvin Gaye (Q189758): bp · Waszyngton · 1939
+- wykonawca Stevie Wonder (Q714): bn · Stevland Hardaway Judkins | bp · Saginaw · 1950
+- wykonawca Janis Joplin (Q1514): bp · Port Arthur · 1943
+- wykonawca Elton John (Q2808): bn · Reginald Kenneth Dwight | bp · Pinner · 1947
+- wykonawca Neil Diamond (Q294531): bp · Brooklyn · 1941
+- wykonawca Cass Elliot (Q49734): bn · Ellen Naomi Cohen | bp · Baltimore · 1941
+- wykonawca Lulu (Q229716): bn · Marie McDonald McLaughlin Lawrie | bp · Glasgow · 1948
+- wykonawca Simone de Oliveira (Q464259): bp · Lizbona · 1938
+- wykonawca Siw Malmkvist (Q285469): bp · Landskrona · 1936
 - wykonawca Vicky Leandros (Q160772): bp · Paleokastritsa · 1949
 - wykonawca Joe Dassin (Q272943): bn · Joseph Ira Dassin | bp · Brooklyn · 1938
-- wykonawca Neil Diamond (Q294531): bp · Brooklyn · 1941
+- wykonawca Harry Nilsson (Q281034): bp · Brooklyn · 1941
 - wykonawca Frida Boccara (Q233968): bp · Casablanca · 1940
-- wykonawca Percy Sledge (Q445862): bp · Leighton · 1940
-- wykonawca Leonard Cohen (Q1276): bp · Montreal · 1934
+- wykonawca Joe Cocker (Q190076): bn · John Robert Cocker | bp · Sheffield · 1944
+- wykonawca Roberta Flack (Q231484): bp · Black Mountain · 1937
+- wykonawca Joni Mitchell (Q205721): bn · Roberta Joan Anderson | bp · Fort Macleod · 1943
+- wykonawca Sandie Shaw (Q229356): bn · Sandra Ann Goodrich | bp · Dagenham · 1947
+- wykonawca Curtis Mayfield (Q310170): bp · Chicago · 1942
+- wykonawca Mary Hopkin (Q230594): bp · Pontardawe · 1950
 - wykonawca Van Morrison (Q272203): bn · George Ivan Morrison | bp · Belfast · 1945
-- wykonawca David Bowie (Q5383): bn · David Robert Jones | bp · Brixton · 1947
 - wykonawca Scott McKenzie (Q326281): bn · Philip Wallach Blondheim III | bp · Jacksonville · 1939
-- wykonawca Erma Franklin (Q446179): bp · Shelby · 1938
-- wykonawca Bobbie Gentry (Q272253): bp · Woodland · 1942
-- wykonawca Frankie Valli (Q465632): bn · Francesco Stephen Castelluccio | bp · Newark · 1934
-- wykonawca Janis Joplin (Q1514): bp · Port Arthur · 1943
-- wykonawca Cass Elliot (Q49734): bn · Ellen Naomi Cohen | bp · Baltimore · 1941
-- wykonawca Bobby Hebb (Q513991): bp · Nashville · 1938
-- wykonawca Sam & Dave (Q1545232): fp · Miami · 1961
+- wykonawca Marlena Shaw (Q456133): bp · New Rochelle · 1942
+- wykonawca Francis Lai (Q223408): bp · Nicea · 1932
+- wykonawca B.B. King (Q188969): bn · Riley Ben King | bp · Berclair · 1925
+- wykonawca Emerson, Lake & Palmer (Q273171): fp · Croydon · 1970
 - wykonawca Steppenwolf (Q465862): fp · Toronto · 1967
 - wykonawca Deep Purple (Q101505): fp · Hertford · 1968
 - wykonawca Iron Butterfly (Q743353): fp · San Diego · 1966
-- wykonawca Led Zeppelin (Q2331): fp · Londyn · 1968
-- wykonawca The Velvet Underground (Q103550): fp · Nowy Jork · 1965
+- wykonawca Free (Q45650): fp · Londyn · 1972
+- wykonawca Black Sabbath (Q47670): fp · Birmingham · 1968
 - wykonawca Ten Years After (Q630808): fp · Nottingham · 1966
+- wykonawca Santana (Q873384): fp · San Francisco · 1967
 - wykonawca Jethro Tull (Q192353): fp · Luton · 1967
-- wykonawca Buffalo Springfield (Q48992): fp · Los Angeles · 1966
+- wykonawca Mungo Jerry (Q1427200): fp · Ashford · 1969
 - wykonawca Status Quo (Q322265): fp · Londyn · 1962
-- wykonawca The Yardbirds (Q192725): fp · Londyn · 1963
 - wykonawca Grand Funk Railroad (Q622815): fp · Flint · 1968
+- wykonawca The Stooges (Q208767): fp · Ann Arbor · 1967
 - wykonawca Fleetwood Mac (Q106648): fp · Londyn · 1967
 - wykonawca Canned Heat (Q339088): fp · Los Angeles · 1965
 - wykonawca The Doors (Q45354): fp · Los Angeles · 1965
+- wykonawca Christie (Q1083043): fp · Leeds · 1969
 - wykonawca Shocking Blue (Q588382): fp · Haga · 1967
+- wykonawca Led Zeppelin (Q2331): fp · Londyn · 1968
 - wykonawca The Box Tops (Q72839): fp · Memphis · 1963
 - wykonawca Procol Harum (Q214486): fp · Southend-on-Sea · 1967
-- wykonawca The Monkees (Q464036): fp · Los Angeles · 1966
-- wykonawca Bee Gees (Q133405): fp · Los Hornos · 1958
-- wykonawca ? and the Mysterians (Q1887722): fp · Flint · 1962
-- wykonawca Jefferson Airplane (Q488260): fp · San Francisco · 1965
-- wykonawca Paul Revere & the Raiders (Q1026810): fp · Boise · 1958
+- wykonawca Edison Lighthouse (Q1116554): fp · Londyn · 1970
 - wykonawca Blood, Sweat & Tears (Q48995): fp · Nowy Jork · 1967
+- wykonawca The 5th Dimension (Q1753111): fp · Los Angeles · 1966
 - wykonawca Creedence Clearwater Revival (Q192463): fp · El Cerrito · 1968
-- wykonawca The Troggs (Q943253): fp · Andover · 1964
+- wykonawca The Jackson 5 (Q43267): fp · Gary · 1964
 - wykonawca The Moody Blues (Q211965): fp · Birmingham · 1964
-- wykonawca The Lovin' Spoonful (Q1053608): fp · Nowy Jork · 1965
-- wykonawca Siw Malmkvist (Q285469): bp · Landskrona · 1936
-- wykonawca Simone de Oliveira (Q464259): bp · Lizbona · 1938
+- wykonawca Carpenters (Q223495): fp · Downey · 1969
+- wykonawca Dalida (Q539171): bn · Iolanda Cristina Gigliotti | bp · Kair · 1933
 - wykonawca Rod Stewart (Q182655): bn · Roderick David Stewart | bp · Londyn · 1945
+- wykonawca Alan Price (Q510991): bp · Fatfield · 1942
+- wykonawca Herbie Hancock (Q105875): bp · Chicago · 1940
+- wykonawca Anne-Marie David (Q232884): bp · Casablanca · 1952
 - wykonawca John Denver (Q105460): bn · Henry John Deutschendorf | bp · Roswell · 1943
 - wykonawca Lou Reed (Q189080): bp · Brooklyn · 1942
 - wykonawca Bill Withers (Q346565): bp · Slab Fork · 1938
 - wykonawca Séverine (Q232963): bn · Josiane Danielle Grizeau | bp · 6. dzielnica Paryża · 1948
 - wykonawca Joan Baez (Q131725): bp · Staten Island · 1941
-- wykonawca Roberta Flack (Q231484): bp · Black Mountain · 1937
-- wykonawca Curtis Mayfield (Q310170): bp · Chicago · 1942
-- wykonawca Elton John (Q2808): bn · Reginald Kenneth Dwight | bp · Pinner · 1947
+- wykonawca Suzi Quatro (Q234750): bn · Susan Kay Quatro | bp · Detroit · 1950
+- wykonawca Barry White (Q213647): bn · Barry Eugene Carter | bp · Galveston · 1944
+- wykonawca Billy Joel (Q194333): bn · William Martin Joel | bp · Nowy Jork · 1949
 - wykonawca Carly Simon (Q181683): bp · Bronx · 1943
-- wykonawca Francis Lai (Q223408): bp · Nicea · 1932
 - wykonawca Carole King (Q217787): bn · Carol Joan Klein | bp · Manhattan · 1942
+- wykonawca Dolly Parton (Q180453): bp · Pittman Center · 1946
 - wykonawca Eric Clapton (Q48187): bp · Ripley · 1945
-- wykonawca Serge Gainsbourg (Q1698): bn · Lucien Ginsburg | bp · 4. dzielnica Paryża · 1928
 - wykonawca Neil Young (Q633): bp · Toronto · 1945
 - wykonawca Gilbert O'Sullivan (Q454807): bn · Raymond Edward O'Sullivan | bp · Waterford · 1946
 - wykonawca Jim Croce (Q464277): bp · South Philadelphia · 1943
-- wykonawca Edwin Starr (Q708136): bn · Charles Edwin Hatcher | bp · Nashville · 1942
-- wykonawca John Lennon (Q1203): bp · Liverpool · 1940
-- wykonawca George Harrison (Q2643): bp · Liverpool · 1943
-- wykonawca Ennio Morricone (Q23848): bp · Rzym · 1928
 - wykonawca Clodagh Rodgers (Q468010): bp · Warrenpoint · 1947
 - wykonawca Demis Roussos (Q487882): bp · Aleksandria · 1946
+- wykonawca Mike Oldfield (Q3008): bn · Michael Gordon Oldfield | bp · Reading · 1953
 - wykonawca Don McLean (Q57339): bp · New Rochelle · 1945
-- wykonawca Marlena Shaw (Q456133): bp · New Rochelle · 1942
+- wykonawca Gary Glitter (Q355384): bn · Paul Francis Gadd | bp · Banbury · 1944
 - wykonawca Scott English (Q7436293): bn · Sheldon David English | bp · Brooklyn · 1943
-- wykonawca Emerson, Lake & Palmer (Q273171): fp · Croydon · 1970
-- wykonawca Mungo Jerry (Q1427200): fp · Ashford · 1969
-- wykonawca Slade (Q156872): fp · Wolverhampton · 1966
-- wykonawca Raspberries (Q2715339): fp · Cleveland · 1970
-- wykonawca Yes (Q184386): fp · Londyn · 1968
-- wykonawca The Stooges (Q208767): fp · Ann Arbor · 1967
-- wykonawca Stealers Wheel (Q283638): fp · Paisley · 1972
-- wykonawca Christie (Q1083043): fp · Leeds · 1969
-- wykonawca Thin Lizzy (Q202314): fp · Dublin · 1969
-- wykonawca The Guess Who (Q1141238): fp · Winnipeg · 1965
-- wykonawca Steely Dan (Q852435): fp · Nowy Jork · 1972
-- wykonawca Edison Lighthouse (Q1116554): fp · Londyn · 1970
-- wykonawca Aerosmith (Q126826): fp · Boston · 1969
-- wykonawca The 5th Dimension (Q1753111): fp · Los Angeles · 1966
-- wykonawca The Jackson 5 (Q43267): fp · Gary · 1964
-- wykonawca Roxy Music (Q334648): fp · Londyn · 1971
-- wykonawca Carpenters (Q223495): fp · Downey · 1969
-- wykonawca King Harvest (Q3815403): fp · Paryż · 1970
+- wykonawca Terry Jacks (Q453296): bp · Winnipeg · 1944
+- wykonawca ABBA (Q18233): fp · Sztokholm · 1970
+- wykonawca Ike & Tina Turner (Q1165506): fp · St. Louis · 1960
 - wykonawca Pink Floyd (Q2306): fp · Londyn · 1964
 - wykonawca T. Rex (Q211770): fp · Londyn · 1967
 - wykonawca Uriah Heep (Q108666): fp · Londyn · 1969
-- wykonawca Free (Q45650): fp · Londyn · 1972
-- wykonawca Black Sabbath (Q47670): fp · Birmingham · 1968
-- wykonawca Santana (Q873384): fp · San Francisco · 1967
-- wykonawca Alan Price (Q510991): bp · Fatfield · 1942
-- wykonawca Herbie Hancock (Q105875): bp · Chicago · 1940
-- wykonawca Dalida (Q539171): bn · Iolanda Cristina Gigliotti | bp · Kair · 1933
-- wykonawca Anne-Marie David (Q232884): bp · Casablanca · 1952
-- wykonawca Jeanette (Q297548): bn · Janette Anne Dimech | bp · Londyn · 1951
-- wykonawca Carl Douglas (Q707166): bn · Carlton George Douglas | bp · Kingston · 1942
-- wykonawca Eric Carmen (Q437551): bp · Cleveland · 1949
-- wykonawca Suzi Quatro (Q234750): bn · Susan Kay Quatro | bp · Detroit · 1950
-- wykonawca George McCrae (Q1353762): bp · West Palm Beach · 1944
-- wykonawca Barry White (Q213647): bn · Barry Eugene Carter | bp · Galveston · 1944
-- wykonawca Billy Joel (Q194333): bn · William Martin Joel | bp · Nowy Jork · 1949
-- wykonawca Patti Smith (Q557): bp · Chicago · 1946
-- wykonawca Dolly Parton (Q180453): bp · Pittman Center · 1946
-- wykonawca Van McCoy (Q1886750): bp · Waszyngton · 1940
-- wykonawca Billy Preston (Q311450): bn · William Everett Preston | bp · Houston · 1946
-- wykonawca Bruce Springsteen (Q1225): bp · Long Branch · 1949
-- wykonawca Charles Aznavour (Q1785): bn · Charles Aznavourian | bp · 6. dzielnica Paryża · 1924
-- wykonawca Peter Frampton (Q337089): bp · Bromley · 1950
-- wykonawca Billy Ocean (Q356745): bn · Leslie Sebastian Charles | bp · Fyzabad · 1950
-- wykonawca Wess (Q556477): bn · Wesley Johnson | bp · Winston-Salem · 1945
-- wykonawca Mike Oldfield (Q3008): bn · Michael Gordon Oldfield | bp · Reading · 1953
-- wykonawca Gary Glitter (Q355384): bn · Paul Francis Gadd | bp · Banbury · 1944
-- wykonawca Terry Jacks (Q453296): bp · Winnipeg · 1944
-- wykonawca Maxine Nightingale (Q433115): bp · Londyn · 1952
-- wykonawca Candi Staton (Q449200): bp · Hanceville · 1940
-- wykonawca ABBA (Q18233): fp · Sztokholm · 1970
-- wykonawca Ike & Tina Turner (Q1165506): fp · St. Louis · 1960
-- wykonawca Boston (Q204289): fp · Boston · 1976
-- wykonawca Smokie (Q815849): fp · Bradford · 1965
 - wykonawca Wishbone Ash (Q137758): fp · Torquay · 1969
 - wykonawca The Doobie Brothers (Q506670): fp · San Jose · 1970
 - wykonawca Nazareth (Q683695): fp · Dunfermline · 1968
+- wykonawca Aerosmith (Q126826): fp · Boston · 1969
 - wykonawca Golden Earring (Q728049): fp · Haga · 1961
 - wykonawca Average White Band (Q583556): fp · Dundee · 1972
-- wykonawca The Hollies (Q282925): fp · Manchester · 1962
+- wykonawca Slade (Q156872): fp · Wolverhampton · 1966
+- wykonawca Raspberries (Q2715339): fp · Cleveland · 1970
 - wykonawca Blue Swede (Q885906): fp · Sztokholm · 1973
+- wykonawca Yes (Q184386): fp · Londyn · 1968
 - wykonawca Sweet (Q487919): fp · Londyn · 1968
-- wykonawca Teach-In (Q846517): fp · Enschede · 1970
 - wykonawca Bay City Rollers (Q812073): fp · Edynburg · 1966
 - wykonawca Lynyrd Skynyrd (Q158462): fp · Jacksonville · 1964
-- wykonawca Queen (Q15862): fp · Londyn · 1970
+- wykonawca America (Q126852): fp · Londyn · 1970
 - wykonawca Kool & The Gang (Q850290): fp · Jersey City · 1964
-- wykonawca AC/DC (Q27593): fp · Sydney · 1973
-- wykonawca Blue Öyster Cult (Q331016): fp · Nowy Jork · 1967
+- wykonawca Stealers Wheel (Q283638): fp · Paisley · 1972
+- wykonawca Thin Lizzy (Q202314): fp · Dublin · 1969
 - wykonawca Steve Harley & Cockney Rebel (Q1431236): fp · Londyn · 1972
 - wykonawca Bob Marley & The Wailers (Q2525354): fp · Kingston · 1963
+- wykonawca The Guess Who (Q1141238): fp · Winnipeg · 1965
+- wykonawca Steely Dan (Q852435): fp · Nowy Jork · 1972
+- wykonawca ZZ Top (Q136591): fp · Houston · 1969
+- wykonawca Redbone (Q1751280): fp · Los Angeles · 1969
+- wykonawca Roxy Music (Q334648): fp · Londyn · 1971
+- wykonawca King Harvest (Q3815403): fp · Paryż · 1970
+- wykonawca Peter Gabriel (Q175195): bp · Chobham · 1950
+- wykonawca Walter Murphy (Q534419): bp · Nowy Jork · 1952
+- wykonawca George McCrae (Q1353762): bp · West Palm Beach · 1944
+- wykonawca Donna Summer (Q908933): bn · LaDonna Adrian Gaines | bp · Boston · 1948
+- wykonawca Jeanette (Q297548): bn · Janette Anne Dimech | bp · Londyn · 1951
+- wykonawca Jean-Michel Jarre (Q104326): bp · 4th arrondissement of Lyon · 1948
+- wykonawca Carl Douglas (Q707166): bn · Carlton George Douglas | bp · Kingston · 1942
+- wykonawca Bruce Springsteen (Q1225): bp · Long Branch · 1949
+- wykonawca Thelma Houston (Q465955): bp · Leland · 1946
+- wykonawca Charles Aznavour (Q1785): bn · Charles Aznavourian | bp · 6. dzielnica Paryża · 1924
+- wykonawca Eric Carmen (Q437551): bp · Cleveland · 1949
+- wykonawca Billy Ocean (Q356745): bn · Leslie Sebastian Charles | bp · Fyzabad · 1950
+- wykonawca Candi Staton (Q449200): bp · Hanceville · 1940
+- wykonawca Daryl Hall & John Oates (Q733182): fp · Filadelfia · 1972
+- wykonawca Boston (Q204289): fp · Boston · 1976
+- wykonawca John Paul Young (Q205583): bn · John Inglis Young | bp · Glasgow · 1950
+- wykonawca Meat Loaf (Q152929): bp · Dallas · 1947
+- wykonawca Billy Preston (Q311450): bn · William Everett Preston | bp · Houston · 1946
+- wykonawca Marie Myriam (Q236053): bp · Kananga · 1957
+- wykonawca Peter Frampton (Q337089): bp · Bromley · 1950
+- wykonawca Wess (Q556477): bn · Wesley Johnson | bp · Winston-Salem · 1945
+- wykonawca Andy Gibb (Q176537): bn · Andrew Roy Gibb | bp · Manchester · 1958
+- wykonawca Fats Domino (Q209586): bn · Antoine Dominique Domino Jr. | bp · Nowy Orlean · 1928
+- wykonawca Patti Smith (Q557): bp · Chicago · 1946
+- wykonawca Iggy Pop (Q182665): bn · James Newell Osterberg | bp · Muskegon · 1947
+- wykonawca Bonnie Tyler (Q156491): bn · Gaynor Hopkins | bp · Skewen · 1951
+- wykonawca Van McCoy (Q1886750): bp · Waszyngton · 1940
+- wykonawca Maxine Nightingale (Q433115): bp · Londyn · 1952
+- wykonawca Smokie (Q815849): fp · Bradford · 1965
+- wykonawca Kansas (Q204328): fp · Topeka · 1970
+- wykonawca The Hollies (Q282925): fp · Manchester · 1962
+- wykonawca Teach-In (Q846517): fp · Enschede · 1970
+- wykonawca Queen (Q15862): fp · Londyn · 1970
+- wykonawca Tavares (Q1780451): fp · Providence · 1959
+- wykonawca AC/DC (Q27593): fp · Sydney · 1973
+- wykonawca Blue Öyster Cult (Q331016): fp · Nowy Jork · 1967
 - wykonawca Bijelo Dugme (Q753829): fp · Sarajewo · 1974
 - wykonawca The Rubettes (Q592265): fp · Londyn · 1973
+- wykonawca The Trammps (Q1685123): fp · Filadelfia · 1972
+- wykonawca Commodores (Q287206): fp · Tuskegee · 1968
 - wykonawca Ohio Players (Q1291507): fp · Dayton · 1959
+- wykonawca Steve Miller Band (Q750927): fp · San Francisco · 1967
 - wykonawca 10cc (Q169145): fp · Stockport · 1972
 - wykonawca Slik (Q848498): fp · Glasgow · 1970
 - wykonawca Earth, Wind & Fire (Q28974): fp · Chicago · 1970
+- wykonawca Ramones (Q483407): fp · Forest Hills · 1974
+- wykonawca Manfred Mann's Earth Band (Q1926913): fp · Londyn · 1971
 - wykonawca Kraftwerk (Q44892): fp · Düsseldorf · 1961
-- wykonawca ZZ Top (Q136591): fp · Houston · 1969
+- wykonawca Foreigner (Q275059): fp · Nowy Jork · 1976
 - wykonawca Camel (Q612471): fp · Guildford · 1971
+- wykonawca Sex Pistols (Q82545): fp · Londyn · 1975
 - wykonawca Hot Chocolate (Q1368881): fp · West Hampstead · 1969
-- wykonawca Redbone (Q1751280): fp · Los Angeles · 1969
+- wykonawca Electric Light Orchestra (Q218255): fp · Birmingham · 1970
 - wykonawca KC & The Sunshine Band (Q1130581): fp · Miami · 1973
 - wykonawca The Chiffons (Q1386995): fp · Nowy Jork · 1960
-- wykonawca Diana Ross (Q36290): bp · Detroit · 1944
-- wykonawca Walter Murphy (Q534419): bp · Nowy Jork · 1952
-- wykonawca Chuck Mangione (Q945778): bn · Charles Frank Mangione | bp · Rochester · 1940
-- wykonawca Rupert Holmes (Q1383270): bn · David Goldstein | bp · Northwich · 1947
-- wykonawca Donna Summer (Q908933): bn · LaDonna Adrian Gaines | bp · Boston · 1948
-- wykonawca Prince (Q7542): bp · Minneapolis · 1958
-- wykonawca Justin Hayward (Q968014): bp · Swindon · 1946
-- wykonawca Kate Bush (Q636): bn · Catherine Bush | bp · Bexleyheath · 1958
-- wykonawca Gary Moore (Q185147): bp · Belfast · 1952
-- wykonawca John Paul Young (Q205583): bn · John Inglis Young | bp · Glasgow · 1950
-- wykonawca Jean-Michel Jarre (Q104326): bp · 4th arrondissement of Lyon · 1948
-- wykonawca Peter Gabriel (Q175195): bp · Chobham · 1950
+- wykonawca Galt MacDermot (Q1346345): bp · Montreal · 1928
 - wykonawca Frank Zappa (Q127330): bp · Baltimore · 1940
+- wykonawca Johnny Logan (Q298559): bp · Melbourne · 1954
+- wykonawca Randy Crawford (Q275927): bn · Veronica Crawford | bp · Macon · 1952
+- wykonawca Rupert Holmes (Q1383270): bn · David Goldstein | bp · Northwich · 1947
+- wykonawca Gerry Rafferty (Q110919): bn · Gerald Rafferty | bp · Paisley · 1947
+- wykonawca John Travolta (Q80938): bp · Englewood · 1954
+- wykonawca Miki Matsubara (Q3313730): bp · Kishiwada · 1959
+- wykonawca Raffaella Carrà (Q266640): bn · Raffaella Maria Roberta Pelloni | bp · Prowincja Miejska Bolonia · 1943
+- wykonawca Ozzy Osbourne (Q133151): bp · Marston Green · 1948
+- wykonawca Laurie Anderson (Q235066): bp · Chicago · 1947
+- wykonawca Justin Hayward (Q968014): bp · Swindon · 1946
+- wykonawca Gary Moore (Q185147): bp · Belfast · 1952
+- wykonawca Diana Ross (Q36290): bp · Detroit · 1944
+- wykonawca Chuck Mangione (Q945778): bn · Charles Frank Mangione | bp · Rochester · 1940
+- wykonawca Murray Head (Q610267): bp · Londyn · 1946
+- wykonawca Kate Bush (Q636): bn · Catherine Bush | bp · Bexleyheath · 1958
+- wykonawca Prince (Q7542): bp · Minneapolis · 1958
+- wykonawca Irene Cara (Q234169): bp · Bronx · 1959
+- wykonawca Peaches & Herb (Q634476): fp · Waszyngton · 1966
 - wykonawca Anita Ward (Q268681): bp · Memphis · 1956
 - wykonawca Gloria Gaynor (Q228918): bn · Gloria Fowles | bp · Newark · 1943
-- wykonawca Thelma Houston (Q465955): bp · Leland · 1946
 - wykonawca Amii Stewart (Q434016): bn · Amy Paulette Stewart | bp · Waszyngton · 1956
-- wykonawca Marie Myriam (Q236053): bp · Kananga · 1957
 - wykonawca Gary Numan (Q331731): bn · Gary Anthony James Webb | bp · Hammersmith · 1958
 - wykonawca Chaka Khan (Q229498): bn · Yvette Marie Stevens | bp · Chicago · 1953
-- wykonawca Fats Domino (Q209586): bn · Antoine Dominique Domino Jr. | bp · Nowy Orlean · 1928
 - wykonawca Barry Manilow (Q302762): bn · Barry Alan Pincus | bp · Brooklyn · 1943
-- wykonawca Iggy Pop (Q182665): bn · James Newell Osterberg | bp · Muskegon · 1947
 - wykonawca Cheryl Lynn (Q440893): bp · Los Angeles · 1957
-- wykonawca John Travolta (Q80938): bp · Englewood · 1954
-- wykonawca Meat Loaf (Q152929): bp · Dallas · 1947
-- wykonawca Andy Gibb (Q176537): bn · Andrew Roy Gibb
-- wykonawca Gerry Rafferty (Q110919): bn · Gerald Rafferty | bp · Paisley · 1947
-- wykonawca Bonnie Tyler (Q156491): bn · Gaynor Hopkins | bp · Skewen · 1951
-- wykonawca Daryl Hall & John Oates (Q733182): fp · Filadelfia · 1972
-- wykonawca Peaches & Herb (Q634476): fp · Waszyngton · 1966
-- wykonawca Tavares (Q1780451): fp · Providence · 1959
+- wykonawca Grover Washington Jr. (Q463678): bp · Buffalo · 1943
+- wykonawca The Jam (Q916461): fp · Woking · 1972
+- wykonawca Motörhead (Q19697): fp · Londyn · 1975
+- wykonawca The Police (Q178095): fp · Londyn · 1977
+- wykonawca Toto (Q207472): fp · Van Nuys · 1977
+- wykonawca The Clash (Q125603): fp · Londyn · 1976
+- wykonawca Talking Heads (Q205001): fp · Nowy Jork · 1975
+- wykonawca Lipps Inc. (Q863090): fp · Minneapolis · 1979
+- wykonawca Ultravox (Q316485): fp · Londyn · 1973
+- wykonawca The Whispers (Q1527931): fp · Los Angeles · 1964
 - wykonawca Blondie (Q202741): fp · Nowy Jork · 1974
 - wykonawca Village People (Q219874): fp · Nowy Jork · 1977
 - wykonawca The Boomtown Rats (Q573471): fp · Dún Laoghaire · 1975
-- wykonawca The Trammps (Q1685123): fp · Filadelfia · 1972
-- wykonawca Commodores (Q287206): fp · Tuskegee · 1968
-- wykonawca Steve Miller Band (Q750927): fp · San Francisco · 1967
-- wykonawca Ramones (Q483407): fp · Forest Hills · 1974
-- wykonawca Manfred Mann's Earth Band (Q1926913): fp · Londyn · 1971
-- wykonawca Foreigner (Q275059): fp · Nowy Jork · 1976
+- wykonawca Judas Priest (Q83468): fp · Birmingham · 1969
+- wykonawca The Alan Parsons Project (Q533478): fp · Glasgow · 1975
 - wykonawca Rush (Q203871): fp · Toronto · 1968
-- wykonawca Sex Pistols (Q82545): fp · Londyn · 1975
 - wykonawca Joy Division (Q172763): fp · Salford · 1976
 - wykonawca Dire Straits (Q50040): fp · Deptford · 1977
+- wykonawca Flash and the Pan (Q488899): fp · Sydney · 1976
+- wykonawca The Cure (Q484427): fp · Crawley · 1976
 - wykonawca Sister Sledge (Q1070743): fp · Filadelfia · 1972
 - wykonawca The Buggles (Q201568): fp · Wimbledon · 1977
-- wykonawca Electric Light Orchestra (Q218255): fp · Birmingham · 1970
-- wykonawca Talking Heads (Q205001): fp · Nowy Jork · 1975
+- wykonawca Dschinghis Khan (Q106861): fp · Monachium · 1979
 - wykonawca Supertramp (Q176457): fp · Londyn · 1969
 - wykonawca The Pointer Sisters (Q1161836): fp · Oakland · 1969
+- wykonawca Visage (Q1569811): fp · Newport · 1978
 - wykonawca Van Halen (Q190155): fp · Pasadena · 1972
 - wykonawca Joan Jett & the Blackhearts (Q5931437): fp · Los Angeles · 1980
-- wykonawca The Police (Q178095): fp · Londyn · 1977
-- wykonawca Kansas (Q204328): fp · Topeka · 1970
-- wykonawca Laurie Anderson (Q235066): bp · Chicago · 1947
-- wykonawca Grace Jones (Q450429): bp · Spanish Town · 1948
-- wykonawca Phil Collins (Q144622): bn · Philip David Charles Collins | bp · Londyn · 1951
-- wykonawca Quincy Jones (Q193645): bp · South Side · 1933
-- wykonawca Randy Crawford (Q275927): bn · Veronica Crawford | bp · Macon · 1952
-- wykonawca Robert Plant (Q428223): bp · West Bromwich · 1948
-- wykonawca Ozzy Osbourne (Q133151): bp · Marston Green · 1948
-- wykonawca Aneka (Q242568): bp · Edynburg · 1954
-- wykonawca Vangelis (Q153172): bp · Agria · 1943
-- wykonawca Kim Wilde (Q1790): bp · Londyn · 1960
-- wykonawca Adrian Gurvitz (Q373080): bp · Stoke Newington · 1949
 - wykonawca F.R. David (Q472663): bn · Elli Robert Fitoussi
+- wykonawca Madonna (Q1744): bp · Bay City · 1958
+- wykonawca Kim Wilde (Q1790): bp · Londyn · 1960
 - wykonawca Kenny Loggins (Q435965): bn · Kenneth Clark Loggins | bp · Everett · 1948
-- wykonawca Murray Head (Q610267): bp · Londyn · 1946
+- wykonawca Cyndi Lauper (Q1545): bn · Cynthia Ann Stephanie Lauper | bp · Queens · 1953
 - wykonawca Lionel Richie (Q26695): bp · Tuskegee · 1949
 - wykonawca Billy Idol (Q73437): bn · William Michael Albert Broad | bp · Stanmore · 1955
 - wykonawca Luther Vandross (Q311306): bp · Nowy Jork · 1951
+- wykonawca Grace Jones (Q450429): bp · Spanish Town · 1948
+- wykonawca Robert Plant (Q428223): bp · West Bromwich · 1948
+- wykonawca Phil Collins (Q144622): bn · Philip David Charles Collins | bp · Londyn · 1951
+- wykonawca Aneka (Q242568): bp · Edynburg · 1954
+- wykonawca Matthew Wilder (Q1378792): bp · Nowy Jork · 1953
+- wykonawca Vangelis (Q153172): bp · Agria · 1943
 - wykonawca Stevie Nicks (Q234691): bn · Stephanie Lynn Nicks | bp · Phoenix · 1948
+- wykonawca Adrian Gurvitz (Q373080): bp · Stoke Newington · 1949
 - wykonawca Laura Branigan (Q229550): bp · Mount Kisco · 1952
+- wykonawca Mark Knopfler (Q185343): bp · Glasgow · 1949
 - wykonawca Carola Häggkvist (Q212524): bp · Sztokholm · 1966
-- wykonawca Johnny Logan (Q298559): bp · Melbourne · 1954
+- wykonawca Michael Sembello (Q1929388): bp · Filadelfia · 1954
+- wykonawca Midge Ure (Q355382): bp · Cambuslang · 1953
 - wykonawca Kim Carnes (Q4070): bp · Los Angeles · 1945
 - wykonawca Corinne Hermès (Q234903): bn · Corinne Bondeaux
 - wykonawca Chris de Burgh (Q178237): bn · Christopher John Davison | bp · Venado Tuerto · 1948
+- wykonawca Gazebo (Q361329): bp · Bejrut · 1960
+- wykonawca The Weather Girls (Q707161): fp · San Francisco · 1982
+- wykonawca Tears for Fears (Q269091): fp · Bath · 1981
 - wykonawca Soft Cell (Q1329303): fp · Leeds · 1980
-- wykonawca The Jam (Q916461): fp · Woking · 1972
-- wykonawca Accept (Q25507): fp · Solingen · 1968
-- wykonawca Survivor (Q1135315): fp · Chicago · 1978
-- wykonawca Motörhead (Q19697): fp · Londyn · 1975
-- wykonawca Scorpions (Q124147): fp · Hanower · 1965
-- wykonawca Toto (Q207472): fp · Van Nuys · 1977
-- wykonawca The Clash (Q125603): fp · Londyn · 1976
-- wykonawca Culture Club (Q50037): fp · Londyn · 1981
+- wykonawca Fiction Factory (Q664789): fp · Perth · 1983
+- wykonawca Marillion (Q678410): fp · Aylesbury · 1979
 - wykonawca The Specials (Q19057): fp · Coventry · 1977
-- wykonawca The Cure (Q484427): fp · Crawley · 1976
-- wykonawca Loverboy (Q650374): fp · Calgary · 1980
 - wykonawca The Psychedelic Furs (Q276463): fp · Londyn · 1977
 - wykonawca Duran Duran (Q58381): fp · Birmingham · 1978
 - wykonawca Bananarama (Q725926): fp · Londyn · 1979
+- wykonawca Loverboy (Q650374): fp · Calgary · 1980
 - wykonawca Kajagoogoo (Q608271): fp · Leighton Buzzard · 1982
 - wykonawca The Human League (Q730158): fp · Sheffield · 1977
 - wykonawca The Stranglers (Q1532854): fp · Guildford · 1974
-- wykonawca Ultravox (Q316485): fp · Londyn · 1973
-- wykonawca The Whispers (Q1527931): fp · Los Angeles · 1964
+- wykonawca Quiet Riot (Q221494): fp · Los Angeles · 1973
+- wykonawca Accept (Q25507): fp · Solingen · 1968
+- wykonawca Culture Club (Q50037): fp · Londyn · 1981
 - wykonawca Depeche Mode (Q482964): fp · Basildon · 1980
 - wykonawca De Press (Q2975347): fp · Oslo · 1980
-- wykonawca Judas Priest (Q83468): fp · Birmingham · 1969
-- wykonawca The Alan Parsons Project (Q533478): fp · Glasgow · 1975
+- wykonawca Musical Youth (Q744781): fp · Birmingham · 1979
 - wykonawca Dexys Midnight Runners (Q247259): fp · Birmingham · 1978
 - wykonawca Yazoo (Q1410055): fp · Basildon · 1981
 - wykonawca Whitesnake (Q189965): fp · Middlesbrough · 1978
-- wykonawca Flash and the Pan (Q488899): fp · Sydney · 1976
+- wykonawca Eurythmics (Q207706): fp · Sunderland · 1980
 - wykonawca The Teardrop Explodes (Q1971690): fp · Liverpool · 1978
-- wykonawca Visage (Q1569811): fp · Newport · 1978
+- wykonawca Mötley Crüe (Q486688): fp · Los Angeles · 1981
+- wykonawca Night Ranger (Q1889163): fp · San Francisco · 1982
+- wykonawca Survivor (Q1135315): fp · Chicago · 1978
+- wykonawca New Order (Q214990): fp · Salford · 1980
+- wykonawca Echo & the Bunnymen (Q925641): fp · Liverpool · 1978
+- wykonawca Scorpions (Q124147): fp · Hanower · 1965
+- wykonawca Dokken (Q831041): fp · Los Angeles · 1979
 - wykonawca Bryan Adams (Q482907): bp · Kingston · 1959
-- wykonawca Shakin' Stevens (Q978793): bp · Cardiff · 1948
+- wykonawca Sandra (Q76901): bp · Saarbrücken · 1962
 - wykonawca Tina Turner (Q131814): bn · Anna Mae Bullock | bp · Nutbush · 1939
-- wykonawca Gazebo (Q361329): bp · Bejrut · 1960
+- wykonawca Glenn Frey (Q472051): bp · Detroit · 1948
+- wykonawca Linda Martin (Q237570): bp · Omagh · 1952
+- wykonawca Shakin' Stevens (Q978793): bp · Cardiff · 1948
+- wykonawca Ryuichi Sakamoto (Q345494): bp · Tokio · 1952
+- wykonawca Jennifer Rush (Q238133): bn · Heidi Stern | bp · Astoria · 1960
+- wykonawca Ken Laszlo (Q179262): bn · Gianni Coraini | bp · Florencja · 1954
 - wykonawca Philip Bailey (Q746618): bp · Denver · 1951
 - wykonawca C.C. Catch (Q75851): bn · Caroline Catherine Müller
 - wykonawca Limahl (Q921176): bp · Wigan · 1958
-- wykonawca Madonna (Q1744): bp · Bay City · 1958
+- wykonawca Freddie Mercury (Q15869): bp · Zanzibar · 1946
+- wykonawca Toto Cutugno (Q487473): bn · Salvatore Cutugno
 - wykonawca Peter Schilling (Q62951): bn · Pierre Michael Schilling | bp · Stuttgart · 1956
-- wykonawca Cyndi Lauper (Q1545): bn · Cynthia Ann Stephanie Lauper | bp · Queens · 1953
-- wykonawca Ryuichi Sakamoto (Q345494): bp · Tokio · 1952
-- wykonawca Irene Cara (Q234169): bp · Bronx · 1959
-- wykonawca Linda Martin (Q237570): bp · Omagh · 1952
-- wykonawca Jennifer Rush (Q238133): bn · Heidi Stern | bp · Astoria · 1960
-- wykonawca Matthew Wilder (Q1378792): bp · Nowy Jork · 1953
 - wykonawca Don Henley (Q316454): bn · Donald Hugh Henley | bp · Gilmer · 1947
 - wykonawca Kikki Danielsson (Q235820): bn · Elsie Ann-Kristin Danielsson
 - wykonawca Nik Kershaw (Q453812): bn · Nicholas David Kershaw | bp · Bristol · 1958
 - wykonawca Bryan Ferry (Q216179): bp · Washington · 1945
 - wykonawca Chris Rea (Q262314): bn · Christopher Anton Rea | bp · Middlesbrough · 1951
-- wykonawca Mark Knopfler (Q185343): bp · Glasgow · 1949
-- wykonawca Michael Sembello (Q1929388): bp · Filadelfia · 1954
+- wykonawca Deniece Williams (Q434682): bn · June Deniece Chandler | bp · Gary · 1950
+- wykonawca Rita Coolidge (Q268604): bp · Nashville · 1945
 - wykonawca Snowy White (Q450815): bn · Terence Charles White | bp · Barnstaple · 1948
+- wykonawca Ray Parker Jr. (Q381022): bn · Ray Erskine Parker | bp · Detroit · 1954
 - wykonawca Roger Hodgson (Q380988): bp · Portsmouth · 1950
 - wykonawca Harold Faltermeyer (Q372489): bp · Monachium · 1952
 - wykonawca Sal Solo (Q3943058): bp · Hatfield · 1961
 - wykonawca Pet Shop Boys (Q485625): fp · Londyn · 1981
 - wykonawca Run–D.M.C. (Q159351): fp · Hollis · 1981
 - wykonawca Wham! (Q744087): fp · Bushey · 1981
-- wykonawca Mötley Crüe (Q486688): fp · Los Angeles · 1981
-- wykonawca Night Ranger (Q1889163): fp · San Francisco · 1982
 - wykonawca The Cars (Q858388): fp · Boston · 1976
-- wykonawca New Order (Q214990): fp · Salford · 1980
-- wykonawca Echo & the Bunnymen (Q925641): fp · Liverpool · 1978
 - wykonawca Talk Talk (Q595705): fp · Londyn · 1981
 - wykonawca Twisted Sister (Q272239): fp · Oyster Bay · 1972
-- wykonawca Dokken (Q831041): fp · Los Angeles · 1979
 - wykonawca The Smiths (Q180598): fp · Manchester · 1984
-- wykonawca Fiction Factory (Q664789): fp · Perth · 1983
-- wykonawca Marillion (Q678410): fp · Aylesbury · 1979
 - wykonawca U2 (Q396): fp · Dublin · 1976
 - wykonawca Sade (Q658182): fp · Londyn · 1982
-- wykonawca Quiet Riot (Q221494): fp · Los Angeles · 1973
+- wykonawca Simple Minds (Q748836): fp · Glasgow · 1977
 - wykonawca The Style Council (Q676522): fp · Londyn · 1983
 - wykonawca Modern Talking (Q27417): fp · Berlin · 1983
 - wykonawca The Hooters (Q1257490): fp · Filadelfia · 1980
@@ -2338,55 +2660,61 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Spandau Ballet (Q16011): fp · Wielki Londyn · 1979
 - wykonawca Wang Chung (Q2030370): fp · Londyn · 1980
 - wykonawca Ratt (Q856941): fp · Hollywood · 1976
+- wykonawca Tangerine Dream (Q153616): fp · Berlin · 1967
 - wykonawca Dead Can Dance (Q324400): fp · Melbourne · 1981
 - wykonawca Metallica (Q15920): fp · Los Angeles · 1981
 - wykonawca Righeira (Q220050): fp · Turyn · 1983
-- wykonawca Eurythmics (Q207706): fp · Sunderland · 1980
 - wykonawca Clannad (Q192609): fp · Gaoth Dobhair · 1970
 - wykonawca Bronski Beat (Q927927): fp · Londyn · 1983
 - wykonawca Bad Boys Blue (Q681697): fp · Kolonia · 1984
+- wykonawca Saxon (Q504090): fp · Barnsley · 1975
 - wykonawca Cocteau Twins (Q588820): fp · Grangemouth · 1979
 - wykonawca a-ha (Q156305): fp · Oslo · 1982
 - wykonawca Patrick Swayze (Q49004): bp · Houston · 1952
 - wykonawca Bill Medley (Q862315): bp · Los Angeles · 1940
 - wykonawca Peter Cetera (Q468815): bp · Chicago · 1944
-- wykonawca Ken Laszlo (Q179262): bn · Gianni Coraini | bp · Florencja · 1954
 - wykonawca Stan Ridgway (Q50825): bn · Stanard Ridgway Funsten III | bp · Barstow · 1954
-- wykonawca John Farnham (Q22072): bp · Dagenham · 1949
+- wykonawca Desireless (Q464305): bp · Paryż · 1952
 - wykonawca Whitney Houston (Q34389): bp · Newark · 1963
 - wykonawca Eddy Huntington (Q1283099): bp · Peterlee · 1965
+- wykonawca Koji Kondo (Q356782): bp · Nagoja · 1961
 - wykonawca Rick Astley (Q219237): bp · Newton-le-Willows · 1966
 - wykonawca Sananda Maitreya (Q552384): bn · Terence Trent Howard | bp · Nowy Jork · 1962
-- wykonawca Bobby McFerrin (Q310894): bn · Robert Keith McFerrin Jr. | bp · Manhattan · 1950
-- wykonawca Freddie Mercury (Q15869): bp · Zanzibar · 1946
-- wykonawca Sting (Q483203): bn · Gordon Matthew Thomas Sumner | bp · Wallsend · 1951
-- wykonawca Sandra (Q76901): bp · Saarbrücken · 1962
-- wykonawca Glenn Frey (Q472051): bp · Detroit · 1948
-- wykonawca Jan Hammer (Q366671): bp · Praga · 1948
-- wykonawca Taylor Dayne (Q168274): bp · Manhattan · 1962
+- wykonawca Shaggy (Q310763): bp · Kingston · 1968
 - wykonawca Roger Waters (Q180861): bp · Great Bookham · 1943
+- wykonawca John Parr (Q326052): bp · Worksop · 1952
 - wykonawca Glenn Medeiros (Q304966): bp · Lihue · 1970
 - wykonawca Anita Baker (Q255697): bp · Toledo · 1958
+- wykonawca Red Box (Q2135903): fp · Londyn · 1983
+- wykonawca Loituma (Q147905): fp · Helsinki · 1989
+- wykonawca Sting (Q483203): bn · Gordon Matthew Thomas Sumner | bp · Wallsend · 1951
+- wykonawca Mark Snow (Q534413): bn · Martin Fulterman | bp · Brooklyn · 1946
+- wykonawca Jan Hammer (Q366671): bp · Praga · 1948
+- wykonawca Tom Petty (Q311655): bn · Thomas Earl Petty | bp · Gainesville · 1950
+- wykonawca Vanilla Ice (Q313578): bn · Robert Matthew Van Winkle | bp · Dallas · 1967
 - wykonawca Sandra Kim (Q231291): bn · Sandra Caldarone
-- wykonawca Umberto Tozzi (Q365060): bp · Turyn · 1952
+- wykonawca Randy Newman (Q318475): bn · Randall Stuart Newman | bp · Los Angeles · 1943
 - wykonawca Céline Dion (Q5105): bp · Charlemagne · 1968
 - wykonawca Belinda Carlisle (Q233959): bp · Hollywood · 1958
 - wykonawca Karel Fialka (Q281244): bp · Kolkata · 1946
-- wykonawca Suzanne Vega (Q236112): bp · Santa Monica · 1959
+- wykonawca John Farnham (Q22072): bp · Dagenham · 1949
+- wykonawca Alan Silvestri (Q313537): bp · Manhattan · 1950
 - wykonawca John Wetton (Q366747): bp · Willington · 1949
 - wykonawca David Lee Roth (Q313992): bp · Bloomington · 1954
-- wykonawca Midge Ure (Q355382): bp · Cambuslang · 1953
 - wykonawca Lotta Engberg (Q235440): bn · Anna Charlotte Pedersen | bp · Överkalix · 1963
-- wykonawca Tears for Fears (Q269091): fp · Bath · 1981
-- wykonawca Red Box (Q2135903): fp · Londyn · 1983
-- wykonawca The Proclaimers (Q289622): fp · Auchtermuchty · 1983
+- wykonawca Huey Lewis (Q504458): bn · Hugh Anthony Cregg III | bp · Nowy Jork · 1950
+- wykonawca Maggie Reilly (Q233919): bp · Glasgow · 1956
 - wykonawca R.E.M. (Q134969): fp · Athens · 1980
 - wykonawca The Triffids (Q2094855): fp · Perth · 1976
+- wykonawca Daft Punk (Q185828): fp · Paryż · 1993
+- wykonawca Pearl Jam (Q142701): fp · Seattle · 1990
 - wykonawca Slayer (Q131231): fp · Huntington Park · 1981
+- wykonawca W.A.S.P. (Q467673): fp · Los Angeles · 1982
 - wykonawca Midnight Oil (Q48284): fp · Sydney · 1976
+- wykonawca Stone Temple Pilots (Q329270): fp · San Diego · 1989
 - wykonawca Los Lobos (Q370400): fp · East Los Angeles · 1973
 - wykonawca Tesla (Q1428953): fp · Sacramento · 1981
-- wykonawca Simple Minds (Q748836): fp · Glasgow · 1977
+- wykonawca Huey Lewis and the News (Q657093): fp · San Francisco · 1978
 - wykonawca Jamiroquai (Q202041): fp · Londyn · 1992
 - wykonawca The Cult (Q887376): fp · Bradford · 1983
 - wykonawca Beastie Boys (Q214039): fp · Nowy Jork · 1981
@@ -2395,46 +2723,45 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Berlin (Q821198): fp · Los Angeles · 1978
 - wykonawca Guns N' Roses (Q11895): fp · Los Angeles · 1985
 - wykonawca Cutting Crew (Q977526): fp · Londyn · 1985
+- wykonawca The Prodigy (Q7256860): fp · Braintree · 1990
 - wykonawca INXS (Q489801): fp · Sydney · 1977
-- wykonawca W.A.S.P. (Q467673): fp · Los Angeles · 1982
 - wykonawca XTC (Q1413926): fp · Swindon · 1972
 - wykonawca Def Leppard (Q182890): fp · Sheffield · 1977
 - wykonawca Roxette (Q173790): fp · Halmstad · 1986
 - wykonawca The Bangles (Q214418): fp · Los Angeles · 1981
-- wykonawca Saxon (Q504090): fp · Barnsley · 1975
 - wykonawca Jane's Addiction (Q622947): fp · Los Angeles · 1985
 - wykonawca Crowded House (Q1128045): fp · Melbourne · 1985
-- wykonawca The House of Love (Q2166615): fp · Londyn · 1986
 - wykonawca Tracy Chapman (Q187814): bp · Cleveland · 1964
+- wykonawca Neneh Cherry (Q233342): bn · Neneh Mariann Karlsson | bp · Sztokholm · 1964
 - wykonawca Enya (Q38257): bn · Eithne Pádraigín Ní Bhraonáin | bp · Gaoth Dobhair · 1961
 - wykonawca Cher (Q12003): bn · Cheryl Sarkisian | bp · El Centro · 1946
 - wykonawca Kylie Minogue (Q11998): bp · Melbourne · 1968
 - wykonawca Gladys Knight (Q235952): bp · Atlanta · 1944
 - wykonawca Birthe Kjær (Q438849): bp · Aarhus · 1948
+- wykonawca Alannah Myles (Q234687): bp · Toronto · 1958
+- wykonawca Bobby McFerrin (Q310894): bn · Robert Keith McFerrin Jr. | bp · Manhattan · 1950
 - wykonawca Lenny Kravitz (Q180224): bn · Leonard Albert Kravitz | bp · Nowy Jork · 1964
-- wykonawca Martika (Q241675): bp · Whittier · 1969
-- wykonawca Eros Ramazzotti (Q153708): bp · Rzym · 1963
-- wykonawca Jon Bon Jovi (Q150916): bn · John Francis Bongiovi Jr. | bp · Perth Amboy · 1962
-- wykonawca Fish (Q317441): bn · Derek William Dick | bp · Dalkeith · 1958
-- wykonawca Paula Abdul (Q185465): bp · San Fernando · 1962
-- wykonawca Jon Anderson (Q313749): bn · John Roy Anderson | bp · Accrington · 1944
-- wykonawca Scott Fitzgerald (Q462128): bp · Glasgow · 1948
+- wykonawca Lara Fabian (Q192655): bn · Lara Sophie Katy Crokaert
+- wykonawca Umberto Tozzi (Q365060): bp · Turyn · 1952
+- wykonawca Tanita Tikaram (Q236114): bp · Münster · 1969
+- wykonawca Suzanne Vega (Q236112): bp · Santa Monica · 1959
+- wykonawca Chris Isaak (Q313009): bn · Christopher Joseph Isaak | bp · Stockton · 1956
+- wykonawca Lisa Stansfield (Q235934): bp · Rochdale · 1966
 - wykonawca Morrissey (Q202246): bp · Davyhulme · 1959
+- wykonawca Beverley Craven (Q267968): bp · Kolombo · 1963
 - wykonawca Richard Marx (Q311256): bp · Chicago · 1963
+- wykonawca Martika (Q241675): bp · Whittier · 1969
+- wykonawca Jon Anderson (Q313749): bn · John Roy Anderson | bp · Accrington · 1944
 - wykonawca Adamski (Q301867): bn · Adam Paul Tinley | bp · Lymington · 1967
 - wykonawca Peter Murphy (Q505692): bp · Northampton · 1957
 - wykonawca Zucchero (Q125948): bn · Adelmo Fornaciari | bp · Reggio nell’Emilia · 1955
-- wykonawca Tom Petty (Q311655): bn · Thomas Earl Petty | bp · Gainesville · 1950
-- wykonawca Lara Fabian (Q192655): bn · Lara Sophie Katy Crokaert
-- wykonawca Neneh Cherry (Q233342): bn · Neneh Mariann Karlsson | bp · Sztokholm · 1964
-- wykonawca Alannah Myles (Q234687): bp · Toronto · 1958
-- wykonawca Tanita Tikaram (Q236114): bp · Münster · 1969
-- wykonawca Chris Isaak (Q313009): bn · Christopher Joseph Isaak | bp · Stockton · 1956
-- wykonawca Lisa Stansfield (Q235934): bp · Rochdale · 1966
-- wykonawca Maria McKee (Q269549): bp · Los Angeles · 1964
-- wykonawca MC Hammer (Q295923): bn · Stanley Kirk Burrell | bp · Oakland · 1962
-- wykonawca Beverley Craven (Q267968): bp · Kolombo · 1963
+- wykonawca Eros Ramazzotti (Q153708): bp · Rzym · 1963
+- wykonawca Taylor Dayne (Q168274): bp · Manhattan · 1962
+- wykonawca Paula Abdul (Q185465): bp · San Fernando · 1962
+- wykonawca Lita Ford (Q163211): bp · Londyn · 1958
+- wykonawca Scott Fitzgerald (Q462128): bp · Glasgow · 1948
 - wykonawca Azúcar Moreno (Q794498): fp · Badajoz · 1984
+- wykonawca The Proclaimers (Q289622): fp · Auchtermuchty · 1983
 - wykonawca The Stone Roses (Q29606): fp · Manchester · 1983
 - wykonawca Queensrÿche (Q462380): fp · Bellevue · 1982
 - wykonawca Mano Negra (Q936474): fp · Paryż · 1987
@@ -2450,7 +2777,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Mother Love Bone (Q1053623): fp · Seattle · 1988
 - wykonawca Dinosaur Jr. (Q622944): fp · Amherst · 1984
 - wykonawca The La's (Q1860769): fp · Liverpool · 1984
-- wykonawca Happy Mondays (Q1141495): fp · Little Hulton · 1980
 - wykonawca EMF (Q503037): fp · Cinderford · 1989
 - wykonawca Extreme (Q682710): fp · Boston · 1985
 - wykonawca Faith No More (Q320499): fp · San Francisco · 1983
@@ -2458,38 +2784,42 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca The The (Q1354463): fp · Londyn · 1979
 - wykonawca Fugazi (Q277865): fp · Waszyngton · 1987
 - wykonawca The Church (Q1757705): fp · Sydney · 1980
+- wykonawca Riva (Q544203): fp · Zadar · 1988
 - wykonawca Great White (Q1330850): fp · Los Angeles · 1978
 - wykonawca Sonic Youth (Q188626): fp · Nowy Jork · 1981
 - wykonawca The Go-Betweens (Q1891138): fp · Brisbane · 1977
 - wykonawca Damn Yankees (Q1158688): fp · Los Angeles · 1989
+- wykonawca The House of Love (Q2166615): fp · Londyn · 1986
 - wykonawca Kix (Q587184): fp · Hagerstown · 1977
-- wykonawca Niamh Kavanagh (Q229743): bp · Finglas · 1968
-- wykonawca Dr. Dre (Q6078): bn · Andre Romell Young | bp · Compton · 1965
-- wykonawca Tori Amos (Q193744): bn · Myra Ellen Amos | bp · Newton · 1963
-- wykonawca Sophie B. Hawkins (Q292092): bp · Nowy Jork · 1964
-- wykonawca Annie Lennox (Q151231): bp · Aberdeen · 1954
-- wykonawca Haddaway (Q156783): bp · Port of Spain · 1965
-- wykonawca Michael Bolton (Q312514): bn · Michael Bolotin | bp · New Haven · 1953
-- wykonawca Tasmin Archer (Q255991): bp · Bradford · 1963
-- wykonawca k.d. lang (Q230454): bn · Kathryn Dawn Lang | bp · Edmonton · 1961
+- wykonawca Nick Cave (Q192668): bn · Nicholas Edward Cave | bp · Warracknabeal · 1957
+- wykonawca Fish (Q317441): bn · Derek William Dick | bp · Dalkeith · 1958
 - wykonawca Seal (Q218091): bp · Paddington · 1963
+- wykonawca Tasmin Archer (Q255991): bp · Bradford · 1963
 - wykonawca Sergio Dalma (Q926140): bp · Sabadell · 1964
-- wykonawca Toto Cutugno (Q487473): bn · Salvatore Cutugno
+- wykonawca Robbie Williams (Q47875): bn · Robert Peter Williams | bp · Stoke-on-Trent · 1974
 - wykonawca Mariah Carey (Q41076): bp · Huntington · 1969
 - wykonawca Audrey Hepburn (Q42786): bn · Audrey Kathleen Ruston | bp · Bruksela · 1929
 - wykonawca Chesney Hawkes (Q730161): bp · Windsor · 1971
+- wykonawca Dr. Alban (Q313366): bp · Enugu · 1957
 - wykonawca Björk (Q42455): bp · Reykjavík · 1965
 - wykonawca Beck (Q11901): bn · Bek David Campbell | bp · Los Angeles · 1970
+- wykonawca Michael Bolton (Q312514): bn · Michael Bolotin | bp · New Haven · 1953
+- wykonawca Dr. Dre (Q6078): bn · Andre Romell Young | bp · Compton · 1965
+- wykonawca Tori Amos (Q193744): bn · Myra Ellen Amos | bp · Newton · 1963
+- wykonawca Sophie B. Hawkins (Q292092): bp · Nowy Jork · 1964
+- wykonawca Jon Bon Jovi (Q150916): bn · John Francis Bongiovi Jr. | bp · Perth Amboy · 1962
+- wykonawca Annie Lennox (Q151231): bp · Aberdeen · 1954
+- wykonawca Haddaway (Q156783): bp · Port of Spain · 1965
+- wykonawca Maria McKee (Q269549): bp · Los Angeles · 1964
+- wykonawca MC Hammer (Q295923): bn · Stanley Kirk Burrell | bp · Oakland · 1962
+- wykonawca k.d. lang (Q230454): bn · Kathryn Dawn Lang | bp · Edmonton · 1961
+- wykonawca Joëlle Ursull (Q275896): bp · Pointe-à-Pitre · 1960
 - wykonawca Kris Kross (Q1361074): fp · Atlanta · 1990
-- wykonawca Spin Doctors (Q909483): fp · Nowy Jork · 1990
-- wykonawca Arrested Development (Q699534): fp · Atlanta · 1988
 - wykonawca Soul Asylum (Q512312): fp · Minneapolis · 1983
 - wykonawca Ride (Q4371): fp · Oksford · 1988
-- wykonawca Pearl Jam (Q142701): fp · Seattle · 1990
 - wykonawca Megadeth (Q83431): fp · Los Angeles · 1983
 - wykonawca Tom Petty and the Heartbreakers (Q2117272): fp · Gainesville · 1976
-- wykonawca Deep Blue Something (Q1182355): fp · Denton · 1992
-- wykonawca Porno for Pyros (Q932429): fp · Los Angeles · 1992
+- wykonawca Spin Doctors (Q909483): fp · Nowy Jork · 1990
 - wykonawca Arvingarna (Q717408): fp · Göteborg · 1989
 - wykonawca The Legendary Pink Dots (Q1424355): fp · Londyn · 1980
 - wykonawca Primal Scream (Q666697): fp · Glasgow · 1982
@@ -2502,56 +2832,62 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca The Cranberries (Q483810): fp · Limerick · 1989
 - wykonawca Ace of Base (Q151634): fp · Göteborg · 1990
 - wykonawca Cypress Hill (Q322196): fp · Los Angeles · 1986
+- wykonawca Happy Mondays (Q1141495): fp · Little Hulton · 1980
 - wykonawca Vaya Con Dios (Q206004): fp · Bruksela · 1986
 - wykonawca The Ventures (Q770732): fp · Tacoma · 1958
 - wykonawca Ugly Kid Joe (Q1332195): fp · Isla Vista · 1987
 - wykonawca Wilson Phillips (Q1358683): fp · Los Angeles · 1989
 - wykonawca The Lemonheads (Q166006): fp · Boston · 1986
-- wykonawca Counting Crows (Q178549): fp · San Francisco · 1991
 - wykonawca Wu-Tang Clan (Q52463): fp · Nowy Jork · 1992
+- wykonawca Backstreet Boys (Q17140): fp · Orlando · 1993
 - wykonawca Manic Street Preachers (Q217025): fp · Blackwood · 1986
-- wykonawca Crash Test Dummies (Q277715): fp · Winnipeg · 1988
 - wykonawca Massive Attack (Q357418): fp · Bristol · 1988
-- wykonawca Mazzy Star (Q1132765): fp · Santa Monica · 1989
 - wykonawca Radiohead (Q44190): fp · Abingdon-on-Thames · 1985
 - wykonawca Pantera (Q180880): fp · Arlington · 1981
 - wykonawca Chapterhouse (Q2476387): fp · Reading · 1987
 - wykonawca Saint Etienne (Q1430158): fp · Croydon · 1990
+- wykonawca Arrested Development (Q699534): fp · Atlanta · 1988
 - wykonawca Gala (Q236237): bp · Mediolan · 1975
 - wykonawca Ray Wilson (Q278108): bp · Edynburg · 1968
 - wykonawca Alanis Morissette (Q130742): bp · Ottawa · 1974
+- wykonawca Donna Lewis (Q272578): bp · Cardiff · 1959
 - wykonawca Jan Johansen (Q2119597): bp · Sztokholm · 1966
 - wykonawca Robert Miles (Q310985): bn · Roberto Concina | bp · Fleurier · 1969
-- wykonawca Tricky (Q313627): bn · Adrian Nicholas Matthews Thaws | bp · Bristol · 1968
-- wykonawca Toni Braxton (Q155412): bp · Severn · 1966
-- wykonawca The Notorious B.I.G. (Q179157): bn · Christopher George Latore Wallace | bp · Brooklyn · 1972
-- wykonawca Scatman John (Q153141): bn · John Paul Larkin | bp · El Monte · 1942
-- wykonawca Donna Lewis (Q272578): bp · Cardiff · 1959
-- wykonawca Paul Harrington (Q510093): bp · Dublin · 1960
-- wykonawca Snoop Dogg (Q6096): bn · Calvin Cordozar Broadus Jr. | bp · Long Beach · 1971
 - wykonawca Coolio (Q310357): bn · Artis Leon Ivey Jr. | bp · Monessen · 1963
 - wykonawca Joan Osborne (Q232193): bp · Anchorage · 1962
+- wykonawca Tricky (Q313627): bn · Adrian Nicholas Matthews Thaws | bp · Bristol · 1968
 - wykonawca Erykah Badu (Q223875): bn · Erica Abi Wright | bp · Dallas · 1971
-- wykonawca D'Angelo (Q933598): bn · Michael Eugene Archer | bp · Richmond · 1974
+- wykonawca Niamh Kavanagh (Q229743): bp · Finglas · 1968
 - wykonawca Nas (Q194220): bn · Nasir bin Olu Dara Jones | bp · Brooklyn · 1973
 - wykonawca Youssou N'Dour (Q210734): bp · Dakar · 1959
+- wykonawca The Notorious B.I.G. (Q179157): bn · Christopher George Latore Wallace | bp · Brooklyn · 1972
+- wykonawca Scatman John (Q153141): bn · John Paul Larkin | bp · El Monte · 1942
+- wykonawca Jeff Buckley (Q215855): bp · Anaheim · 1966
+- wykonawca Paul Harrington (Q510093): bp · Dublin · 1960
+- wykonawca Snoop Dogg (Q6096): bn · Calvin Cordozar Broadus Jr. | bp · Long Beach · 1971
+- wykonawca Sheryl Crow (Q200586): bp · Kennett · 1962
+- wykonawca Goran Bregović (Q193273): bp · Sarajewo · 1950
+- wykonawca R. Kelly (Q273055): bn · Robert Sylvester Kelly | bp · Chicago · 1967
+- wykonawca D'Angelo (Q933598): bn · Michael Eugene Archer | bp · Richmond · 1974
 - wykonawca Edwyn Collins (Q728039): bp · Edynburg · 1959
 - wykonawca PJ Harvey (Q219772): bp · Corscombe · 1969
-- wykonawca White Town (Q781236): bp · Rurkela · 1966
-- wykonawca Goran Bregović (Q193273): bp · Sarajewo · 1950
 - wykonawca Eva Cassidy (Q229144): bp · Waszyngton · 1963
-- wykonawca R. Kelly (Q273055): bn · Robert Sylvester Kelly | bp · Chicago · 1967
 - wykonawca Eimear Quinn (Q234553): bp · Dublin · 1972
-- wykonawca Jeff Buckley (Q215855): bp · Anaheim · 1966
-- wykonawca Sheryl Crow (Q200586): bp · Kennett · 1962
 - wykonawca Lisa del Bo (Q436642): bp · Bilzen · 1961
 - wykonawca Gina G (Q260933): bp · Brisbane · 1970
 - wykonawca The Rembrandts (Q1334434): fp · Los Angeles · 1989
 - wykonawca Mad Season (Q376283): fp · Seattle · 1994
+- wykonawca Take That (Q152066): fp · Manchester · 1990
+- wykonawca The Smashing Pumpkins (Q184217): fp · Chicago · 1988
+- wykonawca Soundgarden (Q174817): fp · Seattle · 1984
+- wykonawca Weezer (Q209956): fp · Los Angeles · 1992
+- wykonawca TLC (Q742804): fp · Atlanta · 1991
+- wykonawca Spice Girls (Q55641): fp · Londyn · 1994
+- wykonawca Deep Blue Something (Q1182355): fp · Denton · 1992
+- wykonawca Porno for Pyros (Q932429): fp · Los Angeles · 1992
 - wykonawca Wet Wet Wet (Q49871): fp · Clydebank · 1982
 - wykonawca Pulp (Q504464): fp · Sheffield · 1978
 - wykonawca Faithless (Q542071): fp · Londyn · 1995
-- wykonawca Alabama 3 (Q558657): fp · Brixton · 1995
 - wykonawca Skunk Anansie (Q167977): fp · Londyn · 1994
 - wykonawca No Doubt (Q43259): fp · Anaheim · 1986
 - wykonawca Green Day (Q47871): fp · Rodeo · 1982
@@ -2560,138 +2896,125 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Apollo 440 (Q619067): fp · Liverpool · 1990
 - wykonawca Blur (Q485820): fp · Londyn · 1988
 - wykonawca Sepultura (Q239074): fp · Belo Horizonte · 1984
-- wykonawca TLC (Q742804): fp · Atlanta · 1991
-- wykonawca The Prodigy (Q7256860): fp · Braintree · 1990
 - wykonawca The Breeders (Q1332134): fp · Boston · 1988
 - wykonawca Fools Garden (Q662758): fp · Pforzheim · 1991
 - wykonawca Portishead (Q191352): fp · Bristol · 1991
 - wykonawca Mr. President (Q282387): fp · Brema · 1991
+- wykonawca Counting Crows (Q178549): fp · San Francisco · 1991
 - wykonawca The Boo Radleys (Q1778436): fp · Liverpool · 1988
 - wykonawca Babylon Zoo (Q696624): fp · Wolverhampton · 1992
-- wykonawca Backstreet Boys (Q17140): fp · Orlando · 1993
 - wykonawca Nine Inch Nails (Q11647): fp · Cleveland · 1988
 - wykonawca Underworld (Q849429): fp · Romford · 1987
 - wykonawca Supergrass (Q1120684): fp · Wheatley · 1993
+- wykonawca Crash Test Dummies (Q277715): fp · Winnipeg · 1988
+- wykonawca Mazzy Star (Q1132765): fp · Santa Monica · 1989
 - wykonawca Fun Lovin' Criminals (Q1004336): fp · Nowy Jork · 1993
 - wykonawca La Bouche (Q572077): fp · Frankfurt nad Menem · 1994
 - wykonawca Arab Strap (Q2632762): fp · Falkirk · 1995
-- wykonawca Take That (Q152066): fp · Manchester · 1990
-- wykonawca The Smashing Pumpkins (Q184217): fp · Chicago · 1988
-- wykonawca Soundgarden (Q174817): fp · Seattle · 1984
-- wykonawca Weezer (Q209956): fp · Los Angeles · 1992
-- wykonawca Spice Girls (Q55641): fp · Londyn · 1994
-- wykonawca The Cardigans (Q106379): fp · Jönköping · 1992
-- wykonawca Karl Jenkins (Q333168): bp · Penclawdd · 1944
 - wykonawca Dido (Q202550): bn · Florian Cloud de Bounevialle Armstrong | bp · Kensington · 1971
 - wykonawca Shania Twain (Q131433): bn · Eilleen Regina Edwards | bp · Windsor · 1965
 - wykonawca Will Smith (Q40096): bn · Willard Carroll Smith II | bp · Filadelfia · 1968
 - wykonawca Guildo Horn (Q63029): bn · Horst Heinz Köhler | bp · Trewir · 1963
 - wykonawca Anastacia (Q34584): bp · Chicago · 1968
-- wykonawca Robbie Williams (Q47875): bn · Robert Peter Williams | bp · Stoke-on-Trent · 1974
-- wykonawca Jennifer Lopez (Q40715): bp · Bronx · 1969
 - wykonawca Lou Bega (Q60268): bn · David Lubega Balemezi | bp · Monachium · 1975
 - wykonawca Christina Aguilera (Q41594): bp · Staten Island · 1980
-- wykonawca Steve Hackett (Q315811): bn · Stephen Richard Hackett | bp · Londyn · 1950
+- wykonawca Jennifer Lopez (Q40715): bp · Bronx · 1969
+- wykonawca Karl Jenkins (Q333168): bp · Penclawdd · 1944
+- wykonawca Toni Braxton (Q155412): bp · Severn · 1966
+- wykonawca ATB (Q77002): bp · Freiberg · 1973
 - wykonawca Faith Hill (Q464241): bp · Ridgeland · 1967
 - wykonawca Aphex Twin (Q223161): bn · Richard David James | bp · Limerick · 1971
-- wykonawca Tom Waits (Q184805): bn · Thomas Alan Waits | bp · Pomona · 1949
 - wykonawca Patrick Fiori (Q471087): bn · Patrick Jean-François Chouchayan | bp · Métropole d'Aix-Marseille-Provence · 1969
-- wykonawca Ross Bagdasarian (Q1176607): bn · Rostom Sipan Bagdasarian
+- wykonawca Ross Bagdasarian (Q1176607): bn · Rostom Sipan Bagdasarian | bp · Fresno · 1919
 - wykonawca Eagle-Eye Cherry (Q435398): bp · Sztokholm · 1968
+- wykonawca Daler Mehndi (Q464185): bp · Patna · 1967
 - wykonawca Moby (Q14045): bn · Richard Melville Hall | bp · Harlem · 1965
 - wykonawca Everlast (Q453048): bn · Erik Francis Schrody | bp · Valley Stream · 1969
 - wykonawca Patty Ryan (Q2027226): bn · Birgit Hartmann | bp · Wuppertal · 1961
 - wykonawca Macy Gray (Q232456): bp · Canton · 1967
+- wykonawca White Town (Q781236): bp · Rurkela · 1966
 - wykonawca Manu Chao (Q207898): bp · Paryż · 1961
 - wykonawca Jennifer Paige (Q238324): bp · Marietta · 1973
 - wykonawca Meredith Brooks (Q237952): bp · Corvallis · 1958
 - wykonawca Britney Spears (Q11975): bp · McComb · 1981
 - wykonawca Imaani (Q446215): bp · Nottingham · 1972
 - wykonawca Dana International (Q201204): bp · Tel Awiw-Jafa · 1969
+- wykonawca Gigi D'Agostino (Q311748): bn · Luigino Celestino di Agostino | bp · Turyn · 1967
 - wykonawca Doris Dragović (Q257076): bn · Dorotea Dragović | bp · Split · 1961
 - wykonawca Fatboy Slim (Q272619): bn · Quentin Leo Cook | bp · Wielki Londyn · 1963
 - wykonawca Darude (Q360591): bn · Toni-Ville Henrik Virtanen
 - wykonawca Natalie Imbruglia (Q488353): bp · Sydney · 1975
-- wykonawca Ricky Martin (Q128799): bn · Enrique José Martín Morales
 - wykonawca Moloko (Q1121732): fp · Sheffield · 1995
-- wykonawca Travis (Q160103): fp · Glasgow · 1990
-- wykonawca Foo Fighters (Q483718): fp · Seattle · 1995
-- wykonawca Live (Q165714): fp · York · 1988
-- wykonawca Chumbawamba (Q1089523): fp · Burnley · 1982
-- wykonawca New Model Army (Q1501951): fp · Bradford · 1980
-- wykonawca Hole (Q624790): fp · Los Angeles · 1989
 - wykonawca Spiritualized (Q1144015): fp · Rugby · 1990
 - wykonawca Incubus (Q1661036): fp · Calabasas · 1991
 - wykonawca Eiffel 65 (Q240403): fp · Turyn · 1997
 - wykonawca Dave Matthews Band (Q832086): fp · Charlottesville · 1991
+- wykonawca Alabama 3 (Q558657): fp · Brixton · 1995
 - wykonawca Korn (Q80304): fp · Bakersfield · 1993
 - wykonawca Rammstein (Q25177): fp · Berlin · 1994
 - wykonawca Cornershop (Q1134101): fp · Leicester · 1991
 - wykonawca Buena Vista Social Club (Q842415): fp · Hawana · 1966
+- wykonawca Vengaboys (Q936010): fp · Amsterdam · 1997
 - wykonawca Limp Bizkit (Q240767): fp · Jacksonville · 1994
 - wykonawca Mercury Rev (Q583344): fp · Buffalo · 1989
 - wykonawca Monaco (Q1943982): fp · Manchester · 1995
 - wykonawca Bloodhound Gang (Q157497): fp · King of Prussia · 1988
 - wykonawca Crazy Town (Q869604): fp · Los Angeles · 1995
-- wykonawca Wheatus (Q957718): fp · Northport · 1995
-- wykonawca Toploader (Q1742953): fp · Eastbourne · 1997
 - wykonawca Third Eye Blind (Q1155385): fp · San Francisco · 1993
 - wykonawca Destiny's Child (Q153056): fp · Houston · 1990
 - wykonawca The Verve (Q488916): fp · Wigan · 1990
-- wykonawca The Chemical Brothers (Q208507): fp · Manchester · 1989
+- wykonawca Foo Fighters (Q483718): fp · Seattle · 1995
+- wykonawca Live (Q165714): fp · York · 1988
+- wykonawca Chumbawamba (Q1089523): fp · Burnley · 1982
+- wykonawca New Model Army (Q1501951): fp · Bradford · 1980
+- wykonawca The Cardigans (Q106379): fp · Jönköping · 1992
+- wykonawca Hole (Q624790): fp · Los Angeles · 1989
 - wykonawca Sarah Connor (Q63664): bn · Sarah Marianne Corina Lewe | bp · Delmenhorst · 1980
-- wykonawca Justin Timberlake (Q43432): bp · Memphis · 1981
-- wykonawca Avril Lavigne (Q30449): bp · Belleville · 1984
-- wykonawca Chad Kroeger (Q294723): bn · Chad Robert Turton | bp · Hanna · 1974
 - wykonawca Natasha St-Pier (Q235231): bn · Natasha Annick Saint-Pierre | bp · Bathurst · 1981
 - wykonawca Busta Rhymes (Q59185): bn · Trevor George Smith Jr. | bp · East Flatbush · 1972
-- wykonawca Pat Metheny (Q213887): bn · Patrick Bruce Metheny | bp · Lee's Summit · 1954
 - wykonawca Missy Elliott (Q155079): bn · Melissa Arnette Elliott | bp · Portsmouth · 1971
 - wykonawca Shakira (Q34424): bp · Barranquilla · 1977
 - wykonawca Aaliyah (Q11617): bp · Brooklyn · 1979
 - wykonawca Kid Rock (Q158175): bn · Robert James Ritchie | bp · Romeo · 1971
+- wykonawca Sage Guyton (Q89725574): bp · Seattle · 1978
+- wykonawca Jay-Z (Q62766): bn · Shawn Corey Carter | bp · Brooklyn · 1969
+- wykonawca Ricky Martin (Q128799): bn · Enrique José Martín Morales | bp · San Juan · 1971
+- wykonawca Steve Hackett (Q315811): bn · Stephen Richard Hackett | bp · Londyn · 1950
 - wykonawca Craig David (Q154222): bp · Southampton · 1981
 - wykonawca LeAnn Rimes (Q120533): bp · Jackson · 1982
 - wykonawca Alicia Keys (Q121507): bn · Alicia Augello Cook | bp · Hell's Kitchen · 1981
+- wykonawca Tom Waits (Q184805): bn · Thomas Alan Waits | bp · Pomona · 1949
 - wykonawca Stefan Raab (Q6969): bp · Kolonia · 1966
 - wykonawca Damien Rice (Q311964): bp · Dublin · 1973
-- wykonawca David Guetta (Q8298): bp · Paryż · 1967
-- wykonawca Guus Meeuwis (Q1235717): bp · Mariahout · 1972
-- wykonawca Junior Senior (Q290224): fp · Thisted · 1998
-- wykonawca Gorillaz (Q189991): fp · Londyn · 1998
-- wykonawca t.A.T.u. (Q161723): fp · Moskwa · 1999
 - wykonawca Nicki French (Q461229): bp · Carlisle · 1964
 - wykonawca Norah Jones (Q549981): bp · Brooklyn · 1979
 - wykonawca Richard Ashcroft (Q368354): bp · Wigan · 1971
 - wykonawca Gary Jules (Q714504): bp · Fresno · 1969
-- wykonawca Chingy (Q318792): bn · Howard Earl Bailey Jr. | bp · St. Louis · 1980
 - wykonawca Eminem (Q5608): bn · Marshall Bruce Mathers III | bp · St. Joseph · 1972
-- wykonawca DJ Shadow (Q217716): bp · San Jose · 1972
-- wykonawca Sahlene (Q297842): bp · Sandarne · 1976
 - wykonawca Sophie Ellis-Bextor (Q216899): bp · Hounslow · 1979
-- wykonawca 50 Cent (Q6060): bn · Curtis James Jackson III | bp · South Jamaica · 1975
 - wykonawca Nelly Furtado (Q80424): bp · Victoria · 1978
 - wykonawca Angie Stone (Q241660): bn · Angela Laverne Brown | bp · Columbia · 1961
-- wykonawca Badly Drawn Boy (Q508888): bn · Damon Michael Gough | bp · Dunstable · 1969
+- wykonawca Gorillaz (Q189991): fp · Londyn · 1998
+- wykonawca t.A.T.u. (Q161723): fp · Moskwa · 1999
 - wykonawca All Saints (Q165386): fp · Londyn · 1993
+- wykonawca Travis (Q160103): fp · Glasgow · 1990
 - wykonawca The Strokes (Q211583): fp · Nowy Jork · 1998
 - wykonawca Nickelback (Q483802): fp · Vancouver · 1995
-- wykonawca Audioslave (Q486830): fp · Glendale · 2001
 - wykonawca Archive (Q635772): fp · Londyn · 1994
+- wykonawca Smash Mouth (Q740434): fp · San Jose · 1994
 - wykonawca Reamonn (Q101592): fp · Fryburg Bryzgowijski · 1999
+- wykonawca OutKast (Q472595): fp · Atlanta · 1992
 - wykonawca The Killers (Q220730): fp · Las Vegas · 2001
-- wykonawca Maroon 5 (Q182223): fp · Los Angeles · 1994
-- wykonawca Daft Punk (Q185828): fp · Paryż · 1993
 - wykonawca Linkin Park (Q261): fp · Agoura Hills · 1996
-- wykonawca Queens of the Stone Age (Q1243718): fp · Seattle · 1996
 - wykonawca The Dandy Warhols (Q178661): fp · Portland · 1994
 - wykonawca Starsailor (Q1051417): fp · Wigan · 2000
-- wykonawca Porcupine Tree (Q213923): fp · Hemel Hempstead · 1987
 - wykonawca Groove Armada (Q117522): fp · Londyn · 1996
+- wykonawca Tenacious D (Q205780): fp · Los Angeles · 1994
+- wykonawca Wheatus (Q957718): fp · Northport · 1995
 - wykonawca Basement Jaxx (Q544018): fp · Londyn · 1994
 - wykonawca The Avalanches (Q2000851): fp · Melbourne · 1997
+- wykonawca Toploader (Q1742953): fp · Eastbourne · 1997
 - wykonawca Coldplay (Q45188): fp · Londyn · 1999
-- wykonawca Interpol (Q331790): fp · Nowy Jork · 1997
 - wykonawca Morcheeba (Q749019): fp · Londyn · 1995
 - wykonawca Bran Van 3000 (Q285286): fp · Montreal · 1996
 - wykonawca A Perfect Circle (Q300519): fp · Los Angeles · 1999
@@ -2699,339 +3022,454 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca P.O.D. (Q494743): fp · San Diego · 1992
 - wykonawca Gotan Project (Q746955): fp · Paryż · 2000
 - wykonawca The Notwist (Q703201): fp · Weilheim in Oberbayern · 1989
-- wykonawca Doves (Q126128): fp · Wilmslow · 1998
+- wykonawca Baha Men (Q788589): fp · Nassau · 1991
+- wykonawca Disturbed (Q131366): fp · Chicago · 1994
+- wykonawca Blonde Redhead (Q885016): fp · Nowy Jork · 1993
 - wykonawca Modjo (Q1425262): fp · Paryż · 1998
-- wykonawca Hot Hot Heat (Q978591): fp · Victoria · 1999
+- wykonawca The Chemical Brothers (Q208507): fp · Manchester · 1989
 - wykonawca Usher (Q165911): bp · Dallas · 1978
 - wykonawca James Blunt (Q130799): bn · James Hillier Blount | bp · Tidworth · 1974
-- wykonawca José González (Q315107): bp · Göteborg · 1978
 - wykonawca Eric Prydz (Q155141): bp · Täby · 1976
-- wykonawca Katie Melua (Q156322): bp · Kutaisi · 1984
-- wykonawca Imogen Heap (Q230484): bp · Harold Wood · 1977
+- wykonawca Hans Zimmer (Q76364): bp · Frankfurt nad Menem · 1957
+- wykonawca Juvenile (Q724501): bn · Terius Gray | bp · Nowy Orlean · 1975
+- wykonawca Howard Shore (Q207773): bp · Toronto · 1946
+- wykonawca José González (Q315107): bp · Göteborg · 1978
+- wykonawca Vitas (Q362258): bn · Vitālijs Gračovs | bp · Dyneburg · 1979
+- wykonawca David Guetta (Q8298): bp · Paryż · 1967
+- wykonawca Guus Meeuwis (Q1235717): bp · Mariahout · 1972
+- wykonawca Garou (Q31733): bn · Pierre Garand | bp · Sherbrooke · 1972
+- wykonawca Gwen Stefani (Q483379): bp · Fullerton · 1969
+- wykonawca J-Kwon (Q726147): bp · St. Louis · 1986
+- wykonawca Juanes (Q43189): bn · Juan Esteban Aristizábal Vásquez | bp · Medellín · 1972
+- wykonawca Justin Timberlake (Q43432): bp · Memphis · 1981
+- wykonawca Avril Lavigne (Q30449): bp · Belleville · 1984
+- wykonawca Chad Kroeger (Q294723): bn · Chad Robert Turton | bp · Hanna · 1974
+- wykonawca Ludovico Einaudi (Q83182): bp · Turyn · 1955
+- wykonawca Pat Metheny (Q213887): bn · Patrick Bruce Metheny | bp · Lee's Summit · 1954
+- wykonawca Petey Pablo (Q775938): bn · Moses Barrett | bp · Greenville · 1973
+- wykonawca Amel Bent (Q266779): bp · Paryż · 1985
+- wykonawca Beyoncé (Q36153): bp · Houston · 1981
+- wykonawca Badly Drawn Boy (Q508888): bn · Damon Michael Gough | bp · Dunstable · 1969
+- wykonawca Sandrine François (Q291473): bp · Paryż · 1980
+- wykonawca Twista (Q448638): bn · Carl Terrell Mitchell | bp · Chicago · 1973
+- wykonawca Chingy (Q318792): bn · Howard Earl Bailey Jr. | bp · St. Louis · 1980
+- wykonawca Vanessa Carlton (Q233081): bp · Milford · 1980
 - wykonawca KT Tunstall (Q230601): bn · Kate Victoria Tunstall | bp · Edynburg · 1975
 - wykonawca Sertab Erener (Q193534): bp · Stambuł · 1964
 - wykonawca Daniel Powter (Q313698): bp · Vernon · 1971
-- wykonawca Juvenile (Q724501): bn · Terius Gray | bp · Nowy Orlean · 1975
+- wykonawca DJ Shadow (Q217716): bp · San Jose · 1972
+- wykonawca Jamelia (Q234199): bp · Handsworth · 1981
+- wykonawca Kelis (Q294979): bp · Harlem · 1979
+- wykonawca Benny Benassi (Q311842): bp · Reggio nell’Emilia · 1967
+- wykonawca Sahlene (Q297842): bp · Sandarne · 1976
+- wykonawca DMX (Q223769): bn · Earl Simmons | bp · Mount Vernon · 1970
+- wykonawca 50 Cent (Q6060): bn · Curtis James Jackson III | bp · South Jamaica · 1975
+- wykonawca Ciara (Q203223): bp · Fort Cavazos · 1985
+- wykonawca The White Stripes (Q268160): fp · Detroit · 1997
+- wykonawca Junior Senior (Q290224): fp · Thisted · 1998
+- wykonawca Bloc Party (Q205838): fp · Londyn · 2003
+- wykonawca Audioslave (Q486830): fp · Glendale · 2001
+- wykonawca The Rasmus (Q485679): fp · Helsinki · 1994
+- wykonawca Sugababes (Q193697): fp · Londyn · 1998
+- wykonawca Keane (Q484311): fp · Battle · 1995
+- wykonawca Razorlight (Q913779): fp · Londyn · 2002
+- wykonawca Maroon 5 (Q182223): fp · Los Angeles · 1994
+- wykonawca The Flaming Lips (Q523184): fp · Oklahoma City · 1983
+- wykonawca The Libertines (Q214350): fp · Londyn · 1997
+- wykonawca Drowning Pool (Q623921): fp · Dallas · 1996
+- wykonawca Yeah Yeah Yeahs (Q641858): fp · Nowy Jork · 2000
+- wykonawca The Rapture (Q1426495): fp · Nowy Jork · 1998
+- wykonawca Queens of the Stone Age (Q1243718): fp · Seattle · 1996
+- wykonawca Hoobastank (Q49724): fp · Agoura Hills · 1994
+- wykonawca Porcupine Tree (Q213923): fp · Hemel Hempstead · 1987
+- wykonawca Franz Ferdinand (Q173180): fp · Glasgow · 2002
+- wykonawca Arcade Fire (Q58608): fp · Montreal · 2001
+- wykonawca Interpol (Q331790): fp · Nowy Jork · 1997
+- wykonawca Stereophonics (Q28963): fp · Cwmaman · 1992
+- wykonawca The Darkness (Q421794): fp · Lowestoft · 2000
+- wykonawca Simple Plan (Q485825): fp · Montreal · 1999
+- wykonawca Doves (Q126128): fp · Wilmslow · 1998
+- wykonawca Hot Hot Heat (Q978591): fp · Victoria · 1999
+- wykonawca The Black Eyed Peas (Q134541): fp · Los Angeles · 1995
+- wykonawca Kate Ryan (Q193600): bn · Katrien Verbeek
+- wykonawca Duffy (Q192587): bp · Bangor · 1984
+- wykonawca David Gilmour (Q178517): bp · Cambridge · 1946
+- wykonawca Amy Macdonald (Q15902): bp · Bishopbriggs · 1987
+- wykonawca Mariusz Totoszko (Q11770229): bp · Wschowa · 1975
+- wykonawca Kazumi Totaka (Q1371555): bp · Tokio · 1967
+- wykonawca Mario Winans (Q1353962): bp · Baltimore · 1974
+- wykonawca Burial (Q552245): bn · William Emmanuel Bevan | bp · Croydon · 1979
+- wykonawca Basshunter (Q383541): bn · Jonas Erik Altberg | bp · Halmstad · 1984
+- wykonawca Chris Cornell (Q270935): bn · Christopher John Boyle | bp · Seattle · 1964
+- wykonawca Natasha Bedingfield (Q212906): bp · Haywards Heath · 1981
+- wykonawca Amy Winehouse (Q15897): bp · Enfield Town · 1983
+- wykonawca Gotye (Q489643): bn · Wouter André De Backer | bp · Brugia · 1980
+- wykonawca Michael Hunter (Q24493): bp · Glasgow · 1953
+- wykonawca Imogen Heap (Q230484): bp · Harold Wood · 1977
+- wykonawca Sakis Rouvas (Q60970): bp · Korfu · 1972
+- wykonawca Kelly Clarkson (Q483507): bp · Burleson · 1982
+- wykonawca Michael Giacchino (Q155124): bp · Riverside · 1967
+- wykonawca Katie Melua (Q156322): bp · Kutaisi · 1984
+- wykonawca Glen Hansard (Q220010): bp · Dublin · 1970
+- wykonawca Chamillionaire (Q299132): bp · Waszyngton · 1979
 - wykonawca Carrie Underwood (Q215546): bp · Muskogee · 1983
 - wykonawca Michael Bublé (Q153694): bp · Burnaby · 1975
-- wykonawca Jamelia (Q234199): bp · Handsworth · 1981
+- wykonawca Alex Gaudino (Q428406): bn · Alessandro Alfonso Fortunato Gaudino | bp · Salerno · 1970
+- wykonawca Jeremy Soule (Q466213): bp · Keokuk · 1975
+- wykonawca Danny Saucedo (Q324920): bn · Daniel Gabriel Alessandro Saucedo Grzechowski
 - wykonawca Jason Mraz (Q192515): bp · Mechanicsville · 1977
-- wykonawca Mario Winans (Q1353962): bp · Baltimore · 1974
-- wykonawca Amel Bent (Q266779): bp · Paryż · 1985
-- wykonawca Helena Paparizou (Q183008): bp · Borås · 1982
-- wykonawca Ciara (Q203223): bp · Fort Cavazos · 1985
-- wykonawca Sandrine François (Q291473): bp · Paryż · 1980
-- wykonawca Kelly Clarkson (Q483507): bp · Burleson · 1982
-- wykonawca Garou (Q31733): bn · Pierre Garand | bp · Sherbrooke · 1972
-- wykonawca Gwen Stefani (Q483379): bp · Fullerton · 1969
-- wykonawca Twista (Q448638): bn · Carl Terrell Mitchell | bp · Chicago · 1973
-- wykonawca J-Kwon (Q726147): bp · St. Louis · 1986
-- wykonawca Juanes (Q43189): bn · Juan Esteban Aristizábal Vásquez | bp · Medellín · 1972
-- wykonawca Natasha Bedingfield (Q212906): bp · Haywards Heath · 1981
-- wykonawca Chamillionaire (Q299132): bp · Waszyngton · 1979
-- wykonawca Kelis (Q294979): bp · Harlem · 1979
-- wykonawca Sakis Rouvas (Q60970): bp · Korfu · 1972
 - wykonawca Damian Marley (Q310796): bp · Kingston · 1978
-- wykonawca Petey Pablo (Q775938): bn · Moses Barrett | bp · Greenville · 1973
-- wykonawca Beyoncé (Q36153): bp · Houston · 1981
-- wykonawca The White Stripes (Q268160): fp · Detroit · 1997
+- wykonawca Sufjan Stevens (Q319502): bp · Detroit · 1975
+- wykonawca Helena Paparizou (Q183008): bp · Borås · 1982
+- wykonawca Panic! at the Disco (Q277551): fp · Las Vegas · 2005
 - wykonawca Gnarls Barkley (Q726773): fp · Atlanta · 2003
-- wykonawca The Vines (Q289405): fp · Sydney · 1999
-- wykonawca Bloc Party (Q205838): fp · Londyn · 2003
-- wykonawca The Rasmus (Q485679): fp · Helsinki · 1994
 - wykonawca Within Temptation (Q57138): fp · Waddinxveen · 1996
 - wykonawca OneRepublic (Q1438730): fp · Colorado Springs · 2009
 - wykonawca Slipknot (Q254138): fp · Des Moines · 1994
-- wykonawca OutKast (Q472595): fp · Atlanta · 1992
-- wykonawca Sugababes (Q193697): fp · Londyn · 1998
-- wykonawca Keane (Q484311): fp · Battle · 1995
 - wykonawca Modest Mouse (Q431355): fp · Issaquah · 1993
-- wykonawca Razorlight (Q913779): fp · Londyn · 2002
-- wykonawca The Flaming Lips (Q523184): fp · Oklahoma City · 1983
-- wykonawca The Libertines (Q214350): fp · Londyn · 1997
-- wykonawca Yeah Yeah Yeahs (Q641858): fp · Nowy Jork · 2000
-- wykonawca The Rapture (Q1426495): fp · Nowy Jork · 1998
-- wykonawca Hoobastank (Q49724): fp · Agoura Hills · 1994
-- wykonawca Hot Chip (Q877512): fp · Londyn · 2000
-- wykonawca Franz Ferdinand (Q173180): fp · Glasgow · 2002
-- wykonawca MGMT (Q391969): fp · Middletown · 2002
-- wykonawca Arcade Fire (Q58608): fp · Montreal · 2001
-- wykonawca Stereophonics (Q28963): fp · Cwmaman · 1992
-- wykonawca Arctic Monkeys (Q170599): fp · Sheffield · 2002
-- wykonawca The Darkness (Q421794): fp · Lowestoft · 2000
-- wykonawca Gossip (Q12831): fp · Olympia · 1999
-- wykonawca Katy Perry (Q42493): bn · Katheryn Elizabeth Hudson | bp · Santa Barbara · 1984
-- wykonawca Dima Bilan (Q42904): bp · Ust´-Dżeguta · 1981
-- wykonawca Chris Cornell (Q270935): bn · Christopher John Boyle | bp · Seattle · 1964
-- wykonawca Flo Rida (Q213538): bn · Tramar Lacel Dillard | bp · Miami Gardens · 1979
-- wykonawca Amy Winehouse (Q15897): bp · Enfield Town · 1983
-- wykonawca Kanye West (Q15935): bp · Atlanta · 1977
-- wykonawca Taylor Swift (Q26876): bp · Reading · 1989
-- wykonawca Timbaland (Q179257): bn · Timothy Zachery Mosley | bp · Norfolk · 1972
-- wykonawca Lil Wayne (Q15615): bn · Dwayne Michael Carter Jr. | bp · Nowy Orlean · 1982
-- wykonawca Leona Lewis (Q183519): bp · Croydon · 1985
-- wykonawca Gabriella Cilmi (Q234767): bp · Melbourne · 1991
-- wykonawca Amy Macdonald (Q15902): bp · Bishopbriggs · 1987
-- wykonawca Burial (Q552245): bn · William Emmanuel Bevan | bp · Croydon · 1979
-- wykonawca Gotye (Q489643): bn · Wouter André De Backer | bp · Brugia · 1980
-- wykonawca Kate Ryan (Q193600): bn · Katrien Verbeek
-- wykonawca T-Pain (Q221155): bn · Faheem Rashad Najm | bp · Tallahassee · 1984
-- wykonawca Marija Šerifović (Q226701): bp · Kragujevac · 1984
-- wykonawca Jordin Sparks (Q215300): bp · Phoenix · 1989
-- wykonawca Verka Serduchka (Q275875): bp · Połtawa · 1973
-- wykonawca Róisín Murphy (Q466158): bp · Arklow · 1973
-- wykonawca Jamie Lidell (Q202441): bp · Huntingdon · 1973
-- wykonawca Danny Saucedo (Q324920): bn · Daniel Gabriel Alessandro Saucedo Grzechowski
-- wykonawca Sara Bareilles (Q230445): bp · Eureka · 1979
-- wykonawca Eddie Vedder (Q221535): bn · Edward Louis Severson III | bp · Evanston · 1964
-- wykonawca Lady Gaga (Q19848): bn · Stefani Joanne Angelina Germanotta | bp · Manhattan · 1986
-- wykonawca Sufjan Stevens (Q319502): bp · Detroit · 1975
-- wykonawca Mark Ronson (Q425821): bp · Londyn · 1975
-- wykonawca Michael Giacchino (Q155124): bp · Riverside · 1967
-- wykonawca Duffy (Q192587): bp · Bangor · 1984
-- wykonawca David Gilmour (Q178517): bp · Cambridge · 1946
-- wykonawca Alexander Rybak (Q131259): bn · Aliaksandr Iharavitch Rybak | bp · Mińsk · 1986
-- wykonawca La Roux (Q200002): fp · Londyn · 2008
-- wykonawca Grizzly Bear (Q568617): fp · Brooklyn · 2002
-- wykonawca Metro Station (Q864991): fp · Los Angeles · 2006
 - wykonawca Peter Bjorn and John (Q1140219): fp · Sztokholm · 1999
 - wykonawca Sigur Rós (Q483828): fp · Reykjavík · 1994
-- wykonawca Kaiser Chiefs (Q192308): fp · Leeds · 2000
 - wykonawca My Chemical Romance (Q483285): fp · Newark · 2001
-- wykonawca The National (Q1142566): fp · Cincinnati · 1999
 - wykonawca LCD Soundsystem (Q45752): fp · Brooklyn · 2001
+- wykonawca Hot Chip (Q877512): fp · Londyn · 2000
 - wykonawca Snow Patrol (Q188407): fp · Dundee · 1994
-- wykonawca Editors (Q570393): fp · Stafford · 2002
 - wykonawca Beirut (Q692668): fp · Santa Fe · 2006
+- wykonawca MGMT (Q391969): fp · Middletown · 2002
 - wykonawca Scissor Sisters (Q464109): fp · Nowy Jork · 2001
-- wykonawca Hercules & Love Affair (Q1609632): fp · Nowy Jork · 2004
-- wykonawca Vampire Weekend (Q816452): fp · Nowy Jork · 2006
+- wykonawca Teriyaki Boyz (Q1351944): fp · Tokio · 2005
 - wykonawca The Raconteurs (Q912909): fp · Detroit · 2005
-- wykonawca Empire of the Sun (Q1141426): fp · Sydney · 2007
+- wykonawca Kasabian (Q272517): fp · Leicester · 1997
+- wykonawca Arctic Monkeys (Q170599): fp · Sheffield · 2002
+- wykonawca Cascada (Q858880): fp · Bonn · 2004
 - wykonawca Dropkick Murphys (Q938630): fp · Quincy · 1996
-- wykonawca The Temper Trap (Q690404): fp · Melbourne · 2005
-- wykonawca The Ting Tings (Q219939): fp · Salford · 2007
-- wykonawca Elbow (Q665798): fp · Ramsbottom · 1997
 - wykonawca Lordi (Q23471): fp · Helsinki · 1992
-- wykonawca Kings of Leon (Q192486): fp · Nashville · 1999
 - wykonawca Junior Boys (Q2631913): fp · Hamilton · 1999
-- wykonawca Fleet Foxes (Q852335): fp · Seattle · 2001
+- wykonawca Gossip (Q12831): fp · Olympia · 1999
 - wykonawca Band of Horses (Q806235): fp · Seattle · 2004
-- wykonawca Mumford & Sons (Q953918): fp · Londyn · 2007
-- wykonawca Avicii (Q505476): bn · Tim Bergling | bp · Sztokholm · 1989
-- wykonawca Robyn (Q229445): bn · Robin Miriam Carlsson | bp · Sztokholm · 1979
-- wykonawca Lena Meyer-Landrut (Q7013): bp · Hanower · 1991
-- wykonawca Zaz (Q167850): bn · Isabelle Geffroy.
-- wykonawca Pitbull (Q187844): bn · Armando Christian Pérez | bp · Miami · 1981
-- wykonawca Keri Hilson (Q152453): bp · Decatur · 1982
-- wykonawca James Blake (Q350362): bp · Londyn · 1988
-- wykonawca Nicki Minaj (Q162202): bn · Onika Tanya Maraj
-- wykonawca Eric Saade (Q12007): bp · Kattarp · 1990
-- wykonawca Carly Rae Jepsen (Q52583): bp · Mission · 1985
-- wykonawca Aloe Blacc (Q49319): bn · Egbert Nathaniel Dawkins | bp · Newport Beach · 1979
-- wykonawca Armin van Buuren (Q62617): bp · Lejda · 1976
+- wykonawca The Vines (Q289405): fp · Sydney · 1999
+- wykonawca Rascal Flatts (Q753598): fp · Columbus · 1999
+- wykonawca Alexander Rybak (Q131259): bn · Aliaksandr Iharavitch Rybak | bp · Mińsk · 1986
+- wykonawca Eddie Vedder (Q221535): bn · Edward Louis Severson III | bp · Evanston · 1964
+- wykonawca Róisín Murphy (Q466158): bp · Arklow · 1973
+- wykonawca Katy Perry (Q42493): bn · Katheryn Elizabeth Hudson | bp · Santa Barbara · 1984
+- wykonawca Tay Zonday (Q55449): bp · Minneapolis · 1982
+- wykonawca Dima Bilan (Q42904): bp · Ust´-Dżeguta · 1981
+- wykonawca Flo Rida (Q213538): bn · Tramar Lacel Dillard | bp · Miami Gardens · 1979
 - wykonawca Kesha (Q33605): bp · Los Angeles · 1987
 - wykonawca Mike Posner (Q268284): bn · Michael Robert Henrion Posner | bp · Detroit · 1988
 - wykonawca Adele (Q23215): bp · Tottenham · 1988
+- wykonawca Kanye West (Q15935): bp · Atlanta · 1977
+- wykonawca Taylor Swift (Q26876): bp · Reading · 1989
+- wykonawca Lady Gaga (Q19848): bn · Stefani Joanne Angelina Germanotta | bp · Manhattan · 1986
+- wykonawca Timbaland (Q179257): bn · Timothy Zachery Mosley | bp · Norfolk · 1972
+- wykonawca Mark Ronson (Q425821): bp · Londyn · 1975
+- wykonawca Lil Wayne (Q15615): bn · Dwayne Michael Carter Jr. | bp · Nowy Orlean · 1982
+- wykonawca Leona Lewis (Q183519): bp · Islington · 1985
+- wykonawca Gabriella Cilmi (Q234767): bp · Melbourne · 1991
+- wykonawca Jordin Sparks (Q215300): bp · Phoenix · 1989
+- wykonawca Toby Fox (Q23919389): bn · Robert F. Fox | bp · Manchester · 1991
+- wykonawca will.i.am (Q185610): bn · William James Adams Jr. | bp · Los Angeles · 1975
+- wykonawca Kalomira (Q229465): bp · West Hempstead · 1985
+- wykonawca Soulja Boy (Q313080): bn · DeAndre Cortez Way | bp · Chicago · 1990
+- wykonawca Tiësto (Q183508): bn · Tijs Michiel Verwest | bp · Breda · 1969
+- wykonawca Sean Kingston (Q216934): bn · Kisean Paul Anderson | bp · Miami · 1990
+- wykonawca T-Pain (Q221155): bn · Faheem Rashad Najm | bp · Tallahassee · 1984
+- wykonawca Marija Šerifović (Q226701): bp · Kragujevac · 1984
+- wykonawca Verka Serduchka (Q275875): bp · Połtawa · 1973
+- wykonawca Jamie Lidell (Q202441): bp · Huntingdon · 1973
+- wykonawca Keri Hilson (Q152453): bp · Decatur · 1982
+- wykonawca Sara Bareilles (Q230445): bp · Eureka · 1979
+- wykonawca Taio Cruz (Q313370): bn · Adetayo Ayowale Onile-Ere | bp · Wielki Londyn · 1980
+- wykonawca Melanie Fiona (Q238833): bp · Toronto · 1983
+- wykonawca Jason Derulo (Q243639): bn · Jason Joel Desrouleaux | bp · Miramar · 1989
+- wykonawca CeeLo Green (Q4042): bn · Thomas DeCarlo Callaway | bp · Atlanta · 1975
+- wykonawca Bag Raiders (Q799809): fp · Sydney · 2006
+- wykonawca La Roux (Q200002): fp · Londyn · 2008
+- wykonawca Grizzly Bear (Q568617): fp · Brooklyn · 2002
+- wykonawca Metro Station (Q864991): fp · Los Angeles · 2006
+- wykonawca Kaiser Chiefs (Q192308): fp · Leeds · 2000
+- wykonawca The National (Q1142566): fp · Cincinnati · 1999
+- wykonawca Train (Q282531): fp · San Francisco · 1994
+- wykonawca Editors (Q570393): fp · Stafford · 2002
+- wykonawca White Lies (Q1331605): fp · Ealing · 2007
+- wykonawca Hercules & Love Affair (Q1609632): fp · Nowy Jork · 2004
+- wykonawca Miike Snow (Q1286603): fp · Sztokholm · 2007
+- wykonawca Vampire Weekend (Q816452): fp · Nowy Jork · 2006
+- wykonawca Finger Eleven (Q1071154): fp · Burlington · 1990
+- wykonawca Owl City (Q207938): fp · Owatonna · 2007
+- wykonawca Empire of the Sun (Q1141426): fp · Sydney · 2007
+- wykonawca The xx (Q869367): fp · Londyn · 2005
+- wykonawca The Temper Trap (Q690404): fp · Melbourne · 2005
+- wykonawca Mando Diao (Q478814): fp · Borlänge · 1999
+- wykonawca Fall Out Boy (Q485811): fp · Wilmette · 2001
+- wykonawca The Ting Tings (Q219939): fp · Salford · 2007
+- wykonawca Elbow (Q665798): fp · Ramsbottom · 1997
+- wykonawca Madcon (Q842152): fp · Oslo · 1992
+- wykonawca Kings of Leon (Q192486): fp · Nashville · 1999
+- wykonawca Fleet Foxes (Q852335): fp · Seattle · 2001
+- wykonawca Mumford & Sons (Q953918): fp · Londyn · 2007
+- wykonawca Avicii (Q505476): bn · Tim Bergling | bp · Sztokholm · 1989
+- wykonawca Robyn (Q229445): bn · Robin Miriam Carlsson | bp · Sztokholm · 1979
+- wykonawca Janelle Monáe (Q234356): bp · Kansas City · 1985
+- wykonawca Tom Dice (Q311601): bp · Eeklo · 1989
+- wykonawca Miley Cyrus (Q4235): bn · Destiny Hope Cyrus | bp · Franklin · 1992
+- wykonawca Lena Meyer-Landrut (Q7013): bp · Hanower · 1991
+- wykonawca Wiz Khalifa (Q117139): bn · Cameron Jibril Thomaz | bp · Minot · 1987
+- wykonawca Zaz (Q167850): bn · Isabelle Geffroy.
+- wykonawca Christina Perri (Q229341): bp · Filadelfia · 1986
+- wykonawca Aura Dione (Q232067): bp · Kopenhaga · 1985
+- wykonawca Breakbot (Q903674): bn · Thibaut Jean-Marie Michel Berland
+- wykonawca Kevin MacLeod (Q16731782): bp · Green Bay · 1972
+- wykonawca Kid Cudi (Q299138): bn · Scott Ramón Seguro Mescudi | bp · Cleveland · 1984
+- wykonawca Pitbull (Q187844): bn · Armando Christian Pérez | bp · Miami · 1981
+- wykonawca James Blake (Q350362): bp · Londyn · 1988
+- wykonawca C418 (Q1847436): bn · Daniel Rosenfeld | bp · Chemnitz · 1989
+- wykonawca Calvin Harris (Q81637): bn · Adam Richard Wiles | bp · Dumfries · 1984
+- wykonawca Betty Everett (Q259206): bp · Greenwood · 1939
+- wykonawca Don Omar (Q310539): bn · William Omar Landrón Rivera | bp · Villa Palmeras · 1978
+- wykonawca Birdy (Q288525): bp · Lymington · 1996
+- wykonawca Nicki Minaj (Q162202): bn · Onika Tanya Maraj | bp · Saint James · 1982
+- wykonawca Bruno Mars (Q1450): bn · Peter Gene Hernandez | bp · Honolulu · 1985
+- wykonawca Alexandra Stan (Q1453): bp · Konstanca · 1989
+- wykonawca Kana Hanazawa (Q49524): bp · Tokio · 1989
+- wykonawca Jessie J (Q18814): bn · Jessica Ellen Cornish | bp · Chadwell Heath · 1988
+- wykonawca Olly Murs (Q552770): bn · Oliver Stanley Murs | bp · Witham · 1984
+- wykonawca Eric Saade (Q12007): bp · Kattarp · 1990
+- wykonawca Lianne La Havas (Q451812): bn · Lianne Charlotte Barnes | bp · Londyn · 1989
+- wykonawca Carly Rae Jepsen (Q52583): bp · Mission · 1985
+- wykonawca Tom Boxer (Q7002010): bp · Krajowa · 1977
+- wykonawca Aloe Blacc (Q49319): bn · Egbert Nathaniel Dawkins | bp · Newport Beach · 1979
+- wykonawca Beata Bednarz (Q9168013): bp · Katowice · 1965
+- wykonawca Armin van Buuren (Q62617): bp · Lejda · 1976
+- wykonawca Macklemore (Q484874): bp · Seattle · 1983
 - wykonawca Lana Del Rey (Q37150): bn · Elizabeth Woolridge Grant | bp · Nowy Jork · 1985
+- wykonawca Ellie Goulding (Q31164): bn · Elena Jane Goulding | bp · Hereford · 1986
 - wykonawca B.o.B (Q45667): bn · Bobby Ray Simmons Jr. | bp · Winston-Salem · 1988
+- wykonawca Skrillex (Q19004): bn · Sonny John Moore | bp · Los Angeles · 1988
+- wykonawca Raphael Gualazzi (Q357158): bn · Raffaele Gualazzi | bp · Urbino · 1981
+- wykonawca Justin Bieber (Q34086): bp · London · 1994
+- wykonawca Rebecca Black (Q18804): bp · Irvine · 1997
 - wykonawca Kavinsky (Q982784): bn · Vincent Pierre Claude Belorgey | bp · 10. dzielnica Paryża · 1975
-- wykonawca Jay-Z (Q62766): bn · Shawn Corey Carter | bp · Brooklyn · 1969
-- wykonawca Disclosure (Q1228440): fp · Reigate · 2010
 - wykonawca LMFAO (Q48978): fp · Pacific Palisades · 2006
-- wykonawca Capital Cities (Q5035696): fp · Los Angeles · 2008
 - wykonawca Jedward (Q201811): fp · Dublin · 2009
 - wykonawca Hurts (Q493042): fp · Manchester · 2009
 - wykonawca Duck Sauce (Q1165307): fp · Nowy Jork · 2009
 - wykonawca The Black Keys (Q606226): fp · Akron · 2001
-- wykonawca Bruno Mars (Q1450): bn · Peter Gene Hernandez | bp · Honolulu · 1985
-- wykonawca Alexandra Stan (Q1453): bp · Konstanca · 1989
-- wykonawca Janelle Monáe (Q234356): bp · Kansas City · 1985
-- wykonawca Olly Murs (Q552770): bn · Oliver Stanley Murs | bp · Witham · 1984
-- wykonawca Lianne La Havas (Q451812): bn · Lianne Charlotte Barnes | bp · Londyn · 1989
-- wykonawca Tom Dice (Q311601): bp · Eeklo · 1989
-- wykonawca Tom Boxer (Q7002010): bp · Krajowa · 1977
-- wykonawca Tiësto (Q183508): bn · Tijs Michiel Verwest | bp · Breda · 1969
-- wykonawca Baauer (Q4671711): bp · Filadelfia · 1989
-- wykonawca Aura Dione (Q232067): bp · Kopenhaga · 1985
-- wykonawca Macklemore (Q484874): bp · Seattle · 1983
-- wykonawca Emeli Sandé (Q470429): bn · Adele Emely Sandé | bp · Sunderland · 1987
-- wykonawca Ellie Goulding (Q31164): bn · Elena Jane Goulding | bp · Hereford · 1986
-- wykonawca ByeAlex (Q6024828): bn · Márta Alex | bp · Kisvárda · 1984
-- wykonawca Calvin Harris (Q81637): bn · Adam Richard Wiles | bp · Dumfries · 1984
-- wykonawca Taio Cruz (Q313370): bn · Adetayo Ayowale Onile-Ere | bp · Wielki Londyn · 1980
-- wykonawca Raphael Gualazzi (Q357158): bn · Raffaele Gualazzi | bp · Urbino · 1981
-- wykonawca Asaf Avidan (Q259788): bp · Jerozolima · 1980
-- wykonawca Frank Ocean (Q357645): bn · Christopher Edwin Breaux | bp · Long Beach · 1987
-- wykonawca Melanie Fiona (Q238833): bp · Toronto · 1983
-- wykonawca Jason Derulo (Q243639): bn · Jason Joel Desrouleaux | bp · Miramar · 1989
-- wykonawca CeeLo Green (Q4042): bn · Thomas DeCarlo Callaway | bp · Atlanta · 1975
 - wykonawca The Lumineers (Q496101): fp · Denver · 2005
+- wykonawca Imagine Dragons (Q391348): fp · Las Vegas · 2008
+- wykonawca Bastille (Q689): fp · Londyn · 2010
 - wykonawca Sabaton (Q740159): fp · Falun · 1999
+- wykonawca Daughter (Q5227901): fp · Londyn · 2010
 - wykonawca Metronomy (Q151783): fp · Totnes · 1999
 - wykonawca Foals (Q728958): fp · Oksford · 2005
-- wykonawca Train (Q282531): fp · San Francisco · 1994
-- wykonawca White Lies (Q1331605): fp · Ealing · 2007
-- wykonawca The xx (Q869367): fp · Londyn · 2005
+- wykonawca Skillet (Q374747): fp · Memphis · 1996
+- wykonawca Two Door Cinema Club (Q777302): fp · Bangor · 2007
 - wykonawca M83 (Q615471): fp · Antibes · 2001
 - wykonawca Peter, Paul and Mary (Q654716): fp · Nowy Jork · 1961
-- wykonawca The Black Eyed Peas (Q134541): fp · Los Angeles · 1995
-- wykonawca Ed Sheeran (Q47447): bn · Edward Christopher Sheeran
-- wykonawca Anouk (Q46087): bp · Haga · 1975
-- wykonawca Labrinth (Q48959): bp · Wielki Londyn · 1989
-- wykonawca John Legend (Q44857): bn · John Roger Stephens | bp · Springfield · 1978
-- wykonawca Justin Bieber (Q34086): bp · London · 1994
-- wykonawca Kygo (Q16845512): bn · Kyrre Gørvell-Dahll | bp · Singapur · 1991
-- wykonawca Ariana Grande (Q151892): bp · Boca Raton · 1993
 - wykonawca Lorde (Q13476175): bn · Ella Marija Lani Yelich-O'Connor | bp · Takapuna · 1996
 - wykonawca Hozier (Q16233232): bp · Bray · 1990
 - wykonawca Loreen (Q483376): bn · Lorine Zineb Nora Talhaoui
 - wykonawca Grimes (Q117970): bn · Claire Élise Boucher | bp · Vancouver · 1988
 - wykonawca Jamie Scott (Q4918556): bn · James Christopher Needle
 - wykonawca Kendrick Lamar (Q130798): bp · Compton · 1987
-- wykonawca Aram Mp3 (Q15493504): bp · Erywań · 1984
 - wykonawca Sia (Q181484): bp · Adelaide · 1975
 - wykonawca Vance Joy (Q15044005): bp · Melbourne · 1987
-- wykonawca James Bay (Q17811637): bp · Hitchin · 1990
-- wykonawca Conchita Wurst (Q113581): bn · Thomas Neuwirth | bp · Gmunden · 1988
+- wykonawca Idina Menzel (Q157400): bn · Idina Kim Mentzel | bp · Manhattan · 1971
 - wykonawca George Ezra (Q15459513): bp · Hertford · 1993
-- wykonawca FKA twigs (Q15291033): bn · Tahliah Debrett Barnett | bp · Cheltenham · 1988
 - wykonawca Jaromír Nohavica (Q942232): bp · Ostrawa · 1953
 - wykonawca Tove Lo (Q15948790): bn · Ebba Tove Elsa Nilsson | bp · Djursholm · 1987
-- wykonawca Carl Espen (Q15948801): bp · Bergen · 1982
 - wykonawca Sebalter (Q15701290): bn · Sebastiano Paù-Lessi
-- wykonawca Lost Frequencies (Q18857432): bn · Felix De Laet | bp · Bruksela · 1993
-- wykonawca will.i.am (Q185610): bn · William James Adams Jr. | bp · Los Angeles · 1975
-- wykonawca Miley Cyrus (Q4235): bn · Destiny Hope Cyrus | bp · Franklin · 1992
+- wykonawca DJ Snake (Q16728588): bn · William Sami Étienne Grigahcine | bp · Paryż · 1986
+- wykonawca Ed Sheeran (Q47447): bn · Edward Christopher Sheeran
+- wykonawca Dan Croll (Q4166246): bp · Newcastle-under-Lyme · 1990
 - wykonawca Robin Thicke (Q467423): bp · Los Angeles · 1977
-- wykonawca Elle King (Q5364665): bn · Tanner Elle Schneider | bp · Los Angeles · 1989
+- wykonawca Anouk (Q46087): bp · Haga · 1975
 - wykonawca Emmelie de Forest (Q3720656): bp · Randers · 1993
-- wykonawca Deorro (Q15921342): bp · Los Angeles · 1991
-- wykonawca Kiesza (Q16730833): bn · Kiesa Rae Ellestad | bp · Calgary · 1989
+- wykonawca Baauer (Q4671711): bp · Filadelfia · 1989
 - wykonawca Margaret Berger (Q4167768): bp · Trondheim · 1985
-- wykonawca Fetty Wap (Q19361511): bn · Willie Junior Maxwell II | bp · Paterson · 1991
+- wykonawca Labrinth (Q48959): bp · Wielki Londyn · 1989
 - wykonawca Naughty Boy (Q6981132): bn · Shahid Khan | bp · Watford · 1981
 - wykonawca Tom Odell (Q4027095): bn · Thomas Peter Odell | bp · Chichester · 1990
-- wykonawca Meghan Trainor (Q17403494): bp · Nantucket · 1993
+- wykonawca Emeli Sandé (Q470429): bn · Adele Emely Sandé | bp · Sunderland · 1987
 - wykonawca Robin Stjernberg (Q6190659): bp · Hässleholm · 1991
+- wykonawca John Legend (Q44857): bn · John Roger Stephens | bp · Springfield · 1978
 - wykonawca Jessie Ware (Q218042): bn · Jessica Lois Ware | bp · Hammersmith · 1984
-- wykonawca Rea Garvey (Q319429): bn · Raymond Michael Garvey
+- wykonawca ByeAlex (Q6024828): bn · Márta Alex | bp · Kisvárda · 1984
+- wykonawca Woodkid (Q1888059): bp · Metropolis of Lyon · 1983
+- wykonawca Rea Garvey (Q319429): bn · Raymond Michael Garvey | bp · Tralee · 1973
 - wykonawca Pharrell Williams (Q14313): bp · Virginia Beach · 1973
+- wykonawca Asaf Avidan (Q259788): bp · Jerozolima · 1980
 - wykonawca Roman Lob (Q77025): bp · Kolonia · 1990
-- wykonawca DJ Snake (Q16728588): bn · William Sami Étienne Grigahcine | bp · Paryż · 1986
+- wykonawca Frank Ocean (Q357645): bn · Christopher Edwin Breaux | bp · Long Beach · 1987
+- wykonawca Disclosure (Q1228440): fp · Reigate · 2010
 - wykonawca A Great Big World (Q15136158): fp · Nowy Jork · 2011
-- wykonawca Goldfrapp (Q606250): fp · Londyn · 1999
-- wykonawca Faul & Wad Ad (Q15268535): fp · Paryż · 2013
-- wykonawca Icona Pop (Q808703): fp · Sztokholm · 2009
-- wykonawca Macklemore & Ryan Lewis (Q16853301): fp · Seattle · 2008
-- wykonawca Future Islands (Q3091284): fp · Baltimore · 2006
-- wykonawca Bastille (Q689): fp · Londyn · 2010
+- wykonawca Swedish House Mafia (Q20709): fp · Sztokholm · 2007
+- wykonawca Crystal Fighters (Q526130): fp · Londyn · 2007
 - wykonawca Clean Bandit (Q11838808): fp · Cambridge · 2008
+- wykonawca alt-J (Q47996): fp · Leeds · 2008
+- wykonawca Capital Cities (Q5035696): fp · Los Angeles · 2008
 - wykonawca Nico & Vinz (Q11967617): fp · Oslo · 2009
+- wykonawca The 1975 (Q2811247): fp · Wilmslow · 2002
 - wykonawca Magic! (Q16596856): fp · Toronto · 2012
+- wykonawca Goldfrapp (Q606250): fp · Londyn · 1999
 - wykonawca One Direction (Q146027): fp · Londyn · 2010
+- wykonawca American Authors (Q15044381): fp · Boston · 2006
 - wykonawca Echosmith (Q15044343): fp · Chino · 2009
 - wykonawca Kodaline (Q2482563): fp · Swords · 2005
+- wykonawca Faul & Wad Ad (Q15268535): fp · Paryż · 2013
+- wykonawca Icona Pop (Q808703): fp · Sztokholm · 2009
 - wykonawca Milky Chance (Q14623684): fp · Kassel · 2012
-- wykonawca Imagine Dragons (Q391348): fp · Las Vegas · 2008
-- wykonawca Cascada (Q858880): fp · Bonn · 2004
 - wykonawca The Neighbourhood (Q7753383): fp · Newbury Park · 2011
+- wykonawca Tame Impala (Q9619): fp · Perth · 2007
+- wykonawca Macklemore & Ryan Lewis (Q16853301): fp · Seattle · 2008
 - wykonawca Rudimental (Q50971): fp · Wielki Londyn · 2010
-- wykonawca Elaiza (Q15906261): fp · Berlin · 2013
 - wykonawca Greta Van Fleet (Q30636835): fp · Frankenmuth · 2012
-- wykonawca Frans (Q2274923): bp · Ystad · 1998
-- wykonawca Imany (Q115206): bn · Nadia Mladjao | bp · Métropole d'Aix-Marseille-Provence · 1979
+- wykonawca Paramore (Q473466): fp · Franklin · 2003
+- wykonawca Royal Blood (Q16632343): fp · Brighton · 2013
+- wykonawca Galantis (Q18071093): fp · Sztokholm · 2012
+- wykonawca Kygo (Q16845512): bn · Kyrre Gørvell-Dahll | bp · Singapur · 1991
+- wykonawca Ariana Grande (Q151892): bp · Boca Raton · 1993
 - wykonawca Jess Glynne (Q15744507): bn · Jessica Hannah Glynne | bp · Londyn · 1989
 - wykonawca Zhu (Q17649109): bp · San Francisco · 1989
 - wykonawca LP (Q6456303): bn · Laura Pergolizzi | bp · Huntington · 1981
-- wykonawca James Arthur (Q717626): bp · Middlesbrough · 1988
-- wykonawca Wiz Khalifa (Q117139): bn · Cameron Jibril Thomaz | bp · Minot · 1987
+- wykonawca Lin-Manuel Miranda (Q1646482): bp · Manhattan · 1980
+- wykonawca Aram Mp3 (Q15493504): bp · Erywań · 1984
 - wykonawca Sam Smith (Q15123969): bn · Samuel Frederick Smith | bp · Londyn · 1992
-- wykonawca Bebe Rexha (Q16185856): bn · Bleta Rexha | bp · Brooklyn · 1989
-- wykonawca Billie Eilish (Q29564107): bp · Los Angeles · 2001
-- wykonawca Kungs (Q23826199): bn · Valentin Brunel | bp · Aix-en-Provence · 1996
-- wykonawca Shaggy (Q310763): bp · Kingston · 1968
-- wykonawca Michael Kiwanuka (Q1355431): bp · Muswell Hill · 1988
+- wykonawca Deorro (Q15921342): bp · Los Angeles · 1991
+- wykonawca James Bay (Q17811637): bp · Hitchin · 1990
+- wykonawca Kiesza (Q16730833): bn · Kiesa Rae Ellestad | bp · Calgary · 1989
 - wykonawca Robin Schulz (Q16231940): bp · Osnabrück · 1987
 - wykonawca Chris Stapleton (Q5108148): bn · Christopher Alvin Stapleton | bp · Lexington · 1978
-- wykonawca Dami Im (Q15126651): bp · Seul · 1988
-- wykonawca Nicky Jam (Q1374560): bn · Nick Rivera Caminero
-- wykonawca Bazzi (Q48720231): bp · Canton · 1997
-- wykonawca Sergey Lazarev (Q381884): bp · Moskwa · 1983
-- wykonawca Elina Born (Q16403201): bp · Lehtse · 1994
-- wykonawca Jamala (Q2662517): bp · Osz · 1983
+- wykonawca Conchita Wurst (Q113581): bn · Thomas Neuwirth | bp · Gmunden · 1988
+- wykonawca Martin Garrix (Q14544318): bn · Martijn Gerard Garritsen | bp · Amstelveen · 1996
+- wykonawca FKA twigs (Q15291033): bn · Tahliah Debrett Barnett | bp · Cheltenham · 1988
+- wykonawca Nicky Jam (Q1374560): bn · Nick Rivera Caminero | bp · Lawrence · 1981
+- wykonawca Carl Espen (Q15948801): bp · Bergen · 1982
+- wykonawca James Newton Howard (Q213869): bp · Los Angeles · 1951
+- wykonawca Alabama Shakes (Q1933051): fp · Athens · 2009
+- wykonawca Future Islands (Q3091284): fp · Baltimore · 2006
+- wykonawca Twenty One Pilots (Q7857806): fp · Columbus · 2009
+- wykonawca 5 Seconds of Summer (Q4641147): fp · Sydney · 2011
+- wykonawca X Ambassadors (Q15963313): fp · Ithaca · 2009
+- wykonawca Major Lazer (Q2604214): fp · Los Angeles · 2009
+- wykonawca DNCE (Q21648421): fp · San Francisco · 2015
+- wykonawca Elaiza (Q15906261): fp · Berlin · 2013
+- wykonawca Noel Gallagher's High Flying Birds (Q194227): fp · Manchester · 2010
+- wykonawca Lukas Graham (Q300935): fp · Kopenhaga · 2011
+- wykonawca The Living Tombstone (Q111265510): fp · Tel Awiw-Jafa · 2011
+- wykonawca Lost Frequencies (Q18857432): bn · Felix De Laet | bp · Bruksela · 1993
 - wykonawca Guy Sebastian (Q983452): bp · Kelang · 1981
+- wykonawca Iggy Azalea (Q2748803): bp · Sydney · 1990
 - wykonawca Jamie xx (Q263726): bn · Jamie Smith | bp · Londyn · 1988
+- wykonawca Charli XCX (Q5084390): bn · Charlotte Emma Aitchison | bp · Cambridge · 1992
 - wykonawca The Weeknd (Q2121062): bn · Abel Makkonen Tesfaye | bp · Scarborough · 1990
 - wykonawca Julia Holter (Q4499486): bp · Milwaukee · 1984
-- wykonawca Post Malone (Q21621919): bn · Austin Richard Post | bp · Syracuse · 1995
+- wykonawca Alan Walker (Q21808729): bp · Northampton · 1997
 - wykonawca Silentó (Q20354248): bn · Richard Lamar Hawk | bp · Conyers · 1998
 - wykonawca Desiigner (Q23091498): bn · Sidney Royel Selby III | bp · Brooklyn · 1997
 - wykonawca Anna Naklab (Q20061746): bp · Getynga · 1993
+- wykonawca Elle King (Q5364665): bn · Tanner Elle Schneider | bp · Los Angeles · 1989
 - wykonawca BØRNS (Q19873750): bn · Garrett Clark Borns | bp · Muskegon · 1992
 - wykonawca Loïc Nottet (Q18439233): bp · Charleroi · 1996
 - wykonawca Nadav Guedj (Q19302320): bp · Paryż · 1998
-- wykonawca DJ Khaled (Q80805): bn · Khaled Mohammed Khaled | bp · Nowy Orlean · 1975
+- wykonawca Fetty Wap (Q19361511): bn · Willie Junior Maxwell II | bp · Paterson · 1991
 - wykonawca Duke Dumont (Q9637045): bp · Londyn · 1982
-- wykonawca Camila Cabello (Q18810940): bp · Cojímar · 1997
+- wykonawca Meghan Trainor (Q17403494): bp · Nantucket · 1993
+- wykonawca Elina Born (Q16403201): bp · Lehtse · 1994
 - wykonawca G-Eazy (Q5511893): bn · Gerald Earl Gillum | bp · Oakland · 1989
-- wykonawca Jax Jones (Q16995320): bn · Timucin Fabian Kwong Wah Aluo | bp · Londyn · 1987
 - wykonawca Paolo Nutini (Q313704): bp · Paisley · 1987
 - wykonawca Rag'n'Bone Man (Q26834366): bn · Rory Charles Graham | bp · Eastbourne · 1985
-- wykonawca Jonas Blue (Q22246459): bn · Guy James Robin | bp · Londyn · 1989
 - wykonawca Dua Lipa (Q21914464): bp · Londyn · 1995
-- wykonawca Álvaro Soler (Q20203583): bp · Barcelona · 1991
 - wykonawca Selena Gomez (Q83287): bp · Grand Prairie · 1992
+- wykonawca Keala Settle (Q13560560): bp · Laie · 1975
+- wykonawca Frans (Q2274923): bp · Ystad · 1998
+- wykonawca Shawn Mendes (Q17198340): bp · Pickering · 1998
+- wykonawca Imany (Q115206): bn · Nadia Mladjao | bp · Métropole d'Aix-Marseille-Provence · 1979
+- wykonawca Post Malone (Q21621919): bn · Austin Richard Post | bp · Syracuse · 1995
+- wykonawca Felix Jaehn (Q18943660): bn · Felix Jähn | bp · Hamburg · 1994
+- wykonawca James Arthur (Q717626): bp · Middlesbrough · 1988
+- wykonawca Hugh Jackman (Q129591): bp · Sydney · 1968
+- wykonawca Leslie Odom Jr. (Q18089198): bp · Queens · 1981
+- wykonawca Bebe Rexha (Q16185856): bn · Bleta Rexha | bp · Brooklyn · 1989
+- wykonawca Billie Eilish (Q29564107): bp · Los Angeles · 2001
+- wykonawca Denzel Curry (Q17517049): bp · Carol City · 1995
+- wykonawca Kali Uchis (Q19004484): bn · Karly-Marina Loaiza | bp · Alexandria · 1994
+- wykonawca Kungs (Q23826199): bn · Valentin Brunel | bp · Aix-en-Provence · 1996
+- wykonawca Logic (Q6667429): bn · Sir Robert Bryson Hall II | bp · Rockville · 1990
+- wykonawca Jamala (Q2662517): bp · Osz · 1983
+- wykonawca Michael Kiwanuka (Q1355431): bp · Muswell Hill · 1988
+- wykonawca Dami Im (Q15126651): bp · Seul · 1988
+- wykonawca Camila Cabello (Q18810940): bp · Cojímar · 1997
+- wykonawca Jax Jones (Q16995320): bn · Timucin Fabian Kwong Wah Aluo | bp · Londyn · 1987
+- wykonawca Cynthia Erivo (Q21592474): bp · Stockwell · 1987
+- wykonawca Ryan Gosling (Q193815): bp · London · 1980
+- wykonawca Bazzi (Q48720231): bp · Canton · 1997
+- wykonawca Jonas Blue (Q22246459): bn · Guy James Robin | bp · Londyn · 1989
+- wykonawca Thomas Newman (Q319996): bp · Los Angeles · 1955
+- wykonawca Sergey Lazarev (Q381884): bp · Moskwa · 1983
+- wykonawca Álvaro Soler (Q20203583): bp · Barcelona · 1991
+- wykonawca Harry Styles (Q3626966): bp · Redditch · 1994
+- wykonawca Travis Scott (Q13605596): bn · Jacques Bermon Webster II | bp · Houston · 1991
 - wykonawca Poli Genova (Q236491): bp · Sofia · 1987
+- wykonawca Dynoro (Q55006974): bp · Wilno · 1999
+- wykonawca Dennis Lloyd (Q51033104): bp · Tel Awiw-Jafa · 1993
+- wykonawca DJ Khaled (Q80805): bn · Khaled Mohammed Khaled | bp · Nowy Orlean · 1975
+- wykonawca Loren Allred (Q56872205): bp · Pittsburgh · 1989
+- wykonawca Kirin J. Callinan (Q47359645): bn · Kieran John Callinan | bp · Sydney · 1986
+- wykonawca Hildur Guðnadóttir (Q433734): bp · Reykjavík · 1982
+- wykonawca Doja Cat (Q51120673): bn · Amala Ratna Zandile Dlamini | bp · Los Angeles · 1995
+- wykonawca Kuba Jurzyk (Q86727339): bp · Grodzisk Mazowiecki · 1991
+- wykonawca Lewis Capaldi (Q42315001): bp · Glasgow · 1996
+- wykonawca Ella Mai (Q29033458): bp · Londyn · 1994
+- wykonawca Noisestorm (Q59650152): bp · Dublin · 1995
+- wykonawca Alice Merton (Q29016765): bp · Frankfurt nad Menem · 1993
+- wykonawca XXXTENTACION (Q28561969): bn · Jahseh Dwayne Ricardo Onfroy | bp · Plantation · 1998
 - wykonawca Die Antwoord (Q23376): fp · Kapsztad · 2008
 - wykonawca Migos (Q15777045): fp · Atlanta · 2015
-- wykonawca Twenty One Pilots (Q7857806): fp · Columbus · 2009
-- wykonawca X Ambassadors (Q15963313): fp · Ithaca · 2009
 - wykonawca Cigarettes After Sex (Q25349372): fp · El Paso · 2008
 - wykonawca The Chainsmokers (Q7721993): fp · Nowy Jork · 2012
-- wykonawca Royal Blood (Q16632343): fp · Brighton · 2013
-- wykonawca DNCE (Q21648421): fp · San Francisco · 2015
-- wykonawca Tame Impala (Q9619): fp · Perth · 2007
-- wykonawca Disturbed (Q131366): fp · Chicago · 1994
-- wykonawca Lukas Graham (Q300935): fp · Kopenhaga · 2011
-- wykonawca Alabama Shakes (Q1933051): fp · Athens · 2009
+- wykonawca Parcels (Q47293799): fp · Byron Bay · 2014
+- wykonawca Vicetone (Q15978191): fp · Groningen · 2012
+- wykonawca Nothing But Thieves (Q20684996): fp · Southend-on-Sea · 2012
 - wykonawca Fifth Harmony (Q3087893): fp · Miami · 2013
 - wykonawca DaBaby (Q62107457): bn · Jonathan Lyndale Kirk | bp · Cleveland · 1991
-- wykonawca Cesár Sampson (Q44697060): bp · Linz · 1983
 - wykonawca Dominic Fike (Q61906153): bp · Naples · 1995
-- wykonawca Dynoro (Q55006974): bp · Wilno · 1999
-- wykonawca BlocBoy JB (Q49481016): bn · James Lee Baker | bp · Memphis · 1996
 - wykonawca Meek Mill (Q1897911): bn · Robert Rihmeek Williams | bp · Filadelfia · 1987
+- wykonawca 24kGoldn (Q83751918): bn · Golden Landis Von Jones | bp · San Francisco · 2000
 - wykonawca Arizona Zervas (Q75124792): bp · Providence · 1995
+- wykonawca Don Toliver (Q56513383): bn · Caleb Zackery Toliver | bp · Houston · 1994
+- wykonawca Tom Novy (Q71053): bp · Kaufbeuren · 1970
 - wykonawca Maren Morris (Q21622122): bp · Arlington · 1990
-- wykonawca Dennis Lloyd (Q51033104): bp · Tel Awiw-Jafa · 1993
 - wykonawca Dermot Kennedy (Q61983346): bp · Rathcoole · 1991
 - wykonawca Lil Nas X (Q62591281): bn · Montero Lamar Hill | bp · Atlanta · 1999
 - wykonawca Lil Uzi Vert (Q23771950): bn · Symere Bysil Woods | bp · Filadelfia · 1995
-- wykonawca Ieva Zasimauskaitė (Q50410249): bp · Kowno · 1993
 - wykonawca Benny Blanco (Q818048): bn · Benjamin Joseph Levin | bp · Grand Prairie · 1988
-- wykonawca Harry Styles (Q3626966): bp · Redditch · 1994
-- wykonawca Doja Cat (Q51120673): bn · Amala Ratna Zandile Dlamini | bp · Los Angeles · 1995
 - wykonawca Miki Núñez (Q60727325): bp · Terrassa · 1996
-- wykonawca Lewis Capaldi (Q42315001): bp · Glasgow · 1996
 - wykonawca Ava Max (Q56755505): bn · Amanda Koçi | bp · Milwaukee · 1994
-- wykonawca Lizzo (Q16232225): bn · Melissa Viviane Jefferson | bp · Detroit · 1988
+- wykonawca Lena Raine (Q86351247): bp · Seattle · 1984
 - wykonawca Luca Hänni (Q689968): bp · Berno · 1994
 - wykonawca Duncan Laurence (Q60758679): bn · Duncan de Moor | bp · Spijkenisse · 1994
+- wykonawca Tones and I (Q62887629): bn · Toni Watson | bp · Mount Martha · 1993
 - wykonawca Elina Nechayeva (Q46366625): bp · Tallinn · 1991
-- wykonawca Jessica Mauboy (Q443892): bp · Darwin · 1989
 - wykonawca Juice Wrld (Q52151598): bn · Jarad Anthony Higgins | bp · Chicago · 1998
 - wykonawca Lil Baby (Q50527563): bn · Dominique Armani Jones | bp · Atlanta · 1994
+- wykonawca Roddy Ricch (Q59209423): bn · Rodrick Wayne Moore Jr. | bp · Compton · 1998
 - wykonawca Zedd (Q21088): bn · Anton Zaslavski | bp · Saratów · 1989
+- wykonawca Serhat (Q21998497): bp · Stambuł · 1964
+- wykonawca Cesár Sampson (Q44697060): bp · Linz · 1983
 - wykonawca Tom Walker (Q30122853): bp · Kilsyth · 1991
 - wykonawca Michael Schulte (Q1242168): bp · Eckernförde · 1990
+- wykonawca BlocBoy JB (Q49481016): bn · James Lee Baker | bp · Memphis · 1996
 - wykonawca Salvador Sobral (Q28836888): bp · Lizbona · 1989
 - wykonawca Kristian Kostov (Q21932286): bp · Moskwa · 2000
 - wykonawca J. Cole (Q204018): bn · Jermaine Lamarr Cole | bp · Frankfurt nad Menem · 1985
-- wykonawca Kate Miller-Heidke (Q285045): bp · Gladstone · 1981
+- wykonawca Kate Miller-Heidke (Q285045): bp · Brisbane · 1981
+- wykonawca Jake Bugg (Q1320912): bn · Jacob Edwin Kennedy Bugg | bp · Clifton · 1994
 - wykonawca Mahmood (Q60036307): bp · Mediolan · 1992
 - wykonawca French Montana (Q1455261): bn · Karim Kharbouch | bp · Casablanca · 1984
+- wykonawca Mick Gordon (Q20640686): bp · Mackay · 1985
 - wykonawca Slavko Kalezić (Q28070967): bp · Podgorica · 1985
+- wykonawca Ieva Zasimauskaitė (Q50410249): bp · Kowno · 1993
 - wykonawca Sam Hunt (Q16223171): bp · Cedartown · 1984
 - wykonawca John Lundvik (Q18244130): bp · Londyn · 1983
 - wykonawca Francesco Gabbani (Q22695683): bp · Carrara · 1982
@@ -3041,121 +3479,126 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Marshmello (Q26334949): bn · Christopher Comstock | bp · Filadelfia · 1992
 - wykonawca Cardi B (Q29033668): bn · Belcalis Marlenis Almánzar | bp · Washington Heights · 1992
 - wykonawca Rita Ora (Q229760): bn · Rita Sahatçiu | bp · Prisztina · 1990
-- wykonawca Ella Mai (Q29033458): bp · Londyn · 1994
+- wykonawca Lizzo (Q16232225): bn · Melissa Viviane Jefferson | bp · Detroit · 1988
+- wykonawca Eleni Foureira (Q4493489): bp · Fier · 1987
+- wykonawca Jessica Mauboy (Q443892): bp · Darwin · 1989
 - wykonawca Halsey (Q18534249): bn · Ashley Nicolette Frangipane | bp · Gmina Edison · 1994
-- wykonawca Travis Scott (Q13605596): bn · Jacques Bermon Webster II | bp · Houston · 1991
+- wykonawca Luis Fonsi (Q1387726): bp · San Juan · 1978
 - wykonawca Danny Vera (Q3463071): bn · Danny Polfliet | bp · Middelburg · 1977
 - wykonawca Lake Malawi (Q21874590): fp · Trzyniec · 2013
 - wykonawca Jonas Brothers (Q134233): fp · Wyckoff · 2005
-- wykonawca 5 Seconds of Summer (Q4641147): fp · Sydney · 2011
-- wykonawca Panic! at the Disco (Q277551): fp · Las Vegas · 2005
 - wykonawca Hatari (Q61716128): fp · Reykjavík · 2015
 - wykonawca Jubël (Q102327183): fp · Halmstad · 2017
 - wykonawca Portugal. The Man (Q606879): fp · Wasilla · 2004
-- wykonawca Serhat (Q21998497): bp · Stambuł · 1964
+- wykonawca KEiiNO (Q61009979): fp · Oslo · 2018
 - wykonawca Coi Leray (Q106376206): bp · Boston · 1997
+- wykonawca Benson Boone (Q110008128): bp · Monroe · 2002
 - wykonawca James Newman (Q55614888): bp · Settle · 1985
 - wykonawca Toby Romeo (Q100731387): bp · Salzburg · 2000
 - wykonawca Chappell Roan (Q110281146): bn · Kayleigh Rose Amstutz | bp · Willard · 1998
-- wykonawca Roddy Ricch (Q59209423): bn · Rodrick Wayne Moore Jr. | bp · Compton · 1998
 - wykonawca Stephen Sanchez (Q113023532): bp · Nashville · 2002
 - wykonawca Bailey Zimmerman (Q112581616): bp · Louisville · 2000
 - wykonawca Nicky Youre (Q112666811): bp · Anaheim · 1999
 - wykonawca Dotan (Q2789859): bp · Jerozolima · 1986
 - wykonawca Adam Levine (Q219631): bp · Los Angeles · 1979
 - wykonawca Stefania (Q61696740): bp · Utrecht · 2002
+- wykonawca Michael Patrick Kelly (Q2045848): bp · Dublin · 1977
 - wykonawca Tom Gregory (Q24005734): bn · Thomas Gregory | bp · Blackpool · 1995
 - wykonawca Purple Disco Machine (Q61746813): bp · Drezno · 1980
 - wykonawca Zoe Wees (Q96119730): bp · Hamburg · 2002
+- wykonawca Scarlett Johansson (Q34436): bp · Manhattan · 1984
 - wykonawca Tate McRae (Q95129121): bp · Calgary · 2003
 - wykonawca The Kid Laroi (Q82890761): bn · Charlton Kenneth Jeffrey Howard | bp · Waterloo · 2003
 - wykonawca Farruko (Q5436372): bn · Carlos Efrén Reyes Rosado
-- wykonawca 24kGoldn (Q83751918): bn · Golden Landis Von Jones | bp · San Francisco · 2000
 - wykonawca Inna (Q12349): bn · Elena Alexandra Apostoleanu | bp · Mangalia · 1986
 - wykonawca Cornelia Jakobs (Q4976676): bn · Anna Cornelia Jakobsdotter Samuelsson
 - wykonawca Tom Grennan (Q54357938): bp · Bedford · 1995
 - wykonawca Amanda Tenfjord (Q96276794): bn · Amanda Klara Georgiadis
-- wykonawca Oliver Tree (Q55956050): bp · Santa Cruz · 1993
 - wykonawca Joel Corry (Q67172196): bp · Londyn · 1989
 - wykonawca Michele Morrone (Q96106282): bp · Prowincja Miejska Bari · 1990
+- wykonawca Oliver Tree (Q55956050): bp · Santa Cruz · 1993
 - wykonawca Powfu (Q89069821): bn · Isaiah Faber | bp · Vancouver · 1999
 - wykonawca Becky Hill (Q16236194): bn · Rebecca Claire Hill | bp · Bewdley · 1994
-- wykonawca Saint Jhn (Q52274581): bn · Carlos St. John Phillips
+- wykonawca Saint Jhn (Q52274581): bn · Carlos St. John Phillips | bp · Brooklyn · 1986
 - wykonawca Senhit (Q240907): bp · Prowincja Miejska Bolonia · 1979
-- wykonawca Shawn Mendes (Q17198340): bp · Pickering · 1998
 - wykonawca Luke Combs (Q23884740): bp · Huntersville · 1990
 - wykonawca Megan Thee Stallion (Q59268408): bn · Megan Jovon Ruth Pete | bp · San Antonio · 1995
 - wykonawca Morgan Wallen (Q29561472): bp · Sneedville · 1993
 - wykonawca Jack Harlow (Q59727812): bn · Jackman Thomas Harlow | bp · Louisville · 1998
 - wykonawca bbno$ (Q66938171): bn · Alexander Leon Gumuchian | bp · Vancouver · 1995
+- wykonawca Dove Cameron (Q13560423): bn · Chloe Celeste Hosterman | bp · Bainbridge Island · 1996
 - wykonawca Sam Fender (Q51909953): bn · Samuel Thomas Fender | bp · North Shields · 1994
-- wykonawca Kali Uchis (Q19004484): bn · Karly-Marina Loaiza | bp · Alexandria · 1994
 - wykonawca Bad Bunny (Q44333953): bn · Benito Antonio Martínez Ocasio
 - wykonawca Armani White (Q113953210): bp · Filadelfia · 1996
 - wykonawca Tix (Q30323936): bn · Andreas Andresen Haukeland
 - wykonawca Olivia Rodrigo (Q63243883): bp · Murrieta · 2003
 - wykonawca Tusse (Q76466985): bp · Kinszasa · 2002
-- wykonawca Tones and I (Q62887629): bn · Toni Watson | bp · Mount Martha · 1993
 - wykonawca Latto (Q65029930): bn · Alyssa Michelle Stephens | bp · Columbus · 1998
 - wykonawca Barbara Pravi (Q78138804): bn · Barbara Pjević | bp · 15. dzielnica Paryża · 1993
 - wykonawca BTS (Q13580495): fp · Seul · 2013
 - wykonawca Blind Channel (Q27554412): fp · Oulu · 2013
+- wykonawca Fontaines D.C. (Q65056403): fp · Dublin · 2017
 - wykonawca Go_A (Q85638586): fp · Kijów · 2012
 - wykonawca Glass Animals (Q16839267): fp · Oksford · 2012
 - wykonawca Ofenbach (Q29380907): fp · Paryż · 2014
 - wykonawca Smith & Thell (Q10672299): fp · Helsingborg · 2012
 - wykonawca Måneskin (Q56884561): fp · Rzym · 2016
 - wykonawca Zdob și Zdub (Q169146): fp · Kiszyniów · 1994
-- wykonawca KEiiNO (Q61009979): fp · Oslo · 2018
-- wykonawca Jessie Murph (Q122157373): bp · Clarksville · 2004
-- wykonawca Lizzy McAlpine (Q106570290): bp · Filadelfia · 1999
-- wykonawca Benson Boone (Q110008128): bp · Monroe · 2002
-- wykonawca Leah Kate (Q112683784): bp · Los Angeles · 1992
-- wykonawca Gracie Abrams (Q106301562): bp · Los Angeles · 1999
-- wykonawca Rosa Linn (Q111193171): bp · Wanadzor · 2000
-- wykonawca Konstrakta (Q111109598): bp · Belgrad · 1978
-- wykonawca Baby Lasagna (Q124157590): bp · Umag · 1995
-- wykonawca Teddy Swims (Q105542333): bp · Atlanta · 1992
-- wykonawca Paul Russell (Q122932071): bp · Atlanta · 1997
-- wykonawca Cyril (Q124791126): bp · Lake Cargelligo · 1997
-- wykonawca PinkPantheress (Q107570416): bn · Victoria Beverley Walker | bp · Bath · 2001
-- wykonawca Bambie Thug (Q124361424): bp · Macroom · 1993
-- wykonawca Zach Bryan (Q106770023): bn · Zachary Lane Bryan
-- wykonawca Topic (Q20804322): bp · Solingen · 1992
-- wykonawca Sam Ryder (Q111179156): bp · Maldon · 1989
-- wykonawca Toosii (Q106725126): bn · Nau'Jour Lazier Grainger | bp · Syracuse · 2000
-- wykonawca Laufey (Q61973202): bp · Reykjavík · 1999
 - wykonawca Käärijä (Q57943893): bn · Jere Mikael Pöyhönen | bp · Helsinki · 1993
+- wykonawca Baby Lasagna (Q124157590): bp · Umag · 1995
 - wykonawca Niall Horan (Q775231): bp · Mullingar · 1993
+- wykonawca Rachel Zegler (Q61693947): bp · Hackensack · 2001
+- wykonawca Laufey (Q61973202): bp · Reykjavík · 1999
 - wykonawca Mitski (Q23761694): bn · Mitsuki Laycock Miyawaki
 - wykonawca Alyona Alyona (Q59358454): bp · Kapitaniwka · 1991
-- wykonawca Felix Jaehn (Q18943660): bn · Felix Jähn | bp · Hamburg · 1994
 - wykonawca James Hype (Q47472388): bp · Liverpool · 1989
-- wykonawca Dove Cameron (Q13560423): bn · Chloe Celeste Hosterman | bp · Bainbridge Island · 1996
 - wykonawca Noah Kahan (Q53832755): bp · Strafford · 1997
 - wykonawca David Kushner (Q117745879): bp · Chicago · 2000
+- wykonawca Joji (Q23826617): bp · Osaka · 1992
 - wykonawca Gigi Perez (Q130235359): bn · Gianna Brielle Perez | bp · Hackensack · 2000
 - wykonawca Metro Boomin (Q16235273): bn · Leland Tyler Wayne | bp · St. Louis · 1993
+- wykonawca Tyla (Q118105408): bp · Edenvale · 2002
+- wykonawca Cyril (Q124791126): bp · Lake Cargelligo · 1997
 - wykonawca Jung Kook (Q22338877): bp · Pusan · 1997
+- wykonawca Peggy Gou (Q64158576): bp · Inczon · 1991
 - wykonawca Pasha Parfeni (Q305161): bp · Orgiejów · 1986
+- wykonawca Jack Black (Q483907): bn · Thomas Jacob Black | bp · Santa Monica · 1969
 - wykonawca Jack Savoretti (Q2905668): bp · Londyn · 1983
+- wykonawca Lauv (Q30122224): bn · Ari Staprans Leff | bp · San Francisco · 1994
+- wykonawca DJ Seinfeld (Q59241691): bn · Armand Darius Anders Jakobsson | bp · Malmö · 1991
 - wykonawca Noa Kirel (Q43139030): bp · Ra'anana · 2001
 - wykonawca JVKE (Q114865231): bn · Jacob Dodge | bp · Providence · 2001
 - wykonawca Sigala (Q20973111): bn · Bruce Fielder | bp · Norwich · 1993
 - wykonawca Kamrad (Q28100008): bp · Wuppertal · 1997
 - wykonawca Alesso (Q965455): bn · Alessandro Rodolfo Renato Lindblad | bp · Sztokholm · 1991
 - wykonawca Kodak Black (Q22005867): bn · Dieuson Octave | bp · Pompano Beach · 1997
+- wykonawca Mr. Polska (Q1873837): bp · Toruń · 1989
 - wykonawca SZA (Q16210722): bp · St. Louis · 1989
 - wykonawca Nathan Dawe (Q91044263): bp · Burton upon Trent · 1994
+- wykonawca Topic (Q20804322): bp · Solingen · 1992
 - wykonawca Kane Brown (Q21620939): bp · Chattanooga · 1993
-- wykonawca Fontaines D.C. (Q65056403): fp · Dublin · 2017
+- wykonawca Lizzy McAlpine (Q106570290): bp · Filadelfia · 1999
+- wykonawca Yeat (Q108761978): bn · Noah Olivier Smith | bp · Irvine · 2000
+- wykonawca Leah Kate (Q112683784): bp · Los Angeles · 1992
+- wykonawca Sierra Ferrell (Q110877092): bp · Charleston · 1988
+- wykonawca Gracie Abrams (Q106301562): bp · Los Angeles · 1999
+- wykonawca Rosa Linn (Q111193171): bp · Wanadzor · 2000
+- wykonawca Konstrakta (Q111109598): bp · Belgrad · 1978
+- wykonawca Teddy Swims (Q105542333): bp · Atlanta · 1992
+- wykonawca Paul Russell (Q122932071): bp · Atlanta · 1997
+- wykonawca PinkPantheress (Q107570416): bn · Victoria Beverley Walker | bp · Bath · 2001
+- wykonawca Bambie Thug (Q124361424): bp · Macroom · 1993
+- wykonawca Zach Bryan (Q106770023): bn · Zachary Lane Bryan
+- wykonawca La Zarra (Q111269595): bp · Montreal · 1987
+- wykonawca Sam Ryder (Q111179156): bp · Maldon · 1989
+- wykonawca Toosii (Q106725126): bn · Nau'Jour Lazier Grainger | bp · Syracuse · 2000
 - wykonawca Sudden Lights (Q55456308): fp · Ryga · 2012
+- wykonawca The Hardkiss (Q4051116): fp · Kijów · 2011
 - wykonawca The Beaches (Q48720114): fp · Toronto · 2013
 - wykonawca The Kolors (Q20645822): fp · Neapol · 2009
 - wykonawca Kalush Orchestra (Q80808767): fp · Kałusz · 2021
 - wykonawca Alexandra Căpitănescu (Q138568839): bp · Gałacz · 2003
 - wykonawca Satoshi (Q131309974): bp · Kaguł · 1998
-- wykonawca Charli XCX (Q5084390): bn · Charlotte Emma Aitchison | bp · Cambridge · 1992
 - wykonawca Tommy Richman (Q125778611): bn · Thomas Anatole Richman | bp · Woodbridge · 2000
 - wykonawca Gabry Ponte (Q468692): bn · Gabriele Ponte | bp · Turyn · 1973
 - wykonawca WizTheMc (Q116754008): bn · Sanele Sydow | bp · Kapsztad · 1999
@@ -3167,7 +3610,9 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Damiano David (Q57415344): bp · Rzym · 1999
 - wykonawca Daniel Žižka (Q102904725): bp · Praga · 2003
 - wykonawca Kaeyra (Q138562132): bp · Chicago · 2001
+- wykonawca Jaxomy (Q125450371): bp · Berlin · 1995
 - wykonawca Mark Ambor (Q123899629): bp · Pleasantville · 1997
+- wykonawca Jessie Murph (Q122157373): bp · Clarksville · 2004
 - wykonawca BigXthaPlug (Q124750337): bp · Dallas · 1998
 - wykonawca Erika Vikman (Q26211796): bp · Tampere · 1993
 - wykonawca Olivia Dean (Q108106738): bp · Walthamstow · 1999
@@ -3186,7 +3631,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Mustii (Q20851399): bp · Bruksela · 1990
 - wykonawca Miriana Conte (Q132178874): bp · Qormi · 2000
 - wykonawca Aespa (Q100877982): fp · Seul · 2020
-- wykonawca Swedish House Mafia (Q20709): fp · Sztokholm · 2007
 
 ## Odrzucone dopasowania wykonawców (homonimy)
 
@@ -3199,6 +3643,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Frida (Q55162198): kraj ES ≠ SE
 - Katrina (Q16216623): kraj US ≠ GB
 - Lena (Q64177448): ur. 2002, piosenka z 2011; kraj KR ≠ DE
+- Laura Shigihara (Q512791): ur. 2000, piosenka z 2009
 - Solange (Q3964188): kraj IT ≠ US
 - Molly (Q6896508): kraj SE ≠ GB
 - Leon Thomas (Q1497852): zm. 1999, piosenki od 2024
