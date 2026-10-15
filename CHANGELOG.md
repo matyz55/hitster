@@ -528,11 +528,13 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 ## 5.24.0 – 15.10.2026 (`0e121c1`)
 
-- **Nowe tryby**: „Kto za tym stoi?” (kompozytor, autor tekstu, producent), „Okładka z mgły” (zgadywanie po
-  rozmywanej okładce), „Krzywe zwierciadło” (piosenka puszczona od tyłu albo zniekształcona), „Mikser” (dwie piosenki
-  naraz), „Licytacja sekund”, „Gorąca bomba” oraz „Ostatni na placu boju” (każdy ma trzy życia).
-- **Nowe karty specjalne**: tarcza (chroni przed wyzwaniem), mgła (przeciwnik nie widzi lat na swojej osi), złoty strzał
-  (dokładny rok daje dodatkową kartę) i magnes (przejęcie karty przeciwnika).
+- **Nowe tryby**: „Kto za tym stoi?” (pytania o autora tekstu, kompozytora, producenta, album, pochodzenie lub
+  prawdziwe nazwisko wykonawcy), „Okładka z mgły” (najpierw rozmyta okładka bez dźwięku), „Krzywe zwierciadło”
+  (fragment zza ściany, na helu, zwolniony albo od tyłu), „Mikser” (dwie piosenki naraz), a w multiplayerze
+  „Licytacja sekund”, „Gorąca bomba” i „Ostatni na placu boju” (gra na serca).
+- **Nowe karty specjalne**: 🛡️ tarcza (jednorazowa ochrona przed zamianą osi, kradzieżą żetonu i utratą karty przy
+  wyzwaniu „dokładny rok”), 🌫️ mgła (do Twojej następnej tury inni nie widzą lat na Twojej osi), 🎯 złoty strzał
+  (trafiony dokładny rok daje +2 żetony) i 🧲 magnes (dla gracza na ostatnim miejscu – dobre ułożenie daje darmową kartę).
 - „Ułóż piątkę” to teraz lista, na której piosenki przeciąga się (albo przesuwa strzałkami ▲▼) – także na telefonie gracza.
 - Muzyka gra po odpowiedzi aż do przejścia do następnej piosenki.
 - Napis „Brak połączonego urządzenia” pojawia się tylko, gdy podłączony był duży ekran.
