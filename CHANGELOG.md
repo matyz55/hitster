@@ -675,7 +675,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   ustawieniach jest lista zgłoszonych piosenek z przyciskiem „Przywróć” (także dla zgłoszeń z wcześniejszych gier).
 - Nowy nagłówek piosenki: kategoria i rok obok siebie (ten sam kolor), pod nimi tytuł i wykonawca w osobnych liniach.
 
-## 5.30.4 – 16.10.2026 (`HASH`)
+## 5.30.4 – 16.10.2026 (`0a64842`)
 
 - Tak to leciało!: bez napisu „Śpiewaj razem z tekstem” w trakcie piosenki; informacja o źródłach (lrclib.net,
   YouTube) przeniesiona na sam dół, pod koła ratunkowe.
