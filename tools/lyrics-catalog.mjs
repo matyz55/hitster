@@ -69,18 +69,34 @@ async function stepLrclib() {
 
 // YouTube Data API v3: videos.list (1 jednostka) i search.list (osobny limit 100 dziennie)
 const ytKey = process.env.YOUTUBE_API_KEY;
+const MAX_SEARCHES = 95; // dzienny limit search.list to 100
+const SEARCH_PAUSE = 2000; // przerwa między wyszukiwaniami (limit zapytań na minutę)
 const isoSec = (d) => { const m = d.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/) || []; return (+m[1] || 0) * 3600 + (+m[2] || 0) * 60 + (+m[3] || 0); };
+// Zwraca dane albo null przy błędzie (bez wyniku – nie zapisujemy wtedy „brak filmu”).
+// Limit na minutę: przerwa 60 s i ponowna próba; limit dzienny (lub limit na minutę po 2 próbach): wyjątek – koniec wyszukiwań.
+let searchCalls = 0; // każde zapytanie search.list (także ponowione) liczy się do dziennego limitu
 async function ytApi(path, params) {
   const url = `https://www.googleapis.com/youtube/v3/${path}?${new URLSearchParams({ ...params, key: ytKey })}`;
-  const res = await fetch(url).catch(() => null);
-  if (!res) return null;
-  const data = await res.json();
-  if (data.error) { console.error(`YouTube API: ${data.error.message}`); if (res.status === 403) throw new Error('limit YouTube API'); return null; }
-  return data;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    if (path === 'search' && searchCalls >= MAX_SEARCHES) throw new Error('limit wyszukiwań');
+    if (path === 'search') searchCalls += 1;
+    const res = await fetch(url).catch(() => null);
+    if (!res) { await sleep(5000); continue; }
+    const data = await res.json().catch(() => null);
+    if (data && !data.error) return data;
+    const msg = (data && data.error && data.error.message) || `HTTP ${res.status}`;
+    console.error(`YouTube API: ${msg}`);
+    const perMinute = res.status === 429 || /per minute/i.test(msg);
+    if (perMinute && attempt < 2) { await sleep(60000); continue; }
+    if (perMinute || res.status === 403) throw new Error('limit YouTube API');
+    return null;
+  }
+  return null;
 }
 async function videoInfo(ids) {
   const data = await ytApi('videos', { part: 'contentDetails,status,snippet', id: ids.join(','), maxResults: 50 });
-  return (data && data.items || []).map((v) => ({
+  if (!data) return null;
+  return (data.items || []).map((v) => ({
     id: v.id, d: isoSec(v.contentDetails.duration), embeddable: v.status.embeddable, title: v.snippet.title, channel: v.snippet.channelTitle,
     blockedPL: !!(v.contentDetails.regionRestriction && ((v.contentDetails.regionRestriction.blocked || []).includes('PL')
       || (v.contentDetails.regionRestriction.allowed && !v.contentDetails.regionRestriction.allowed.includes('PL')))),
@@ -119,21 +135,24 @@ async function stepYoutube() {
   const wd = await wikidataVideos(lr, yt);
   const wdIds = [...new Set(wd.values())];
   const info = new Map();
-  for (let i = 0; i < wdIds.length; i += 50) for (const v of await videoInfo(wdIds.slice(i, i + 50))) info.set(v.id, v);
+  for (let i = 0; i < wdIds.length; i += 50) for (const v of await videoInfo(wdIds.slice(i, i + 50)) || []) info.set(v.id, v);
   for (const [k, id] of wd) if (fits(info.get(id), lr[k])) yt[k] = { id, src: 'wikidata' };
   save('youtube-pl.json', yt);
   // 2) wyszukiwarka YouTube – najpopularniejsze piosenki bez filmu; najpierw nagranie „… – Topic” (wersja z płyty)
-  let searches = 0;
   for (const s of candidates) {
     const l = lr[key(s)];
-    if (!l || yt[key(s)] || searches >= 95) continue;
+    if (!l || yt[key(s)]) continue;
+    if (searchCalls >= MAX_SEARCHES) break;
     const q = `${SongMatch.mainArtist(s)} ${clean(s.t)}`;
-    let data;
-    try { data = await ytApi('search', { part: 'id', type: 'video', maxResults: 8, q, regionCode: 'PL', videoEmbeddable: 'true' }); } catch { break; }
-    searches += 1;
-    const ids = (data && data.items || []).map((x) => x.id.videoId).filter(Boolean);
-    if (!ids.length) { yt[key(s)] = null; continue; }
-    const vids = await videoInfo(ids);
+    if (searchCalls) await sleep(SEARCH_PAUSE);
+    let data, vids = [];
+    try {
+      data = await ytApi('search', { part: 'id', type: 'video', maxResults: 8, q, regionCode: 'PL', videoEmbeddable: 'true' });
+      if (!data) continue; // błąd – bez zapisu, piosenka wróci przy następnym uruchomieniu
+      const ids = (data.items || []).map((x) => x.id.videoId).filter(Boolean);
+      if (ids.length && !(vids = await videoInfo(ids))) continue;
+    } catch { break; }
+    if (!vids.length) { yt[key(s)] = null; save('youtube-pl.json', yt); continue; }
     const ok = vids.filter((v) => fits(v, l));
     // pierwszeństwo: kanał „… - Topic” (dźwięk z płyty, czasy tekstu pasują najlepiej), potem oficjalne kanały
     ok.sort((a, b) => (/ - Topic$/.test(b.channel) - / - Topic$/.test(a.channel)) || Math.abs(a.d - l.d) - Math.abs(b.d - l.d));
@@ -141,7 +160,7 @@ async function stepYoutube() {
     save('youtube-pl.json', yt);
   }
   const found = Object.values(yt).filter(Boolean).length;
-  console.log(`YouTube: wyszukiwania ${searches}, filmy dla ${found} piosenek (z Wikidata: ${[...wd.keys()].filter((k) => yt[k]).length})`);
+  console.log(`YouTube: wyszukiwania ${searchCalls}, filmy dla ${found} piosenek (z Wikidata: ${[...wd.keys()].filter((k) => yt[k]).length})`);
 }
 
 function stepBuild() {
