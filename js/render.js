@@ -372,7 +372,7 @@ function renderActions() {
         class: 'ghost', disabled: p.tokens < BUY_COST || !state.deck.size,
         title: T('Za 3 żetony dobierasz losową kartę z talii, która od razu trafia na właściwe miejsce osi'),
         onclick: buyCard,
-      }, T('Kup losową kartę ({0} żetony)', BUY_COST)));
+      }, T('Kup kartę ({0} żetony)', BUY_COST)));
     }
     const over = state.mode === 'solo' && (p.lives <= 0 || (!state.endless && p.timeline.length >= state.winTarget));
     btns.push(el('button', { class: 'primary', onclick: nextTurn },
