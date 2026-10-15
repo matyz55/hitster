@@ -74,9 +74,11 @@ przycisk w „Kto pierwszy?”.
 
 **Gdzie gra muzyka** (ustawienia rozgrywki → Odtwarzanie): na tym urządzeniu, na dużym ekranie (TV) albo – w trybach
 z turami graczy – na telefonie gracza, który ma turę. Urządzenie gospodarza nadal prowadzi grę (odmierza fragmenty
-i kroki), tylko bez dźwięku; wybrane urządzenie samo pobiera fragment i gra go z płynnym wejściem/wyjściem. Gdy
-przeglądarka wymaga dotknięcia, pokazuje przycisk „🔊 Dotknij, aby włączyć dźwięk”. Bez połączonego urządzenia
-muzyka gra u gospodarza.
+i kroki), tylko bez dźwięku; wybrane urządzenie samo pobiera fragment i gra go z płynnym wejściem/wyjściem. Przeglądarki
+pozwalają grać z dźwiękiem dopiero po jakiejkolwiek interakcji ze stroną (np. przycisk pilota) – gra nie czeka
+wtedy na kliknięcie: muzyka od razu gra u gospodarza, a pierwsze naciśnięcie dowolnego przycisku pilota lub dotknięcie
+ekranu przenosi ją na tamto urządzenie od bieżącego miejsca. Ekran z kodem na telewizorze podpowiada, by nacisnąć OK
+już na starcie. Bez połączonego urządzenia muzyka gra u gospodarza.
 
 Na dużym ekranie widać też pasek kroków (Melodia krok po kroku), przyciski graczy (Kto pierwszy?), kręcącą
 się płytę i postęp fragmentu. W trakcie gry ekran telefonu nie gaśnie (Screen Wake Lock), a fragmenty

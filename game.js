@@ -519,6 +519,16 @@ function handleRemote(msg, from) {
     tvSync();
   }
   if (msg.iam && from) { from.name = msg.iam; renderRemoteList(); }
+  // przeglądarka urządzenia z muzyką zablokowała dźwięk (brak interakcji) – gramy od razu tutaj;
+  // po naciśnięciu przycisku na tamtym urządzeniu muzyka wraca tam od bieżącego miejsca
+  if (msg.audioBlocked || msg.audioOk) {
+    if (from) from.audioBlocked = !!msg.audioBlocked; else channelBlocked = !!msg.audioBlocked;
+    const remote = applyAudioRoute();
+    if (msg.audioOk && remote && !audio.paused && state.preview) {
+      sendAudioCmd({ audioCmd: 'play', url: state.preview.url, t: audio.currentTime, until: clipEnd() });
+    }
+    return;
+  }
   if (msg.join && from) joinFromPhone(msg.join, from);
   // przycisk kliknięty na innym ekranie – klikamy ten sam w oknie gry (sprawdzamy też napis, gdyby stan zdążył się zmienić)
   if (msg.click) {
@@ -2729,20 +2739,31 @@ function playClip() {
 // Ten telefon zawsze prowadzi grę (odmierza fragmenty, kroki, zegar); gdy muzyka ma grać gdzie indziej,
 // jego odtwarzacz jest wyciszony, a wybrane urządzenie dostaje polecenia „graj od t do until” i „pauza”.
 const audioOut = () => store.get('audioOut', 'host');
+let channelBlocked = false; // okno dużego ekranu na tym urządzeniu czeka na interakcję, by grać dźwięk
 function audioTargets() {
   const out = audioOut();
   if (out === 'tv') {
-    const tvs = [...remotes].filter((r) => r.role === 'tv');
-    return tvs.length || tvWindowSeen ? { remotes: tvs, channel: tvWindowSeen && !!tvChannel } : null;
+    const tvs = [...remotes].filter((r) => r.role === 'tv' && !r.audioBlocked);
+    const channel = tvWindowSeen && !!tvChannel && !channelBlocked;
+    return tvs.length || channel ? { remotes: tvs, channel } : null;
   }
   if (out === 'player' && state.players.length) {
     const p = activePlayer();
     // w drużynach – telefon członka, który teraz odpowiada (albo telefon z nazwą drużyny)
     const names = state.mode === 'buzz' ? [] : [p.name, answering(p)].filter(Boolean);
-    const ph = [...remotes].filter((r) => r.role === 'player' && r.name && names.includes(r.name));
+    const ph = [...remotes].filter((r) => r.role === 'player' && r.name && names.includes(r.name) && !r.audioBlocked);
     return ph.length ? { remotes: ph, channel: false } : null;
   }
   return null;
+}
+// czy wybrane urządzenie jest połączone, ale czeka na interakcję, by móc grać dźwięk
+function blockedTarget() {
+  if (audioOut() === 'tv') return channelBlocked || [...remotes].some((r) => r.role === 'tv' && r.audioBlocked);
+  if (audioOut() === 'player' && state.players.length) {
+    const p = activePlayer();
+    return [...remotes].some((r) => r.role === 'player' && r.audioBlocked && [p.name, answering(p)].includes(r.name));
+  }
+  return false;
 }
 // polecenie dla urządzeń grających muzykę (all – do wszystkich, np. zatrzymanie przy zmianie tury)
 function sendAudioCmd(cmd, all) {
@@ -2760,7 +2781,8 @@ function applyAudioRoute() {
   if (note) {
     const out = audioOut();
     note.textContent = remote ? (out === 'tv' ? T('🔈 Muzyka gra na dużym ekranie.') : T('🔈 Muzyka gra na telefonie gracza {0}.', answering(activePlayer()) || activePlayer().name))
-      : (out !== 'host' ? T('🔈 Brak połączonego urządzenia – muzyka gra na tym telefonie.') : '');
+      : (out !== 'host' ? (blockedTarget() ? T('🔈 Przeglądarka tamtego urządzenia czeka na naciśnięcie przycisku (pilota lub ekranu) – do tego czasu muzyka gra tutaj.')
+        : T('🔈 Brak połączonego urządzenia – muzyka gra na tym telefonie.')) : '');
     note.classList.toggle('hidden', !note.textContent);
   }
   return remote;

@@ -92,8 +92,11 @@
     .waiting b { color: var(--text); font-size: 1.6em; display: block; margin-bottom: .5em; }
     button { font: inherit; font-size: .7em; border: calc(1 * var(--u)) solid #3d3755; background: transparent; color: var(--text); border-radius: calc(10 * var(--u)); padding: .4em .9em; cursor: pointer; }
     .hidden { display: none !important; }
-    .sound-unlock { position: fixed; inset: auto 5vw 6vh 5vw; z-index: 50; font: inherit; font-size: 1.3em; font-weight: 800; padding: 1em;
-      border-radius: 1em; border: 0; background: var(--accent); color: #fff; box-shadow: 0 1em 3em rgba(0, 0, 0, .5); cursor: pointer; }
+    /* informacja (bez blokowania gry): dźwięk tutaj czeka na naciśnięcie przycisku pilota */
+    .sound-unlock { position: fixed; left: 50%; bottom: 3vh; transform: translateX(-50%); max-width: 80vw; z-index: 50; font-size: .75em; font-weight: 600;
+      padding: .6em 1.1em; border-radius: 999px; background: rgba(20, 18, 30, .92); color: var(--text); border: 1px solid #3d3755; text-align: center; pointer-events: none; }
+    body.player .sound-unlock { font-size: 14px; bottom: 12px; }
+    .sound-tip { color: var(--muted); font-size: .8em; margin-top: 1em; }
     /* ekran po połączeniu telefonu i ekran ustawień gry */
     .connected { margin: auto; text-align: center; }
     .connected .big { font-size: 3em; }

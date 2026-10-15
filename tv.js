@@ -502,7 +502,6 @@ music.crossOrigin = 'anonymous';
 music.preload = 'auto';
 let musicUntil = null;
 let fadeTimer = null;
-let pending = null; // polecenie czekające na zgodę przeglądarki na dźwięk (dotknięcie)
 const blobs = new Map();
 function loadTrack(url) {
   if (!url || blobs.has(url)) return;
@@ -527,16 +526,43 @@ function musicTick() {
   requestAnimationFrame(musicTick);
 }
 music.addEventListener('play', () => requestAnimationFrame(musicTick));
-function unlockBox(show) {
+// Przeglądarki pozwalają grać z dźwiękiem dopiero po jakiejkolwiek interakcji ze stroną (klawisz pilota, dotyk, klik).
+// Nie blokujemy gry przyciskiem: gdy dźwięk tutaj jest zablokowany, informujemy gospodarza – muzyka gra wtedy
+// od razu u niego – a pierwsze naciśnięcie dowolnego przycisku pilota (lub dotknięcie) przenosi ją tutaj.
+let soundBlocked = false;
+const hasActivation = () => !!(navigator.userActivation && navigator.userActivation.hasBeenActive);
+function soundHint(show) {
   let box = document.getElementById('sound-unlock');
   if (!show) { if (box) box.remove(); return; }
   if (box) return;
-  box = h('button', 'sound-unlock', T('🔊 Dotknij, aby włączyć dźwięk na tym urządzeniu'));
+  box = h('div', 'sound-unlock', T('🔈 Muzyka gra teraz na telefonie gospodarza. Naciśnij dowolny przycisk pilota (np. OK) albo dotknij ekranu – dalej zagra z tego ekranu.'));
   box.id = 'sound-unlock';
-  box.addEventListener('click', () => { const m = pending; pending = null; unlockBox(false); if (m) musicCmd(m); else music.play().then(() => music.pause()).catch(() => {}); });
   document.body.append(box);
-  box.focus();
 }
+// krótka cisza – „odblokowuje” odtwarzacz w chwili interakcji (Safari wymaga tego dla każdego elementu audio osobno)
+const SILENCE = (() => {
+  const n = 800; const buf = new ArrayBuffer(44 + n * 2); const v = new DataView(buf);
+  const w = (o, t) => [...t].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
+  w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, 8000, true); v.setUint32(28, 16000, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, 'data'); v.setUint32(40, n * 2, true);
+  return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+})();
+let primed = false;
+function onGesture() {
+  if (!primed && music.paused && !music.dataset.url) {
+    primed = true;
+    music.src = SILENCE;
+    music.play().then(() => music.pause()).catch(() => { primed = false; });
+  }
+  const tip = document.getElementById('sound-tip');
+  if (tip) tip.remove();
+  if (soundBlocked) {
+    soundBlocked = false;
+    soundHint(false);
+    send({ audioOk: true }); // gospodarz przekaże muzykę tutaj od bieżącego miejsca
+  }
+}
+for (const ev of ['keydown', 'pointerdown', 'pointerup', 'mousedown', 'touchend']) window.addEventListener(ev, onGesture, true);
 function musicCmd(m) {
   if (m.audioCmd === 'load') { loadTrack(m.url); return; }
   if (m.audioCmd === 'play') {
@@ -546,15 +572,14 @@ function musicCmd(m) {
     const start = () => {
       try { music.currentTime = m.t; } catch (e) { /* jeszcze nie gotowe */ }
       music.volume = 0;
-      music.play().then(() => { unlockBox(false); fadeTo(1, 150); }).catch((e) => {
-        if (e.name === 'NotAllowedError') { pending = m; unlockBox(true); }
+      music.play().then(() => { soundHint(false); fadeTo(1, 150); }).catch((e) => {
+        if (e.name === 'NotAllowedError') { soundBlocked = true; soundHint(true); send({ audioBlocked: true }); }
       });
     };
     if (music.readyState >= 1) start(); else music.addEventListener('loadedmetadata', start, { once: true });
     return;
   }
   if (m.audioCmd === 'pause' || m.audioCmd === 'stop') {
-    pending = null;
     musicUntil = null;
     if (!music.paused) fadeTo(0, 150, () => music.pause());
   }
@@ -739,6 +764,12 @@ if (PLAYER) {
       box.classList.remove('hidden');
       waiting.classList.add('with-code');
       waitingText.textContent = T('Połącz telefon, na którym toczy się gra.');
+      // wskazówka: jedno naciśnięcie OK na pilocie teraz = muzyka z telewizora od razu, bez przerw w grze
+      if (!hasActivation() && !document.getElementById('sound-tip')) {
+        const tip = h('p', 'sound-tip', T('🔊 Naciśnij teraz OK na pilocie (np. „Pełny ekran”) – wtedy muzyka będzie mogła grać z telewizora od razu.'));
+        tip.id = 'sound-tip';
+        waiting.append(tip);
+      }
     } catch (e) {
       waitingText.textContent = T('Nie udało się połączyć z serwerem pośredniczącym. Spróbuj ponownie.');
       btn.textContent = T('↻ Spróbuj ponownie');
