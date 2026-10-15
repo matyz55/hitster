@@ -435,6 +435,39 @@ function renderPlayer(s) {
     : (s.scores || []).map((x) => h('span', x.active ? 'act' : '', x.text)));
   const keep = app.querySelector('.guess-form');
   const partyBar = s.party ? h('div', 'p-party', s.party.label) : null;
+  // własna tura (albo własna odpowiedź w „Kto pierwszy?”): ten sam układ co na urządzeniu gospodarza
+  if (s.mode === 'buzz' ? answering : mineTurn) {
+    const mk = (b, cls) => {
+      const btn = h('button', cls || b.cls, b.text);
+      btn.disabled = b.disabled;
+      btn.addEventListener('click', () => send({ click: { i: b.i, text: b.text } }));
+      return btn;
+    };
+    const skipB = btns.find((b) => /^⏭/.test(b.text));
+    const rest = btns.filter((b) => b !== skipB);
+    const vinyl = h('div', 'ht-vinyl' + (s.art ? ' cover' : '') + (audioState.playing ? ' spinning' : ''), h('div', 'lbl', '?'));
+    if (s.art) vinyl.style.backgroundImage = `url("${s.art}")`;
+    if (play) play.classList.add('ht-play');
+    const prog = h('div', 'ht-progress', h('div', 'bar'));
+    prog.firstChild.style.width = `${Math.round(audioState.progress * 100)}%`;
+    const body = h('div', 'ht-body', h('div', 'ht-status', s.reveal ? '' : (s.status || '')),
+      play || skipB ? h('div', 'ht-controls', play, skipB ? mk(skipB, 'ghost') : null) : null, s.hasSong ? prog : null);
+    const steps = s.steps ? h('div', 'ht-steps', s.steps.items.map((x, i) => h('div', (i < s.steps.current ? 'done' : '') + (i === s.steps.current ? ' current' : ''),
+      h('b', '', `${x.len} s`), h('small', '', ` ${T('{0} pkt', x.pts)}`)))) : null;
+    const reveal = s.reveal ? h('div', 'ht-reveal', h('div', 'y', s.reveal.y), h('div', 't', h('b', '', s.reveal.t), ' — ', s.reveal.a, ' ', flag(s.reveal.cc)),
+      h('div', 'lines', (s.reveal.lines || []).map((l) => h('div', '', l)))) : null;
+    const card = h('section', 'ht-card' + (rest.length ? ' with-actions' : ''),
+      h('div', 'ht-head', h('h2', '', s.title || ''), h('span', 'ht-info', s.info || '')),
+      h('div', 'ht-mystery', vinyl, body), steps, reveal, guess,
+      s.challenge ? h('p', 'ht-hint', s.challenge) : null, s.hint ? h('p', 'ht-hint', s.hint) : null,
+      active ? vTimeline(active, pick, null) : null,
+      rest.length ? h('div', 'ht-actions', rest.map((b) => mk(b))) : null);
+    const board = (s.scores || []).length ? h('div', 'ht-scores', s.scores.map((x) => h('span', x.active ? 'act' : '', x.text))) : null;
+    app.replaceChildren(...[partyBar, board, card].filter(Boolean));
+    if (guess && keep) restoreGuess(keep, guess);
+    lastMark = '';
+    return;
+  }
   app.replaceChildren(...[top, partyBar, banner, song, play, buzz, guess, actions, tl, ownTl, scores.length ? h('div', 'p-scores', scores) : null].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
   // nowe miejsce wskazane przez odpowiadającego – przewijamy podgląd tak, by znacznik był widoczny
@@ -515,6 +548,10 @@ function updateAudio() {
     if (st) { st.classList.toggle('playing', audioState.playing); st.firstChild.textContent = audioState.playing ? '🎵 ' : ''; }
     const pb = app.querySelector('.p-play');
     if (pb) { pb.textContent = audioState.playing ? T('⏸ Pauza') : T('▶ Odtwórz'); pb.classList.toggle('on', audioState.playing); }
+    const hv = app.querySelector('.ht-vinyl');
+    if (hv) hv.classList.toggle('spinning', audioState.playing);
+    const hb = app.querySelector('.ht-progress .bar');
+    if (hb) hb.style.width = `${Math.round(audioState.progress * 100)}%`;
     return;
   }
   const v = app.querySelector('.vinyl');
@@ -623,6 +660,10 @@ function onMessage(m) {
     return;
   }
   if (m.audio) { audioState = m.audio; updateAudio(); return; }
+  // stan gry z gospodarza niesie też aktualny stan odtwarzania (np. nowa tura = jeszcze nic nie gra)
+  if (m.screen === 'game' && typeof m.playing === 'boolean') {
+    audioState = { playing: m.playing, progress: m.playing ? audioState.progress : (m.hasSong ? audioState.progress : 0) };
+  }
   render(m);
 }
 

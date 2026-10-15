@@ -269,6 +269,46 @@
     .own-tl { background: var(--panel); border-radius: 14px; padding: 10px 12px; }
     .own-tl summary { font-weight: 800; color: var(--accent-2); cursor: pointer; }
     .own-tl .vtl { margin-top: 8px; }
+    /* telefon gracza w jego turze – układ jak na urządzeniu gospodarza */
+    .ht-scores { display: flex; gap: 6px; flex-wrap: wrap; }
+    .ht-scores span { background: var(--panel); border-radius: 10px; padding: 6px 10px; font-size: .85em; border: 2px solid transparent; }
+    .ht-scores .act { border-color: var(--accent); }
+    .ht-card { background: var(--panel); border-radius: 16px; padding: 14px 12px; display: flex; flex-direction: column; gap: 10px; }
+    .ht-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+    .ht-head h2 { margin: 0; font-size: 1.25em; }
+    .ht-info { color: var(--gold); letter-spacing: 1px; }
+    .ht-mystery { display: flex; gap: 12px; align-items: center; }
+    .ht-vinyl { width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0; background: repeating-radial-gradient(circle, #111 0 2px, #222 2px 4px);
+      display: grid; place-items: center; box-shadow: 0 0 0 3px #000; background-size: cover; background-position: center; }
+    .ht-vinyl .lbl { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); display: grid; place-items: center; font-weight: 700; }
+    .ht-vinyl.cover .lbl { display: none; }
+    .ht-vinyl.spinning { animation: spin 2.4s linear infinite; }
+    .ht-body { flex: 1; min-width: 0; }
+    .ht-status { color: var(--muted); font-size: .9em; }
+    .ht-controls { display: flex; gap: 8px; margin: 8px 0; }
+    .ht-controls button { flex: 1; font: inherit; font-size: 1em; padding: 10px; border-radius: 10px; font-weight: 700; }
+    .ht-controls .p-play, .ht-controls .p-play.on { background: var(--accent); color: #fff; border: 0; }
+    .ht-controls .ghost { background: transparent; border: 1px solid #3d3755; color: var(--text); }
+    .ht-controls button:disabled { opacity: .4; }
+    .ht-progress { height: 6px; background: var(--panel-2); border-radius: 3px; overflow: hidden; }
+    .ht-progress .bar { height: 100%; width: 0; background: var(--accent-2); transition: width .25s linear; }
+    .ht-steps { display: flex; gap: 6px; }
+    .ht-steps div { flex: 1; text-align: center; background: var(--panel-2); border-radius: 8px; padding: 6px 0; font-size: .85em; }
+    .ht-steps .done { opacity: .5; }
+    .ht-steps .current { background: var(--accent); color: #fff; }
+    .ht-reveal { background: var(--panel-2); border-radius: 10px; padding: 10px 12px; }
+    .ht-reveal .y { font-size: 2em; font-weight: 900; color: var(--gold); line-height: 1; }
+    .ht-reveal .lines div { margin-top: 4px; font-size: .9em; font-weight: 600; }
+    .ht-hint { color: var(--muted); margin: 0; font-size: .9em; }
+    .ht-card.with-actions { padding-bottom: 0; }
+    .ht-actions { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; margin: 0 -12px; padding: 10px 12px;
+      background: var(--panel); border-top: 1px solid #2f2a44; border-radius: 0 0 16px 16px; }
+    .ht-actions button { flex: 1 1 auto; font: inherit; padding: 12px; border-radius: 10px; border: 1px solid #3d3755; background: var(--panel-2); color: var(--text); }
+    .ht-actions button.primary { background: var(--accent); border: 0; font-weight: 700; }
+    .ht-actions button.gold { background: var(--gold); color: #2b2000; border: 0; font-weight: 700; }
+    .ht-actions button.ok { background: var(--ok); color: #0b1d12; border: 0; font-weight: 700; }
+    .ht-actions button.big-choice { font-size: 1.15em; font-weight: 800; padding: 18px 12px; }
+    .ht-actions button:disabled { opacity: .4; }
   </style>
 </head>
 <body>

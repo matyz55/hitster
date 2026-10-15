@@ -68,7 +68,8 @@ naraz bezpośrednio (WebRTC przez PeerJS) i przez publiczny serwer pośredniczą
 wygrywa kanał, który połączy się pierwszy, drugi jest od razu zamykany. Biblioteki ładowane są dopiero przy łączeniu.
 
 **Gracze na własnych telefonach**: w multiplayerze lobby od razu tworzy pokój – gracze skanują QR
-(`tv.html?join=KOD`), wpisują imię, głosują na tryb, a w grze dostają własny, pionowy widok: podgląd na żywo osi gracza, który odpowiada (z zaznaczonym miejscem – widać, czy warto rzucić wyzwanie;
+(`tv.html?join=KOD`), wpisują imię, głosują na tryb, a w grze dostają własny, pionowy widok: w swojej turze układ jak na urządzeniu gospodarza (płyta, ▶ Odtwórz / ⏭ Pomiń, pasek postępu, oś z „＋ tutaj”,
+przyciski akcji na dole), poza nią podgląd na żywo osi gracza, który odpowiada (z zaznaczonym miejscem – widać, czy warto rzucić wyzwanie;
 własna oś jest pod spodem do rozwinięcia), przycisk ▶/⏸ (odtwarzaniem steruje gracz, który
 teraz odpowiada – gospodarz przyjmuje to polecenie tylko od jego telefonu), baner „Twoja tura”, oś czasu
 z przyciskami „＋ tutaj”, odpowiedź z podpowiedziami, duże przyciski (wyzwanie, kupno karty…) i ogromny
