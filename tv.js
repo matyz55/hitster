@@ -371,7 +371,7 @@ function vTimeline(t, pick, title) {
       const c = t.cards[i];
       box.append(c.start
         ? h('div', 'vrow vcard vstart', h('span', 'y', c.y), h('span', 'ta', T('karta startowa')))
-        : h('div', 'vrow vcard' + (c.new ? ' vnew' : ''), h('span', 'y', c.y), h('span', 'ta', h('b', '', c.t), h('small', '', c.a))));
+        : h('div', 'vrow vcard' + (c.new ? ' vnew' : ''), h('span', 'y', c.y), h('span', 'ta', h('b', '', c.t), h('small', '', c.a)), flag(c.cc)));
     }
   }
   box.append(h('div', 'vtl-hint', T('↓ nowsze')));
@@ -385,19 +385,13 @@ function renderPlayer(s) {
   const active = tls.find((t) => t.active);
   const mineTurn = myTurn(s);
   const answering = s.buzzers && s.buzzers.answering === me;
-  const top = h('div', 'p-top', h('div', 'p-me', h('b', '', me), mine && mine.sub ? h('small', '', mine.sub) : null), (() => {
+  // własna tura (albo własna odpowiedź w „Kto pierwszy?”) – wtedy dochodzą ▶ Odtwórz, ⏭ Pomiń i miejsca „＋ tutaj”
+  const myView = s.mode === 'buzz' ? answering : mineTurn;
+  const top = h('div', 'p-top small', h('span', 'muted', T('Grasz jako: {0}', me)), (() => {
     const b = h('button', 'link', T('zmień gracza'));
     b.addEventListener('click', () => { me = ''; render(s); });
     return b;
   })());
-  const bannerText = s.mode === 'buzz'
-    ? (answering ? T('🔔 Odpowiadasz!') : (s.buzzers && s.buzzers.answering ? T('🔔 Odpowiada: {0}', s.buzzers.answering) : T('Słuchaj i naciśnij, gdy znasz odpowiedź')))
-    : (ids.includes(s.challenger) && s.phase === 'challenge' ? T('⚔ Twoje wyzwanie – wskaż inne miejsce') : (turnIsMine(s) ? T('🎯 Twoja tura!') : T('Tura: {0}', s.turnWho ? `${s.turnName} (${s.turnWho})` : s.turnName)));
-  const banner = h('div', 'p-banner' + (mineTurn || answering ? ' mine' : ''), bannerText);
-  const song = s.reveal
-    ? h('div', 'p-reveal', h('div', 'y', s.reveal.y), h('div', 't', s.reveal.t), h('div', 'a', s.reveal.a, ' ', flag(s.reveal.cc)),
-      h('div', 'lines', (s.reveal.lines || []).map((l) => h('div', '', l))))
-    : h('div', 'p-status' + (audioState.playing ? ' playing' : ''), audioState.playing ? '🎵 ' : '', s.status || '');
   // Kto pierwszy?: jeden ogromny przycisk
   let buzz = null;
   if (s.buzzers && s.buzzers.open) {
@@ -411,14 +405,13 @@ function renderPlayer(s) {
   }
   // ▶/⏸ – steruje gracz, który teraz odpowiada
   let play = null;
-  if (s.play && (s.play.who || []).includes(me)) {
+  if (myView && s.play && (s.play.who || []).includes(me)) {
     const playing = audioState.playing;
     play = h('button', 'p-play' + (playing ? ' on' : ''), playing ? T('⏸ Pauza') : T('▶ Odtwórz'));
     play.disabled = s.play.disabled;
     play.addEventListener('click', () => {
       send({ playToggle: true });
-      // natychmiastowa reakcja – właściwy stan przyjdzie od gospodarza
-      play.textContent = '…';
+      play.textContent = '…'; // natychmiastowa reakcja – właściwy stan przyjdzie od gospodarza
     });
   }
   const guess = s.guess && (s.guess.who === me || (s.turnWho === me && s.guess.who === s.turnName)) ? guessForm(s.guess) : null;
@@ -429,67 +422,53 @@ function renderPlayer(s) {
   const allowed = (b) => (s.mode === 'buzz' ? answering
     : (ids.includes(s.challenger) && s.phase === 'challenge') || (turnIsMine(s) ? !tableBtn(b) : (tableBtn(b) || ids.includes(b.text))));
   const btns = (s.buttons || []).map((b, i) => ({ ...b, i })).filter((b) => allowed(b));
-  const actions = btns.length ? h('div', 'p-actions', btns.map((b) => {
-    const btn = h('button', b.cls, b.text);
+  const mk = (b, cls) => {
+    const btn = h('button', cls || b.cls, b.text);
     btn.disabled = b.disabled;
     btn.addEventListener('click', () => send({ click: { i: b.i, text: b.text } }));
     return btn;
-  })) : null;
-  // oś: w swojej turze (albo przy swoim wyzwaniu) – oś gracza z turą z miejscami do stuknięcia; poza tym własna
+  };
+  const skipB = myView ? btns.find((b) => /^⏭/.test(b.text)) : null;
+  const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text));
   const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || ids.includes(s.challenger)));
-  let tl = null;
-  let ownTl = null;
-  if (active && (pick || s.reveal || ids.includes(active.name))) tl = vTimeline(active, pick, ids.includes(active.name) ? T('Twoja oś') : T('Oś: {0}', active.name));
-  else if (active && active !== mine) {
-    // poza swoją turą: podgląd na żywo osi gracza, który odpowiada – widać, gdzie kładzie kartę (np. czy rzucić wyzwanie)
-    tl = vTimeline(active, false, active.slot != null ? T('👀 {0} wskazuje miejsce na swojej osi:', active.name) : T('👀 Oś gracza {0} – czeka na wybór miejsca', active.name));
-    tl.classList.add('watch');
-    if (mine) {
-      ownTl = h('details', 'own-tl', h('summary', '', T('Twoja oś ({0})', mine.sub || mine.cards.length)), vTimeline(mine, false, null));
-      if (ownOpen) ownTl.open = true;
-      ownTl.addEventListener('toggle', () => { ownOpen = ownTl.open; });
-    }
-  } else if (mine) tl = vTimeline(mine, false, T('Twoja oś'));
-  if (tl && !mine && active && tls.length === 1) tl.querySelector('.vtl-title') && tl.querySelector('.vtl-title').remove();
-  const others = tls.filter((t) => t !== mine && t !== active && t.sub);
-  const scores = (others.length ? others.map((t) => h('span', '', h('b', '', t.name), ` ${t.sub}`))
-    : (s.scores || []).map((x) => h('span', x.active ? 'act' : '', x.text)));
+  // karta tury – jak na urządzeniu gospodarza
+  const vinyl = h('div', 'ht-vinyl' + (s.art ? ' cover' : '') + (audioState.playing ? ' spinning' : ''), h('div', 'lbl', '?'));
+  if (s.art) vinyl.style.backgroundImage = `url("${s.art}")`;
+  if (play) play.classList.add('ht-play');
+  const prog = h('div', 'ht-progress', h('div', 'bar'));
+  prog.firstChild.style.width = `${Math.round(audioState.progress * 100)}%`;
+  const body = h('div', 'ht-body', h('div', 'ht-status', s.reveal ? '' : (s.status || '')),
+    play || skipB ? h('div', 'ht-controls', play, skipB ? mk(skipB, 'ghost') : null) : null, s.hasSong ? prog : null);
+  const steps = s.steps ? h('div', 'ht-steps', s.steps.items.map((x, i) => h('div', (i < s.steps.current ? 'done' : '') + (i === s.steps.current ? ' current' : ''),
+    h('b', '', `${x.len} s`), h('small', '', ` ${T('{0} pkt', x.pts)}`)))) : null;
+  const reveal = s.reveal ? h('div', 'ht-reveal', h('div', 'y', s.reveal.y), h('div', 't', h('b', '', s.reveal.t), ' — ', s.reveal.a, ' ', flag(s.reveal.cc)),
+    h('div', 'lines', (s.reveal.lines || []).map((l) => h('div', '', l)))) : null;
+  // w swojej turze oś z miejscami „＋ tutaj” jest w karcie (jak u gospodarza)
+  const turnTl = myView && active ? vTimeline(active, pick, null) : null;
+  const card = h('section', 'ht-card' + (rest.length ? ' with-actions' : ''),
+    h('div', 'ht-head', h('h2', '', s.title || ''), h('span', 'ht-info', s.info || '')),
+    h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess,
+    s.challenge ? h('p', 'ht-hint', s.challenge) : null, s.hint ? h('p', 'ht-hint', s.hint) : null,
+    turnTl, rest.length ? h('div', 'ht-actions', rest.map((b) => mk(b))) : null);
+  const board = (s.scores || []).length ? h('div', 'ht-scores', s.scores.map((x) => h('span', x.active ? 'act' : '', x.text))) : null;
+  const sections = [];
+  // poza swoją turą: podgląd na żywo osi gracza, który odpowiada – widać, gdzie kładzie kartę (np. czy rzucić wyzwanie)
+  if (!myView && active && active !== mine) {
+    const w = vTimeline(active, false, active.slot != null ? T('👀 {0} wskazuje miejsce na swojej osi:', active.name) : T('👀 Oś gracza {0} – czeka na wybór miejsca', active.name));
+    w.classList.add('watch');
+    sections.push(w);
+  }
+  // własna oś (bez „＋”) – chyba że jest już w karcie tury
+  if (mine && !(turnTl && active === mine)) sections.push(h('section', 'ht-tl', vTimeline(mine, false, T('Twoja oś') + (mine.sub ? ` · ${mine.sub}` : ''))));
+  // osie pozostałych graczy
+  const others = tls.filter((t) => t !== mine && t !== active);
+  if (others.length) {
+    sections.push(h('section', 'ht-others', h('h3', '', T('Osie pozostałych graczy')),
+      others.map((t) => vTimeline(t, false, t.name + (t.sub ? ` · ${t.sub}` : '')))));
+  }
   const keep = app.querySelector('.guess-form');
   const partyBar = s.party ? h('div', 'p-party', s.party.label) : null;
-  // własna tura (albo własna odpowiedź w „Kto pierwszy?”): ten sam układ co na urządzeniu gospodarza
-  if (s.mode === 'buzz' ? answering : mineTurn) {
-    const mk = (b, cls) => {
-      const btn = h('button', cls || b.cls, b.text);
-      btn.disabled = b.disabled;
-      btn.addEventListener('click', () => send({ click: { i: b.i, text: b.text } }));
-      return btn;
-    };
-    const skipB = btns.find((b) => /^⏭/.test(b.text));
-    const rest = btns.filter((b) => b !== skipB);
-    const vinyl = h('div', 'ht-vinyl' + (s.art ? ' cover' : '') + (audioState.playing ? ' spinning' : ''), h('div', 'lbl', '?'));
-    if (s.art) vinyl.style.backgroundImage = `url("${s.art}")`;
-    if (play) play.classList.add('ht-play');
-    const prog = h('div', 'ht-progress', h('div', 'bar'));
-    prog.firstChild.style.width = `${Math.round(audioState.progress * 100)}%`;
-    const body = h('div', 'ht-body', h('div', 'ht-status', s.reveal ? '' : (s.status || '')),
-      play || skipB ? h('div', 'ht-controls', play, skipB ? mk(skipB, 'ghost') : null) : null, s.hasSong ? prog : null);
-    const steps = s.steps ? h('div', 'ht-steps', s.steps.items.map((x, i) => h('div', (i < s.steps.current ? 'done' : '') + (i === s.steps.current ? ' current' : ''),
-      h('b', '', `${x.len} s`), h('small', '', ` ${T('{0} pkt', x.pts)}`)))) : null;
-    const reveal = s.reveal ? h('div', 'ht-reveal', h('div', 'y', s.reveal.y), h('div', 't', h('b', '', s.reveal.t), ' — ', s.reveal.a, ' ', flag(s.reveal.cc)),
-      h('div', 'lines', (s.reveal.lines || []).map((l) => h('div', '', l)))) : null;
-    const card = h('section', 'ht-card' + (rest.length ? ' with-actions' : ''),
-      h('div', 'ht-head', h('h2', '', s.title || ''), h('span', 'ht-info', s.info || '')),
-      h('div', 'ht-mystery', vinyl, body), steps, reveal, guess,
-      s.challenge ? h('p', 'ht-hint', s.challenge) : null, s.hint ? h('p', 'ht-hint', s.hint) : null,
-      active ? vTimeline(active, pick, null) : null,
-      rest.length ? h('div', 'ht-actions', rest.map((b) => mk(b))) : null);
-    const board = (s.scores || []).length ? h('div', 'ht-scores', s.scores.map((x) => h('span', x.active ? 'act' : '', x.text))) : null;
-    app.replaceChildren(...[partyBar, board, card].filter(Boolean));
-    if (guess && keep) restoreGuess(keep, guess);
-    lastMark = '';
-    return;
-  }
-  app.replaceChildren(...[top, partyBar, banner, song, play, buzz, guess, actions, tl, ownTl, scores.length ? h('div', 'p-scores', scores) : null].filter(Boolean));
+  app.replaceChildren(...[top, partyBar, board, card, ...sections].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
   // nowe miejsce wskazane przez odpowiadającego – przewijamy podgląd tak, by znacznik był widoczny
   const mark = app.querySelector('.vtl.watch .vmys');
@@ -497,7 +476,6 @@ function renderPlayer(s) {
   if (mark && markKey !== lastMark) mark.scrollIntoView({ block: 'center', behavior: 'smooth' });
   lastMark = markKey;
 }
-let ownOpen = false;
 let lastMark = '';
 
 /* --- odpowiedź wpisywana na telefonie gracza (z podpowiedziami z bazy piosenek) --- */
