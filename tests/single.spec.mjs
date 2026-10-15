@@ -138,14 +138,28 @@ test('własna lista piosenek: dopasowanie do bazy, zestaw i gra tylko z listy', 
   expect(keys).toContain(await page.evaluate(() => songKey(state.current)));
 });
 
-test('ciekawostka o nagrodzie z Wikidata po odkryciu karty', async ({ page }) => {
+test('ciekawostki: nagroda z Wikidata, rok festiwalu w Opolu, przy karcie jedna ciekawostka', async ({ page }) => {
   await page.goto('/');
-  const line = await page.evaluate(() => {
-    const song = window.SONGS.find((s) => (s.f || []).some((f) => f.startsWith('a:oscar')));
-    return factLines(song).map((n) => n.textContent).join(' | ');
+  await page.waitForFunction(() => !!window.SONG_FACTS, null, { timeout: 15000 });
+  const r = await page.evaluate(() => {
+    const oscar = window.SONGS.find((s) => (s.f || []).some((f) => f.startsWith('a:oscar')));
+    const bodo = window.SONGS.find((s) => s.t === 'Umówiłem się z nią na dziewiątą');
+    const withMany = window.SONGS.find((s) => songFacts(s).length >= 3);
+    return {
+      oscar: songFacts(oscar).join(' | '),
+      bodo: songFacts(bodo).join(' | '),
+      years: [opoleYear('I'), opoleYear('XIX'), opoleYear('XX'), opoleYear('LIII'), opoleYear('LXII')],
+      shown: factLines(withMany).length,
+      composer: songFacts(window.SONGS.find((s) => s.t === 'Miłość ci wszystko wybaczy')).join(' | '),
+    };
   });
-  expect(line).toContain('Oscar');
-  expect(line).toContain('Wikidata');
+  expect(r.oscar).toContain('Oscar');
+  expect(r.oscar).toContain('Wikidata');
+  // edycje wg Wikipedii: I – 1963, XIX – 1981, w 1982 bez festiwalu, XX – 1983, LIII – 2016, LXII – 2025
+  expect(r.years).toEqual([1963, 1981, 1983, 2016, 2025]);
+  expect(r.bodo).toContain('LIII Krajowym Festiwalu Piosenki Polskiej w Opolu (2016)');
+  expect(r.shown).toBe(1);
+  expect(r.composer).toContain('Henryk Wars');
 });
 
 test('wersja angielska interfejsu', async ({ page }) => {

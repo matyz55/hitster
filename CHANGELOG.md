@@ -482,3 +482,14 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - Poprawiona data piosenki „Tak mi źle – Tylko wróć” (Wojciech Gąssowski): 1966 zamiast 2015. Piosenka pochodzi
   z serialu „Wojna domowa” (odcinek „Młode talenty”, 1966); 2015 to rok późniejszej składanki.
+
+## 5.22.0 – 15.10.2026 (`HASH`)
+
+- **Więcej ciekawostek** po odkryciu karty – z Wikidata, z dokładnymi danymi: kompozytor i autor tekstu, film lub serial,
+  w którym piosenka zabrzmiała (z rokiem), album z rokiem wydania, producent nagrania, utwór, na którym piosenka jest
+  oparta; o wykonawcy: prawdziwe imię i nazwisko (przy pseudonimach), rok i miejsce urodzenia, rok i miejsce powstania
+  zespołu. Ciekawostkę ma teraz 4864 z 5750 piosenek. Lista ze źródłami: `FACTS.md`.
+- Przy karcie pokazuje się **jedna** ciekawostka, losowo wybrana spośród dostępnych – przy kolejnym spotkaniu tej samej
+  piosenki może być inna.
+- Ciekawostka o festiwalu w Opolu podaje też rok (np. LIII KFPP – 2016).
+- Poprawiona data: Eugeniusz Bodo – „Umówiłem się z nią na dziewiątą”: 1937 (film „Piętro wyżej”) zamiast 2005.

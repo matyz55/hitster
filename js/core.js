@@ -1,7 +1,7 @@
 'use strict';
 
 // aktualna wersja gry – ta sama co ostatni wpis w CHANGELOG.md (pokazywana na dole ekranu startowego)
-const GAME_VERSION = '5.21.1';
+const GAME_VERSION = '5.22.0';
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -177,6 +177,10 @@ function streamUrl(song, preview, platform) {
   const sc = document.createElement('script');
   sc.src = 'songs-sp.js';
   document.head.append(sc);
+  // ciekawostki z Wikidata (tools/facts.mjs) – potrzebne dopiero po odkryciu karty
+  const fc = document.createElement('script');
+  fc.src = 'facts.js';
+  document.head.append(fc);
 });
 const PLATFORM_NAMES = { youtube: 'YouTube', spotify: 'Spotify', apple: 'Apple Music' };
 // Android: kliknięcie ikonki otwiera od razu aplikację linkiem „intent://” – w tej samej karcie i bezpośrednio

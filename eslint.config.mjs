@@ -4,7 +4,7 @@ import globals from 'globals';
 // Pliki gry to zwykłe skrypty (bez modułów) ładowane po kolei w index.html / tv.html –
 // współdzielą zmienne globalne, dlatego no-undef jest wyłączone, a no-unused-vars pilnuje tylko zmiennych lokalnych.
 export default [
-  { ignores: ['node_modules/', 'playwright-report/', 'test-results/', 'songs.js', 'flags/'] },
+  { ignores: ['node_modules/', 'playwright-report/', 'test-results/', 'songs.js', 'songs-sp.js', 'facts.js', 'flags/'] },
   js.configs.recommended,
   {
     files: ['*.js', 'js/*.js'],

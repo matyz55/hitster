@@ -128,8 +128,20 @@ function revealTimeline() {
   showReveal(verdict, specialLine, ...expertLines, tokenLine, yearInfo, ...allLines);
 }
 
-// ciekawostki o piosence (pole f z songs.js) – najwyżej dwie
-function factLines(song) {
+// rok edycji Krajowego Festiwalu Piosenki Polskiej w Opolu z numeru rzymskiego (I – 1963; w 1982 festiwal się nie odbył,
+// więc od XX – 1983 numer jest o 1963 mniejszy od roku; wg listy edycji w Wikipedii)
+function opoleYear(roman) {
+  const v = { I: 1, V: 5, X: 10, L: 50, C: 100 };
+  let n = 0;
+  for (let i = 0; i < roman.length; i++) {
+    const cur = v[roman[i]] || 0;
+    n += cur < (v[roman[i + 1]] || 0) ? -cur : cur;
+  }
+  return n ? (n <= 19 ? 1962 + n : 1963 + n) : null;
+}
+
+// wszystkie ciekawostki o piosence: z pola f w songs.js i z Wikidata (facts.js: piosenka, potem wykonawca)
+function songFacts(song) {
   const out = [];
   for (const f of song.f || []) {
     const [kind, a, b, c] = f.split(':');
@@ -146,8 +158,11 @@ function factLines(song) {
         : (b ? T('🎤 Eurowizja Junior {0}: {1}. miejsce ({2})', a, b, country) : T('🎤 Występ na Eurowizji Junior {0} ({1})', a, country)));
     } else if (kind === 't1') out.push(T('📻 1. miejsce na Liście Przebojów Programu Trzeciego'));
     else if (kind === 'tp') out.push(T('📻 W plebiscycie „Polski Top Wszech Czasów” Trójki'));
-    else if (kind === 'o') out.push(T('🎙 Śpiewana na {0} Krajowym Festiwalu Piosenki Polskiej w Opolu', a));
-    else if (kind === 'b') out.push(b ? T('🇺🇸 Billboard Year-End Hot 100 ({0}): {1}. miejsce', a, b) : T('🇺🇸 Na liście Billboard Year-End Hot 100 ({0})', a));
+    else if (kind === 'o') {
+      const y = opoleYear(a);
+      out.push(y ? T('🎙 Śpiewana na {0} Krajowym Festiwalu Piosenki Polskiej w Opolu ({1})', a, y)
+        : T('🎙 Śpiewana na {0} Krajowym Festiwalu Piosenki Polskiej w Opolu', a));
+    } else if (kind === 'b') out.push(b ? T('🇺🇸 Billboard Year-End Hot 100 ({0}): {1}. miejsce', a, b) : T('🇺🇸 Na liście Billboard Year-End Hot 100 ({0})', a));
     else if (kind === 'n') out.push(T('🇵🇱 Nr 1 na liście przebojów w Polsce ({0})', a));
     // nagrody z Wikidata (tools/awards.mjs, lista w AWARDS.md)
     else if (kind === 'a') {
@@ -157,8 +172,33 @@ function factLines(song) {
       if (txt) out.push(T('{0} ({1}, wg Wikidata)', txt, b));
     }
   }
+  const wd = (txt) => T('{0} (wg Wikidata)', txt);
+  for (const [k, a, b] of (window.SONG_FACTS && window.SONG_FACTS[songKey(song)]) || []) {
+    if (k === 'ml') out.push(wd(T('🎼 Muzyka i słowa: {0}', a)));
+    else if (k === 'm' && a && b) out.push(wd(T('🎼 Muzyka: {0} · słowa: {1}', a, b)));
+    else if (k === 'm' && a) out.push(wd(T('🎼 Muzyka: {0}', a)));
+    else if (k === 'm' && b) out.push(wd(T('✍️ Słowa: {0}', b)));
+    else if (k === 'w') out.push(wd(b ? T('🎬 Zabrzmiała w: „{0}” ({1})', a, b) : T('🎬 Zabrzmiała w: „{0}”', a)));
+    else if (k === 'al') out.push(wd(T('💿 Z albumu „{0}” ({1})', a, b)));
+    else if (k === 'pr') out.push(wd(T('🎚 Producent nagrania: {0}', a)));
+    else if (k === 'bo') out.push(wd(b ? T('🔁 Oparta na utworze „{0}” ({1})', a, b) : T('🔁 Oparta na utworze „{0}”', a)));
+  }
+  if (out.length) return out;
+  // o wykonawcy – gdy o samej piosence nic nie wiadomo
+  const name = mainArtist(song);
+  for (const [k, a, b] of (window.ARTIST_FACTS && window.ARTIST_FACTS[name]) || []) {
+    if (k === 'bn') out.push(wd(T('🪪 {0} to pseudonim – właściwie: {1}', name, a)));
+    else if (k === 'bp') out.push(wd(T('📍 {0} – rok i miejsce urodzenia: {1}, {2}', name, b, a)));
+    else if (k === 'fp') out.push(wd(T('📍 Zespół {0} powstał w {1} ({2})', name, b, a)));
+  }
   if (!out.length && TOP_SONGS.has(songKey(song))) out.push(T('🔥 Jedna z 1000 najpopularniejszych piosenek w grze (Spotify)'));
-  return out.slice(0, 2).map((t) => el('div', { class: 'fact' }, t));
+  return out;
+}
+// przy odkrytej karcie – jedna ciekawostka, losowo wybrana spośród dostępnych (przy kolejnym spotkaniu może być inna)
+function factLines(song) {
+  const all = songFacts(song);
+  if (!all.length) return [];
+  return [el('div', { class: 'fact' }, all[Math.floor(Math.random() * all.length)])];
 }
 
 function showReveal(...extra) {
