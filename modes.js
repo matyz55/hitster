@@ -93,6 +93,8 @@ function answerQuiz(choice) {
     const diff = Math.abs(y - song.y);
     pts = diff === 0 ? 3 : (diff <= 2 ? 1 : 0);
     ok = pts > 0;
+    if (diff === 0) addMoment('🎯', T('{0} podał(a) dokładny rok {1} („{2}”)', p.name, song.y, song.t), 2);
+    if (diff >= 15 && (!state.bigMiss || diff > state.bigMiss)) { state.bigMiss = diff; addMoment('😅', T('Największa pomyłka: {0} – {1} zamiast {2} („{3}”)', p.name, y, song.y, song.t), 1); }
     verdict = diff === 0 ? T('🎯 Dokładnie {0}! +3 pkt', song.y)
       : (diff <= 2 ? T('✔ Blisko – {0} (podano {1}). +1 pkt', song.y, y) : T('✘ To {0} (podano {1}).', song.y, y));
     state.quiz.year = y;
@@ -422,3 +424,42 @@ const bingoSnapshot = () => (state.mode === 'bingo' && state.bingo ? {
   boards: state.bingo.boards.map((b, i) => ({ name: state.players[i].name, cells: b.cells.map((id) => state.bingo.cats[id].label),
     marked: b.marked, pick: b.pick, won: state.bingo.winners.includes(i) })),
 } : null);
+
+/* ---------- Najciekawsze momenty gry (na podsumowaniu) ---------- */
+// zdarzenia zapisywane w trakcie gry (state.moments) + wnioski z historii piosenek
+function addMoment(icon, text, weight = 1) {
+  if (!state.moments) state.moments = [];
+  state.moments.push({ icon, text, weight });
+}
+function momentLines() {
+  const out = [...(state.moments || [])];
+  const hist = state.history.filter((h) => h.song && h.player);
+  // najdłuższa seria trafień jednego gracza
+  const streak = {};
+  let best = null;
+  for (const h of hist) {
+    const s = streak[h.player] = h.ok ? (streak[h.player] || 0) + 1 : 0;
+    if (s >= 3 && (!best || s > best.n)) best = { who: h.player, n: s };
+  }
+  if (best) out.push({ icon: '🔥', text: T('Najdłuższa seria: {0} – {1} trafień z rzędu', best.who, best.n), weight: 3 });
+  // najcelniejszy gracz (gdy grało kilka osób)
+  const per = {};
+  for (const h of hist) { per[h.player] = per[h.player] || { ok: 0, n: 0 }; per[h.player].n += 1; if (h.ok) per[h.player].ok += 1; }
+  const acc = Object.entries(per).filter(([, v]) => v.n >= 3).sort((a, b) => b[1].ok / b[1].n - a[1].ok / a[1].n);
+  if (acc.length > 1) out.push({ icon: '🎯', text: T('Najcelniej: {0} – {1} z {2}', acc[0][0], acc[0][1].ok, acc[0][1].n), weight: 2 });
+  // najstarsza i najnowsza piosenka gry
+  const songs = state.history.map((h) => h.song).filter(Boolean);
+  if (songs.length >= 3) {
+    const old = songs.reduce((a, b) => (b.y < a.y ? b : a));
+    const young = songs.reduce((a, b) => (b.y > a.y ? b : a));
+    out.push({ icon: '🕰', text: T('Najstarsza piosenka: {0} – „{1}” ({2})', old.y, old.t, mainArtist(old)), weight: 1 });
+    if (young !== old) out.push({ icon: '🆕', text: T('Najnowsza piosenka: {0} – „{1}” ({2})', young.y, young.t, mainArtist(young)), weight: 1 });
+  }
+  return out.sort((a, b) => b.weight - a.weight).slice(0, 6);
+}
+function momentsBox() {
+  const lines = momentLines();
+  if (!lines.length) return null;
+  return el('div', { class: 'moments-box' }, el('h3', {}, T('✨ Najciekawsze momenty')),
+    el('ul', { class: 'moments' }, lines.map((m) => el('li', {}, `${m.icon} ${m.text}`))));
+}

@@ -838,6 +838,7 @@ function tvSync() {
     snap.ranking = ($('.party-standings') ? $$('.party-standings li') : $$('#ranking li')).map((li) => li.textContent);
     if ($('.party-box p')) snap.next = $('.party-box p').textContent;
     snap.league = $$('.league-standings li').map((li) => li.textContent);
+    snap.moments = $$('.moments li').map((li) => li.textContent);
     snap.leagueTitle = $('.league-box h3') ? $('.league-box h3').textContent : '';
     // piosenki z tej gry (ostatnie 12) – lista obok wyników, jak na ekranie gospodarza
     snap.played = (state.party && state.party.done ? [] : state.history).slice(-12).map((x) => ({
@@ -1300,7 +1301,47 @@ function renderSetupPlayers(rows) {
   $('#btn-join-phone').classList.toggle('hidden', max === 1 || rows.length >= max);
   $('#players-min').textContent = rows.length < min
     ? T('W tym trybie potrzeba co najmniej {0} – dodaj kolejnego gracza albo dołącz go przez telefon.', min) : '';
+  renderTeamBoard();
   tvSync();
+}
+// drużyny w multiplayerze: gracze jako przyciski – stuknij gracza, potem drużynę (albo przeciągnij), „🎲 Losuj drużyny”
+let teamMove = null;
+const splitMembers = (txt) => (txt || '').split(/[,;\n]+/).map((m) => m.trim()).filter(Boolean);
+function renderTeamBoard() {
+  const box = $('#team-board');
+  const on = !!(MODES[state.mode] && MODES[state.mode].teams && playCtx === 'multi');
+  box.classList.toggle('hidden', !on);
+  if (!on) return;
+  const rows = readSetupRows();
+  const move = (member, to) => {
+    const cur = readSetupRows();
+    for (const r of cur) r.members = splitMembers(r.members).filter((m) => m !== member).join(', ');
+    cur[to].members = [...splitMembers(cur[to].members), member].join(', ');
+    teamMove = null;
+    renderSetupPlayers(cur);
+  };
+  box.replaceChildren(
+    el('div', { class: 'team-tools' },
+      el('button', { type: 'button', class: 'ghost', onclick: () => {
+        const cur = readSetupRows();
+        const all = shuffle(cur.flatMap((r) => splitMembers(r.members)));
+        cur.forEach((r) => { r.members = ''; });
+        all.forEach((m, i) => { const r = cur[i % cur.length]; r.members = [...splitMembers(r.members), m].join(', '); });
+        teamMove = null;
+        renderSetupPlayers(cur);
+      } }, T('🎲 Losuj drużyny')),
+      el('span', { class: 'muted small' }, teamMove ? T('Stuknij drużynę, do której ma przejść {0}', teamMove) : T('Stuknij gracza, a potem drużynę – albo przeciągnij.'))),
+    el('div', { class: 'team-cols' }, rows.map((r, i) => el('div', {
+      class: 'team-col' + (teamMove ? ' target' : ''),
+      onclick: () => { if (teamMove) move(teamMove, i); },
+      ondragover: (e) => e.preventDefault(),
+      ondrop: (e) => { e.preventDefault(); const m = e.dataTransfer.getData('text/plain'); if (m) move(m, i); },
+    }, el('b', {}, r.name || T('Drużyna {0}', i + 1)),
+    el('div', { class: 'team-chips' }, splitMembers(r.members).map((m) => el('button', {
+      type: 'button', class: 'chip' + (teamMove === m ? ' on' : ''), draggable: 'true',
+      ondragstart: (e) => e.dataTransfer.setData('text/plain', m),
+      onclick: (e) => { e.stopPropagation(); teamMove = teamMove === m ? null : m; renderTeamBoard(); },
+    }, remoteNames().has(m) ? '📱 ' : '', m)))))));
 }
 const remoteNames = () => new Set([...remotes].filter((r) => r.role === 'player' && r.name).map((r) => r.name));
 // gracz dołącza telefonem: trafia do lobby, a gdy gospodarz ustawia już grę – także na listę graczy (albo do drużyny)
@@ -1341,7 +1382,7 @@ $('#btn-join-phone').addEventListener('click', () => {
   openRoom();
 });
 $('#dlg-connect').addEventListener('close', () => $('#dlg-connect').classList.remove('join-only'));
-$('#players-list').addEventListener('change', () => tvSync());
+$('#players-list').addEventListener('change', () => { tvSync(); renderTeamBoard(); });
 const readSetupRows = () => $$('#players-list .player-row').map((row) => ({
   name: row.querySelector('.p-name').value,
   members: row.querySelector('.p-members') ? row.querySelector('.p-members').value : '',
@@ -1814,6 +1855,8 @@ function startGame(over = {}) {
   }));
   if (isTimeline()) dealStartYears(songPool());
   state.bingo = null;
+  state.moments = [];
+  state.bigMiss = 0;
   if (state.mode === 'bingo') startBingo();
   state.turn = Math.floor(Math.random() * names.length);
   state.turnsPlayed = 0;
@@ -1834,6 +1877,15 @@ function startGame(over = {}) {
 
 /* ---------- Impreza: seria minigier ---------- */
 // wybór minigier w ustawieniach (zapamiętany); niedostępne dla tej liczby graczy są wyszarzone
+// długość minigier (mnożnik liczby piosenek / kart / czasu) i punktacja imprezy – zapamiętywane
+$$('input[name=party-len]').forEach((r) => {
+  r.checked = Number(r.value) === store.get('partyLen', 1);
+  r.addEventListener('change', () => { store.set('partyLen', Number(r.value)); renderPartyPick(); });
+});
+$$('input[name=party-score]').forEach((r) => {
+  r.checked = r.value === store.get('partyScore', 'places');
+  r.addEventListener('change', () => { store.set('partyScore', r.value); renderPartyPick(); });
+});
 function renderPartyPick() {
   const n = readSetupRows().length || 1;
   const avail = partyGamesFor(n);
@@ -1853,7 +1905,9 @@ function renderPartyPick() {
   const games = partyChoice(n);
   $('#party-desc').textContent = (n === 1
     ? T('Jedna osoba: wyniki z minigier sumują się (punkty, seria, ułożone karty). Minigra „Oś czasu” to minuta na czas.')
-    : T('Za każdą minigrę: 1. miejsce – 3 pkt, 2. – 2 pkt, 3. – 1 pkt (remis – tyle samo). Minigra „Oś czasu” to wyścig do 4 kart (do 8 graczy), „Kto pierwszy?” – od 2 graczy.'))
+    : (store.get('partyScore', 'places') === 'sum'
+      ? T('Punkty z minigier sumują się (punkty, seria, ułożone karty). „Kto pierwszy?” – od 2 graczy, „Oś czasu” – do 8 graczy.')
+      : T('Za każdą minigrę: 1. miejsce – 3 pkt, 2. – 2 pkt, 3. – 1 pkt (remis – tyle samo). Minigra „Oś czasu” to wyścig do 4 kart (do 8 graczy), „Kto pierwszy?” – od 2 graczy.')))
     + ' ' + T('W grze: {0}.', games.map((id) => `${PARTY_GAMES[id].icon} ${T(PARTY_GAMES[id].name)}`).join(', '));
 }
 $('#players-list').addEventListener('click', () => { if (state.mode === 'party') setTimeout(renderPartyPick, 0); });
@@ -1875,7 +1929,8 @@ function startParty() {
     if (plan.length && round.length > 1 && round[0] === plan[plan.length - 1]) round.push(round.shift());
     plan.push(...round);
   }
-  state.party = { rows, plan: plan.slice(0, count), idx: 0, points: rows.map(() => 0), last: [], done: false };
+  state.party = { rows, plan: plan.slice(0, count), idx: 0, points: rows.map(() => 0), last: [], done: false,
+    len: store.get('partyLen', 1), scoring: playCtx === 'multi' ? store.get('partyScore', 'places') : 'sum' };
   store.set('players', rows.map((r) => r.name));
   window.track && window.track('start-gry', { tryb: 'party', gra: playCtx, graczy: rows.length, minigier: count, jezyk: LANG });
   playPartyGame();
@@ -1886,7 +1941,12 @@ function playPartyGame() {
   while (pt.idx < pt.plan.length) {
     const g = PARTY_GAMES[pt.plan[pt.idx]];
     state.mode = g.mode(n);
-    if (startGame({ party: pt.plan[pt.idx], ...g.opts(n) })) return;
+    // dłuższe minigry: więcej piosenek, więcej kart do zebrania, więcej czasu
+    const o = g.opts(n);
+    const len = pt.len || 1;
+    const opts = { ...o, rounds: o.rounds ? o.rounds * len : o.rounds, winTarget: o.winTarget ? o.winTarget + len - 1 : o.winTarget,
+      timeLimit: o.timeLimit ? o.timeLimit * len : o.timeLimit };
+    if (startGame({ party: pt.plan[pt.idx], ...opts })) return;
     pt.idx += 1; // za mało piosenek dla tej minigry – następna
   }
   state.mode = 'party';
@@ -1906,7 +1966,7 @@ function partyAfterGame() {
   const pt = state.party;
   const res = state.players.map((p) => partyMetric(p));
   const gained = res.map((v) => {
-    if (pt.rows.length === 1) return v;
+    if (pt.rows.length === 1 || pt.scoring === 'sum') return v;
     if (v <= 0) return 0;
     const better = new Set(res.filter((x) => x > v)).size;
     return Math.max(0, 3 - better);
@@ -2228,6 +2288,7 @@ function revealTimeline() {
     addToTimeline(ch, song);
     verdict = el('div', { class: 'verdict ' + (ok ? 'bad' : 'ok') },
       T('🎯 {0} podał(a) dokładny rok – karta trafia do: {1}!', ch.name, ch.name));
+    addMoment('⚔', T('{0} przejął(a) kartę „{1}” dokładnym rokiem {2}', ch.name, song.t, song.y), 4);
     note = T('🎯 kartę zdobył(a) {0} (dokładny rok)', ch.name);
   } else if (ok) {
     p.timeline.splice(state.slot, 0, song);
@@ -2240,6 +2301,7 @@ function revealTimeline() {
     const ch = state.players[state.challenger];
     addToTimeline(ch, song);
     verdict = el('div', { class: 'verdict bad' }, T('✘ Pudło – kartę przejmuje {0}!{1}', ch.name, why));
+    addMoment('⚔', T('{0} przejął(a) od gracza {1} kartę „{2}” ({3})', ch.name, p.name, song.t, song.y), 4);
     note = T('✘ {0}, kartę przejął(a) {1}', p.name, ch.name);
   } else {
     if (state.mode === 'solo') p.lives -= 1;
@@ -3033,7 +3095,9 @@ function endGame() {
   if (isTimeline()) renderTimeline(tl, best.timeline, false);
   renderPlayedList();
   recordGame(best, Math.round((Date.now() - (state.startedAt || Date.now())) / 1000));
-  $$('.party-kicker').forEach((n) => n.remove());
+  $$('.party-kicker, .moments-box').forEach((n) => n.remove());
+  const moments = momentsBox();
+  if (moments) $('#ranking').append(moments);
   if (state.party) partyAfterGame();
   else if (!state.coop) leagueAfterGame(state.players.map((p) => ({ name: p.name, v: metric(p) })));
   updateEndButtons();

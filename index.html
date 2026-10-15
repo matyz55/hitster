@@ -214,6 +214,7 @@
     <section class="card" id="sec-players">
       <h2>Gracze</h2>
       <div id="players-list"></div>
+      <div id="team-board" class="team-board hidden"></div>
       <div class="player-btns">
         <button id="btn-add-player" class="ghost">+ Dodaj gracza</button>
         <button id="btn-join-phone" class="ghost">📱 Dołącz przez telefon</button>
@@ -364,6 +365,17 @@
         <label class="row">Liczba minigier
           <input type="number" id="party-games" min="2" max="12" value="5">
         </label>
+        <p class="label" style="margin-top:12px">Długość minigier</p>
+        <div class="seg">
+          <label><input type="radio" name="party-len" value="1" checked> Krótkie</label>
+          <label><input type="radio" name="party-len" value="2"> Średnie</label>
+          <label><input type="radio" name="party-len" value="3"> Długie</label>
+        </div>
+        <p class="label" style="margin-top:12px" data-ctx="multi">Punktacja imprezy</p>
+        <div class="seg" data-ctx="multi">
+          <label><input type="radio" name="party-score" value="places" checked> Za miejsca (3/2/1)</label>
+          <label><input type="radio" name="party-score" value="sum"> Suma punktów z minigier</label>
+        </div>
         <p class="label" style="margin-top:12px">Minigry</p>
         <div class="seg" id="party-pick"></div>
         <p class="muted small" id="party-desc"></p>

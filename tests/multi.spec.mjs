@@ -215,3 +215,46 @@ test('wyzwanie „wszyscy naraz”: kartę bierze pierwszy, kto trafił', async 
   expect(await page.evaluate((i) => state.players[i].timeline.length, others[1])).toBe(2);
   expect(await page.evaluate((i) => state.players[i].timeline.length, others[0])).toBe(1);
 });
+
+test('drużyny: losowanie i przenoszenie gracza stuknięciem', async ({ page }) => {
+  await lobby(page, 4);
+  await page.click('.mode[data-mode=teams]');
+  await expect(page.locator('#team-board .team-col')).toHaveCount(2);
+  await page.click('#team-board button:has-text("Losuj")');
+  const total = await page.$$eval('#team-board .team-chips .chip', (x) => x.length);
+  expect(total).toBe(4);
+  const first = (await page.textContent('#team-board .team-col >> nth=0 >> .chip >> nth=0')).trim();
+  await page.click('#team-board .team-col >> nth=0 >> .chip >> nth=0');
+  await page.click('#team-board .team-col >> nth=1');
+  await expect(page.locator('#team-board .team-col >> nth=1 >> .chip', { hasText: first })).toHaveCount(1);
+  expect(await page.inputValue('#players-list .player-row >> nth=1 >> .p-members')).toContain(first);
+});
+
+test('impreza: punktacja „suma punktów” i dłuższe minigry', async ({ page }) => {
+  await lobby(page, 2);
+  await page.evaluate(() => store.set('partyGames', ['duel']));
+  await page.click('.mode[data-mode=party]');
+  await page.check('input[name=party-len][value="3"]');
+  await page.check('input[name=party-score][value=sum]');
+  await page.fill('#party-games', '2');
+  await page.click('#btn-start');
+  await ready(page);
+  expect(await page.evaluate(() => state.rounds)).toBe(6);
+  await page.evaluate(() => { state.players[0].score = 5; state.players[1].score = 2; endGame(); });
+  await expect(page.locator('.party-standings li').first()).toContainText('5 pkt');
+  await expect(page.locator('.party-standings li').nth(1)).toContainText('2 pkt');
+});
+
+test('najciekawsze momenty na podsumowaniu', async ({ page }) => {
+  await lobby(page, 2);
+  await page.click('.mode[data-mode=duel]');
+  await page.click('#btn-start');
+  await ready(page);
+  await page.evaluate(() => {
+    const songs = window.SONGS.slice(0, 6);
+    state.history = songs.map((song, i) => ({ song, player: state.players[i % 2 ? 1 : 0].name, ok: i % 2 === 0, note: '' }));
+    endGame();
+  });
+  await expect(page.locator('.moments-box li').first()).toBeVisible();
+  await expect(page.locator('.moments-box')).toContainText('Najstarsza piosenka');
+});

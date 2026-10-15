@@ -422,3 +422,13 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Nowy wariant wyzwania w osi czasu: **„Wszyscy naraz – kartę bierze pierwszy trafny”**. Wyzwanie może rzucić kilka
   osób (każda płaci 1 żeton), każda wskazuje swoje miejsce – także równocześnie na swoich telefonach. Jeśli gracz z turą
   się pomyli, kartę zabiera ta osoba, która pierwsza wskazała dobre miejsce; po odkryciu widać wynik każdego wyzywającego.
+
+## 5.17.0 – 15.10.2026 (`HASH`)
+
+- **✨ Najciekawsze momenty** na podsumowaniu gry (też na dużym ekranie i telefonach): najdłuższa seria trafień,
+  najcelniejszy gracz, karty przejęte w wyzwaniach, trafienia co do roku, największa pomyłka w „Rok co do roku”,
+  najstarsza i najnowsza piosenka gry.
+- **Drużyny w multiplayerze**: gracze widoczni jako przyciski w drużynach – stuknij gracza, a potem drużynę
+  (albo przeciągnij), oraz „🎲 Losuj drużyny”.
+- **Ustawienia imprezy**: długość minigier (krótkie / średnie / długie – więcej piosenek, kart i czasu) oraz punktacja
+  w multiplayerze: za miejsca (3/2/1) albo suma punktów z minigier.
