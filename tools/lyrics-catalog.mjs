@@ -69,6 +69,14 @@ async function stepLrclib() {
 
 // YouTube Data API v3: videos.list (1 jednostka) i search.list (osobny limit 100 dziennie)
 const ytKey = process.env.YOUTUBE_API_KEY;
+// Piosenka bez pasującego filmu: { none: data ostatniej próby, tries: liczba prób } – kolejna próba najwcześniej po
+// RETRY_DAYS dniach, najwyżej MAX_TRIES prób (dawny zapis null = jedna próba bez daty, więc druga próba od razu).
+const RETRY_DAYS = 30;
+const MAX_TRIES = 2;
+const hasVideo = (v) => !!(v && v.id);
+const retryDue = (v) => v === undefined || v === null
+  || (!!v.none && v.tries < MAX_TRIES && Date.now() - Date.parse(v.none) >= RETRY_DAYS * 864e5);
+const noVideo = (prev) => ({ none: new Date().toISOString().slice(0, 10), tries: (prev === null ? 1 : (prev && prev.tries) || 0) + 1 });
 const MAX_SEARCHES = 95; // dzienny limit search.list to 100
 const SEARCH_PAUSE = 2000; // przerwa między wyszukiwaniami (limit zapytań na minutę)
 const isoSec = (d) => { const m = d.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/) || []; return (+m[1] || 0) * 3600 + (+m[2] || 0) * 60 + (+m[3] || 0); };
@@ -110,7 +118,7 @@ async function wikidataVideos(lr, yt) {
   const rows = await sparql(WD_YT, 'yt-pl');
   const wd = new Map();
   for (const s of candidates) {
-    if (!lr[key(s)] || yt[key(s)]) continue;
+    if (!lr[key(s)] || hasVideo(yt[key(s)])) continue;
     const r = rows.find((x) => norm(clean(x.songLabel.value)) === norm(clean(s.t)) && SongMatch.artistsOf(s).map(norm).includes(norm(x.perfLabel.value)));
     if (r) wd.set(key(s), r.yt.value);
   }
@@ -141,7 +149,7 @@ async function stepYoutube() {
   // 2) wyszukiwarka YouTube – najpopularniejsze piosenki bez filmu; najpierw nagranie „… – Topic” (wersja z płyty)
   for (const s of candidates) {
     const l = lr[key(s)];
-    if (!l || yt[key(s)]) continue;
+    if (!l || hasVideo(yt[key(s)]) || !retryDue(yt[key(s)])) continue;
     if (searchCalls >= MAX_SEARCHES) break;
     const q = `${SongMatch.mainArtist(s)} ${clean(s.t)}`;
     if (searchCalls) await sleep(SEARCH_PAUSE);
@@ -152,15 +160,15 @@ async function stepYoutube() {
       const ids = (data.items || []).map((x) => x.id.videoId).filter(Boolean);
       if (ids.length && !(vids = await videoInfo(ids))) continue;
     } catch { break; }
-    if (!vids.length) { yt[key(s)] = null; save('youtube-pl.json', yt); continue; }
+    if (!vids.length) { yt[key(s)] = noVideo(yt[key(s)]); save('youtube-pl.json', yt); continue; }
     const ok = vids.filter((v) => fits(v, l));
     // pierwszeństwo: kanał „… - Topic” (dźwięk z płyty, czasy tekstu pasują najlepiej), potem oficjalne kanały
     ok.sort((a, b) => (/ - Topic$/.test(b.channel) - / - Topic$/.test(a.channel)) || Math.abs(a.d - l.d) - Math.abs(b.d - l.d));
-    yt[key(s)] = ok.length ? { id: ok[0].id, src: 'search' } : null;
+    yt[key(s)] = ok.length ? { id: ok[0].id, src: 'search' } : noVideo(yt[key(s)]);
     save('youtube-pl.json', yt);
   }
-  const found = Object.values(yt).filter(Boolean).length;
-  console.log(`YouTube: wyszukiwania ${searchCalls}, filmy dla ${found} piosenek (z Wikidata: ${[...wd.keys()].filter((k) => yt[k]).length})`);
+  const found = Object.values(yt).filter(hasVideo).length;
+  console.log(`YouTube: wyszukiwania ${searchCalls}, filmy dla ${found} piosenek (z Wikidata: ${[...wd.keys()].filter((k) => hasVideo(yt[k])).length})`);
 }
 
 function stepBuild() {
@@ -169,7 +177,7 @@ function stepBuild() {
   const out = {};
   for (const s of candidates) {
     const l = lr[key(s)]; const v = yt[key(s)];
-    if (l && v) out[key(s)] = [v.id, l.id, l.d];
+    if (l && hasVideo(v)) out[key(s)] = [v.id, l.id, l.d];
   }
   const js = '// Tryb „Tak to leciało!”: piosenka → [film YouTube, tekst w LRCLIB, długość w s] – generuje tools/lyrics-catalog.mjs.\n'
     + '// Teksty nie są tu zapisane – gra pobiera je z lrclib.net w trakcie rozgrywki.\n'
