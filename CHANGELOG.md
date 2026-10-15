@@ -664,3 +664,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   i światło, Kwiaty i drzewa, Wojna i pokój, Bóg i wiara, Telefon i technika, Alkohol.
 - Katalog: nowe piosenki są dobierane tak, żeby w pierwszej kolejności uzupełnić kategorie, w których jest mało
   piosenek.
+
+## 5.30.2 – 16.10.2026 (`HASH`)
+
+- Tak to leciało!: przed finałem rezygnacja daje 75 000 zł (wygraną za 9. piosenkę), a pomyłka w finale – 50 000 zł.

@@ -139,8 +139,8 @@ wybrane dane – tytuł, wykonawcę i/lub dokładny rok (do wyboru w ustawieniac
 
 **Tak to leciało!** – jak w teleturnieju: każdy gracz ma planszę 3×3 (9 kategorii po 2 piosenki – wykonawcy, tematy
 z tytułów, dekady, zestawy; zagrane wyszarzone, ostatnio używane kategorie losowane rzadziej), a nad nią „Hit za
-100 000 zł” na sam koniec (gram albo rezygnuję z 50 000 zł); do uzupełnienia jest zawsze cały wers, który wcześniej
-w piosence nie padł; drabinka 500 zł → 100 000 zł (gwarantowane 5000 zł po 4. etapie, 30 000 zł w finale), koła
+100 000 zł” na sam koniec (gram bez kół ratunkowych albo rezygnuję z 75 000 zł; pomyłka w finale – 50 000 zł); do uzupełnienia jest zawsze cały wers, który wcześniej
+w piosence nie padł; drabinka 500 zł → 100 000 zł (gwarantowane 10 000 zł po 5. piosence, 50 000 zł przy pomyłce w finale), koła
 ratunkowe: trzy słowa, wymiana piosenki, trzy wersje wersu, w multiplayerze sufler. Piosenka gra z YouTube (oficjalny
 osadzany odtwarzacz) od początku, tekst z czasami wersów pobierany w trakcie gry z [lrclib.net](https://lrclib.net)
 przewija się jak w karaoke, a przed wersem do uzupełnienia muzyka milknie. Odpowiedź wpisuje się albo śpiewa

@@ -7,10 +7,11 @@
 
 /* ---------- zasady: drabinka (jak w teleturnieju, serie 10–18), progi gwarantowane, koła ratunkowe ---------- */
 const LY_LADDER = [500, 1000, 2000, 5000, 10000, 15000, 25000, 50000, 75000, 100000];
-// po 5. piosence 10 000 zł jest gwarantowane; po 9. można zrezygnować z 50 000 zł albo grać o 100 000 zł (już bez kół)
+// po 5. piosence 10 000 zł jest gwarantowane; po 9. można zrezygnować z 75 000 zł albo grać o 100 000 zł (już bez kół)
+// – pomyłka w finale daje 50 000 zł
 const LY_SAFE = 4;
-const LY_QUIT_FINAL = 50000;
-const lyGuaranteed = (stage) => (stage > LY_SAFE + 1 ? LY_LADDER[LY_SAFE] : 0);
+const LY_FINAL_MISS = 50000;
+const lyGuaranteed = (stage) => (stage === 10 ? LY_FINAL_MISS : stage > LY_SAFE + 1 ? LY_LADDER[LY_SAFE] : 0);
 // przerwa: cały wers, który wcześniej w piosence nie padł; z etapem rośnie liczba słów (od–do) i przerwa wypada
 // dalej w piosence (ułamek długości); na ostatnich etapach przy krótkim wersie – dwa kolejne wersy
 const LY_WORDS = [[3, 6], [3, 6], [3, 7], [4, 8], [4, 8], [5, 9], [5, 10], [6, 12], [6, 14], [7, 16]];
@@ -534,8 +535,7 @@ function lyReport() {
 function lyQuit() {
   const me = lyMe();
   if (state.phase !== 'board' || me.stage === 0) return;
-  // przed hitem za 100 000 zł rezygnacja daje 50 000 zł
-  const take = me.stage === 9 ? LY_QUIT_FINAL : me.score;
+  const take = me.score;
   if (!confirm(T('Rezygnujesz i zabierasz {0}?', lyMoney(take)))) return;
   me.score = take;
   me.out = true;
@@ -617,7 +617,7 @@ function lyRender() {
         el('div', { class: 'ly-songs' }, c.songs.map((it, si) => el('button', { class: 'ly-song', style: `--i:${si}`, onclick: () => lyChooseSong(ly.pickCat, si) },
           el('span', { class: 'ly-year' }, String(it.song.y)), el('b', {}, it.song.t), el('span', { class: 'muted' }, artistLine(it.song))))));
     } else {
-      items.push(el('p', { class: 'ly-step' }, hitReady ? T('Został hit za {0} – grasz bez kół ratunkowych czy rezygnujesz i zabierasz {1}?', lyMoney(LY_LADDER[9]), lyMoney(LY_QUIT_FINAL))
+      items.push(el('p', { class: 'ly-step' }, hitReady ? T('Został hit za {0} – grasz bez kół ratunkowych czy rezygnujesz i zabierasz {1}?', lyMoney(LY_LADDER[9]), lyMoney(me.score))
         : T('Etap {0} – gra o {1}. Wybierz kategorię.', me.stage + 1, lyMoney(LY_LADDER[me.stage]))));
       // u góry szeroki kafelek „Hit za 100 000 zł” – dostępny dopiero na końcu; pod nim 3×3 kategorie (zagrane – wyszarzone)
       items.push(el('button', { class: `ly-hit${hitReady ? ' ready' : ''}`, disabled: !hitReady, onclick: () => { ly.hitAsk = true; lyRender(); } },
@@ -625,7 +625,7 @@ function lyRender() {
       if (ly.hitAsk && hitReady) {
         items.push(el('div', { class: 'ly-choice' },
           el('button', { class: 'primary', onclick: lyPlayHit }, T('🎤 Gram o {0}', lyMoney(LY_LADDER[9]))),
-          el('button', { class: 'ghost', onclick: lyQuit }, T('✋ Rezygnuję – zabieram {0}', lyMoney(LY_QUIT_FINAL)))));
+          el('button', { class: 'ghost', onclick: lyQuit }, T('✋ Rezygnuję – zabieram {0}', lyMoney(me.score)))));
       }
       items.push(el('div', { class: 'ly-cats' }, me.board.map((c, ci) => el('button', {
         class: `ly-cat${c.done ? ' done' : ''}`, style: `--i:${ci}`, disabled: c.done || hitReady, onclick: () => lyChooseCat(ci),

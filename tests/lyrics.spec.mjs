@@ -63,12 +63,12 @@ test('Tak to leciało!: plansza 9 kategorii, przerwa przed wersem, dobra odpowie
   expect(await page.locator('.ly-hit').isDisabled()).toBe(true);
 });
 
-test('Tak to leciało!: po 9 kategoriach – hit za 100 000 zł albo rezygnacja z 50 000 zł', async ({ page }) => {
+test('Tak to leciało!: po 9 kategoriach – hit za 100 000 zł albo rezygnacja z 75 000 zł; pomyłka w finale – 50 000 zł', async ({ page }) => {
   await startLyrics(page);
   await page.evaluate(() => { const p = state.players[0]; p.stage = 9; p.score = 75000; p.board.forEach((c) => { c.done = true; }); lyRender(); });
   expect(await page.locator('.ly-hit').isDisabled()).toBe(false);
   await page.locator('.ly-hit').click();
-  await expect(page.getByRole('button', { name: /Rezygnuję – zabieram 50 000/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /Rezygnuję – zabieram 75 000/ })).toBeVisible();
   // w finale bez kół ratunkowych
   await page.getByRole('button', { name: /Gram o 100 000/ }).click();
   await expect.poll(() => page.evaluate(() => state.phase), { timeout: 20000 }).toBe('answer');
@@ -77,6 +77,9 @@ test('Tak to leciało!: po 9 kategoriach – hit za 100 000 zł albo rezygnacja 
   await fillCorrect(page);
   await page.getByRole('button', { name: 'Tak to leciało!' }).click();
   await expect(page.locator('#ly-answer .verdict')).toContainText('100 000 zł');
+  expect(await page.evaluate(() => lyGuaranteed(10))).toBe(50000);
+  expect(await page.evaluate(() => lyGuaranteed(6))).toBe(10000);
+  expect(await page.evaluate(() => lyGuaranteed(5))).toBe(0);
 });
 
 test('Tak to leciało!: koła ratunkowe – trzy słowa, trzy wersje, wymiana piosenki; pomyłka kończy grę', async ({ page }) => {
