@@ -403,7 +403,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   (losowanie zależne tylko od daty). Wpisujesz rok wydania (dokładnie – 3 pkt, do 2 lat różnicy – 1 pkt), na koniec
   wynik z kwadracikami 🟩🟨⬛ i przycisk „📤 Udostępnij wynik”. Liczy się pierwsze podejście danego dnia.
 
-## 5.14.0 – 15.10.2026 (`HASH`)
+## 5.14.0 – 15.10.2026 (`abbb45f`)
 
 - Nowy tryb **🔢 Ułóż piątkę** (jeden gracz i multiplayer): 5 fragmentów po 10 s (każdy z własnym przyciskiem ▶ A–E)
   do ułożenia od najstarszego do najnowszego w 90 sekund od pierwszego odtworzenia. Za każdą dobrze ułożoną sąsiednią
