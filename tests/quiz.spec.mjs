@@ -69,3 +69,22 @@ test('quizy jako minigry imprezy', async ({ page }) => {
   const modes = await page.evaluate(() => state.party.plan);
   expect(modes.sort()).toEqual(['artist', 'country', 'year']);
 });
+
+test('Wyzwanie dnia: ten sam zestaw w dwóch przeglądarkach, wynik do udostępnienia', async ({ page, browser }) => {
+  const { newPage } = await import('./fixtures.mjs');
+  const other = await newPage(browser);
+  const order = async (p) => { await p.goto('/'); return p.evaluate(() => dailyDeckFor(todayKey()).slice(0, 10).map(songKey)); };
+  expect(await order(page)).toEqual(await order(other));
+  await other.context().close();
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=daily]');
+  for (let k = 0; k < 10; k++) {
+    await ready(page);
+    await page.evaluate((i) => answerQuiz(i % 2 ? state.current.y : state.current.y + 1), k);
+    await page.click('#actions button.primary');
+  }
+  await expect.poll(() => screen(page)).toBe('end');
+  await expect(page.locator('#winner-title')).toContainText('20 z 30');
+  await expect(page.locator('.daily-squares')).toHaveText('🟨🟩🟨🟩🟨🟩🟨🟩🟨🟩');
+  await expect(page.locator('#ranking button.primary')).toContainText('Udostępnij');
+});

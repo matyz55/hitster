@@ -441,6 +441,7 @@ const MODES = {
   artist: { title: T('Kto to śpiewa?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   country: { title: T('Skąd jest wykonawca?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   bid: { title: T('Licytacja'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  daily: { title: T('Wyzwanie dnia'), minPlayers: 1, maxPlayers: 1 },
   // współpraca: wszyscy razem przeciw grze – wspólna oś i wspólne pomyłki (zasady osi jednego gracza)
   coop: { title: T('Współpraca'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
 };
@@ -693,7 +694,7 @@ function handleRemote(msg, from) {
     if (who === null || who === expected) onSlotClick(msg.slot);
   }
   // „Rok co do roku”: rok wpisany na telefonie gracza z turą
-  if (msg.yearAnswer != null && from && controlNames().includes(from.name) && state.mode === 'year') answerQuiz(msg.yearAnswer);
+  if (msg.yearAnswer != null && from && controlNames().includes(from.name) && isYearQuiz()) answerQuiz(msg.yearAnswer);
   // rok podany przez wyzywającego na jego telefonie (wariant wyzwania „dokładny rok”)
   if (msg.challengeYear != null && from && state.phase === 'challenge' && state.challengeMode === 'year'
     && state.challenger != null && playerIndexOf(from.name) === state.challenger) {
@@ -848,7 +849,7 @@ function tvSync() {
       challengeInput: state.phase === 'challenge' && state.challenger != null && state.challengeMode === 'year'
         ? { who: state.players[state.challenger].name } : null,
       // „Rok co do roku”: pole roku na telefonie gracza z turą
-      yearAsk: state.mode === 'year' && state.phase === 'listen' && state.current ? { who: controlNames() } : null,
+      yearAsk: isYearQuiz() && state.phase === 'listen' && state.current ? { who: controlNames() } : null,
       phase: state.phase, turnName: activePlayer().name, turnWho: answering(activePlayer()), playing: !audio.paused, hasSong: !!state.current,
       // drużyny: do której drużyny należy gracz z telefonem
       teamOf: state.mode === 'teams' || state.coop ? Object.fromEntries(state.players.flatMap((pl) => (pl.members || []).map((m) => [m, pl.name]))) : null,
@@ -1081,7 +1082,11 @@ $('#btn-single').addEventListener('click', () => {
   showModes();
 });
 $('#btn-multi').addEventListener('click', openLobby);
-$$('#screen-modes .mode').forEach((b) => b.addEventListener('click', () => { if (!b.disabled) openSetup(b.dataset.mode); }));
+$$('#screen-modes .mode').forEach((b) => b.addEventListener('click', () => {
+  if (b.disabled) return;
+  // Wyzwanie dnia ma stałe zasady – bez ekranu ustawień
+  if (b.dataset.mode === 'daily') startDaily(); else openSetup(b.dataset.mode);
+}));
 $('#btn-modes-back').addEventListener('click', () => showScreen(playCtx === 'multi' ? 'lobby' : 'home'));
 
 /* ---------- multiplayer: lobby (lista graczy, pokój dla telefonów) ---------- */
@@ -2071,6 +2076,10 @@ async function drawSong() {
         const maxLen = STEPS[STEPS.length - 1].len;
         Object.assign(state, { step: 0, solved: {}, hintCost: 0, clipLen: STEPS[0].len });
         state.clipStart = filterState.random ? Math.random() * (29 - maxLen) : 0;
+      } else if (state.mode === 'daily') {
+        // wyzwanie dnia: dla wszystkich tak samo – cały fragment od początku
+        state.clipLen = 30;
+        state.clipStart = 0;
       } else {
         state.clipLen = filterState.clip;
         state.clipStart = filterState.random && filterState.clip < 30 ? Math.random() * (29 - filterState.clip) : 0;
@@ -2958,7 +2967,8 @@ function endGame() {
     const max = state.mode === 'duel' ? state.rounds
       : (isQuiz() ? state.rounds * QUIZ[state.mode].max() + (state.mode === 'bid' ? BID_START : 0)
         : state.rounds * (state.guessType === 'both' ? 2 : 1) * (state.mode === 'steps' ? STEPS[0].pts : 1));
-    title.textContent = T('{0} Twój wynik: {1} z {2} pkt', { steps: '⏱️', duel: '🥊', year: '📅', artist: '🎙️', country: '🌍', bid: '💰' }[state.mode] || '🎤', best.score, max);
+    title.textContent = T('{0} Twój wynik: {1} z {2} pkt', { steps: '⏱️', duel: '🥊', year: '📅', artist: '🎙️', country: '🌍', bid: '💰', daily: '📆' }[state.mode] || '🎤', best.score, max);
+    if (state.mode === 'daily') extra = dailyEnd();
     won = best.score >= max / 2 && best.score > 0;
   } else if (state.mode === 'solo' && state.endless) {
     const placed = best.timeline.filter((c) => !c.start).length;

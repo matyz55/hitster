@@ -6,6 +6,14 @@
 // • bid     – Licytacja: najpierw stawiasz 1–3 pkt na swoją pewność, potem wybierasz dekadę; dobrze – zyskujesz stawkę, źle – tracisz
 const QUIZ = {
   year: {
+    kind: 'year',
+    status: () => T('Posłuchaj i wpisz rok wydania.'),
+    hint: () => T('W którym roku wydano tę piosenkę? Dokładnie – 3 pkt, do 2 lat różnicy – 1 pkt.'),
+    max: () => 3,
+  },
+  // Wyzwanie dnia: 10 piosenek wspólnych dla wszystkich graczy danego dnia, punkty jak w „Rok co do roku”
+  daily: {
+    kind: 'year',
     status: () => T('Posłuchaj i wpisz rok wydania.'),
     hint: () => T('W którym roku wydano tę piosenkę? Dokładnie – 3 pkt, do 2 lat różnicy – 1 pkt.'),
     max: () => 3,
@@ -28,6 +36,7 @@ const QUIZ = {
 };
 const BID_START = 5;
 const isQuiz = () => !!QUIZ[state.mode];
+const isYearQuiz = () => !!(QUIZ[state.mode] && QUIZ[state.mode].kind === 'year');
 
 // pula do podpowiedzi (wykonawcy, kraje) – piosenki z ustawień gry
 function quizOptions(song) {
@@ -78,7 +87,7 @@ function answerQuiz(choice) {
   let pts;
   let ok;
   let verdict;
-  if (state.mode === 'year') {
+  if (isYearQuiz()) {
     const y = parseInt(choice, 10);
     if (!(y >= 1900 && y <= new Date().getFullYear())) return;
     const diff = Math.abs(y - song.y);
@@ -105,7 +114,7 @@ function answerQuiz(choice) {
   p.score += pts;
   state.turnsPlayed += 1;
   state.history.push({ song, preview: state.preview, player: p.name, ok,
-    note: `${p.name}: ${state.mode === 'year' ? choice : (state.quiz.options[choice] || {}).label}${pts ? ` (${pts > 0 ? '+' : ''}${pts})` : ''}` });
+    note: `${p.name}: ${isYearQuiz() ? choice : (state.quiz.options[choice] || {}).label}${pts ? ` (${pts > 0 ? '+' : ''}${pts})` : ''}` });
   recordAnswer(song, ok);
   fx(ok ? 'good' : 'bad');
   showReveal(el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') }, verdict));
@@ -115,7 +124,7 @@ function answerQuiz(choice) {
 function quizActions() {
   const btns = [];
   if (state.phase === 'listen' && state.current && state.quiz) {
-    if (state.mode === 'year') {
+    if (isYearQuiz()) {
       const go = el('button', { class: 'primary', disabled: true, onclick: () => answerQuiz($('#quiz-year').value) }, T('✔ Sprawdź'));
       const input = el('input', {
         type: 'number', id: 'quiz-year', min: '1900', max: String(new Date().getFullYear()), inputmode: 'numeric',
@@ -149,4 +158,67 @@ function quizHeader(p, title, info) {
   const songNo = state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1);
   title.textContent = state.players.length > 1 ? T('Tura: {0}', p.name) : T('Piosenka {0} z {1}', Math.min(songNo, state.rounds), state.rounds);
   info.textContent = state.players.length > 1 ? T('Runda {0}/{1}', round, state.rounds) : T('Wynik: {0} pkt', p.score);
+}
+
+/* ---------- Wyzwanie dnia ---------- */
+// losowanie zależne tylko od daty: ten sam zestaw piosenek u wszystkich (z najbardziej znanych piosenek)
+const DAILY_SONGS = 10;
+const todayKey = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
+function seededRandom(text) {
+  let h = 1779033703 ^ text.length;
+  for (let i = 0; i < text.length; i++) { h = Math.imul(h ^ text.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }
+  let a = h >>> 0;
+  return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+// talia o stałej kolejności (ten sam interfejs co Deck, który wykorzystuje drawSong)
+class DailyDeck {
+  constructor(songs) { this.list = songs.slice(); this.level = 0; this.plShare = 0.5; this.used = new Map(); this.drawn = { PL: 0, INT: 0 }; this.usedArtists = new Set(); }
+  get size() { return this.list.length; }
+  * allLists() { yield this.list; }
+  draw() { return this.list.shift() || null; }
+  release(song, putBack) { if (putBack) this.list.unshift(song); }
+}
+function dailyDeckFor(day) {
+  const rnd = seededRandom('songster-' + day);
+  const pool = window.SONGS.filter((s) => TOP_SONGS.has(songKey(s))).sort((a, b) => (songKey(a) < songKey(b) ? -1 : 1));
+  for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [pool[i], pool[j]] = [pool[j], pool[i]]; }
+  // każdy wykonawca raz; zapas na piosenki bez fragmentu w iTunes
+  const seen = new Set();
+  return pool.filter((s) => { const k = artistKeys(s)[0]; if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 40);
+}
+function startDaily() {
+  const name = (store.get('players', [T('Gracz {0}', 1)])[0]) || T('Gracz {0}', 1);
+  state.mode = 'daily';
+  state.baseMode = 'daily';
+  Object.assign(state, {
+    party: null, coop: false, rounds: DAILY_SONGS, turn: 0, turnsPlayed: 0, history: [], expert: [], specials: [], buzz: null, ref: null,
+    streak: 0, hiloMulti: false, difficulty: 0, startedAt: Date.now(), dailyDay: todayKey(),
+  });
+  state.players = [{ name, tokens: 0, timeline: [], score: 0, lives: 0, members: [], member: 0 }];
+  state.deck = new DailyDeck(dailyDeckFor(state.dailyDay));
+  state.quizPool = window.SONGS;
+  prefetched = null;
+  window.track && window.track('start-gry', { tryb: 'daily', gra: 'single', jezyk: LANG });
+  showScreen('game');
+  startTurn();
+}
+// podsumowanie: wynik dnia (pierwsze podejście się liczy) i tekst do udostępnienia
+function dailyEnd() {
+  const day = state.dailyDay;
+  const score = state.players[0].score;
+  const all = store.get('daily', {});
+  const first = all[day] == null;
+  if (first) { all[day] = score; store.set('daily', all); }
+  const squares = state.history.map((h) => { const d = Math.abs(parseInt((h.note.match(/: (\d{4})/) || [])[1], 10) - h.song.y); return d === 0 ? '🟩' : (d <= 2 ? '🟨' : '⬛'); }).join('');
+  const [y, m, d] = day.split('-');
+  const text = T('Songster – wyzwanie dnia {0}: {1}/{2} pkt', `${d}.${m}.${y}`, score, DAILY_SONGS * 3) + `\n${squares}\n${window.location.origin}${window.location.pathname}`;
+  const share = el('button', { class: 'primary', onclick: async () => {
+    try {
+      if (navigator.share) await navigator.share({ text });
+      else { await navigator.clipboard.writeText(text); share.textContent = T('✔ Skopiowano'); }
+    } catch (e) { /* anulowane */ }
+  } }, T('📤 Udostępnij wynik'));
+  return [el('p', { class: 'daily-squares' }, squares),
+    el('p', { class: 'muted' }, first ? T('To Twój wynik dnia. Jutro nowy zestaw piosenek.') : T('Wynik dnia (pierwsze podejście): {0} pkt. To podejście się nie liczy.', all[day])),
+    share];
 }

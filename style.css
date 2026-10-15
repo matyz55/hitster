@@ -569,3 +569,5 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .conn-strip { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .85rem; margin: 0 0 8px; }
 /* --- tryby quizowe --- */
 #quiz-year, #challenge-year { flex: 1 1 9em; min-width: 9em; font-size: 1.1rem; }
+.daily-squares { font-size: 1.6rem; letter-spacing: 2px; margin: 8px 0; }
+.daily-tile { background: linear-gradient(135deg, rgba(255, 201, 60, .14), rgba(45, 226, 230, .1)), var(--panel); }

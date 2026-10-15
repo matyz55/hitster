@@ -396,3 +396,9 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - **🏆 Liga wieczoru**: w lobby multiplayera każda kolejna gra dodaje punkty za miejsca (3/2/1, remis – tyle samo,
   wynik 0 – bez punktów); łączna tabela jest na podsumowaniu, na dużym ekranie i na telefonach. Liga zeruje się po
   wyjściu z lobby do menu głównego.
+
+## 5.13.0 – 15.10.2026 (`HASH`)
+
+- Nowy tryb **📆 Wyzwanie dnia** (jeden gracz): 10 znanych piosenek – ten sam zestaw dla wszystkich danego dnia
+  (losowanie zależne tylko od daty). Wpisujesz rok wydania (dokładnie – 3 pkt, do 2 lat różnicy – 1 pkt), na koniec
+  wynik z kwadracikami 🟩🟨⬛ i przycisk „📤 Udostępnij wynik”. Liczy się pierwsze podejście danego dnia.
