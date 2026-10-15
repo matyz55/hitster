@@ -510,6 +510,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Napis „🔈 Brak połączonego urządzenia – muzyka gra na tym telefonie.” nie pokazuje się, gdy nie jest podłączony żaden
   duży ekran (np. przy grze na jednym telefonie z zapamiętanym ustawieniem „muzyka gra na dużym ekranie”).
 
-## 5.22.4 – 15.10.2026 (`HASH`)
+## 5.22.4 – 15.10.2026 (`1ade1d5`)
 
 - Przycisk po odkryciu karty znów nazywa się „Kup losową kartę” (cofnięta zmiana z 5.22.2).
