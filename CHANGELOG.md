@@ -568,3 +568,16 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Nowe piosenki z polskich preselekcji do Eurowizji są w zestawie Eurowizja (np. Chrust – „Tempo”).
 - Oznaczenia piosenek niecenzuralnych dla nowych piosenek (z Deezer i ze znacznika Spotify).
 - Kolejne poprawki zapisu wykonawców i polskich znaków w tytułach (np. „Zaopiekuj się mną”, „Się ściemnia”).
+
+## 5.26.0 – 15.10.2026 (`HASH`)
+
+- **Nowy zestaw „😂 Memy”** – 660 piosenek znanych z internetowych memów: polskie przeboje i disco polo, rap, hity
+  z TikToka, EDM, motywy z gier, anime i filmów, utwory Kevina MacLeoda i muzyka klasyczna.
+- 200 z nich to nowe piosenki w bazie; lata sprawdzone w Wikipedii, Know Your Meme i innych źródłach (piosenki bez
+  pewnej daty nie zostały dodane).
+- Przy 104 piosenkach ciekawostka, z jakiego memu pochodzą (ze źródłem), pokazywana w pierwszej kolejności
+  w zestawie Memy.
+- Część nowych piosenek trafiła też do zestawów Opole i Eurowizja (np. Blue Café – „You May Be in Love”
+  z polskich preselekcji 2003).
+- Poprawione lata: Alice Deejay – „Better Off Alone” (1998), Daft Punk – „Around the World” (1997),
+  Vicetone & Tony Igy – „Astronomia” (2014).

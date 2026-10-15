@@ -178,6 +178,23 @@ test('ciekawostka zależna od zestawu: w Eurowizji – o Eurowizji, we wszystkic
   expect(r.any).toBeGreaterThan(1);
 });
 
+test('zestaw Memy: gotowy zestaw w ustawieniach i ciekawostka, z jakiego memu', async ({ page }) => {
+  await page.goto('/');
+  await page.waitForFunction(() => !!window.SONG_MEMES, null, { timeout: 15000 });
+  const r = await page.evaluate(() => {
+    const songs = window.SONGS.filter((s) => s.tg && s.tg.includes('memy'));
+    const song = songs.find((s) => window.SONG_MEMES[songKey(s)] && songFacts(s).some((f) => f.kind !== 'memy'));
+    filterState.tag = 'memy';
+    const memes = new Set(Array.from({ length: 20 }, () => factLines(song)[0].textContent));
+    filterState.tag = null;
+    return { count: songs.length, memes: [...memes], preset: PRESETS.some((p) => p.id === 'memy') };
+  });
+  expect(r.count).toBeGreaterThan(300);
+  expect(r.preset).toBe(true);
+  expect(r.memes.length).toBe(1);
+  expect(r.memes[0].startsWith('😂')).toBe(true);
+});
+
 test('wersja angielska interfejsu', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('songster.lang', JSON.stringify('en')));

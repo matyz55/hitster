@@ -2,6 +2,7 @@
 // (tools/.cache – nie trafia do repozytorium) i rozpoznanie głównych wykonawców.
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import vm from 'node:vm';
+import { createHash } from 'node:crypto';
 
 export const dir = new URL('..', import.meta.url);
 const ctx = { window: {} };
@@ -15,7 +16,9 @@ const UA = 'SongsterTools/1.0 (https://github.com/matyz55/hitster)';
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export async function sparql(query, tag) {
-  const file = new URL(`wd-${tag}.json`, cacheDir);
+  // nazwa pliku zależy od treści zapytania – po zmianach w bazie piosenek paczki mają inną zawartość
+  const hash = createHash('sha1').update(query).digest('hex').slice(0, 10);
+  const file = new URL(`wd-${tag}-${hash}.json`, cacheDir);
   if (existsSync(file)) return JSON.parse(readFileSync(file, 'utf8'));
   for (let attempt = 0; attempt < 6; attempt++) {
     const res = await fetch('https://query.wikidata.org/sparql', {

@@ -77,7 +77,7 @@ W multiplayerze wyzwanie na osi czasu ma trzy warianty: inne miejsce na osi, dok
 ochrona), mgła (ukryte lata na osi dla innych do następnej tury), złoty strzał (dokładny rok = +2 żetony) i magnes
 (tylko dla ostatniego gracza – darmowa karta z rokiem).
 
-**Ciekawostki** po odkryciu karty – jedna, w zestawie tematycznym pasująca do niego (Eurowizja, Opole, Trójka, film).
+**Ciekawostki** po odkryciu karty – jedna, w zestawie tematycznym pasująca do niego (Eurowizja, Opole, Trójka, film, memy).
 Z Wikidata (`tools/facts.mjs`, lista ze źródłami w [FACTS.md](FACTS.md)): kompozytor i autor tekstu, film/serial/gra,
 album, producent, utwór, na którym piosenka jest oparta, prawdziwe imię i nazwisko wykonawcy, rok i miejscowość
 urodzenia, rok i miejsce powstania zespołu – z kontrolą homonimów (wykonawca musi pasować do swoich piosenek: daty,
@@ -140,8 +140,10 @@ wybrane dane – tytuł, wykonawcę i/lub dokładny rok (do wyboru w ustawieniac
 **Zestawy tematyczne** – gotowe ustawienia puli: Przeboje Trójki (1. miejsca Listy Przebojów
 Programu Trzeciego wg polskiej Wikipedii i plebiscyty „Polski Top Wszech Czasów”), Opole
 (piosenki z artykułów o Krajowym Festiwalu Piosenki Polskiej w Opolu), Eurowizja (kategorie
-„Eurovision songs” angielskiej Wikipedii) i muzyka filmowa. Własne ustawienia można zapisać
-jako zestaw.
+„Eurovision songs” angielskiej Wikipedii oraz piosenki z krajowych preselekcji – `tools/preselections.mjs`
+i pliki `tools/preselections-*.json`), Memy (piosenki znane z internetowych memów, ciekawostki „z jakiego memu”
+ze źródłami w `tools/memes.json`, zapisywane do facts.js przez `tools/memes.mjs`) i muzyka filmowa. Własne
+ustawienia można zapisać jako zestaw.
 
 Kartę można **przeciągnąć palcem lub myszą** na oś (albo kliknąć „＋”). Gra ma proste
 animacje i dźwięki efektów (do wyłączenia w ustawieniach) i działa jako **aplikacja (PWA)**:
@@ -188,6 +190,8 @@ Testy uruchamiają się automatycznie na GitHubie przy każdej zmianie (`.github
 **Sprawdzanie bazy**: `node tools/check-previews.mjs --limit 150` sprawdza porcję piosenek w iTunes (najdawniej
 sprawdzane najpierw, z limitem zapytań) i zapisuje raport piosenek bez fragmentu w [PREVIEW-REPORT.md](PREVIEW-REPORT.md).
 Na GitHubie robi to codziennie `.github/workflows/check-previews.yml` (harmonogram działa na domyślnej gałęzi repozytorium).
+`node tools/normalize-artists.mjs` ujednolica zapis wykonawców (ta sama nazwa pisana różnie, brakujące polskie znaki)
+w songs.js, songs-sp.js, facts.js i tools/memes.json – listę zamian ma na początku pliku.
 
 ## Jak uruchomić lokalnie
 

@@ -430,6 +430,8 @@ const PRESETS = [
     set: () => ({ pool: 'PL', tag: 'opole', decade: [], genre: [], country: [] }) },
   { id: 'eurowizja', name: T('🌍 Eurowizja'), desc: T('Piosenki z Konkursu Piosenki Eurowizji i Eurowizji Junior – zwycięzcy, wszystkie polskie występy i najbardziej znane przeboje.'),
     set: () => ({ pool: 'ALL', tag: 'eurowizja', decade: [], genre: [], country: [] }) },
+  { id: 'memy', name: T('😂 Memy'), desc: T('Piosenki znane z internetowych memów, polskich i zagranicznych – przy karcie ciekawostka, z jakiego memu pochodzą.'),
+    set: () => ({ pool: 'ALL', tag: 'memy', decade: [], genre: [], country: [] }) },
   { id: 'film', name: T('🎬 Muzyka filmowa'), desc: T('Piosenki i motywy z filmów (gatunek „muzyka filmowa”).'),
     set: () => ({ pool: 'ALL', tag: null, decade: [], genre: only('genre', ['muzyka filmowa']), country: [] }) },
 ];

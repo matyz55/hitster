@@ -936,6 +936,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Strokes – Last Nite (Q676313): m ·  · Julian Casablancas | pr · Gordon Raphael
 - Weezer – Island In The Sun (Q2724785): pr · Ric Ocasek
 - t.A.T.u. – Nas nie dogoniat (Q596029): m ·  · Sergio Galoyan, Elena Kiper, Valery Polienko | pr · Iwan Szapowałow
+- t.A.T.u. – Nas Ne Dogonyat (Q596029): m ·  · Sergio Galoyan, Elena Kiper, Valery Polienko | pr · Iwan Szapowałow
 - 3 Doors Down – Here Without You (Q1032020): m · Chris Henderson, Todd Harrell, Brad Arnold · 
 - 50 Cent – In Da Club (Q673947): m ·  · Dr. Dre | al · Get Rich or Die Tryin' · 2003 | pr · Dr. Dre
 - Audioslave – Like a Stone (Q3312293): pr · Rick Rubin
@@ -1352,7 +1353,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Post Malone & Ty Dolla Sign – Psycho (Q50130770): ml · Post Malone, Ty Dolla Sign, Louis Bell | al · Beerbongs & Bentleys · 2018 | pr · Post Malone, Louis Bell
 - Rita Ora – Let You Love Me (Q56703413): m ·  · Rita Ora, Ilsey Juber, Noonie Bao | al · Phoenix · 2018
 - Travis Scott – Sicko Mode (Q56145698): al · Astroworld · 2018 | pr · Hit-Boy
-- XXXTentacion – Sad! (Q51269207): m ·  · John Cunningham, XXXTENTACION | al · ? · 2018 | pr · John Cunningham
 - Ava Max – So Am I (Q61992565): al · Heaven & Hell · 2020 | pr · Cirkut
 - Billie Eilish – Everything I Wanted (Q74459564): m ·  · Billie Eilish | pr · Finneas O'Connell
 - Camila Cabello – Liar (Q67020368): m ·  · Lionel Richie, Jenny Berggren, Ulf Ekberg | al · Romance · 2019
@@ -3032,7 +3032,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - wykonawca Mahmood (Q60036307): bp · Mediolan · 1992
 - wykonawca French Montana (Q1455261): bn · Karim Kharbouch | bp · Casablanca · 1984
 - wykonawca Slavko Kalezić (Q28070967): bp · Podgorica · 1985
-- wykonawca XXXTentacion (Q28561969): bn · Jahseh Dwayne Ricardo Onfroy | bp · Plantation · 1998
 - wykonawca Sam Hunt (Q16223171): bp · Cedartown · 1984
 - wykonawca John Lundvik (Q18244130): bp · Londyn · 1983
 - wykonawca Francesco Gabbani (Q22695683): bp · Carrara · 1982
@@ -3193,7 +3192,6 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 
 - VOX (Q104214422): powstanie 2000, piosenki do 1980; kraj PE ≠ PL
 - Jonasz Kofta (Q278002): zm. 1988, piosenki od 1996
-- Fryderyk Chopin (Q1268): zm. 1849, piosenki od 2020
 - Buchanan (Q4982557): powstanie 2009, piosenki do 1956
 - Scott Joplin (Q191499): zm. 1917, piosenki od 1970
 - Mouth (Q54339484): kraj DE ≠ NL

@@ -1,4 +1,4 @@
-// Ujednolicenie zapisu wykonawców w songs.js, songs-sp.js i facts.js (klucze „wykonawca|tytuł”).
+// Ujednolicenie zapisu wykonawców w songs.js, songs-sp.js, facts.js i tools/memes.json (klucze „wykonawca|tytuł”).
 // Zamiany dotyczą całych nazw wykonawców (części rozdzielone „ & ” albo całego pola a / ma).
 // Uruchomienie: node tools/normalize-artists.mjs
 import { readFileSync, writeFileSync } from 'node:fs';
@@ -15,6 +15,7 @@ const MAP = {
   'Keiino': 'KEiiNO', 'THE ROOP': 'The Roop', 'the Roop': 'The Roop', 'Twocolors': 'twocolors', 'Katseye': 'KATSEYE',
   'Noon': 'NOON', 'przyłu': 'Przyłu', 'Schafter': 'schafter', 'Oki': 'OKI', 'Marketa Irglova': 'Markéta Irglová',
   'Panic! At The Disco': 'Panic! at the Disco', 'Abradab / GrubSon': 'Abradab & Grubson', 'SMOLIK / KEV FOX': 'Smolik & Kev Fox',
+  'Blink-182': 'blink-182', 'XXXTentacion': 'XXXTENTACION',
   'Kool & the Gang': 'Kool & The Gang', 'Katrina & the Waves': 'Katrina & The Waves',
   // ten sam wykonawca pod różnymi nazwami
   'Niemen': 'Czesław Niemen', 'Soyka': 'Stanisław Soyka', 'Kazik Staszewski': 'Kazik', 'Anna Rusowicz': 'Ania Rusowicz',
@@ -60,4 +61,8 @@ for (const name of ['songs-sp.js', 'facts.js']) {
   });
   writeFileSync(file, src);
 }
+// ciekawostki o memach (tools/memes.json → facts.js przez tools/memes.mjs)
+const memesFile = new URL('tools/memes.json', dir);
+const memes = JSON.parse(readFileSync(memesFile, 'utf8')).map((m) => ({ ...m, a: fix(m.a) }));
+writeFileSync(memesFile, JSON.stringify(memes, null, 1) + '\n');
 console.log(`zmienione pola wykonawców w songs.js: ${n}`);
