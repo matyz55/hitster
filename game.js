@@ -698,7 +698,7 @@ function tvSync() {
   if (!hasRemotes()) return;
   const screen = SCREENS.find((x) => !$('#screen-' + x).classList.contains('hidden'));
   const txt = (sel) => ($(sel) ? $(sel).textContent.trim() : '');
-  const snap = { screen, mode: state.mode, players: state.players.map((pl) => pl.name), room: roomCode, multi: lobby.active };
+  const snap = { screen, mode: state.mode, players: state.players.map((pl) => pl.name), room: roomCode, multi: lobby.active, ver: window.SongsterNet.version };
   const joinUrl = roomCode ? window.SongsterNet.pageUrl('tv.html', { join: roomCode }) : null;
   if (lobby.active) {
     const phones = remoteNames();
@@ -731,6 +731,10 @@ function tvSync() {
     // w imprezie – klasyfikacja całej imprezy, a nie tylko ostatniej minigry
     snap.ranking = ($('.party-standings') ? $$('.party-standings li') : $$('#ranking li')).map((li) => li.textContent);
     if ($('.party-box p')) snap.next = $('.party-box p').textContent;
+    // piosenki z tej gry (ostatnie 12) – lista obok wyników, jak na ekranie gospodarza
+    snap.played = (state.party && state.party.done ? [] : state.history).slice(-12).map((x) => ({
+      y: x.song.y, t: x.song.t, a: artistLine(x.song), cc: x.song.cc, ok: x.ok, note: x.note,
+    }));
   } else if (screen === 'game' && state.players.length) {
     const revealed = state.phase === 'revealed' && state.current;
     Object.assign(snap, {
@@ -822,7 +826,13 @@ function addRemote(conn, role) {
   const r = { conn, role, name: '' };
   remotes.add(r);
   conn.on('data', (msg) => handleRemote(msg, r));
-  conn.on('close', () => { remotes.delete(r); renderRemoteList(); if (role === 'tv') $('#tv-status').textContent = T('Połączenie z dużym ekranem zostało przerwane.'); });
+  conn.on('close', () => {
+    remotes.delete(r); renderRemoteList();
+    if (role !== 'tv') return;
+    $('#tv-status').textContent = T('Połączenie z dużym ekranem zostało przerwane – łączę ponownie…');
+    // telewizor mógł się odświeżyć (np. po aktualizacji) – wraca z tym samym kodem, więc łączymy się ponownie
+    reconnectTv(store.get('tvCode', ''), 0);
+  });
   conn.on('error', () => { remotes.delete(r); renderRemoteList(); });
   renderRemoteList();
   tvSync();
@@ -849,6 +859,14 @@ async function connectTv(code, silent) {
   }
 }
 $('#btn-tv-connect').addEventListener('click', () => connectTv($('#tv-code').value));
+function reconnectTv(code, attempt) {
+  if (!code || attempt >= 6 || [...remotes].some((r) => r.role === 'tv')) return;
+  setTimeout(async () => {
+    if ([...remotes].some((r) => r.role === 'tv')) return;
+    await connectTv(code, true);
+    if (![...remotes].some((r) => r.role === 'tv')) reconnectTv(code, attempt + 1);
+  }, 3000 + attempt * 2000);
+}
 // adres dużego ekranu do wpisania w przeglądarce telewizora (bez https://, krócej)
 $('#tv-url').textContent = window.SongsterNet.pageUrl('tv.html').replace(/^https?:\/\//, '');
 $('#tv-code').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); connectTv($('#tv-code').value); } });
@@ -1027,7 +1045,6 @@ $('#btn-lobby-back').addEventListener('click', () => {
 
 /* ---------- wybór trybu: jeden gracz albo multiplayer (z głosami z telefonów) ---------- */
 function showModes() {
-  lobby.votes.clear();
   renderModes();
   showScreen('modes');
 }
@@ -1539,6 +1556,8 @@ function startGame(over = {}) {
   if (!party) {
     state.baseMode = state.mode;
     state.party = null;
+    // głosy dotyczyły tej gry – przy następnym wyborze trybu głosujemy od nowa
+    lobby.votes.clear();
     if (state.mode === 'party') { startParty(); return; }
   }
   const teams = !!MODES[state.mode].teams;

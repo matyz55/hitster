@@ -232,5 +232,17 @@
     return u.toString();
   };
 
-  window.SongsterNet = { host, connect, qrSvg, pageUrl, normCode, preload };
+  // wersja aplikacji (taka sama jak pamięć podręczna w sw.js) – gdy gospodarz ma nowszą, duży ekran i telefony graczy
+  // same się odświeżają (inaczej np. telewizor otwarty przed aktualizacją nie zna nowych ekranów)
+  const version = '14';
+  // pobranie świeżych plików (z pominięciem pamięci podręcznej przeglądarki) i przeładowanie strony – raz na wersję
+  async function updateTo(ver) {
+    const key = 'songster.reloadedFor';
+    try { if (sessionStorage.getItem(key) === ver) return false; sessionStorage.setItem(key, ver); } catch (e) { return false; }
+    const files = ['tv.html', 'tv.js', 'net.js', 'i18n.js', 'i18n-en.js', 'match.js', 'songs.js', 'flags/codes.js'];
+    await Promise.all(files.map((f) => fetch(f, { cache: 'reload' }).catch(() => null)));
+    window.location.reload();
+    return true;
+  }
+  window.SongsterNet = { host, connect, qrSvg, pageUrl, normCode, preload, version, updateTo };
 }());

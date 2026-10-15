@@ -303,6 +303,7 @@ window.I18N_EN = {
  "Urządzenie gospodarza zablokowało dźwięk – niech ktoś raz naciśnie na nim ▶ (wymóg przeglądarki), potem ten przycisk zadziała.": "The host's device blocked the sound – someone needs to press ▶ on it once (a browser requirement), then this button will work.",
  "👀 Oś drużyny {0} – czeka na wybór miejsca": "👀 Team {0}'s timeline – waiting for a spot to be picked",
  "⚔ Twoje wyzwanie: podaj dokładny rok wydania": "⚔ Your challenge: enter the exact release year",
+ "Połączenie z dużym ekranem zostało przerwane – łączę ponownie…": "The connection to the big screen was lost – reconnecting…",
  "⚔ Kto rzuca wyzwanie? (koszt: 1 żeton)": "⚔ Who is challenging? (cost: 1 token)",
  "🔊 Dotknij, aby włączyć dźwięk na tym urządzeniu": "🔊 Tap to turn on sound on this device",
  "🔈 Muzyka gra na dużym ekranie.": "🔈 The music is playing on the big screen.",

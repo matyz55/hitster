@@ -66,6 +66,8 @@ okładki pobierane są w jakości dopasowanej do ekranu).
 QR (albo w oknie 📺 wpisuje kod) i od tej chwili steruje dużym ekranem. Połączenie: dołączające urządzenie próbuje
 naraz bezpośrednio (WebRTC przez PeerJS) i przez publiczny serwer pośredniczący MQTT (shiftr.io, WebSocket na porcie 443) –
 wygrywa kanał, który połączy się pierwszy, drugi jest od razu zamykany. Biblioteki ładowane są dopiero przy łączeniu.
+Gospodarz wysyła numer wersji gry – duży ekran albo telefon gracza ze starszą wersją (np. otwarty przed aktualizacją)
+sam pobiera świeże pliki i się odświeża, a gospodarz łączy się z telewizorem ponownie (ten sam kod).
 
 **Gracze na własnych telefonach**: w multiplayerze lobby od razu tworzy pokój – gracze skanują QR
 (`tv.html?join=KOD`), wpisują imię, głosują na tryb, a w grze dostają własny, pionowy widok: cały czas układ jak na urządzeniu gospodarza (tablica wyników, karta tury, płyta, pasek postępu, karty z flagami);

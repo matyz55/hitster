@@ -323,6 +323,42 @@
     .year-form input { flex: 1 1 8em; font: inherit; font-size: 1.2em; padding: 12px; border-radius: 10px; border: 2px solid var(--gold); background: var(--panel-2); color: var(--text); }
     .year-form button { flex: 1 1 8em; font: inherit; font-weight: 700; padding: 12px; border-radius: 10px; border: 0; background: var(--accent); color: #fff; }
     .year-form button:disabled { opacity: .4; }
+    /* spójnie z gospodarzem: karta tury (tytuł i żetony, płyta, status, pasek postępu, przyciski) */
+    .turn-card { flex-shrink: 0; background: var(--panel); border-radius: calc(20 * var(--u)); padding: .9em 1.3em; display: flex; flex-direction: column; gap: .55em;
+      box-shadow: 0 .5em 1.5em rgba(0, 0, 0, .3); }
+    .turn-head { display: flex; justify-content: space-between; align-items: center; gap: 2vw; }
+    .turn-head .info { letter-spacing: .05em; }
+    .turn-card .main { background: none; border: 0; padding: 0; }
+    .turn-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: .5em; }
+    .progress { height: calc(8 * var(--u)); background: var(--panel-2); border-radius: 999px; overflow: hidden; max-width: 40em; margin: 0; }
+    .progress .bar { height: 100%; width: 0; background: var(--accent-2); transition: width .25s linear; }
+    .actions button { font-size: .85em; padding: .5em 1em; }
+    .actions button.big-choice { font-size: 1.1em; font-weight: 800; padding: .6em 1.4em; background: var(--panel-2); border: calc(2 * var(--u)) solid #3d3755; }
+    .scores { flex-shrink: 0; }
+    /* podsumowanie jak u gospodarza */
+    .end { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2vw; align-items: start; align-content: center; max-width: 60vw; margin: 0 auto; width: 100%; }
+    .end.with-songs { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); max-width: none; }
+    .end-card, .end-songs { background: var(--panel); border-radius: calc(20 * var(--u)); padding: 1em 1.4em; box-shadow: 0 .5em 1.5em rgba(0, 0, 0, .3); }
+    .end-card h2 { font-size: 1.9em; margin: .1em 0 .5em; }
+    .end-rank { list-style: none; padding: 0; margin: 0; font-size: 1.2em; }
+    .end-rank li { display: flex; gap: .6em; align-items: center; padding: .35em .6em; border-radius: .5em; }
+    .end-rank li.top { background: var(--panel-2); margin-bottom: .3em; font-weight: 700; }
+    .end-rank .pos { min-width: 1.6em; text-align: center; }
+    .end-songs h3 { margin: 0 0 .5em; color: var(--accent-2); font-size: 1em; }
+    .end-songs ol { list-style: none; padding: 0; margin: 0; font-size: .8em; display: flex; flex-direction: column; gap: .3em; }
+    .end-songs li { display: grid; grid-template-columns: 3.2em minmax(0, 1fr) auto; gap: .6em; align-items: center; padding: .3em .6em; border-radius: .5em;
+      background: var(--panel-2); border-left: calc(5 * var(--u)) solid var(--ok); }
+    .end-songs li.bad { border-left-color: var(--bad); }
+    .end-songs .py { color: var(--gold); font-weight: 800; }
+    .end-songs .pt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .end-songs .pn { color: var(--muted); font-size: .85em; white-space: nowrap; }
+    /* wybór trybu jak kafelki u gospodarza */
+    .mb-tile { box-shadow: 0 .4em 1.2em rgba(0, 0, 0, .25); display: flex; flex-direction: column; gap: .25em; }
+    .mb-desc { color: var(--muted); font-size: .72em; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .sb-left { background: var(--panel); border-radius: calc(20 * var(--u)); padding: 1em 1.4em; box-shadow: 0 .5em 1.5em rgba(0, 0, 0, .3); }
+    .turn-head > div:first-child { flex: 1 1 auto; min-width: 0; }
+    .turn-head .sb-kicker { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .turn-head .info { flex: 0 1 auto; text-align: right; font-size: .95em; }
   </style>
 </head>
 <body>

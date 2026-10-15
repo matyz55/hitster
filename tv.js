@@ -217,7 +217,7 @@ function modesBoard(s) {
   return h('div', 'modes-board', h('div', 'mb-head', h('div', '', h('div', 'sb-kicker', T('Multiplayer')), h('h1', '', T('Wybór trybu gry'))),
     code ? h('div', 'mb-join', T('Dołącz: kod {0}', code)) : null),
   h('div', 'mb-grid', s.modes.items.map((it) => h('div', 'mb-tile' + (it.votes.length ? ' voted' : '') + (it.disabled ? ' off' : ''),
-    h('div', 'mb-icon', it.icon), h('div', 'mb-title', it.title),
+    h('div', 'mb-icon', it.icon), h('div', 'mb-title', it.title), h('div', 'mb-desc', it.desc),
     h('div', 'mb-votes', it.votes.length ? `🗳 ${it.votes.length} · ${it.votes.join(', ')}` : '')))),
   h('p', 'mb-hint', T('Głosujcie na telefonach – decyzję podejmuje gospodarz.')));
 }
@@ -263,8 +263,14 @@ function render(s) {
     return;
   }
   if (s.screen === 'end') {
-    app.replaceChildren(h('div', 'end', s.party ? h('div', 'sb-kicker', s.party.label) : null, h('h2', '', s.winner || ''),
-      h('ol', '', (s.ranking || []).map((r) => h('li', '', r))), s.next ? h('p', 'end-next', s.next) : null));
+    // jak ekran podsumowania gospodarza: wynik i ranking, obok piosenki z tej gry
+    const medal = ['🥇', '🥈', '🥉'];
+    app.replaceChildren(h('div', 'end' + ((s.played || []).length ? ' with-songs' : ''),
+      h('section', 'end-card', s.party ? h('div', 'sb-kicker', s.party.label) : null, h('h2', '', s.winner || ''),
+        h('ol', 'end-rank', (s.ranking || []).map((r, i) => h('li', i < 3 ? 'top' : '', h('span', 'pos', medal[i] || `${i + 1}.`), r))),
+        s.next ? h('p', 'end-next', s.next) : null),
+      (s.played || []).length ? h('section', 'end-songs', h('h3', '', T('Piosenki z tej gry')),
+        h('ol', '', s.played.map((x) => h('li', x.ok ? 'ok' : 'bad', h('span', 'py', x.y), h('span', 'pt', h('b', '', x.t), ' — ', x.a, ' ', flag(x.cc)), h('span', 'pn', x.note || ''))))) : null));
     fit();
     return;
   }
@@ -275,21 +281,21 @@ function render(s) {
     ? h('div', 'others', allRows.filter((t) => !rows.includes(t)).map((t) => h('span', '', h('b', '', t.name), t.sub ? ` ${t.sub}` : ''))) : null;
   app.classList.toggle('compact', rows.length > 2);
   app.classList.toggle('many', rows.length <= 1 && (s.scores || []).length > 4);
-  const head = h('header', '', h('div', '', s.party ? h('div', 'sb-kicker', s.party.label) : null, h('h1', '', s.title || ''), rows.length > 1 ? null : h('div', 'info', s.info || '')),
-    // przy osiach czasu stan graczy jest przy każdej osi – górnej tablicy wyników nie dublujemy
-    rows.length > 1 ? null : h('div', 'scores', (s.scores || []).map((x) => h('div', 'score' + (x.active ? ' active' : ''), x.text))));
+  // jak u gospodarza: tablica wyników nad kartą tury (przy kilku osiach stan graczy jest przy każdej osi – nie dublujemy)
+  const scoresRow = rows.length > 1 || !(s.scores || []).length ? null
+    : h('div', 'scores', s.scores.map((x) => h('div', 'score' + (x.active ? ' active' : ''), x.text)));
+  const head = h('div', 'turn-head', h('div', '', s.party ? h('div', 'sb-kicker', s.party.label) : null, h('h1', '', s.title || '')), h('div', 'info', s.info || ''));
   const vinyl = h('div', 'vinyl' + (s.art ? ' cover' : '') + (audioState.playing ? ' spinning' : ''), h('div', 'lbl', '?'));
   if (s.art) vinyl.style.backgroundImage = `url("${sharpArt(s.art)}")`;
-  const body = h('div', '', h('div', 'status', s.status || ''));
+  const progress = h('div', 'progress', h('div', 'bar'));
+  progress.firstChild.style.width = `${Math.round(audioState.progress * 100)}%`;
+  if (!s.hasSong) progress.classList.add('hidden');
+  const body = h('div', 'turn-body', h('div', 'status', s.status || ''), progress);
   if (s.reveal) {
     body.append(h('div', 'reveal', h('div', 'year', s.reveal.y),
       h('div', 'song', h('b', '', s.reveal.t), ' — ', s.reveal.a, ' ', flag(s.reveal.cc)),
       h('div', 'lines', (s.reveal.lines || []).map((l) => h('div', '', l)))));
   }
-  const progress = h('div', 'progress', h('div', 'bar'));
-  progress.firstChild.style.width = `${Math.round(audioState.progress * 100)}%`;
-  if (!s.hasSong) progress.classList.add('hidden');
-  body.prepend(progress);
   const main = h('div', 'main', vinyl, body);
   const hint = h('div', 'hint', s.hint || '');
   // Melodia krok po kroku: 1 s · 2 s · 4 s · 8 s
@@ -333,7 +339,8 @@ function render(s) {
   })()) : null;
   // pole odpowiedzi nie może zniknąć w trakcie pisania – zachowujemy wpisany tekst między odświeżeniami
   const keep = app.querySelector('.guess-form');
-  app.replaceChildren(...[who, head, main, steps, buzzers, hint, guess, actions, tls, others].filter(Boolean));
+  const card = h('section', 'turn-card', head, main, steps, buzzers, hint, guess, actions);
+  app.replaceChildren(...[who, scoresRow, card, tls, others].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
   fit();
 }
@@ -675,6 +682,8 @@ function musicCmd(m) {
 function onMessage(m) {
   // sygnał obecności gospodarza – nie jest stanem gry (wcześniej nadpisywał ekran wpisywania imienia)
   if (!m || m.ping || m.probe) return;
+  // gospodarz ma inną wersję gry – odświeżamy tę stronę (raz), żeby znała wszystkie ekrany
+  if (m.ver && m.ver !== window.SongsterNet.version) { window.SongsterNet.updateTo(m.ver); }
   if (m.audioCmd) { musicCmd(m); return; }
   if (m.joined) { setMe(m.joined); return; }
   if (m.joinError) {
