@@ -1,4 +1,5 @@
 import { test, expect, ready, screen } from './fixtures.mjs';
+import fs from 'node:fs';
 
 // jeden gracz: start trybu z ekranu „Jeden gracz”
 async function start(page, mode, setup) {
@@ -167,4 +168,11 @@ test('ustawienia: wyszukiwanie piosenki i poprawka roku', async ({ page }) => {
   await input.dispatchEvent('change');
   await expect(page.locator('#song-editor .song-row.edited')).toHaveCount(1);
   await page.click('#btn-reset-years');
+});
+
+test('wersja gry na ekranie startowym zgodna z ostatnim wpisem w CHANGELOG.md', async ({ page }) => {
+  await page.goto('/');
+  const log = fs.readFileSync(new URL('../CHANGELOG.md', import.meta.url), 'utf8');
+  const last = [...log.matchAll(/^## (\d+\.\d+\.\d+)/gm)].pop()[1];
+  await expect(page.locator('#app-version')).toHaveText(`Songster v${last}`);
 });

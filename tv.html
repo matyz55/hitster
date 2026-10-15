@@ -372,6 +372,21 @@
     .bingo-cell.marked { background: var(--ok); color: #0b1d12; border-color: var(--ok); font-weight: 700; }
     .bingo-cell:disabled { opacity: 1; }
     body.player .bingo-cell { font-size: 13px; min-height: 58px; }
+    /* „Ułóż piątkę”: lista fragmentów do przeciągania (jak u gospodarza) */
+    .sort-box { flex: 1 1 100%; display: flex; flex-direction: column; gap: 6px; }
+    .sort-end { text-align: center; color: var(--muted); font-size: .8em; }
+    .sort-list { display: flex; flex-direction: column; gap: 6px; position: relative; }
+    .sort-row { display: grid; grid-template-columns: 2em 1fr auto auto auto; align-items: center; gap: 6px; padding: 4px 8px;
+      border-radius: 12px; background: linear-gradient(160deg, #3a2d63, #2a2244); border: 2px solid #4a3f6e; user-select: none; -webkit-user-select: none; }
+    .sort-row.on { border-color: var(--accent-2); }
+    .sort-row.dragging { position: relative; z-index: 3; border-color: var(--accent); box-shadow: 0 8px 22px rgba(0,0,0,.5); }
+    .sort-pos { color: var(--muted); font-weight: 700; text-align: right; }
+    .drag-grip { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: grab; touch-action: none; }
+    .drag-grip .grip-dots { font-size: 1.4em; color: var(--muted); }
+    .sort-row button { font: inherit; min-width: 44px; min-height: 44px; padding: 6px 10px; border-radius: 10px;
+      border: 1px solid #3d3755; background: var(--panel-2); color: var(--text); }
+    .sort-row button.on { border-color: var(--accent-2); color: var(--accent-2); }
+    .sort-row button:disabled { opacity: .4; }
   </style>
 </head>
 <body>
@@ -381,6 +396,7 @@
   <script src="i18n-en.js"></script>
   <script src="i18n.js"></script>
   <script src="net.js"></script>
+  <script src="dragsort.js"></script>
   <script src="tv.js"></script>
 </body>
 </html>

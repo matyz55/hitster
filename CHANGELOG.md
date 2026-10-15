@@ -460,3 +460,12 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Dla twórców: kod gry podzielony z jednego pliku `game.js` na moduły w katalogu `js/` (rdzeń, ekrany, telefony, lobby,
   ustawienia gry, rozgrywka, zasady, dźwięk, wyświetlanie, ustawienia, tryby, listy, statystyki, wznawianie);
   nowe testy: wersja angielska i edytor dat. Wersja dla dużego ekranu podniesiona – starsze strony same się odświeżą.
+
+## 5.20.0 – 15.10.2026 (`HASH`)
+
+- **Ułóż piątkę** – nowy wygląd: fragmenty A–E są na liście, którą układa się przeciąganiem palcem lub myszą
+  (za uchwyt ⠿), najstarszy u góry, najnowszy na dole. Każdy wiersz ma swój przycisk ▶ i strzałki ▲▼ do przesuwania
+  o jedno miejsce. Ta sama lista jest na telefonie gracza z turą i na dużym ekranie.
+- Poprawka: na początku nowej tury poprzednia piątka znika od razu – wcześniej dało się ją przestawiać, zanim wczytały się
+  nowe fragmenty, i zmiany przepadały.
+- Na dole ekranu startowego widać numer aktualnej wersji gry.

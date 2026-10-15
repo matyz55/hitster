@@ -241,7 +241,38 @@ function challengeYearForm(label, key) {
   setTimeout(() => { if (document.activeElement !== input && !input.value) input.focus(); }, 0);
   return form;
 }
+// „Ułóż piątkę”: lista fragmentów jak u gospodarza; przyciski ▶ ▲ ▼ to przyciski z gry gospodarza,
+// przeciągnięcie wiersza wysyła odpowiednią liczbę przesunięć ▲ albo ▼
+const SORT_BTN = /\bsort-(play|up|down)\b/;
+function sortBox(s, can) {
+  const all = (s.buttons || []).map((b, i) => ({ ...b, i }));
+  const of = (c) => all.filter((b) => b.cls.split(' ').includes(c));
+  const [play, up, down] = [of('sort-play'), of('sort-up'), of('sort-down')];
+  const click = (b) => { if (b) send({ click: { i: b.i, text: b.text } }); };
+  const btn = (b) => {
+    const x = h('button', b ? b.cls : 'ghost', b ? b.text : '');
+    x.disabled = !can || !b || b.disabled;
+    x.addEventListener('click', () => click(b));
+    return x;
+  };
+  const list = h('div', 'sort-list', s.sort.rows.map((r, i) => h('div', 'sort-row drag-row' + (r.playing ? ' on' : ''),
+    h('span', 'sort-pos', `${i + 1}.`), h('span', 'drag-grip', h('span', 'grip-dots', '⠿'), h('b', '', T('Fragment {0}', r.letter))),
+    btn(play[i]), btn(up[i]), btn(down[i]))));
+  if (can) {
+    window.dragSort(list, (from, to) => {
+      const dir = to < from ? -1 : 1;
+      for (let j = from; j !== to; j += dir) click((dir < 0 ? up : down)[j]);
+    });
+  }
+  return h('div', 'sort-box', h('div', 'sort-end', T('⬆ najstarsza')), list, h('div', 'sort-end', T('⬇ najnowsza')));
+}
+// stan, który przyszedł w trakcie przeciągania – pokazujemy go dopiero po puszczeniu wiersza
+let heldSnap = null;
+const releaseHeld = () => setTimeout(() => { if (heldSnap && !app.querySelector('.drag-active')) { const x = heldSnap; heldSnap = null; render(x); } }, 0);
+window.addEventListener('pointerup', releaseHeld);
+window.addEventListener('pointercancel', releaseHeld);
 function render(s) {
+  if (s && app.querySelector('.drag-active')) { heldSnap = s; return; }
   last = s;
   if (PLAYER) {
     // ten sam stan co poprzednio – bez przebudowy ekranu (przebudowa w trakcie stuknięcia gubiła kliknięcie przycisku)
@@ -326,7 +357,8 @@ function render(s) {
   // na telefonie gracza: wszystko w jego turze; poza nią – wyzwanie (złote), wybór wyzywającego (jego imię)
   // i żeton „przy stole” (zielony – decyduje reszta graczy)
   const allowed = (b) => !PLAYER || myTurn(s) || /\b(gold|ok)\b/.test(b.cls) || b.text === me;
-  const actions = h('div', 'actions', (s.buttons || []).map((b, i) => {
+  const actions = h('div', 'actions', s.sort ? sortBox(s, allowed({ cls: '', text: '' })) : null, (s.buttons || []).map((b, i) => {
+    if (s.sort && SORT_BTN.test(b.cls)) return null;
     const btn = h('button', b.cls, b.text);
     btn.disabled = b.disabled || !allowed(b);
     if (b.title) btn.title = b.title;
@@ -466,7 +498,7 @@ function renderPlayer(s) {
   // wyzwanie „dokładny rok” – pole roku u wyzywającego (zamiast przycisku „Odkryj kartę” gospodarza)
   const yearForm = s.challengeInput && ids.includes(s.challengeInput.who) ? challengeYearForm(T('⚔ Twoje wyzwanie: podaj dokładny rok wydania'), 'challengeYear')
     : (s.yearAsk && s.yearAsk.who.includes(me) ? challengeYearForm(T('📅 W którym roku wydano tę piosenkę?'), 'yearAnswer') : null);
-  const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text) && !(yearForm && b.cls.includes('primary')));
+  const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text) && !(yearForm && b.cls.includes('primary')) && !(s.sort && SORT_BTN.test(b.cls)));
   const myChallenge = ids.includes(s.challenger) || (s.challengers || []).some((n) => ids.includes(n));
   const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || myChallenge));
   // karta tury – jak na urządzeniu gospodarza
@@ -489,7 +521,7 @@ function renderPlayer(s) {
     h('div', 'ht-head', h('h2', '', s.title || ''), h('span', 'ht-info', s.info || '')),
     h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess, yearForm, bingoBoard(s),
     s.challenge ? h('p', 'ht-hint', s.challenge) : null, s.hint ? h('p', 'ht-hint', s.hint) : null,
-    turnTl, rest.length ? h('div', 'ht-actions', rest.map((b) => mk(b))) : null);
+    s.sort ? sortBox(s, myView) : null, turnTl, rest.length ? h('div', 'ht-actions', rest.map((b) => mk(b))) : null);
   const board = (s.scores || []).length ? h('div', 'ht-scores', s.scores.map((x) => h('span', x.active ? 'act' : '', x.text))) : null;
   const sections = [];
   // poza swoją turą: podgląd na żywo osi gracza, który odpowiada – widać, gdzie kładzie kartę (np. czy rzucić wyzwanie)

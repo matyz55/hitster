@@ -89,7 +89,18 @@ test('Wyzwanie dnia: ten sam zestaw w dwóch przeglądarkach, wynik do udostępn
   await expect(page.locator('#ranking button.primary')).toContainText('Udostępnij');
 });
 
-test('Ułóż piątkę: dobra kolejność daje 5 pkt, każdy fragment ma swój przycisk ▶', async ({ page }) => {
+// przeciągnięcie wiersza listy „Ułóż piątkę” za uchwyt z miejsca `from` na miejsce `to`
+async function dragRow(page, root, from, to) {
+  const grip = (i) => page.locator(`${root} .sort-row .drag-grip`).nth(i);
+  const a = await grip(from).boundingBox();
+  const b = await grip(to).boundingBox();
+  await page.mouse.move(a.x + a.width / 2, a.y + a.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(a.x + a.width / 2, b.y + b.height / 2 + (to > from ? 6 : -6), { steps: 12 });
+  await page.mouse.up();
+}
+
+test('Ułóż piątkę: lista z przeciąganiem, dobra kolejność daje 5 pkt', async ({ page }) => {
   await page.goto('/');
   await page.click('#btn-single');
   await page.click('.mode[data-mode=sort5]');
@@ -99,13 +110,34 @@ test('Ułóż piątkę: dobra kolejność daje 5 pkt, każdy fragment ma swój p
   await expect(page.locator('#btn-play')).toBeHidden();
   await page.click('#actions .sort-play >> nth=2');
   await expect.poll(() => page.evaluate(() => !audio.paused)).toBe(true);
-  const order = await page.evaluate(() => state.sort.items.map((it, k) => ({ k, y: it.song.y })).sort((a, b) => a.y - b.y).map((x) => x.k));
-  for (const k of order) await page.click(`#actions .sort-pick >> nth=${k}`);
-  await page.click('#actions button.primary');
+  // układamy przeciąganiem wierszy (mysz): na miejsce p przeciągamy fragment, który powinien tam być
+  const target = await page.evaluate(() => state.sort.items.map((it, k) => ({ k, y: it.song.y })).sort((a, b) => a.y - b.y).map((x) => x.k));
+  for (let p = 0; p < 5; p++) {
+    const from = await page.evaluate((k) => state.sort.order.indexOf(k), target[p]);
+    if (from !== p) await dragRow(page, '#actions', from, p);
+  }
+  expect(await page.evaluate(() => state.sort.order)).toEqual(target);
+  await page.click('#actions > button.primary');
   await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(5);
   await expect(page.locator('#reveal .verdict')).toHaveCount(6);
   await page.click('#actions button.primary');
   await expect.poll(() => screen(page)).toBe('end');
+});
+
+test('Ułóż piątkę: przyciski ▲▼ przesuwają fragment o jedno miejsce', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=sort5]');
+  await page.click('#btn-start');
+  await page.waitForFunction(() => state.sort && state.sort.items.length === 5, null, { timeout: 30000 });
+  await expect(page.locator('#actions .sort-row')).toHaveCount(5);
+  await expect(page.locator('#actions .sort-up').first()).toBeDisabled();
+  await expect(page.locator('#actions .sort-down').last()).toBeDisabled();
+  await page.click('#actions .sort-down >> nth=0');
+  expect(await page.evaluate(() => state.sort.order)).toEqual([1, 0, 2, 3, 4]);
+  await page.click('#actions .sort-up >> nth=4');
+  expect(await page.evaluate(() => state.sort.order)).toEqual([1, 0, 2, 4, 3]);
+  await expect(page.locator('#actions .sort-row .drag-grip b').first()).toHaveText('Fragment B');
 });
 
 test('Ułóż piątkę: koniec czasu sprawdza bieżącą kolejność', async ({ page }) => {

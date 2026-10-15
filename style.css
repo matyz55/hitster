@@ -41,6 +41,7 @@ body {
 .card h2 { margin: 0 0 12px; font-size: 1.15rem; }
 .center { text-align: center; }
 .muted { color: var(--muted); font-size: .9rem; }
+.app-version { font-size: .7rem; opacity: .7; margin-top: 24px; }
 
 button {
   font: inherit; border: 0; border-radius: 10px; padding: 10px 16px;
@@ -571,9 +572,25 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 #quiz-year, #challenge-year { flex: 1 1 9em; min-width: 9em; font-size: 1.1rem; }
 .daily-squares { font-size: 1.6rem; letter-spacing: 2px; margin: 8px 0; }
 .daily-tile { background: linear-gradient(135deg, rgba(255, 201, 60, .14), rgba(45, 226, 230, .1)), var(--panel); }
+/* „Ułóż piątkę”: lista fragmentów do przeciągania (gra i telefon gracza) */
+.sort-box { flex: 1 1 100%; display: flex; flex-direction: column; gap: 6px; }
+.sort-end { text-align: center; }
+.sort-list { display: flex; flex-direction: column; gap: 6px; position: relative; }
+.sort-row {
+  display: grid; grid-template-columns: 2em 1fr auto auto auto; align-items: center; gap: 6px;
+  padding: 6px 8px; border-radius: 12px; background: linear-gradient(160deg, #3a2d63, #2a2244);
+  border: 2px solid #4a3f6e; user-select: none; -webkit-user-select: none;
+}
+.sort-row.on { border-color: var(--accent-2); }
+.sort-row.dragging { position: relative; z-index: 3; border-color: var(--accent); box-shadow: 0 8px 22px rgba(0,0,0,.5); }
+.drag-active .sort-row:not(.dragging) { transition: none; }
+.sort-pos { color: var(--muted); font-weight: 700; text-align: right; }
+.drag-grip { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: grab; touch-action: none; font-size: 1.1rem; }
+.drag-grip .grip-dots { font-size: 1.4rem; color: var(--muted); }
+.dragging .drag-grip { cursor: grabbing; }
+.sort-row button { min-width: 44px; min-height: 44px; padding: 6px 10px; }
 .sort-play.on { border-color: var(--accent-2); color: var(--accent-2); }
-#actions .sort-play { flex: 1 1 15%; }
-#actions .sort-pick { flex: 1 1 30%; }
+.sticky-actions:has(.sort-box) { position: static; }
 
 /* --- bingo muzyczne --- */
 .bingo-boards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin: 10px 0; }

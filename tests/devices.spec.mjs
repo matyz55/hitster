@@ -190,3 +190,31 @@ test('@net wyzwanie „wszyscy naraz” z dwóch telefonów', async ({ browser }
   await expect.poll(() => host.evaluate(() => state.phase)).toBe('revealed');
   noErrors(host, ania, bartek);
 });
+
+test('@net Ułóż piątkę: lista na telefonie gracza z turą – przeciąganie i ▲▼ zmieniają kolejność u gospodarza', async ({ browser }) => {
+  const { host, code } = await hostLobby(browser);
+  const ania = await join(browser, code, 'Ania');
+  await host.click('#btn-lobby-next');
+  await host.click('.mode[data-mode=sort5]');
+  await host.click('#btn-start');
+  await host.waitForFunction(() => state.sort && state.sort.items.length === 5, null, { timeout: 30000 });
+  await host.evaluate(() => { state.turn = state.players.findIndex((p) => p.name === 'Ania'); startTurn(); });
+  await host.waitForFunction(() => activePlayer().name === 'Ania' && state.sort && state.sort.items.length === 5 && state.phase === 'listen', null, { timeout: 30000 });
+  await expect(ania.locator('.sort-row')).toHaveCount(5);
+  await ania.click('.sort-row .sort-down >> nth=0');
+  await expect.poll(() => host.evaluate(() => state.sort.order.join(''))).toBe('10234');
+  await expect(ania.locator('.sort-row .drag-grip b').first()).toHaveText('Fragment B');
+  // przeciągnięcie ostatniego wiersza na samą górę
+  // (położenie obu uchwytów naraz – telefon odświeża ekran przy każdej zmianie stanu u gospodarza)
+  const [a, b] = await ania.evaluate(() => [4, 0].map((i) => {
+    const r = document.querySelectorAll('.sort-row .drag-grip')[i].getBoundingClientRect();
+    return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+  }));
+  await ania.mouse.move(a.x, a.y);
+  await ania.mouse.down();
+  await ania.mouse.move(a.x, b.y - 6, { steps: 15 });
+  await ania.mouse.up();
+  await expect.poll(() => host.evaluate(() => state.sort.order.join(''))).toBe('41023');
+  await expect(ania.locator('.sort-row .drag-grip b').first()).toHaveText('Fragment E');
+  noErrors(host, ania);
+});

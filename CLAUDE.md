@@ -9,6 +9,7 @@
   - pośrednia (Y) – nowe funkcje, tryby, ustawienia, duże uzupełnienia bazy piosenek,
   - poprawkowa (Z) – poprawki błędów, danych piosenek i drobne zmiany.
 - Skrót commitu wpisz po utworzeniu commitu (np. w kolejnym commicie albo poprawką tej samej wersji).
+- Ten sam numer wpisz w `GAME_VERSION` w `js/core.js` (pokazywany na ekranie startowym; test sprawdza zgodność).
 - Pisz tylko to, co faktycznie zmieniono – bez obietnic i bez niesprawdzonych informacji.
 
 ## Wersja dla dużego ekranu i telefonów

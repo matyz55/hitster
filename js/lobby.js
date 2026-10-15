@@ -134,4 +134,5 @@ function renderModes() {
 {
   const pl = window.SONGS.filter((s) => s.c === 'PL').length;
   $('#home-info').textContent = T('{0} piosenek w bazie: {1} polskich i {2} zagranicznych.', window.SONGS.length, pl, window.SONGS.length - pl);
+  $('#app-version').textContent = `Songster v${GAME_VERSION}`;
 }

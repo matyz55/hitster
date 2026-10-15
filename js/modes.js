@@ -227,7 +227,8 @@ function dailyEnd() {
 }
 
 /* ---------- Ułóż piątkę ---------- */
-// 5 krótkich fragmentów (A–E) do ułożenia od najstarszego do najnowszego; 90 s od pierwszego odtworzenia.
+// 5 krótkich fragmentów (A–E) na liście – przeciąga się je (albo przesuwa ▲▼) od najstarszego do najnowszego;
+// 90 s od pierwszego odtworzenia.
 // Punkty: za każdą dobrze ułożoną sąsiednią parę 1 pkt (najwyżej 4) i 1 pkt premii za całość – razem do 5.
 const SORT_N = 5;
 const SORT_TIME = 90;
@@ -235,6 +236,9 @@ const SORT_LETTERS = ['A', 'B', 'C', 'D', 'E'];
 let sortTimer = null;
 async function drawSort5() {
   const myDraw = ++state.drawId;
+  // poprzednia piątka znika od razu – inaczej dało się ją przestawiać, zanim wczytała się nowa
+  state.sort = null;
+  render();
   $('#btn-play').disabled = true;
   $('#mystery-status').textContent = T('Szukam 5 piosenek…');
   const items = [];
@@ -246,10 +250,10 @@ async function drawSort5() {
     if (preview && !preview.gone) { markPlayed(song); items.push({ song, preview }); } else state.deck.release(song, !previewCache.has(songKey(song)));
   }
   if (items.length < SORT_N) { $('#mystery-status').textContent = T('Talia się skończyła!'); endGame(); return; }
-  state.sort = { items, order: [], deadline: null, playing: null };
+  state.sort = { items, order: items.map((it, k) => k), deadline: null, playing: null };
   Object.assign(state, { current: items[0].song, preview: items[0].preview, clipStart: 0, clipLen: 10 });
   setAudioSource(items[0].preview);
-  $('#mystery-status').textContent = T('Posłuchaj fragmentów A–E i ułóż je od najstarszego do najnowszego.');
+  $('#mystery-status').textContent = T('Posłuchaj fragmentów A–E i przeciągnij je w kolejności od najstarszego do najnowszego.');
   render();
 }
 function playSort(k) {
@@ -274,9 +278,12 @@ function playSort(k) {
   playClip();
   render();
 }
-function pickSort(k) {
-  if (!state.sort || state.phase !== 'listen' || state.sort.order.includes(k)) return;
-  state.sort.order.push(k);
+// przeniesienie fragmentu z miejsca `from` na miejsce `to` (przeciągnięcie albo ▲▼)
+function moveSort(from, to) {
+  const s = state.sort;
+  if (!s || state.phase !== 'listen' || to < 0 || to >= s.order.length || from === to) return;
+  const [k] = s.order.splice(from, 1);
+  s.order.splice(to, 0, k);
   render();
 }
 function checkSort(timeUp) {
@@ -312,11 +319,16 @@ function sortActions() {
   const btns = [];
   const s = state.sort;
   if (state.phase === 'listen' && s) {
-    s.items.forEach((it, k) => btns.push(el('button', { class: 'ghost sort-play' + (s.playing === k ? ' on' : ''), onclick: () => playSort(k) }, `▶ ${SORT_LETTERS[k]}`)));
-    s.items.forEach((it, k) => btns.push(el('button', { class: 'big-choice sort-pick', disabled: s.order.includes(k), onclick: () => pickSort(k) },
-      T('{0}. miejsce: {1}', s.order.length + 1, SORT_LETTERS[k]))));
-    btns.push(el('button', { class: 'ghost', disabled: !s.order.length, onclick: () => { s.order = []; render(); } }, T('↺ Od nowa')));
-    btns.push(el('button', { class: 'primary', disabled: s.order.length < SORT_N, onclick: () => checkSort(false) }, T('✔ Sprawdź')));
+    const list = el('div', { class: 'sort-list' }, s.order.map((k, i) => el('div', { class: 'sort-row drag-row' + (s.playing === k ? ' on' : '') },
+      el('span', { class: 'sort-pos' }, `${i + 1}.`),
+      el('span', { class: 'drag-grip', title: T('Przeciągnij') }, el('span', { class: 'grip-dots' }, '⠿'), el('b', {}, T('Fragment {0}', SORT_LETTERS[k]))),
+      el('button', { class: 'ghost sort-play' + (s.playing === k ? ' on' : ''), onclick: () => playSort(k) }, `▶ ${SORT_LETTERS[k]}`),
+      el('button', { class: 'ghost sort-up', disabled: i === 0, 'aria-label': T('Wyżej'), onclick: () => moveSort(i, i - 1) }, '▲'),
+      el('button', { class: 'ghost sort-down', disabled: i === s.order.length - 1, 'aria-label': T('Niżej'), onclick: () => moveSort(i, i + 1) }, '▼'))));
+    dragSort(list, moveSort);
+    btns.push(el('div', { class: 'sort-box' }, el('div', { class: 'sort-end muted small' }, T('⬆ najstarsza')), list,
+      el('div', { class: 'sort-end muted small' }, T('⬇ najnowsza'))));
+    btns.push(el('button', { class: 'primary', onclick: () => checkSort(false) }, T('✔ Sprawdź')));
   }
   if (state.phase === 'revealed') {
     const last = state.turnsPlayed >= state.rounds * state.players.length;
@@ -329,7 +341,7 @@ function sortHint() {
   const s = state.sort;
   if (!s || state.phase !== 'listen') return '';
   const left = s.deadline ? Math.max(0, Math.ceil((s.deadline - Date.now()) / 1000)) : SORT_TIME;
-  return T('Od najstarszej: {0} · ⏳ {1} s', s.order.map((k) => SORT_LETTERS[k]).join(' → ') || '…', left);
+  return T('Przeciągnij fragmenty: najstarszy u góry, najnowszy na dole · ⏳ {0} s', left);
 }
 
 /* ---------- Bingo muzyczne ---------- */

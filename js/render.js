@@ -378,7 +378,8 @@ function renderActions() {
       over ? T('Zobacz podsumowanie →') : (isSoloLike() ? T('Następna piosenka →')
         : (state.mode === 'teams' ? T('Następna drużyna →') : T('Następny gracz →')))));
   }
-  $('#actions').replaceChildren(...btns);
+  // nie przebudowujemy listy „Ułóż piątkę” w trakcie przeciągania (zgubiłoby chwyt)
+  if (!$('#actions .drag-active')) $('#actions').replaceChildren(...btns);
 }
 
 function onConfirmPlacement() {

@@ -251,6 +251,9 @@ function tvSync() {
         ? { who: state.players[state.challenger].name } : null,
       // „Rok co do roku”: pole roku na telefonie gracza z turą
       bingo: bingoSnapshot(),
+      // „Ułóż piątkę”: kolejność fragmentów na liście (przeciąganie na telefonie gracza z turą)
+      sort: state.mode === 'sort5' && state.sort && state.phase === 'listen'
+        ? { rows: state.sort.order.map((k) => ({ letter: SORT_LETTERS[k], playing: state.sort.playing === k })) } : null,
       yearAsk: isYearQuiz() && state.phase === 'listen' && state.current ? { who: controlNames() } : null,
       phase: state.phase, turnName: activePlayer().name, turnWho: answering(activePlayer()), playing: !audio.paused, hasSong: !!state.current,
       // drużyny: do której drużyny należy gracz z telefonem
