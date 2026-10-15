@@ -389,6 +389,7 @@ window.I18N_EN = {
  " pkt": " pts",
  "Piosenka {0} z {1}": "Song {0} of {1}",
  "Naciśnij swój przycisk albo klawisz, gdy znasz odpowiedź": "Press your button or key when you know the answer",
+ "Dotknij swojego pola, gdy znasz odpowiedź": "Tap your field when you know the answer",
  "Seria: {0}": "Streak: {0}",
  "Rekord: {0}": "Record: {0}",
  "Tura: {0}": "Turn: {0}",

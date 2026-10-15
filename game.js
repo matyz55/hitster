@@ -175,6 +175,8 @@ const APP_PACKAGES = { youtube: 'com.google.android.youtube', spotify: 'com.spot
 // Brave na Androidzie ma błąd: nie przekazuje linków „intent://” do aplikacji (ERR_UNKNOWN_URL_SCHEME,
 // github.com/brave/brave-browser/issues/46614) – tam zostają zwykłe linki https
 const IS_BRAVE = !!navigator.brave;
+// telefon / tablet bez myszy i klawiatury – w „Kto pierwszy?” nie pokazujemy klawiszy
+const TOUCH_ONLY = !!(window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
 const IS_ANDROID = /Android/i.test(navigator.userAgent) && !IS_BRAVE;
 function intentUrl(url, platform) {
   const u = new URL(url);
@@ -725,12 +727,15 @@ function openSetup(mode) {
   if (cfg.teams) {
     // domyślnie tylko drużyna właściciela telefonu – kolejne dodaje się przyciskiem albo dołączają telefonem
     let teams = store.get('teams', [{ name: T('Drużyna {0}', 1), members: '' }]);
-    if (teams.every((t) => /^(Drużyna|Team) \d+$/.test(t.name) && !t.members)) teams = teams.slice(0, 1);
+    // jednorazowo: dawna domyślna lista dwóch drużyn → jedna (potem lista zostaje taka, jaką ustawiono)
+    if (!store.get('defaultOne', false) && teams.length === 2 && teams.every((t) => /^(Drużyna|Team) \d+$/.test(t.name) && !t.members)) teams = teams.slice(0, 1);
     renderSetupPlayers(teams.slice(0, cfg.maxPlayers));
   } else {
     // domyślnie jeden gracz – ten, czyj jest telefon; zapamiętane własne imiona zostają
     let names = store.get('players', [T('Gracz {0}', 1)]);
-    if (names.every((n) => /^(Gracz|Player) \d+$/.test(n))) names = names.slice(0, 1);
+    // jednorazowo: dawna domyślna lista „Gracz 1, Gracz 2” → jeden gracz (potem lista zostaje, np. przy „Zagraj ponownie”)
+    if (!store.get('defaultOne', false) && names.length === 2 && names.every((n) => /^(Gracz|Player) \d+$/.test(n))) names = names.slice(0, 1);
+    store.set('defaultOne', true);
     if (!names.length) names = [T('Gracz {0}', 1)];
     if (names.length > cfg.maxPlayers) names = names.slice(0, cfg.maxPlayers);
     const keys = store.get('buzzKeys', BUZZ_KEYS);
@@ -754,7 +759,7 @@ function renderSetupPlayers(rows) {
   }
   $('#players-list').replaceChildren(...rows.map((r, i) => el('div', { class: 'player-row' + (cfg.teams ? ' team-row' : '') },
     el('input', { type: 'text', value: r.name, maxlength: '20', class: 'p-name', 'aria-label': cfg.teams ? T('Nazwa drużyny {0}', i + 1) : T('Gracz {0}', i + 1) }),
-    state.mode === 'buzz' ? el('button', {
+    state.mode === 'buzz' && !TOUCH_ONLY ? el('button', {
       type: 'button', class: 'ghost p-key', 'data-key': r.key, title: T('Kliknij i naciśnij klawisz, którym ten gracz będzie się zgłaszał'),
       onclick: (e) => captureBuzzKey(e.currentTarget),
     }, `⌨ ${keyLabel(r.key)}`) : null,
@@ -1913,11 +1918,30 @@ function renderBuzzers() {
     $('#buzz-who').textContent = T('🔔 Odpowiada: {0}', state.players[b.answering].name);
     $('#buzz-who').style.borderColor = BUZZ_COLORS[b.answering];
   }
-  if (!show) return;
-  box.replaceChildren(...state.players.map((pl, i) => el('button', {
-    class: 'buzzer' + (b.locked.has(i) ? ' locked' : ''), disabled: b.locked.has(i),
-    style: `--c:${BUZZ_COLORS[i]}`, onclick: () => buzz(i),
-  }, el('b', {}, pl.name), el('kbd', {}, keyLabel((state.buzzKeys || BUZZ_KEYS)[i])))));
+  if (!show) { box.style.removeProperty('height'); return; }
+  // duże pola na większość ekranu – telefon leży na stole, gracze siedzą dookoła:
+  // pola w górnej połowie są obrócone o 180°, żeby osoby po drugiej stronie widziały swoje imię
+  const n = state.players.length;
+  const cols = n <= 2 ? 1 : n <= 4 ? 2 : n <= 9 ? 3 : 4;
+  const rows = Math.ceil(n / cols);
+  box.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+  box.style.gridTemplateRows = `repeat(${rows}, 1fr)`;
+  box.replaceChildren(...state.players.map((pl, i) => {
+    const btn = el('button', {
+      class: 'buzzer' + (b.locked.has(i) ? ' locked' : '') + (TOUCH_ONLY && Math.floor(i / cols) < Math.floor(rows / 2) ? ' flip' : ''),
+      disabled: b.locked.has(i), style: `--c:${BUZZ_COLORS[i]}`,
+    }, el('b', {}, pl.name), TOUCH_ONLY ? null : el('kbd', {}, keyLabel((state.buzzKeys || BUZZ_KEYS)[i])));
+    // reakcja już w chwili dotknięcia (liczy się, kto pierwszy), a nie po puszczeniu palca
+    btn.addEventListener('pointerdown', (e) => { e.preventDefault(); buzz(i); });
+    btn.addEventListener('click', () => buzz(i));
+    return btn;
+  }));
+  // pola zajmują ekran od miejsca, w którym się zaczynają, do dołu (co najmniej połowę wysokości)
+  requestAnimationFrame(() => {
+    // bez miejsca zajętego przez przypięty u dołu pasek przycisków (np. „Nikt nie wie – odkryj”)
+    const bar = $('#actions').getBoundingClientRect().height || 0;
+    box.style.height = `${Math.max(window.innerHeight * 0.4, window.innerHeight - box.getBoundingClientRect().top - bar - 24)}px`;
+  });
 }
 function buzz(i) {
   const b = state.buzz;
@@ -2390,7 +2414,7 @@ function renderHeader(p, timeline) {
   const songNo = state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1);
   if (state.mode === 'buzz') {
     title.textContent = T('Piosenka {0} z {1}', Math.min(songNo, state.rounds), state.rounds);
-    info.textContent = T('Naciśnij swój przycisk albo klawisz, gdy znasz odpowiedź');
+    info.textContent = TOUCH_ONLY ? T('Dotknij swojego pola, gdy znasz odpowiedź') : T('Naciśnij swój przycisk albo klawisz, gdy znasz odpowiedź');
   } else if (state.mode === 'hilo') {
     const rec = store.get('records', {})[`hilo${state.difficulty}`] || 0;
     title.textContent = T('Seria: {0}', state.streak);
