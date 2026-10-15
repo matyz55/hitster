@@ -447,7 +447,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   „wg Wikidata”. Lista z odnośnikami do źródeł: `AWARDS.md` (generuje ją `tools/awards.mjs`). Nagrody są pokazywane
   przed innymi ciekawostkami.
 
-## 5.19.1 – 15.10.2026 (`HASH`)
+## 5.19.1 – 15.10.2026 (`49e887c`)
 
 - Dla twórców: okresowe sprawdzanie bazy – skrypt `tools/check-previews.mjs` sprawdza w iTunes porcję piosenek
   (tym samym sposobem co gra, z limitem zapytań) i zapisuje raport piosenek bez fragmentu w `PREVIEW-REPORT.md`;
