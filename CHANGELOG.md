@@ -547,7 +547,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   nazwisku; przy piosence pokazywana jest jedna ciekawostka.
 - Poprawki stabilności połączenia z dużym ekranem i telefonami; zaktualizowane zasady gry i README.
 
-## 5.24.1 – 15.10.2026 (`HASH`)
+## 5.24.1 – 15.10.2026 (`922fc71`)
 
 - „Eldorado” to teraz jedna piosenka wykonawców sanah & Daria Zawiałow (wcześniej dwa osobne wpisy: osobno Darii
   Zawiałow i osobno sanah).
