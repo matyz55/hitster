@@ -423,7 +423,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   osób (każda płaci 1 żeton), każda wskazuje swoje miejsce – także równocześnie na swoich telefonach. Jeśli gracz z turą
   się pomyli, kartę zabiera ta osoba, która pierwsza wskazała dobre miejsce; po odkryciu widać wynik każdego wyzywającego.
 
-## 5.17.0 – 15.10.2026 (`HASH`)
+## 5.17.0 – 15.10.2026 (`81a1feb`)
 
 - **✨ Najciekawsze momenty** na podsumowaniu gry (też na dużym ekranie i telefonach): najdłuższa seria trafień,
   najcelniejszy gracz, karty przejęte w wyzwaniach, trafienia co do roku, największa pomyłka w „Rok co do roku”,
