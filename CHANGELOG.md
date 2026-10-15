@@ -582,7 +582,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Poprawione lata: Alice Deejay – „Better Off Alone” (1998), Daft Punk – „Around the World” (1997),
   Vicetone & Tony Igy – „Astronomia” (2014).
 
-## 5.26.1 – 15.10.2026 (`HASH`)
+## 5.26.1 – 15.10.2026 (`bde27f9`)
 
 - Ciekawostki z Wikidata (kompozytor, autor tekstu, album, film, o wykonawcy) także dla nowych piosenek – teraz
   przy 1764 piosenkach i 1863 wykonawcach (wcześniej 1525 i 1659).
