@@ -44,6 +44,11 @@ test('Tak to leciało!: plansza 9 kategorii, przerwa przed wersem, dobra odpowie
     return { n: c.gap.blanks.length, words: c.lines[c.gap.line].text.split(/\s+/).length, before: c.lines.slice(0, c.gap.line).some((l) => k(l.text) === k(c.lines[c.gap.line].text)) };
   });
   await expect(page.locator('.ly-dot')).toHaveCount(gap.n);
+  // układ: „Tak to leciało!” na całą szerokość, pod nim trzy koła ratunkowe, na samym dole źródła
+  const order = await page.evaluate(() => [...document.querySelectorAll('#ly-answer > *')].map((e) => e.className));
+  expect(order.indexOf('primary ly-submit')).toBeLessThan(order.indexOf('ly-lifebtns'));
+  expect(order.at(-1)).toContain('ly-credit');
+  await expect(page.locator('.ly-lifebtns button')).toHaveCount(3);
   expect(gap.n).toBe(gap.words);
   expect(gap.before).toBe(false);
   // karaoke: wersy sprzed przerwy, bez wersu do uzupełnienia

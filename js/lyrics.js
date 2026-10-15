@@ -613,9 +613,9 @@ function lyRender() {
   $('#ly-title').textContent = multi ? T('🎤 Tak to leciało! – gra {0}', me.name) : T('🎤 Tak to leciało!');
   $('#ly-scores').replaceChildren(...(multi ? state.players.map((p, i) => el('span', { class: `score${i === state.turn ? ' active' : ''}${p.out ? ' out' : ''}` },
     ly.mini ? `${p.name}: ${pointsLabel(p.score)}` : `${p.name}: ${lyMoney(p.score)}${p.out ? (p.quit ? ' ✋' : ' ✖') : ''}`)) : []));
-  // na samym dole (pod kołami ratunkowymi) – źródła tekstu i filmu; w minigrze tylko one
-  const credit = el('p', { class: 'muted small ly-credit' }, T('Tekst: lrclib.net · Film: YouTube'));
-  $('#ly-ladder').replaceChildren(...(ly.mini ? [credit] : [lyLadderEl(me), lyLifesEl(me) || '', credit]));
+  // przy planszy: drabinka i stan kół ratunkowych; w trakcie piosenki koła są przyciskami pod tekstem
+  $('#ly-ladder').classList.toggle('hidden', !!ly.mini);
+  $('#ly-ladder').replaceChildren(...(ly.mini ? [] : [lyLadderEl(me), state.phase === 'board' ? lyLifesEl(me) || '' : '']));
   $('#ly-msg').textContent = ly.msg || '';
   $('#ly-msg').classList.toggle('hidden', !ly.msg);
   const board = $('#ly-board');
@@ -697,9 +697,16 @@ function lyRenderAnswer() {
   const ly = state.lyrics;
   const cur = ly.cur;
   const box = $('#ly-answer');
-  if (!cur || !['answer', 'result'].includes(state.phase)) { box.replaceChildren(); return; }
+  if (!cur || !['play', 'answer', 'result'].includes(state.phase)) { box.replaceChildren(); return; }
   const me = lyMe();
-  const final = !ly.mini && me.stage >= 9 && state.phase === 'answer';
+  const final = !ly.mini && me.stage >= 9;
+  // na samym dole – źródła tekstu i filmu
+  const credit = el('p', { class: 'muted small ly-credit' }, T('Tekst: lrclib.net · Film: YouTube'));
+  if (state.phase === 'play') {
+    // w trakcie śpiewania koła ratunkowe jako przyciski; odsłonięcie słowa i trzy wersje działają dopiero przy przerwie
+    box.replaceChildren(ly.mini || final ? '' : lyLifeBtns(me, cur, true), credit);
+    return;
+  }
   if (state.phase === 'result') {
     // prawidłowa odpowiedź pojawia się słowo po słowie, gdy piosenka dochodzi do tego miejsca
     const words = el('div', { class: `ly-reveal${cur.revealing ? ' go' : ''}` }, cur.gap.blanks.map((b, i) => el('span', {
@@ -714,7 +721,7 @@ function lyRenderAnswer() {
     box.replaceChildren(words, verdict, mine || '', el('div', { class: 'actions' },
       el('button', { class: 'primary', onclick: lyNextTurn }, last ? T('Koniec gry') : T('Dalej')),
       el('button', { class: 'ghost small', onclick: lyReport }, cur.reported ? T('↩ Cofnij zgłoszenie') : T('⚠️ Zła wersja piosenki / błędy w tekście'))),
-      cur.reported ? el('p', { class: 'muted small' }, T('Zgłoszono – ten film nie wróci w kolejnych grach na tym urządzeniu.')) : '');
+      cur.reported ? el('p', { class: 'muted small' }, T('Zgłoszono – ten film nie wróci w kolejnych grach na tym urządzeniu.')) : '', credit);
     return;
   }
   // liczba słów: kropki, które zapełniają się przy pisaniu; odsłonięte słowa widać w ich miejscu
@@ -738,21 +745,28 @@ function lyRenderAnswer() {
   if (cur.picking) parts.push(el('p', { class: 'muted small' }, T('Stuknij kropkę – słowo w tym miejscu zostanie odsłonięte.')));
   if (cur.hint) parts.push(el('p', { class: 'ly-hint' }, T('🙋 Podpowiedź suflera: {0}', cur.hint)));
   if (cur.helper != null) parts.push(el('p', { class: 'muted' }, T('🙋 {0} wpisuje podpowiedź…', state.players[cur.helper].name)), lyHelperForm(cur.helper));
-  const actions = el('div', { class: 'actions' },
-    el('button', { class: 'primary', onclick: lySubmit }, T('Tak to leciało!')),
-    LySpeech ? el('button', { class: 'ghost', onclick: lySing, disabled: cur.listening }, cur.listening ? T('🎤 Słucham…') : T('🎤 Zaśpiewaj')) : null,
-    ly.mini || final ? null : el('span', { class: 'ly-lifebtns' },
-      el('button', { class: 'ghost', disabled: !me.lifes.words, onclick: () => { cur.picking = !cur.picking; lyRender(); } }, T('🔤 Odsłoń słowo ({0})', me.lifes.words)),
-      el('button', { class: 'ghost', disabled: !me.lifes.three || !!cur.variants, onclick: lyThree }, T('🎯 Trzy wersje wersu')),
-      el('button', { class: 'ghost', disabled: !me.lifes.swap || !cur.other || ly.played.has(songKey(cur.other.song)), onclick: lySwap }, T('🔁 Wymiana piosenki'))));
-  if (!final && state.players.length > 1 && me.lifes.help && cur.helper == null && !cur.hint) {
-    actions.append(el('span', { class: 'ly-help' }, T('🙋 Sufler:'), state.players.map((p, i) => (i === state.turn ? null
+  // „Tak to leciało!” na całą szerokość, pod nim trzy koła ratunkowe, na samym dole źródła
+  parts.push(el('button', { class: 'primary ly-submit', onclick: lySubmit }, T('Tak to leciało!')));
+  if (!ly.mini && !final) parts.push(lyLifeBtns(me, cur, false));
+  const extra = el('div', { class: 'actions ly-extra' },
+    LySpeech ? el('button', { class: 'ghost', onclick: lySing, disabled: cur.listening }, cur.listening ? T('🎤 Słucham…') : T('🎤 Zaśpiewaj')) : null);
+  if (!ly.mini && !final && state.players.length > 1 && me.lifes.help && cur.helper == null && !cur.hint) {
+    extra.append(el('span', { class: 'ly-help' }, T('🙋 Sufler:'), state.players.map((p, i) => (i === state.turn ? null
       : el('button', { class: 'ghost small', onclick: () => lyAskHelper(i) }, p.name)))));
   }
-  parts.push(actions);
+  if (extra.children.length) parts.push(extra);
+  parts.push(credit);
   const focused = document.activeElement && document.activeElement.id === 'ly-input';
   box.replaceChildren(...parts);
   if (focused) { const i = $('#ly-input'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
+}
+// trzy koła ratunkowe jako przyciski (w trakcie śpiewania aktywna tylko wymiana piosenki)
+function lyLifeBtns(me, cur, playing) {
+  const ly = state.lyrics;
+  return el('div', { class: 'ly-lifebtns' },
+    el('button', { class: `ghost${cur.picking ? ' on' : ''}`, disabled: playing || !me.lifes.words, onclick: () => { cur.picking = !cur.picking; lyRender(); } }, T('🔤 Odsłoń słowo ({0})', me.lifes.words)),
+    el('button', { class: 'ghost', disabled: playing || !me.lifes.three || !!cur.variants, onclick: lyThree }, T('🎯 Trzy wersje wersu')),
+    el('button', { class: 'ghost', disabled: !me.lifes.swap || !cur.other || ly.played.has(songKey(cur.other.song)), onclick: lySwap }, T('🔁 Wymiana piosenki')));
 }
 // sufler bez telefonu: podpowiedź wpisywana na tym urządzeniu (gracz podaje mu urządzenie)
 function lyHelperForm(i) {

@@ -681,7 +681,13 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .ly-hint { color: var(--gold); font-weight: 600; }
 .ly-help { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .ly-helper { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 8px 0; }
-.ly-credit { text-align: center; margin: 12px 0 0; }
+.ly-credit { text-align: center; margin: 14px 0 0; }
+.ly-wrap:has(#ly-ladder.hidden) { grid-template-columns: 1fr; }
+.ly-submit { display: block; width: 100%; margin: 10px 0 8px; padding: 14px; font-size: 1.15rem; }
+.ly-lifebtns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0; }
+.ly-lifebtns button { padding: 10px 6px; font-size: .9rem; white-space: normal; }
+.ly-lifebtns button.on { border-color: var(--gold); box-shadow: inset 0 0 0 2px var(--gold); }
+.ly-extra { justify-content: center; }
 @media (max-width: 720px) {
   .ly-wrap { grid-template-columns: 1fr; }
   .ly-side { order: 2; }
