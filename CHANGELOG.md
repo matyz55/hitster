@@ -433,7 +433,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - **Ustawienia imprezy**: długość minigier (krótkie / średnie / długie – więcej piosenek, kart i czasu) oraz punktacja
   w multiplayerze: za miejsca (3/2/1) albo suma punktów z minigier.
 
-## 5.18.0 – 15.10.2026 (`HASH`)
+## 5.18.0 – 15.10.2026 (`68bcf8a`)
 
 - **📋 Własna lista piosenek** (ustawienia gry → Piosenki): wklejasz piosenki linia po linii („wykonawca – tytuł”
   w dowolnej kolejności, także z tabulatorem lub średnikiem z arkusza), gra dopasowuje je do piosenek z bazy
