@@ -119,7 +119,8 @@ function applyAudioRoute() {
     const out = audioOut();
     note.textContent = remote ? (out === 'tv' ? T('🔈 Muzyka gra na dużym ekranie.') : T('🔈 Muzyka gra na telefonie gracza {0}.', answering(activePlayer()) || activePlayer().name))
       : (out !== 'host' ? (blockedTarget() ? T('🔈 Przeglądarka tamtego urządzenia czeka na naciśnięcie przycisku (pilota lub ekranu) – do tego czasu muzyka gra tutaj.')
-        : T('🔈 Brak połączonego urządzenia – muzyka gra na tym telefonie.')) : '');
+        // „brak połączonego urządzenia” – tylko gdy jakiś duży ekran jest podłączony (bez niego to oczywiste)
+        : (tvWindowSeen || [...remotes].some((r) => r.role === 'tv') ? T('🔈 Brak połączonego urządzenia – muzyka gra na tym telefonie.') : '')) : '');
     const ph = controlPhone();
     if (ph) note.textContent = [note.textContent, T('📱 Odtwarzaniem steruje {0} na swoim telefonie.', ph.name)].filter(Boolean).join(' ');
     note.classList.toggle('hidden', !note.textContent);

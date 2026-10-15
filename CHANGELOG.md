@@ -504,3 +504,8 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.22.2 – 15.10.2026 (`d111100`)
 
 - Przycisk „Kup losową kartę” nazywa się teraz „Kup kartę”.
+
+## 5.22.3 – 15.10.2026 (`HASH`)
+
+- Napis „🔈 Brak połączonego urządzenia – muzyka gra na tym telefonie.” nie pokazuje się, gdy nie jest podłączony żaden
+  duży ekran (np. przy grze na jednym telefonie z zapamiętanym ustawieniem „muzyka gra na dużym ekranie”).

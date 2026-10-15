@@ -190,3 +190,17 @@ test('wersja gry na ekranie startowym zgodna z ostatnim wpisem w CHANGELOG.md', 
   const last = [...log.matchAll(/^## (\d+\.\d+\.\d+)/gm)].pop()[1];
   await expect(page.locator('#app-version')).toHaveText(`Songster v${last}`);
 });
+
+test('bez podłączonego dużego ekranu nie ma napisu „Brak połączonego urządzenia”', async ({ page }) => {
+  // zapamiętane z wcześniejszej gry ustawienie „muzyka gra na dużym ekranie”
+  await page.addInitScript(() => localStorage.setItem('songster.audioOut', JSON.stringify('tv')));
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=solo]');
+  await page.click('#btn-start');
+  await ready(page);
+  await expect(page.locator('#audio-note')).toBeHidden();
+  // po podłączeniu ekranu (okno na tym urządzeniu) napis wraca, póki ekran nie gra
+  await page.evaluate(() => { tvWindowSeen = true; tvChannel = null; applyAudioRoute(); });
+  await expect(page.locator('#audio-note')).toContainText('Brak połączonego urządzenia');
+});
