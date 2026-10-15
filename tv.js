@@ -222,6 +222,21 @@ function modesBoard(s) {
   h('p', 'mb-hint', T('Głosujcie na telefonach – decyzję podejmuje gospodarz.')));
 }
 let lastKey = '';
+// pole roku przy wyzwaniu – wpisany tekst przetrwa odświeżenia ekranu
+let yearDraft = '';
+function challengeYearForm() {
+  const input = h('input', 'year-input');
+  input.type = 'number'; input.inputMode = 'numeric'; input.min = '1900'; input.max = String(new Date().getFullYear());
+  input.placeholder = T('Rok, np. 1984'); input.value = yearDraft;
+  const go = h('button', 'primary', T('✔ Odkryj kartę'));
+  const ok = () => { const y = parseInt(input.value, 10); return y >= 1900 && y <= new Date().getFullYear() ? y : null; };
+  go.disabled = ok() == null;
+  input.addEventListener('input', () => { yearDraft = input.value; go.disabled = ok() == null; });
+  const form = h('form', 'year-form', h('label', '', T('⚔ Twoje wyzwanie: podaj dokładny rok wydania')), input, go);
+  form.addEventListener('submit', (e) => { e.preventDefault(); if (ok() != null) { send({ challengeYear: ok() }); yearDraft = ''; input.blur(); } });
+  setTimeout(() => { if (document.activeElement !== input && !input.value) input.focus(); }, 0);
+  return form;
+}
 function render(s) {
   last = s;
   if (PLAYER) {
@@ -430,7 +445,9 @@ function renderPlayer(s) {
     return btn;
   };
   const skipB = myView ? btns.find((b) => /^⏭/.test(b.text)) : null;
-  const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text));
+  // wyzwanie „dokładny rok” – pole roku u wyzywającego (zamiast przycisku „Odkryj kartę” gospodarza)
+  const yearForm = s.challengeInput && ids.includes(s.challengeInput.who) ? challengeYearForm() : null;
+  const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text) && !(yearForm && b.cls.includes('primary')));
   const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || ids.includes(s.challenger)));
   // karta tury – jak na urządzeniu gospodarza
   const vinyl = h('div', 'ht-vinyl' + (s.art ? ' cover' : '') + (audioState.playing ? ' spinning' : ''), h('div', 'lbl', '?'));
@@ -450,7 +467,7 @@ function renderPlayer(s) {
   const turnTl = (myView || shared) && active ? vTimeline(active, pick, null) : null;
   const card = h('section', 'ht-card' + (rest.length ? ' with-actions' : ''),
     h('div', 'ht-head', h('h2', '', s.title || ''), h('span', 'ht-info', s.info || '')),
-    h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess,
+    h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess, yearForm,
     s.challenge ? h('p', 'ht-hint', s.challenge) : null, s.hint ? h('p', 'ht-hint', s.hint) : null,
     turnTl, rest.length ? h('div', 'ht-actions', rest.map((b) => mk(b))) : null);
   const board = (s.scores || []).length ? h('div', 'ht-scores', s.scores.map((x) => h('span', x.active ? 'act' : '', x.text))) : null;

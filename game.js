@@ -591,9 +591,29 @@ function handleRemote(msg, from) {
   // przycisk kliknięty na innym ekranie – klikamy ten sam w oknie gry (sprawdzamy też napis, gdyby stan zdążył się zmienić)
   if (msg.click) {
     const b = tvButtons()[msg.click.i];
-    if (b && !b.disabled && b.textContent.trim() === msg.click.text) b.click();
+    if (b && !b.disabled && b.textContent.trim() === msg.click.text) {
+      // „⚔ Wyzwanie” z telefonu gracza: wyzywającym od razu jest ten gracz (bez wybierania imienia z listy)
+      const who = from && from.role === 'player' ? playerIndexOf(from.name) : -1;
+      if (msg.click.text === T('⚔ Wyzwanie') && who >= 0 && who !== state.turn && state.players[who].tokens >= 1) {
+        state.phase = 'challenge';
+        state.challenger = who;
+        state.players[who].tokens -= 1;
+        render();
+      } else b.click();
+    }
   }
-  if (msg.slot != null && remoteSlotsAllowed()) onSlotClick(msg.slot);
+  // miejsce na osi z telefonu: tylko gracz z turą, a przy wyzwaniu – tylko wyzywający
+  if (msg.slot != null && remoteSlotsAllowed()) {
+    const who = from && from.role === 'player' ? playerIndexOf(from.name) : null;
+    const expected = state.phase === 'challenge' ? state.challenger : state.turn;
+    if (who === null || who === expected) onSlotClick(msg.slot);
+  }
+  // rok podany przez wyzywającego na jego telefonie (wariant wyzwania „dokładny rok”)
+  if (msg.challengeYear != null && from && state.phase === 'challenge' && state.challengeMode === 'year'
+    && state.challenger != null && playerIndexOf(from.name) === state.challenger) {
+    const y = parseInt(msg.challengeYear, 10);
+    if (y >= 1900 && y <= new Date().getFullYear()) { state.challengeYear = y; revealTimeline(); }
+  }
   if (msg.buzz != null) buzz(msg.buzz);
   if (msg.guess) {
     $('#guess-song').value = msg.guess.text || '';
@@ -602,6 +622,11 @@ function handleRemote(msg, from) {
     if (msg.guess.submit && isMelody() && state.phase === 'listen' && state.current) $('#guess-form').requestSubmit();
     else render();
   }
+}
+// gracz (albo drużyna, do której należy) o tym imieniu – numer w state.players, -1 gdy brak
+function playerIndexOf(name) {
+  if (!name) return -1;
+  return state.players.findIndex((p) => p.name === name || (p.members || []).includes(name));
 }
 // kto steruje odtwarzaniem ze swojego telefonu: gracz z turą (w drużynie także odpowiadający członek),
 // w „Kto pierwszy?” – ten, kto się zgłosił
@@ -720,6 +745,9 @@ function tvSync() {
       } : null,
       // ▶/⏸ dla telefonu gracza, który teraz odpowiada
       play: state.current && !$('#btn-play').classList.contains('hidden') ? { disabled: $('#btn-play').disabled, playing: !audio.paused, who: controlNames() } : null,
+      // wyzwanie „dokładny rok”: pole roku na telefonie wyzywającego
+      challengeInput: state.phase === 'challenge' && state.challenger != null && state.challengeMode === 'year'
+        ? { who: state.players[state.challenger].name } : null,
       phase: state.phase, turnName: activePlayer().name, turnWho: answering(activePlayer()), playing: !audio.paused, hasSong: !!state.current,
       // drużyny: do której drużyny należy gracz z telefonem
       teamOf: state.mode === 'teams' ? Object.fromEntries(state.players.flatMap((pl) => (pl.members || []).map((m) => [m, pl.name]))) : null,
