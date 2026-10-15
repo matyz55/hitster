@@ -10,9 +10,11 @@
       --accent: #ff3d7f; --accent-2: #2de2e6; --ok: #3ddc84; --bad: #ff5c5c; --gold: #ffc93c; }
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; }
-    body { background: radial-gradient(circle at 20% 0%, #2a1840 0%, var(--bg) 60%); background-color: var(--bg); color: var(--text);
+    body { background: radial-gradient(ellipse at 15% -10%, #2c2150 0%, transparent 55%), radial-gradient(ellipse at 100% 110%, #1d2a4a 0%, transparent 50%), var(--bg);
+      background-color: var(--bg); color: var(--text);
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: clamp(16px, 1.6vw, calc(64 * var(--u))); overflow: hidden; }
-    .wrap { height: 100%; display: flex; flex-direction: column; padding: 2vh 3vw; gap: 1.5vh; overflow: hidden; }
+    /* margines bezpieczny ok. 5% – część telewizorów obcina brzegi obrazu (overscan) */
+    .wrap { height: 100%; display: flex; flex-direction: column; padding: 4.5vh 5vw; gap: 1.6vh; overflow: hidden; }
     header { display: flex; align-items: center; justify-content: space-between; gap: 2vw; }
     h1 { margin: 0; font-size: 1.8em; white-space: nowrap; }
     .many h1 { font-size: 1.4em; }
@@ -21,7 +23,8 @@
     .scores { display: flex; gap: 1vw; flex-wrap: wrap; }
     .score { background: var(--panel); border: calc(3 * var(--u)) solid transparent; border-radius: calc(14 * var(--u)); padding: .4em .9em; font-size: 1.05em; }
     .score.active { border-color: var(--accent); }
-    .main { display: flex; gap: 3vw; align-items: center; flex-shrink: 0; }
+    .main { display: flex; gap: 2.5vw; align-items: center; flex-shrink: 0; background: rgba(255, 255, 255, .035); border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 1em; padding: .7em 1.2em; }
     .vinyl { width: min(16vh, 6em); height: min(16vh, 6em); border-radius: 50%; flex-shrink: 0; box-shadow: 0 0 0 calc(4 * var(--u)) #000;
       background: repeating-radial-gradient(circle, #111 0 calc(3 * var(--u)), #222 calc(3 * var(--u)) calc(6 * var(--u))); display: grid; place-items: center; background-size: cover; background-position: center; }
     .compact .vinyl { width: min(10vh, 4em); height: min(10vh, 4em); }
@@ -49,24 +52,28 @@
     .timelines { flex: 1; min-height: 0; overflow: hidden; display: grid; gap: 1vh 1.5vw; }
     .tl-row { display: flex; align-items: center; gap: .8vw; min-height: 0; min-width: 0; border-radius: calc(14 * var(--u)); padding: 0 .4vw; }
     .tl-row.active { grid-column: 1 / -1; }
-    .tl-row.active { background: rgba(255, 61, 127, .08); outline: calc(2 * var(--u)) solid rgba(255, 61, 127, .5); }
+    /* oś gracza z turą – tylko delikatny znacznik z boku (przy kilku osiach) */
+    .timelines.multi .tl-row.active { background: rgba(255, 255, 255, .035); box-shadow: inset calc(5 * var(--u)) 0 0 var(--accent); }
     .tl-name { width: 11vw; flex-shrink: 0; font-weight: 800; font-size: var(--nfs, 1em); line-height: 1.15; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
     .tl-name small { display: block; font-weight: 400; color: var(--muted); font-size: .7em; white-space: normal; }
     .tl-row.active .tl-name small { font-size: .55em; }
     .tl-row.active .tl-name { color: var(--accent); }
     .tl { display: flex; gap: var(--gap, .5vw); overflow: hidden; flex: 1; align-items: center; justify-content: center; }
-    .card { flex: 0 0 auto; width: var(--cw, 11vw); height: var(--ch, 14vh); border-radius: .7em; padding: .35em; text-align: center; overflow: hidden;
-      font-size: var(--fs, 1em); background: linear-gradient(160deg, #3a2d63, #2a2244); display: flex; flex-direction: column; justify-content: space-between; }
+    /* karta: rok, tytuł (2 linijki), wykonawca (2 linijki), flaga */
+    .card { flex: 0 0 auto; width: var(--cw, 11vw); height: var(--ch, 14vh); border-radius: .8em; padding: .5em .45em; text-align: center; overflow: hidden;
+      font-size: var(--fs, 1em); background: linear-gradient(165deg, #43367a 0%, #2c2552 100%); border: 1px solid rgba(255, 255, 255, .08);
+      box-shadow: 0 .35em 1em rgba(0, 0, 0, .35); display: flex; flex-direction: column; justify-content: center; gap: .3em; }
     .card .y { font-size: 1.9em; font-weight: 900; color: var(--gold); line-height: 1.05; }
-    .card .t { font-weight: 700; font-size: .85em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .card .a { color: var(--muted); font-size: .75em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .card .t { font-weight: 700; font-size: .85em; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card .a { color: var(--muted); font-size: .72em; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card .lbl { color: var(--muted); font-size: .7em; }
     .flag { width: 1.6em; height: auto; border-radius: calc(3 * var(--u)); vertical-align: -0.15em; }
     .card .flag { width: 1.3em; align-self: center; }
-    .tiny .card .a, .tiny .card .flag { display: none; }
+    .tiny .card .a, .tiny .card .flag, .tiny .card .lbl { display: none; }
     .tiny .card .t { -webkit-line-clamp: 1; }
     .tiny .card .y { font-size: 1.6em; }
     .tiny .card { justify-content: center; gap: .2em; }
-    .card.start { background: transparent; border: calc(3 * var(--u)) dashed var(--gold); }
+    .card.start { background: rgba(255, 201, 60, .06); border: calc(3 * var(--u)) dashed rgba(255, 201, 60, .8); box-shadow: none; }
     .card.new { outline: calc(4 * var(--u)) solid var(--ok); }
     .card.mystery { background: linear-gradient(160deg, var(--accent), #b0245a); border: calc(3 * var(--u)) solid #fff; justify-content: center; gap: .2em;
       animation: pulse 1.2s ease-in-out infinite; }
@@ -85,6 +92,27 @@
     .waiting b { color: var(--text); font-size: 1.6em; display: block; margin-bottom: .5em; }
     button { font: inherit; font-size: .7em; border: calc(1 * var(--u)) solid #3d3755; background: transparent; color: var(--text); border-radius: calc(10 * var(--u)); padding: .4em .9em; cursor: pointer; }
     .hidden { display: none !important; }
+    /* ekran po połączeniu telefonu i ekran ustawień gry */
+    .connected { margin: auto; text-align: center; }
+    .connected .big { font-size: 3em; }
+    .connected h1 { font-size: 2.4em; margin: .2em 0; }
+    .connected p { color: var(--muted); font-size: 1.2em; }
+    .setup-board { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.25fr 1fr; gap: 4vw; align-items: center; }
+    .setup-board.single { grid-template-columns: 1fr; max-width: 60vw; margin: auto; }
+    .sb-kicker { color: var(--accent-2); text-transform: uppercase; letter-spacing: .12em; font-size: .8em; font-weight: 700; }
+    .sb-left h1 { font-size: 2.2em; margin: .1em 0 .5em; white-space: normal; }
+    .sb-sub { color: var(--muted); font-size: .85em; margin-bottom: .3em; }
+    .sb-players .chips { display: flex; flex-wrap: wrap; gap: .4em; margin-bottom: .9em; }
+    .pchip { background: var(--panel-2); border: 1px solid rgba(255, 255, 255, .1); border-radius: 2em; padding: .25em .8em; font-weight: 700; }
+    .sb-opts { display: grid; grid-template-columns: auto 1fr; gap: .3em 1.2em; margin: 0; font-size: .9em; }
+    .sb-opts dt { color: var(--muted); }
+    .sb-opts dd { margin: 0; font-weight: 600; }
+    .sb-pool { color: var(--muted); font-size: .75em; margin-top: 1em; }
+    .sb-right { text-align: center; }
+    .sb-qr { width: min(52vh, 34vw); aspect-ratio: 1; margin: 0 auto; background: #fff; border-radius: 2vmin; padding: 2vmin; }
+    .sb-qr svg { width: 100%; height: 100%; display: block; }
+    .sb-code { color: var(--gold); font-weight: 900; font-size: clamp(2rem, 9vmin, 9rem); letter-spacing: .12em; margin-top: .2em; line-height: 1.1; }
+    .sb-right p { color: var(--text); font-size: 1em; margin: .3em 0 0; }
     /* płyta kręci się, gdy gra muzyka; pasek postępu fragmentu */
     .vinyl.spinning { animation: spin 3s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }

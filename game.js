@@ -487,6 +487,7 @@ function remoteSend(msg) {
 function handleRemote(msg, from) {
   if (!msg) return;
   if (msg.hello) {
+    if (!from) tvWindowSeen = true; // okno dużego ekranu na tym urządzeniu
     if (from) { from.role = msg.role || from.role; from.name = msg.name || from.name; renderRemoteList(); }
     tvSync();
   }
@@ -510,6 +511,45 @@ function handleRemote(msg, from) {
 // wybór miejsca na osi z innego urządzenia: gracz w swojej turze albo wyzywający (wariant „inne miejsce”)
 const remoteSlotsAllowed = () => isTimeline() && !!state.current
   && (['listen', 'placed'].includes(state.phase) || (state.phase === 'challenge' && state.challenger != null && state.challengeMode === 'place'));
+// czy jest podłączony duży ekran (okno na tym urządzeniu albo telewizor przez sieć)
+let tvWindowSeen = false;
+const hasDisplay = () => tvWindowSeen || [...remotes].some((r) => r.role === 'tv');
+// wybrane opcje rozgrywki – czytane z widocznych pól ekranu ustawień (pokazywane na dużym ekranie)
+function setupSummary() {
+  const out = [];
+  const visible = (n) => n && n.offsetParent !== null && !n.closest('.hidden');
+  const clean = (t) => t.replace(/\s+/g, ' ').trim();
+  const preset = $('#presets [aria-pressed="true"]');
+  if (preset) out.push([T('Zestaw'), clean(preset.textContent)]);
+  for (const sec of $$('#screen-setup section.card')) {
+    if (sec.id === 'sec-players' || !visible(sec)) continue;
+    for (const inp of sec.querySelectorAll('input, select')) {
+      const lab = inp.closest('label');
+      // przełączniki mają ukryte pole – liczy się widoczność etykiety
+      if (!visible(lab || inp) || inp.closest('details:not([open])')) continue;
+      if (inp.type === 'radio' && inp.checked) {
+        const group = inp.closest('div[data-for], .card');
+        const head = (inp.closest('.seg') && inp.closest('.seg').previousElementSibling && inp.closest('.seg').previousElementSibling.classList.contains('label'))
+          ? inp.closest('.seg').previousElementSibling.textContent : (group.querySelector('h2') ? group.querySelector('h2').textContent : '');
+        out.push([clean(head), clean(lab ? lab.textContent : inp.value)]);
+      } else if (inp.type === 'checkbox' && inp.checked && lab) {
+        out.push(['✔', clean(lab.textContent).replace(/\s[–-]\s.*$/, '')]);
+      } else if (inp.type === 'number' && lab) {
+        out.push([clean(lab.firstChild.textContent || lab.textContent), inp.value]);
+      } else if (inp.tagName === 'SELECT' && lab) {
+        out.push([clean(lab.firstChild.textContent || ''), clean(inp.selectedOptions[0] ? inp.selectedOptions[0].textContent : '')]);
+      } else if (inp.type === 'range' && inp.id === 'pl-share' && visible($('#share-box'))) {
+        out.push([T('Udział polskich piosenek'), clean($('#pl-share-label').textContent)]);
+      }
+    }
+  }
+  return out.filter(([k, v]) => v);
+}
+// sygnał obecności – duży ekran wie, że pilot nadal jest połączony (inaczej po chwili wraca do kodu QR)
+setInterval(() => { if (hasRemotes()) remoteSend({ ping: Date.now() }); }, 8000);
+// zmiana dowolnej opcji na ekranie ustawień od razu trafia na duży ekran
+$('#screen-setup').addEventListener('change', () => tvSync());
+$('#screen-setup').addEventListener('click', () => setTimeout(tvSync, 0));
 // stan odtwarzania na duży ekran / telefony – najwyżej 4 razy na sekundę
 let tvAudioLast = 0;
 function tvAudio(force) {
@@ -534,7 +574,13 @@ function tvSync() {
   if (screen === 'setup' && MODES[state.mode]) {
     const cfg = MODES[state.mode];
     const names = readSetupRows().map((r) => r.name.trim()).filter(Boolean);
-    snap.setup = { title: cfg.title, teams: !!cfg.teams, names, full: names.length >= cfg.maxPlayers, multi: cfg.maxPlayers > 1 };
+    snap.setup = {
+      title: cfg.title, teams: !!cfg.teams, names, full: names.length >= cfg.maxPlayers, multi: cfg.maxPlayers > 1,
+      options: setupSummary(), poolInfo: $('#pool-info').textContent,
+      joinUrl: roomCode ? window.SongsterNet.pageUrl('tv.html', { join: roomCode }) : null,
+    };
+    // duży ekran przy ustawieniach gry wieloosobowej: od razu pokój, żeby gracze mogli dołączać z QR na telewizorze
+    if (cfg.maxPlayers > 1 && !roomCode && hasDisplay()) openRoom();
   }
   if (screen === 'end') {
     snap.winner = txt('#winner-title');
@@ -623,20 +669,26 @@ function addRemote(conn, role) {
   const r = { conn, role, name: '' };
   remotes.add(r);
   conn.on('data', (msg) => handleRemote(msg, r));
-  conn.on('close', () => { remotes.delete(r); renderRemoteList(); });
+  conn.on('close', () => { remotes.delete(r); renderRemoteList(); if (role === 'tv') $('#tv-status').textContent = T('Połączenie z dużym ekranem zostało przerwane.'); });
   conn.on('error', () => { remotes.delete(r); renderRemoteList(); });
   renderRemoteList();
   tvSync();
   return r;
 }
 // telewizor pokazuje kod – telefon (pilot) łączy się z nim (także z kodu QR: index.html?tv=KOD)
-async function connectTv(code) {
+async function connectTv(code, silent) {
   code = window.SongsterNet.normCode(code);
+  if (silent) {
+    // po przeładowaniu strony – ciche ponowne połączenie z ostatnim telewizorem
+    try { const { conn } = await window.SongsterNet.connect('tv', code); addRemote(conn, 'tv'); $('#tv-status').textContent = T('✔ Połączono z dużym ekranem ({0}).', code); } catch (e) { /* telewizor wyłączony */ }
+    return;
+  }
   if (code.length !== 4) { $('#tv-status').textContent = T('Kod ma 4 znaki.'); return; }
   $('#tv-status').textContent = T('Łączenie z telewizorem…');
   try {
     const { conn } = await window.SongsterNet.connect('tv', code);
     addRemote(conn, 'tv');
+    store.set('tvCode', code);
     $('#tv-status').textContent = T('✔ Połączono z dużym ekranem ({0}).', code);
     window.track && window.track('tv-siec');
   } catch (e) {
@@ -649,8 +701,14 @@ $('#tv-url').textContent = window.SongsterNet.pageUrl('tv.html').replace(/^https
 $('#tv-code').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); connectTv($('#tv-code').value); } });
 
 // pokój dla telefonów graczy: kod + QR prowadzący do tv.html?join=KOD
-async function openRoom() {
-  if (roomCode) return;
+let roomOpening = null;
+function openRoom() {
+  // jedno tworzenie pokoju naraz (wywoływane też automatycznie przy dużym ekranie)
+  if (roomCode) return Promise.resolve();
+  if (!roomOpening) roomOpening = openRoomNow().finally(() => { roomOpening = null; });
+  return roomOpening;
+}
+async function openRoomNow() {
   $('#btn-room').disabled = true;
   $('#btn-room').textContent = T('Tworzenie pokoju…');
   try {
@@ -669,7 +727,7 @@ async function openRoom() {
   } catch (e) {
     $('#btn-room').disabled = false;
     $('#btn-room').textContent = T('Utwórz pokój dla graczy');
-    alert(T('Nie udało się utworzyć pokoju (brak połączenia z serwerem pośredniczącym). Spróbuj ponownie.'));
+    if ($('#dlg-connect').open) alert(T('Nie udało się utworzyć pokoju (brak połączenia z serwerem pośredniczącym). Spróbuj ponownie.'));
   }
 }
 $('#btn-room').addEventListener('click', openRoom);
@@ -686,6 +744,9 @@ function renderRemoteList() {
   if (tvParam) {
     $('#tv-code').value = tvParam;
     connectTv(tvParam).then(() => { if (remotes.size) { $('#dlg-connect').showModal(); } });
+  } else if (store.get('tvCode', '')) {
+    $('#tv-code').value = store.get('tvCode', '');
+    connectTv(store.get('tvCode', ''), true);
   }
 }
 

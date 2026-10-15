@@ -15,6 +15,7 @@ const meKey = 'songster.me.' + (JOIN || '');
 let me = (() => { try { return localStorage.getItem(meKey) || ''; } catch (e) { return ''; } })();
 const setMe = (name) => { me = name; try { localStorage.setItem(meKey, name); } catch (e) { /* bez zapisu */ } send({ iam: name }); if (last) render(last); };
 let audioState = { playing: false, progress: 0 };
+let tvCode = ''; // kod tego dużego ekranu (połączenie z telefonem)
 if (PLAYER) document.body.classList.add('player');
 const h = (tag, cls, ...kids) => {
   const n = document.createElement(tag);
@@ -38,8 +39,8 @@ function flag(cc) {
   return img;
 }
 function card(c) {
-  if (c.start) return h('div', 'card start', h('div', 'a', T('karta startowa')), h('div', 'y', c.y), h('div', 't', ''));
-  return h('div', 'card' + (c.new ? ' new' : ''), h('div', 'a', c.a), h('div', 'y', c.y), h('div', 't', c.t), flag(c.cc));
+  if (c.start) return h('div', 'card start', h('div', 'lbl', T('karta startowa')), h('div', 'y', c.y));
+  return h('div', 'card' + (c.new ? ' new' : ''), h('div', 'y', c.y), h('div', 't', c.t), h('div', 'a', c.a), flag(c.cc));
 }
 // karta z pytajnikiem w miejscu, które wybrał gracz (albo wyzywający) – jeszcze przed odkryciem
 const mystery = (who, ch) => h('div', 'card mystery' + (ch ? ' ch' : ''), h('div', 'q', '?'), h('div', 'who', who));
@@ -108,6 +109,13 @@ function render(s) {
     return;
   }
   if (s && s.screen === 'game' && PLAYER) { renderPlayer(s); return; }
+  if (!PLAYER && s && s.screen === 'setup' && s.setup) { app.replaceChildren(setupBoard(s.setup)); fit(); return; }
+  if (!PLAYER && s && (s.screen === 'home' || s.screen === 'settings' || s.screen === 'stats')) {
+    app.replaceChildren(h('div', 'connected', h('div', 'big', '📱 ✔'), h('h1', '', T('Telefon połączony')),
+      h('p', '', T('Wybierz tryb gry na telefonie – tutaj pojawią się ustawienia, a potem rozgrywka.')),
+      tvCode ? h('p', 'muted', T('Kod tego ekranu: {0}', tvCode)) : null));
+    return;
+  }
   if (!s || s.screen === 'home' || s.screen === 'setup' || s.screen === 'settings' || s.screen === 'stats') {
     app.replaceChildren(waiting);
     waiting.querySelectorAll('.picker').forEach((n) => n.remove());
@@ -174,7 +182,7 @@ function render(s) {
   }), s.challenge ? h('span', 'note', s.challenge) : null);
   const guess = PLAYER && s.guess && s.guess.who === me ? guessForm(s.guess) : null;
   const pick = PLAYER && s.slots && myTurn(s) && (s.phase !== 'challenge' || s.challenger === me);
-  const tls = h('div', 'timelines', rows.map((t) => h('div', 'tl-row' + (t.active ? ' active' : ''),
+  const tls = h('div', 'timelines' + (rows.length > 1 ? ' multi' : ''), rows.map((t) => h('div', 'tl-row' + (t.active ? ' active' : ''),
     (rows.length > 1 ? h('div', 'tl-name', t.name, t.sub ? h('small', '', t.sub) : null) : null),
     h('div', 'tl', rowItems(t, pick && t.active)))));
   const who = PLAYER ? h('div', 'me-bar', T('Grasz jako: {0}', me), ' ', (() => {
@@ -187,6 +195,32 @@ function render(s) {
   app.replaceChildren(...[who, head, main, steps, buzzers, hint, guess, actions, tls, others].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
   fit();
+}
+
+/* --- duży ekran podczas ustawiania gry: wybrane opcje, gracze i duży QR do dołączania --- */
+const qrCache = {};
+function qrInto(node, url) {
+  if (!qrCache[url]) qrCache[url] = window.SongsterNet.qrSvg(url);
+  qrCache[url].then((svg) => { node.innerHTML = svg; }).catch(() => {});
+}
+function setupBoard(st) {
+  const left = h('div', 'sb-left',
+    h('div', 'sb-kicker', T('Ustawienia gry')), h('h1', '', st.title),
+    h('div', 'sb-players', h('div', 'sb-sub', st.teams ? T('Drużyny ({0})', st.names.length) : T('Gracze ({0})', st.names.length)),
+      h('div', 'chips', st.names.map((n) => h('span', 'pchip', n)))),
+    h('dl', 'sb-opts', (st.options || []).flatMap(([k, v]) => [h('dt', '', k === '✔' ? '' : k), h('dd', '', (k === '✔' ? '✔ ' : '') + v)])),
+    st.poolInfo ? h('p', 'sb-pool', st.poolInfo) : null);
+  if (!st.multi) return h('div', 'setup-board single', left);
+  const qr = h('div', 'sb-qr');
+  const right = h('div', 'sb-right', qr);
+  if (st.joinUrl) {
+    qrInto(qr, st.joinUrl);
+    const code = (new URL(st.joinUrl)).searchParams.get('join');
+    right.append(h('div', 'sb-code', code), h('p', '', st.full ? T('Lista graczy jest pełna.') : T('Zeskanuj telefonem, wpisz imię i dołącz do gry')));
+  } else {
+    right.append(h('p', '', T('Przygotowuję kod do dołączania…')));
+  }
+  return h('div', 'setup-board', left, right);
 }
 
 /* --- osobny widok telefonu gracza: pionowa oś, duże przyciski, tylko to, czym ten gracz steruje --- */
@@ -410,7 +444,7 @@ function fitTimelines() {
     const items = [...tl.children];
     const units = items.reduce((a, n) => a + (n.classList.contains('mark') ? 0.55 : n.classList.contains('gap') ? 0.4 : 1), 0) || 1;
     const gap = Math.max(3, window.innerWidth * 0.004);
-    const cw = Math.max(20 * u, Math.min(window.innerWidth * (PLAYER ? 0.26 : 0.12), rowH * 1.4, (tl.clientWidth - gap * (items.length - 1)) / units));
+    const cw = Math.max(20 * u, Math.min(window.innerWidth * (PLAYER ? 0.26 : (rows.length <= 2 ? 0.16 : 0.12)), rowH * 0.78, (tl.clientWidth - gap * (items.length - 1)) / units));
     const ch = Math.max(20 * u, Math.min(rowH - 6 * u, cw * 1.35));
     tl.style.setProperty('--cw', `${cw}px`);
     tl.style.setProperty('--ch', `${ch}px`);
@@ -418,7 +452,7 @@ function fitTimelines() {
     // czcionka karty: rok (4 cyfry) musi zmieścić się w szerokości, a wszystkie linijki w wysokości
     // (w małych kartach chowamy wykonawcę i flagę, tytuł ma jedną linijkę)
     const tiny = ch < 85 * u;
-    tl.style.setProperty('--fs', `${Math.max(6, Math.min(cw / 5.8, ch / (tiny ? 3.9 : 7.4)))}px`);
+    tl.style.setProperty('--fs', `${Math.max(6, Math.min(cw / 5.8, ch / (tiny ? 3.9 : 8.2)))}px`);
     r.classList.toggle('tiny', tiny);
     const name = r.querySelector('.tl-name');
     if (name) r.style.setProperty('--nfs', `${Math.max(10, Math.min(rowH * 0.3, window.innerWidth / 64, name.clientWidth / (0.62 * Math.max(4, name.firstChild.textContent.length))))}px`);
@@ -456,26 +490,39 @@ if (PLAYER) {
     waitingText.textContent = T('Nie udało się dołączyć – sprawdź kod pokoju i czy gospodarz ma otwartą grę.');
   });
 } else {
+  // kanały do pilota: okno na tym urządzeniu (BroadcastChannel) i telefon przez sieć (ostatnio połączony)
+  let channel = null;
+  let controller = null;
+  let lastMsg = 0;
+  sendFn = (m) => {
+    try { if (channel) channel.postMessage(m); } catch (e) { /* zamknięte */ }
+    try { if (controller && controller.open !== false) controller.send(m); } catch (e) { /* zerwane */ }
+  };
+  const onAny = (m) => { lastMsg = Date.now(); if (m && m.ping) return; onMessage(m); };
   try {
-    const channel = new BroadcastChannel('songster-tv');
-    channel.onmessage = (e) => onMessage(e.data);
-    sendFn = (m) => channel.postMessage(m);
+    channel = new BroadcastChannel('songster-tv');
+    channel.onmessage = (e) => onAny(e.data);
     channel.postMessage({ hello: true });
-  } catch (e) {
-    waitingText.textContent = T('Ta przeglądarka nie obsługuje dużego ekranu (BroadcastChannel).');
-  }
-  // telewizor / inny komputer: kod i QR dla telefonu-pilota (PeerJS ładowany dopiero po kliknięciu)
+  } catch (e) { /* bez okna na tym urządzeniu */ }
+  // utrata pilota (zamknięta strona, reset gry, brak sygnału przez 25 s) – wracamy do ekranu z kodem QR
+  const lost = () => { controller = null; audioState = { playing: false, progress: 0 }; render(null); };
+  setInterval(() => { if (controller && Date.now() - lastMsg > 25000) lost(); }, 3000);
   const btn = document.getElementById('net');
-  btn.textContent = T('📶 Połącz z innym urządzeniem');
-  btn.addEventListener('click', async () => {
-    btn.disabled = true;
-    btn.textContent = T('Łączenie z serwerem…');
+  btn.classList.add('hidden');
+  async function showCode() {
+    waitingText.textContent = T('Łączenie z serwerem…');
     try {
+      let saved = '';
+      try { saved = localStorage.getItem('songster.tvcode') || ''; } catch (e) { /* bez zapisu */ }
       const { code } = await window.SongsterNet.host('tv', (conn) => {
-        sendFn = (m) => { try { conn.send(m); } catch (e) { /* zerwane */ } };
-        conn.on('data', onMessage);
+        controller = conn;
+        lastMsg = Date.now();
+        conn.on('data', (m) => { if (conn === controller) onAny(m); });
+        conn.on('close', () => { if (conn === controller) lost(); });
         conn.send({ hello: true, role: 'tv' });
-      });
+      }, saved);
+      tvCode = code;
+      try { localStorage.setItem('songster.tvcode', code); } catch (e) { /* bez zapisu */ }
       const url = window.SongsterNet.pageUrl('index.html', { tv: code });
       const box = document.getElementById('net-box');
       // QR obok kodu – rozmiar liczony od krótszego boku ekranu, więc mieści się w każdej rozdzielczości
@@ -486,11 +533,13 @@ if (PLAYER) {
         h('p', '', T('Zeskanuj kod telefonem albo w Songsterze na telefonie wybierz 📺 i wpisz kod.'))));
       box.classList.remove('hidden');
       waiting.classList.add('with-code');
-      btn.classList.add('hidden');
+      waitingText.textContent = T('Połącz telefon, na którym toczy się gra.');
     } catch (e) {
-      btn.disabled = false;
-      btn.textContent = T('📶 Połącz z innym urządzeniem');
       waitingText.textContent = T('Nie udało się połączyć z serwerem pośredniczącym. Spróbuj ponownie.');
+      btn.textContent = T('↻ Spróbuj ponownie');
+      btn.classList.remove('hidden');
+      btn.onclick = () => { btn.classList.add('hidden'); showCode(); };
     }
-  });
+  }
+  showCode();
 }
