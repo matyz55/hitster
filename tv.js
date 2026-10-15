@@ -776,7 +776,16 @@ function onMessage(m) {
 // (przy 4+ osiach) w dwóch kolumnach; wysokość dzielimy między wiersze, a szerokość kart dobieramy tak,
 // by cały rząd zmieścił się w jednej linii
 // jednostka skali: 1 px przy szerokości 1920 px, 2 px przy 4K (3840 px)
-const scaleUnit = () => Math.max(1, window.innerWidth / 1920);
+// skala dużego ekranu względem 1920×1080 liczona z obu wymiarów – tak samo przy 16:9, ultraszerokich (21:9, 32:9),
+// 4:3/5:4 i ekranach w pionie (dłuższy bok ↔ 1920, krótszy ↔ 1080); to samo co --u w tv.html
+const screenScale = () => {
+  const w = window.innerWidth;
+  const hgt = window.innerHeight;
+  return Math.min(Math.max(w, hgt) / 1920, Math.min(w, hgt) / 1080);
+};
+const scaleUnit = () => Math.max(1, screenScale());
+// szerokość obszaru treści (przy bardzo szerokich ekranach treść jest węższa niż okno – zob. .wrap w tv.html)
+const contentWidth = () => (app.clientWidth || window.innerWidth);
 // okładka z iTunes w rozdzielczości dopasowanej do ekranu (adres zawiera rozmiar, np. 300x300bb)
 function sharpArt(url) {
   const px = Math.min(1200, Math.max(300, Math.ceil((window.innerHeight * 0.16 * (window.devicePixelRatio || 1)) / 100) * 100));
@@ -811,7 +820,8 @@ function fitTimelines() {
     return;
   }
   const others = rows.filter((r) => !r.classList.contains('active')).length;
-  const cols = others >= 3 ? 2 : 1;
+  // pozostałe osie w dwóch kolumnach – tylko na ekranie poziomym (w pionie każda oś ma całą szerokość)
+  const cols = others >= 3 && window.innerWidth > window.innerHeight ? 2 : 1;
   const lines = (rows.length - others) + Math.ceil(others / cols);
   const activeW = rows.length > 1 ? 1.6 : 1;
   const gapY = parseFloat(getComputedStyle(box).rowGap) || 0;
@@ -823,8 +833,8 @@ function fitTimelines() {
     const tl = r.querySelector('.tl');
     const items = [...tl.children];
     const units = items.reduce((a, n) => a + (n.classList.contains('mark') ? 0.55 : n.classList.contains('gap') ? 0.4 : 1), 0) || 1;
-    const gap = Math.max(3, window.innerWidth * 0.004);
-    const cw = Math.max(20 * u, Math.min(window.innerWidth * (PLAYER ? 0.26 : (rows.length <= 2 ? 0.16 : 0.12)), rowH * 0.78, (tl.clientWidth - gap * (items.length - 1)) / units));
+    const gap = Math.max(3, 7.7 * screenScale());
+    const cw = Math.max(20 * u, Math.min(contentWidth() * (PLAYER ? 0.26 : (rows.length <= 2 ? 0.16 : 0.12)), rowH * 0.78, (tl.clientWidth - gap * (items.length - 1)) / units));
     const ch = Math.max(20 * u, Math.min(rowH - 6 * u, cw * 1.35));
     tl.style.setProperty('--cw', `${cw}px`);
     tl.style.setProperty('--ch', `${ch}px`);
@@ -835,7 +845,7 @@ function fitTimelines() {
     tl.style.setProperty('--fs', `${Math.max(6, Math.min(cw / 5.8, ch / (tiny ? 3.9 : 8.2)))}px`);
     r.classList.toggle('tiny', tiny);
     const name = r.querySelector('.tl-name');
-    if (name) r.style.setProperty('--nfs', `${Math.max(10, Math.min(rowH * 0.3, window.innerWidth / 64, name.clientWidth / (0.62 * Math.max(4, name.firstChild.textContent.length))))}px`);
+    if (name) r.style.setProperty('--nfs', `${Math.max(10, Math.min(rowH * 0.3, 30 * screenScale(), name.clientWidth / (0.62 * Math.max(4, name.firstChild.textContent.length))))}px`);
   }
 }
 // cały ekran bez przewijania: zaczynamy od czcionki zależnej od szerokości okna i zmniejszamy ją (oraz minimalną
@@ -843,8 +853,9 @@ function fitTimelines() {
 function fit() {
   const box = app.querySelector('.timelines');
   const rows = box ? box.children.length : 0;
-  // do 4K: czcionka rośnie z szerokością okna (1920 px → 30 px, 3840 px → 60 px)
-  let fs = Math.max(12, Math.min(64, window.innerWidth * 0.0157));
+  // do 4K: czcionka rośnie z wielkością ekranu (1920×1080 → 30 px, 3840×2160 → 60 px); przy ekranach o innych proporcjach
+  // decyduje krótszy wymiar (np. 3440×1440 → 40 px, a nie 54 px jak przy liczeniu z samej szerokości)
+  let fs = PLAYER ? Math.max(12, Math.min(64, window.innerWidth * 0.0157)) : Math.max(12, Math.min(64, 30 * screenScale()));
   // telefon gracza: strona się przewija, więc osie nie muszą zajmować połowy ekranu
   let minH = PLAYER ? (rows ? Math.min(0.6, 0.12 * rows + 0.1) : 0) : (rows > 4 ? 0.5 : (rows ? 0.4 : 0));
   for (let k = 0; k < 20; k++) {

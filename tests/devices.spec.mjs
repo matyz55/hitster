@@ -93,6 +93,14 @@ test('@net duży ekran: lobby, głosy, gra i odświeżenie przy starszej wersji'
   await ready(host);
   await tv.waitForSelector('.turn-card');
   expect(await screen(host)).toBe('game');
+  // inne proporcje i rozdzielczości: wszystko mieści się na ekranie, treść nie jest szersza niż ok. 21:9
+  for (const [w, hgt] of [[3440, 1440], [5120, 1440], [1280, 1024], [1080, 1920], [3840, 2160]]) {
+    await tv.setViewportSize({ width: w, height: hgt });
+    await tv.waitForTimeout(300);
+    const m = await tv.evaluate(() => ({ sh: app.scrollHeight, ch: app.clientHeight, cw: app.getBoundingClientRect().width }));
+    expect(m.sh, `${w}×${hgt}: bez wystawania poza ekran`).toBeLessThanOrEqual(m.ch + 1);
+    expect(m.cw, `${w}×${hgt}: szerokość treści`).toBeLessThanOrEqual(hgt * 2.4 + 1);
+  }
   noErrors(host, tv);
 });
 
