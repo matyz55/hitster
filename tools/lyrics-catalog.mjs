@@ -4,6 +4,8 @@
 //   node tools/lyrics-catalog.mjs lrclib     – szuka tekstów z czasami (pamięć w tools/.cache/lrclib-pl.json)
 //   node tools/lyrics-catalog.mjs youtube    – szuka filmów (wymaga YOUTUBE_API_KEY; najpierw identyfikatory z Wikidata,
 //                                              potem wyszukiwarka YouTube – limit 100 wyszukiwań dziennie)
+//   node tools/lyrics-catalog.mjs wikidata   – bez klucza: tylko teledyski z Wikidata (niesprawdzone – gra sama
+//                                              porównuje długość filmu w trakcie odtwarzania)
 //   node tools/lyrics-catalog.mjs build      – zapisuje lyrics-catalog.js
 // Film jest przyjmowany, gdy można go osadzić, nie jest zablokowany w Polsce, a jego długość różni się od długości
 // nagrania z tekstem o najwyżej 3 s (wtedy czasy wersów pasują do filmu). Kolejność: najpopularniejsze piosenki.
@@ -81,19 +83,35 @@ async function videoInfo(ids) {
 }
 const fits = (v, lr) => v && v.embeddable && !v.blockedPL && Math.abs(v.d - lr.d) <= MAX_DIFF;
 
-async function stepYoutube() {
-  if (!ytKey) { console.error('Brak zmiennej YOUTUBE_API_KEY – patrz README (Tak to leciało!).'); process.exit(1); }
-  const lr = load('lrclib-pl.json', {});
-  const yt = load('youtube-pl.json', {});
-  // 1) teledyski z Wikidata (P1651) – sprawdzenie długości i dostępności kosztuje 1 jednostkę na 50 filmów
-  const rows = await sparql(`SELECT ?songLabel ?perfLabel ?yt WHERE { ?song wdt:P1651 ?yt ; wdt:P175 ?perf .
-    ?perf wdt:P27|wdt:P495 wd:Q36 . SERVICE wikibase:label { bd:serviceParam wikibase:language "pl,en". } }`, 'yt-pl');
+const WD_YT = `SELECT ?songLabel ?perfLabel ?yt WHERE { ?song wdt:P1651 ?yt ; wdt:P175 ?perf .
+    ?perf wdt:P27|wdt:P495 wd:Q36 . SERVICE wikibase:label { bd:serviceParam wikibase:language "pl,en". } }`;
+async function wikidataVideos(lr, yt) {
+  const rows = await sparql(WD_YT, 'yt-pl');
   const wd = new Map();
   for (const s of candidates) {
     if (!lr[key(s)] || yt[key(s)]) continue;
     const r = rows.find((x) => norm(clean(x.songLabel.value)) === norm(clean(s.t)) && SongMatch.artistsOf(s).map(norm).includes(norm(x.perfLabel.value)));
     if (r) wd.set(key(s), r.yt.value);
   }
+  return wd;
+}
+async function stepWikidata() {
+  const lr = load('lrclib-pl.json', {});
+  const yt = load('youtube-pl.json', {});
+  const wd = await wikidataVideos(lr, yt);
+  for (const [k, id] of wd) yt[k] = { id, src: 'wikidata', unverified: true };
+  save('youtube-pl.json', yt);
+  console.log(`Wikidata: teledyski dla ${wd.size} piosenek z tekstem (niesprawdzone)`);
+}
+
+async function stepYoutube() {
+  if (!ytKey) { console.error('Brak zmiennej YOUTUBE_API_KEY – patrz README (Tak to leciało!).'); process.exit(1); }
+  const lr = load('lrclib-pl.json', {});
+  const yt = load('youtube-pl.json', {});
+  // 0) wcześniej przyjęte bez sprawdzenia (krok wikidata) – sprawdzamy jak pozostałe
+  for (const k of Object.keys(yt)) if (yt[k] && yt[k].unverified) delete yt[k];
+  // 1) teledyski z Wikidata (P1651) – sprawdzenie długości i dostępności kosztuje 1 jednostkę na 50 filmów
+  const wd = await wikidataVideos(lr, yt);
   const wdIds = [...new Set(wd.values())];
   const info = new Map();
   for (let i = 0; i < wdIds.length; i += 50) for (const v of await videoInfo(wdIds.slice(i, i + 50))) info.set(v.id, v);
@@ -139,5 +157,6 @@ function stepBuild() {
 const step = process.argv[2];
 if (step === 'lrclib') await stepLrclib();
 else if (step === 'youtube') await stepYoutube();
+else if (step === 'wikidata') await stepWikidata();
 else if (step === 'build') stepBuild();
 else console.log('Użycie: node tools/lyrics-catalog.mjs lrclib | youtube | build');
