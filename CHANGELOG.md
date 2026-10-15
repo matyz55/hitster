@@ -587,7 +587,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Ciekawostki z Wikidata (kompozytor, autor tekstu, album, film, o wykonawcy) także dla nowych piosenek – teraz
   przy 1764 piosenkach i 1863 wykonawcach (wcześniej 1525 i 1659).
 
-## 5.27.0 – 15.10.2026 (`HASH`)
+## 5.27.0 – 15.10.2026 (`d32111b`)
 
 - **Nowy tryb „Tak to leciało!”** (na razie ukryty – kafelek pojawi się, gdy będzie gotowy katalog polskich piosenek
   z tekstem i filmem): 9 kategorii po 2 piosenki i narzucony finał, drabinka 500 zł → 100 000 zł z progami
