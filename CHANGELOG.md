@@ -470,7 +470,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   nowe fragmenty, i zmiany przepadały.
 - Na dole ekranu startowego widać numer aktualnej wersji gry.
 
-## 5.21.0 – 15.10.2026 (`HASH`)
+## 5.21.0 – 15.10.2026 (`9db2e44`)
 
 - **Duży ekran na monitorach o innych proporcjach**: wielkość napisów i kart zależy teraz od obu wymiarów ekranu, a nie
   tylko od szerokości. Na monitorach ultraszerokich (21:9, 32:9) nic nie jest ucięte, a przy 32:9 treść jest wyśrodkowana
