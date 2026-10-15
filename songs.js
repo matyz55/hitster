@@ -1448,7 +1448,7 @@ window.SONGS = [
   {a: "Taco Hemingway & Rumak", t: "Następna stacja", y: 2015, c: "PL", cc: "PL", src: "Discogs + Spotify", g: ["hip-hop"], p: 65, tg: ["trojka"], f: ["t1"]},
   {a: "The Dumplings", t: "Kocham być z tobą", y: 2015, c: "PL", cc: "PL", src: "Discogs + Spotify", g: ["elektronika", "pop"], p: 48},
   {a: "Verba", t: "Najważniejsza", y: 2015, c: "PL", cc: "PL", src: "Wikipedia"},
-  {a: "Wojciech Gąssowski", t: "Tak mi źle - Tylko wróć", y: 2015, c: "PL", cc: "PL", src: "Spotify", p: 28, g: ["pop", "rock"]},
+  {a: "Wojciech Gąssowski", t: "Tak mi źle - Tylko wróć", y: 1966, c: "PL", cc: "PL", src: "Wikipedia (serial Wojna domowa, odc. 13 „Młode talenty”, 1966; płyta Pronit 1967)", p: 28, g: ["pop", "rock"]},
   {a: "4GramY & Janusz Iwanski", t: "Wielkie podzielenie", y: 2016, c: "PL", cc: "", src: "Spotify", p: 22},
   {a: "Agnieszka Chylińska", t: "Królowa łez", y: 2016, c: "PL", cc: "PL", src: "Discogs + Spotify", g: ["pop", "rock", "elektronika"], p: 57, tg: ["opole"], f: ["o:LV"]},
   {a: "Ania Dąbrowska", t: "W Glowie", y: 2016, c: "PL", cc: "PL", src: "Discogs + Spotify", g: ["pop", "soul i funk"], p: 73, tg: ["opole"], f: ["o:LIII"]},
