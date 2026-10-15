@@ -669,7 +669,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - Tak to leciało!: przed finałem rezygnacja daje 75 000 zł (wygraną za 9. piosenkę), a pomyłka w finale – 50 000 zł.
 
-## 5.30.3 – 16.10.2026 (`HASH`)
+## 5.30.3 – 16.10.2026 (`ead7fee`)
 
 - Tak to leciało!: zgłoszenie „Zła wersja piosenki / błędy w tekście” można cofnąć tym samym przyciskiem, a w
   ustawieniach jest lista zgłoszonych piosenek z przyciskiem „Przywróć” (także dla zgłoszeń z wcześniejszych gier).
