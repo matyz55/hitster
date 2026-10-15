@@ -347,7 +347,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   przy każdej zmianie na GitHubie.
 - Poprawki drobnych usterek w kodzie wykrytych przez ESLint (bez zmian w działaniu gry).
 
-## 5.8.0 – 15.10.2026 (`HASH`)
+## 5.8.0 – 15.10.2026 (`7c52f02`)
 
 - Szybsze i pewniejsze wczytywanie fragmentów: zapytania do iTunes idą przez kolejkę pilnującą limitu (najwyżej
   18 na minutę) z przerwą po odmowie serwera, znalezione adresy fragmentów są zapamiętywane w przeglądarce na 30 dni,
