@@ -674,3 +674,8 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Tak to leciało!: zgłoszenie „Zła wersja piosenki / błędy w tekście” można cofnąć tym samym przyciskiem, a w
   ustawieniach jest lista zgłoszonych piosenek z przyciskiem „Przywróć” (także dla zgłoszeń z wcześniejszych gier).
 - Nowy nagłówek piosenki: kategoria i rok obok siebie (ten sam kolor), pod nimi tytuł i wykonawca w osobnych liniach.
+
+## 5.30.4 – 16.10.2026 (`HASH`)
+
+- Tak to leciało!: bez napisu „Śpiewaj razem z tekstem” w trakcie piosenki; informacja o źródłach (lrclib.net,
+  YouTube) przeniesiona na sam dół, pod koła ratunkowe.

@@ -681,7 +681,7 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .ly-hint { color: var(--gold); font-weight: 600; }
 .ly-help { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .ly-helper { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 8px 0; }
-.ly-credit { text-align: right; margin-top: 12px; }
+.ly-credit { text-align: center; margin: 12px 0 0; }
 @media (max-width: 720px) {
   .ly-wrap { grid-template-columns: 1fr; }
   .ly-side { order: 2; }

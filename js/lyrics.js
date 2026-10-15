@@ -611,10 +611,11 @@ function lyRender() {
   const me = lyMe();
   const multi = state.players.length > 1;
   $('#ly-title').textContent = multi ? T('🎤 Tak to leciało! – gra {0}', me.name) : T('🎤 Tak to leciało!');
-  $('#ly-ladder').classList.toggle('hidden', !!ly.mini);
   $('#ly-scores').replaceChildren(...(multi ? state.players.map((p, i) => el('span', { class: `score${i === state.turn ? ' active' : ''}${p.out ? ' out' : ''}` },
     ly.mini ? `${p.name}: ${pointsLabel(p.score)}` : `${p.name}: ${lyMoney(p.score)}${p.out ? (p.quit ? ' ✋' : ' ✖') : ''}`)) : []));
-  $('#ly-ladder').replaceChildren(lyLadderEl(me), lyLifesEl(me) || '');
+  // na samym dole (pod kołami ratunkowymi) – źródła tekstu i filmu; w minigrze tylko one
+  const credit = el('p', { class: 'muted small ly-credit' }, T('Tekst: lrclib.net · Film: YouTube'));
+  $('#ly-ladder').replaceChildren(...(ly.mini ? [credit] : [lyLadderEl(me), lyLifesEl(me) || '', credit]));
   $('#ly-msg').textContent = ly.msg || '';
   $('#ly-msg').classList.toggle('hidden', !ly.msg);
   const board = $('#ly-board');
@@ -658,7 +659,7 @@ function lyRender() {
     el('b', { class: 'ly-songtitle' }, cur.it.song.t), el('span', { class: 'ly-songartist' }, artistLine(cur.it.song))] : []));
   // w trakcie piosenki bez zapowiedzi przerwy – ma być zaskoczeniem
   $('#ly-status').textContent = state.phase === 'loading' ? T('Wczytywanie piosenki…')
-    : state.phase === 'play' ? (cur && cur.lines ? T('🎤 Śpiewaj razem z tekstem!') : T('Wczytywanie tekstu…')) : '';
+    : state.phase === 'play' && !(cur && cur.lines) ? T('Wczytywanie tekstu…') : '';
   lyRenderLyrics(lyYT && lyYT.getCurrentTime ? lyYT.getCurrentTime() : 0);
   lyRenderAnswer();
   tvSync();
