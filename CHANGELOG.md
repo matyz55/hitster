@@ -409,7 +409,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   do ułożenia od najstarszego do najnowszego w 90 sekund od pierwszego odtworzenia. Za każdą dobrze ułożoną sąsiednią
   parę 1 pkt i 1 pkt premii za całą piątkę (do 5 pkt); po czasie sprawdzana jest bieżąca kolejność.
 
-## 5.15.0 – 15.10.2026 (`HASH`)
+## 5.15.0 – 15.10.2026 (`dd1761e`)
 
 - Nowy tryb **🟩 Bingo muzyczne** (jeden gracz i multiplayer): każdy gracz ma planszę 3×3 z kategoriami (dekady,
   gatunki, kraje, polska/zagraniczna, przed 1980 r., od 2000 r., duet). Przy każdej piosence zaznacza jedno pole, które
