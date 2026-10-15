@@ -8,7 +8,7 @@ const SAVE_MAX_AGE = 12 * 3600e3;
 // pola stanu gry zapisywane wprost (liczby, teksty, tablice, proste obiekty)
 const SAVE_FIELDS = ['mode', 'baseMode', 'turn', 'turnsPlayed', 'rounds', 'winTarget', 'guessType', 'difficulty', 'showAll', 'endless',
   'challengeMode', 'recordLevel', 'expert', 'letterHint', 'specials', 'timeLimit', 'timeLeft', 'duel', 'streak', 'hiloMulti',
-  'buzzKeys', 'startedAt', 'party'];
+  'buzzKeys', 'startedAt', 'party', 'coop'];
 const SETUP_INPUTS = ['#rounds', '#win-target', '#start-tokens', '#lives', '#party-games'];
 const songByKey = (() => {
   let map = null;
@@ -38,6 +38,7 @@ function saveGame() {
     setupRows: readSetupRows(),
     inputs: Object.fromEntries(SETUP_INPUTS.map((sel) => [sel, $(sel).value])),
     lobby: lobby.active ? lobby.players.map((p) => p.name) : null,
+    league: lobby.active ? lobby.league : null,
     between: !!(state.party && !state.party.done && state.phase === 'ended'),
   };
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch (e) { /* brak miejsca – bez zapisu */ }
@@ -63,6 +64,7 @@ function resumeGame() {
   if (d.lobby) {
     lobby.active = true;
     lobby.players = d.lobby.map((name) => ({ name }));
+    lobby.league = d.league || null;
     openRoom();
   }
   openSetup(state.mode);

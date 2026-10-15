@@ -122,3 +122,36 @@ test('„Kto pierwszy?” bez telefonów: zgłoszenie od razu', async ({ page })
   await ready(page);
   expect(await page.evaluate(() => { requestBuzz(1); return state.buzz.answering; })).toBe(1);
 });
+
+test('współpraca: wspólna oś, odpowiadają po kolei, wspólne pomyłki', async ({ page }) => {
+  await lobby(page, 3);
+  await page.click('.mode[data-mode=coop]');
+  await page.fill('#lives', '2');
+  await page.click('#btn-start');
+  await ready(page);
+  expect(await page.evaluate(() => [state.mode, state.coop, state.players.length, state.players[0].members.length])).toEqual(['solo', true, 1, 3]);
+  const first = await page.evaluate(() => answering(activePlayer()));
+  // pomyłka
+  await page.evaluate(() => { const tl = activePlayer().timeline; const good = correctSlot(tl, state.current.y); onSlotClick(good === 0 ? 1 : 0); });
+  await page.click('#actions button.primary');
+  await expect.poll(() => page.evaluate(() => activePlayer().lives)).toBe(1);
+  await page.click('#actions button.primary >> nth=-1');
+  await ready(page);
+  expect(await page.evaluate(() => answering(activePlayer()))).not.toBe(first);
+  await expect(page.locator('#turn-title')).toContainText('odpowiada');
+});
+
+test('liga wieczoru: punkty za miejsca w kolejnych grach', async ({ page }) => {
+  await lobby(page, 2);
+  for (const k of [0, 1]) {
+    await page.click('.mode[data-mode=duel]');
+    await page.click('#btn-start');
+    await ready(page);
+    await page.evaluate(() => { state.players[0].score = 2; state.players[1].score = 1; endGame(); });
+    if (k === 0) await page.click('#btn-end-other');
+  }
+  const rows = await page.$$eval('.league-standings li', (x) => x.map((y) => y.textContent));
+  expect(rows[0]).toContain('6 pkt');
+  expect(rows[1]).toContain('4 pkt');
+  await expect(page.locator('.league-box h3')).toContainText('2 grach');
+});

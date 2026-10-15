@@ -114,6 +114,11 @@
         <b>Oś czasu – multiplayer</b>
         <span class="muted">Każdy układa swoją oś. Wyzwania i żetony – kto pierwszy zbierze karty, wygrywa.</span>
       </button>
+      <button class="mode" data-mode="coop" data-ctx="multi">
+        <span class="mode-icon">🤝</span>
+        <b>Współpraca</b>
+        <span class="muted">Wszyscy razem przeciw grze: wspólna oś czasu i wspólne pomyłki, odpowiadacie po kolei.</span>
+      </button>
       <button class="mode" data-mode="teams" data-ctx="multi">
         <span class="mode-icon">🎉</span>
         <b>Oś czasu – drużyny</b>
@@ -237,7 +242,7 @@
 
     <section class="card">
       <h2>Odtwarzanie</h2>
-      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist country bid">Długość fragmentu
+      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist country bid coop">Długość fragmentu
         <select id="clip-length">
           <option value="30">30 s (cały)</option>
           <option value="15">15 s</option>
@@ -251,7 +256,7 @@
       <div class="seg" id="audio-out">
         <label><input type="radio" name="audio-out" value="host" checked> Tym urządzeniu</label>
         <label id="audio-out-tv"><input type="radio" name="audio-out" value="tv"> Dużym ekranie (TV)</label>
-        <label data-for="multi teams melody steps duel party year artist country bid" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
+        <label data-for="multi teams melody steps duel party year artist country bid coop" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
       </div>
       <p class="muted small" id="audio-out-desc">Duży ekran i telefony graczy łączy się w oknie 📺. Gdy wybranego urządzenia nie ma, muzyka gra na tym urządzeniu.</p>
       </div>
@@ -297,7 +302,7 @@
         </div>
         <p class="muted small">„Losowo” – gra wybierze dekady sama. Piosenki są tylko z tych dwóch dekad.</p>
       </div>
-      <div data-for="solo multi teams">
+      <div data-for="solo multi teams coop">
         <label class="row">Karty potrzebne do wygranej
           <input type="number" id="win-target" min="3" max="30" value="10">
         </label>
@@ -305,7 +310,7 @@
           <input type="number" id="start-tokens" min="0" max="5" value="2">
         </label>
       </div>
-      <div data-for="solo multi teams timed">
+      <div data-for="solo multi teams timed coop">
         <label class="check"><input type="checkbox" id="expert"> Tryb ekspert – żeby zatrzymać kartę, trzeba też podać:</label>
         <div class="seg expert-opts" id="expert-opts">
           <label><input type="checkbox" id="exp-title"> Tytuł</label>
@@ -314,7 +319,7 @@
         </div>
         <p class="muted small" id="expert-desc"></p>
       </div>
-      <div data-for="solo multi teams timed">
+      <div data-for="solo multi teams timed coop">
         <p class="label" style="margin-top:12px">Karty specjalne (co ok. piąta karta)</p>
         <div class="seg">
           <label><input type="checkbox" id="sp-double"> ✨ Podwójna</label>
@@ -332,7 +337,7 @@
         </div>
         <p class="muted small" id="challenge-desc"></p>
       </div>
-      <div data-for="solo">
+      <div data-for="solo coop">
         <label class="row">Dozwolone pomyłki
           <input type="number" id="lives" min="1" max="10" value="3">
         </label>

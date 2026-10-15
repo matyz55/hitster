@@ -388,3 +388,11 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   - **💰 Licytacja** – start z 5 pkt; przed odpowiedzią stawiasz 1–3 pkt, potem wskazujesz dekadę
     (dobrze – zyskujesz stawkę, źle – tracisz).
 - Rok co do roku, Kto to śpiewa? i Skąd jest wykonawca? są też minigrami w trybie Impreza.
+
+## 5.12.0 – 15.10.2026 (`HASH`)
+
+- Nowy tryb **🤝 Współpraca** (multiplayer, od 2 osób): wszyscy razem przeciw grze – wspólna oś czasu, wspólne
+  pomyłki i cel kart; gracze odpowiadają po kolei (także z telefonów).
+- **🏆 Liga wieczoru**: w lobby multiplayera każda kolejna gra dodaje punkty za miejsca (3/2/1, remis – tyle samo,
+  wynik 0 – bez punktów); łączna tabela jest na podsumowaniu, na dużym ekranie i na telefonach. Liga zeruje się po
+  wyjściu z lobby do menu głównego.

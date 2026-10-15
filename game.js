@@ -441,6 +441,8 @@ const MODES = {
   artist: { title: T('Kto to śpiewa?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   country: { title: T('Skąd jest wykonawca?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   bid: { title: T('Licytacja'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  // współpraca: wszyscy razem przeciw grze – wspólna oś i wspólne pomyłki (zasady osi jednego gracza)
+  coop: { title: T('Współpraca'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
 };
 // jeden gracz albo multiplayer (lobby z listą graczy, telefonami i głosowaniem na tryb)
 let playCtx = 'single';
@@ -527,7 +529,7 @@ const timeLabel = (sec) => (sec % 60 ? `${Math.floor(sec / 60)}:${String(sec % 6
 const isMelody = () => ['melody', 'steps', 'buzz'].includes(state.mode);
 // kto teraz odpowiada: w drużynach członkowie zmieniają się co turę drużyny
 function answering(p) {
-  return state.mode === 'teams' && p.members && p.members.length ? p.members[p.member % p.members.length] : null;
+  return (state.mode === 'teams' || state.coop) && p.members && p.members.length ? p.members[p.member % p.members.length] : null;
 }
 const turnName = (p) => (answering(p) ? `${p.name} (odpowiada: ${answering(p)})` : p.name);
 
@@ -822,6 +824,8 @@ function tvSync() {
     // w imprezie – klasyfikacja całej imprezy, a nie tylko ostatniej minigry
     snap.ranking = ($('.party-standings') ? $$('.party-standings li') : $$('#ranking li')).map((li) => li.textContent);
     if ($('.party-box p')) snap.next = $('.party-box p').textContent;
+    snap.league = $$('.league-standings li').map((li) => li.textContent);
+    snap.leagueTitle = $('.league-box h3') ? $('.league-box h3').textContent : '';
     // piosenki z tej gry (ostatnie 12) – lista obok wyników, jak na ekranie gospodarza
     snap.played = (state.party && state.party.done ? [] : state.history).slice(-12).map((x) => ({
       y: x.song.y, t: x.song.t, a: artistLine(x.song), cc: x.song.cc, ok: x.ok, note: x.note,
@@ -847,7 +851,7 @@ function tvSync() {
       yearAsk: state.mode === 'year' && state.phase === 'listen' && state.current ? { who: controlNames() } : null,
       phase: state.phase, turnName: activePlayer().name, turnWho: answering(activePlayer()), playing: !audio.paused, hasSong: !!state.current,
       // drużyny: do której drużyny należy gracz z telefonem
-      teamOf: state.mode === 'teams' ? Object.fromEntries(state.players.flatMap((pl) => (pl.members || []).map((m) => [m, pl.name]))) : null,
+      teamOf: state.mode === 'teams' || state.coop ? Object.fromEntries(state.players.flatMap((pl) => (pl.members || []).map((m) => [m, pl.name]))) : null,
       challenger: state.challenger != null ? state.players[state.challenger].name : null,
       slots: remoteSlotsAllowed(),
       // pasek kroków (Melodia krok po kroku): 1 s · 2 s · 4 s · 8 s
@@ -1097,6 +1101,7 @@ function openLobby() {
 // wyjście z multiplayera: rozłączenie telefonów i zamknięcie pokoju
 function closeLobby() {
   lobby.active = false;
+  lobby.league = null;
   lobby.votes.clear();
   lobby.players = lobby.players.filter((p) => !remoteNames().has(p.name));
   closeRoom();
@@ -1696,20 +1701,29 @@ function startGame(over = {}) {
     lobby.votes.clear();
     if (state.mode === 'party') { startParty(); return; }
   }
+  // współpraca = oś jednego gracza dla wspólnej drużyny, w której wszyscy odpowiadają po kolei
+  state.coop = !party && state.mode === 'coop';
+  if (state.coop && readSetupRows().length < MODES.coop.minPlayers) {
+    alert(T('W tym trybie potrzeba co najmniej {0} – dodaj kolejnego gracza albo dołącz go przez telefon.', MODES.coop.minPlayers));
+    return;
+  }
+  const coopRows = state.coop ? [{ name: T('Drużyna'), members: readSetupRows().map((r) => r.name.trim()).filter(Boolean).join(', ') }] : null;
+  if (state.coop) state.mode = 'solo';
   const teams = !!MODES[state.mode].teams;
-  const setupRows = party ? state.party.rows : readSetupRows();
+  const setupRows = party ? state.party.rows : (coopRows || readSetupRows());
   if (setupRows.length < minPlayersFor(party ? 'party' : state.mode)) {
     alert(T('W tym trybie potrzeba co najmniej {0} – dodaj kolejnego gracza albo dołącz go przez telefon.', minPlayersFor(state.mode)));
     return;
   }
   const rows = setupRows.map((r, i) => ({ name: r.name.trim() || `${teams ? T('Drużyna') : T('Gracz')} ${i + 1}`, members: r.members }));
   const names = rows.map((r) => r.name);
-  if (!party) {
+  if (!party && !state.coop) {
     if (teams) store.set('teams', rows); else store.set('players', names);
     // gracze ustawieni w grze wieloosobowej wracają do lobby (zmienione imiona, dopisani gracze)
     if (playCtx === 'multi' && !teams) {
       const phones = remoteNames();
-      lobby.players = [...names.map((name) => ({ name })), ...lobby.players.filter((p) => phones.has(p.name) && !names.includes(p.name))].slice(0, MAX_PLAYERS);
+      lobby.players = [...names.map((name) => lobby.players.find((p) => p.name === name) || { name }),
+        ...lobby.players.filter((p) => phones.has(p.name) && !names.includes(p.name))].slice(0, MAX_PLAYERS);
       saveLobbyLocal();
     }
   }
@@ -1771,7 +1785,7 @@ function startGame(over = {}) {
   state.streak = 0;
   state.players = rows.map((r) => ({
     name: r.name, tokens: startTokens, timeline: [], score: state.mode === 'bid' ? BID_START : 0, lives,
-    members: teams ? (r.members || '').split(/[,;\n]+/).map((m) => m.trim()).filter(Boolean) : [], member: 0,
+    members: teams || state.coop ? (r.members || '').split(/[,;\n]+/).map((m) => m.trim()).filter(Boolean) : [], member: 0,
   }));
   if (isTimeline()) dealStartYears(songPool());
   state.turn = Math.floor(Math.random() * names.length);
@@ -1901,7 +1915,10 @@ function partyStandings(final) {
     el('h3', {}, final ? T('Klasyfikacja końcowa') : T('Klasyfikacja imprezy')),
     el('ol', { class: 'ranking party-standings' }, order.map((o) => el('li', {}, `${o.name} – ${o.pts} ${T('pkt')}`, o.last ? el('span', { class: 'plus' }, ` (+${o.last})`) : null))),
     next ? el('p', { class: 'muted' }, T('Następna minigra: {0} {1}', next.icon, T(next.name))) : null));
-  if (final) $('#winner-timeline').classList.add('hidden');
+  if (final) {
+    $('#winner-timeline').classList.add('hidden');
+    leagueAfterGame(pt.rows.map((r, i) => ({ name: r.name, v: pt.points[i] })));
+  }
 }
 $('#btn-party-next').addEventListener('click', () => playPartyGame());
 $('#btn-party-stop').addEventListener('click', () => {
@@ -1912,6 +1929,22 @@ $('#btn-party-stop').addEventListener('click', () => {
   updateEndButtons();
   tvSync();
 });
+// Liga wieczoru: kolejne gry w tym samym lobby – za każdą grę 3/2/1 pkt za miejsca (remis – tyle samo, wynik 0 – bez punktów)
+function leagueAfterGame(results) {
+  if (!lobby.active || results.length < 2) return;
+  if (!lobby.league) lobby.league = { games: 0, pts: {} };
+  const L = lobby.league;
+  L.games += 1;
+  for (const r of results) {
+    const better = new Set(results.filter((x) => x.v > r.v).map((x) => x.v)).size;
+    L.pts[r.name] = (L.pts[r.name] || 0) + (r.v > 0 ? Math.max(0, 3 - better) : 0);
+  }
+  const order = Object.entries(L.pts).sort((a, b) => b[1] - a[1]);
+  $$('.league-box').forEach((n) => n.remove());
+  $('#ranking').append(el('div', { class: 'league-box' },
+    el('h3', {}, T('🏆 Liga wieczoru – po {0}', L.games === 1 ? T('1 grze') : T('{0} grach', L.games))),
+    el('ol', { class: 'ranking league-standings' }, order.map(([n, v]) => el('li', {}, `${n} – ${v} ${T('pkt')}`)))));
+}
 // przyciski pod podsumowaniem: impreza w toku / multiplayer / jeden gracz
 function updateEndButtons() {
   const between = !!(state.party && !state.party.done);
@@ -2953,6 +2986,7 @@ function endGame() {
   recordGame(best, Math.round((Date.now() - (state.startedAt || Date.now())) / 1000));
   $$('.party-kicker').forEach((n) => n.remove());
   if (state.party) partyAfterGame();
+  else if (!state.coop) leagueAfterGame(state.players.map((p) => ({ name: p.name, v: metric(p) })));
   updateEndButtons();
   // koniec gry – zapis niepotrzebny; w trakcie imprezy (między minigrami) zapisujemy, żeby dało się wznowić
   if (typeof saveGame === 'function') { if (state.party && !state.party.done) saveGame(); else clearSavedGame(); }
@@ -3299,6 +3333,7 @@ function renderHeader(p, timeline) {
     const placed = p.timeline.filter((c) => !c.start).length;
     const rec = store.get('records', {})[state.recordLevel] || 0;
     title.textContent = state.mode !== 'solo' ? T('Tura: {0}', turnName(p))
+      : state.coop ? T('Wspólna oś: {0} z {1} · odpowiada: {2}', cardsLabel(p.timeline.length), state.winTarget, answering(p) || '–')
       : (state.endless ? T('Ułożone piosenki: {0} · rekord: {1}', placed, Math.max(rec, placed))
         : T('Twoja oś: {0} z {1}', cardsLabel(p.timeline.length), state.winTarget));
     info.textContent = T('Żetony: {0}', '🪙'.repeat(p.tokens) || T('brak'))

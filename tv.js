@@ -184,6 +184,7 @@ function renderPhone(s) {
     app.replaceChildren(phoneInfo(s.winner || T('Koniec gry'), s.party ? h('p', 'p-party', s.party.label) : null,
       h('ol', 'p-rank', (s.ranking || []).map((r) => h('li', '', r))),
       s.next ? h('p', '', s.next) : null,
+      (s.league || []).length ? h('div', '', h('h3', '', s.leagueTitle), h('ol', 'p-rank', s.league.map((r) => h('li', '', r)))) : null,
       h('p', 'muted', T('Gospodarz wybiera, co dalej…'))));
     return;
   }
@@ -268,7 +269,8 @@ function render(s) {
     app.replaceChildren(h('div', 'end' + ((s.played || []).length ? ' with-songs' : ''),
       h('section', 'end-card', s.party ? h('div', 'sb-kicker', s.party.label) : null, h('h2', '', s.winner || ''),
         h('ol', 'end-rank', (s.ranking || []).map((r, i) => h('li', i < 3 ? 'top' : '', h('span', 'pos', medal[i] || `${i + 1}.`), r))),
-        s.next ? h('p', 'end-next', s.next) : null),
+        s.next ? h('p', 'end-next', s.next) : null,
+        (s.league || []).length ? h('div', 'end-league', h('h3', '', s.leagueTitle), h('ol', '', s.league.map((r) => h('li', '', r)))) : null),
       (s.played || []).length ? h('section', 'end-songs', h('h3', '', T('Piosenki z tej gry')),
         h('ol', '', s.played.map((x) => h('li', x.ok ? 'ok' : 'bad', h('span', 'py', x.y), h('span', 'pt', h('b', '', x.t), ' — ', x.a, ' ', flag(x.cc)), h('span', 'pn', x.note || ''))))) : null));
     fit();
