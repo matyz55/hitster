@@ -725,3 +725,6 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 @keyframes ly-glow { from { box-shadow: 0 0 8px rgba(255, 201, 60, .25); } to { box-shadow: 0 0 22px rgba(255, 201, 60, .6); } }
 @media (max-width: 720px) { .ly-ladder li.top { flex-basis: 100%; } }
 @media (prefers-reduced-motion: reduce) { .ly-cat, .ly-song, .ly-lines p.in, .ly-dot, .verdict, .ly-hit.ready { animation: none; } .ly-reveal .ly-word { opacity: 1; transform: none; } }
+/* drabinka: 100 000 zł – szerokie, wyśrodkowane pole na górze */
+.ly-ladder li.top { justify-content: center; gap: 10px; font-size: 1.05em; border: 1px solid rgba(255, 201, 60, .4); }
+.ly-ladder li.top b { color: var(--gold); }

@@ -1,6 +1,18 @@
 'use strict';
 // Słownik angielski: tekst polski → angielski (patrz i18n.js)
 window.I18N_EN = {
+ "Lato i wakacje": "Summer and holidays",
+ "Młodość i szkoła": "Youth and school",
+ "Kobieta": "Woman",
+ "Mężczyzna": "Man",
+ "Polska i ojczyzna": "Poland and homeland",
+ "Pieniądze": "Money",
+ "Ogień i światło": "Fire and light",
+ "Kwiaty i drzewa": "Flowers and trees",
+ "Wojna i pokój": "War and peace",
+ "Bóg i wiara": "God and faith",
+ "Telefon i technika": "Phones and technology",
+ "Alkohol": "Alcohol",
  "Etap {0} – gra o {1}. Wybierz piosenkę.": "Stage {0} – playing for {1}. Choose a song.",
  "Został hit za {0} – grasz bez kół ratunkowych czy rezygnujesz i zabierasz {1}?": "Only the hit for {0} is left – play without lifelines or quit and take {1}?",
  "Wczytywanie piosenki…": "Loading the song…",

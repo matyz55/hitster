@@ -656,3 +656,11 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   polem na górze drabinki.
 - Katalog: film z kanału „… – Topic” musi być kanałem wykonawcy tej piosenki (np. bez późniejszego nagrania Kombi
   Łosowski zamiast Kombi); dane skanu tekstów (`60e1d6c`, `29405ac`).
+
+## 5.30.1 – 16.10.2026 (`HASH`)
+
+- Tak to leciało!: 100 000 zł jest wyśrodkowane w szerokim polu na górze drabinki.
+- Nowe kategorie: Lato i wakacje, Młodość i szkoła, Kobieta, Mężczyzna, Polska i ojczyzna, Pieniądze, Ogień
+  i światło, Kwiaty i drzewa, Wojna i pokój, Bóg i wiara, Telefon i technika, Alkohol.
+- Katalog: nowe piosenki są dobierane tak, żeby w pierwszej kolejności uzupełnić kategorie, w których jest mało
+  piosenek.

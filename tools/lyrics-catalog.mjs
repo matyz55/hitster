@@ -11,6 +11,7 @@
 // nagrania z tekstem o najwyżej 3 s (wtedy czasy wersów pasują do filmu), a kanał jest oficjalny (OFFICIAL_LABELS niżej).
 // Kolejność: najpopularniejsze piosenki.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import vm from 'node:vm';
 import { SONGS, SongMatch, sparql, sleep, dir } from './wd-lib.mjs';
 
 const UA = 'SongsterTools/1.0 (https://github.com/matyz55/hitster)';
@@ -63,6 +64,21 @@ const MAX_DIFF = 3;
 const tagged = (s) => (s.tg || []).some((t) => ['trojka', 'opole', 'memy'].includes(t));
 const candidates = SONGS.filter((s) => s.c === 'PL' && ((s.p || 0) >= 30 || tagged(s)))
   .sort((a, b) => (b.p || 0) + (tagged(b) ? 40 : 0) - (a.p || 0) - (tagged(a) ? 40 : 0));
+// kategorie gry (lyrics-cats.js) – piosenki z kategorii, które w katalogu mają mało piosenek, wyszukujemy najpierw,
+// żeby plansze były różnorodne (kategoria potrzebuje co najmniej 2 piosenek, a lepiej kilku na kolejne gry)
+const catCtx = { window: {}, T: (x) => x };
+vm.runInNewContext(readFileSync(new URL('lyrics-cats.js', dir), 'utf8'), catCtx);
+const CATS = [...catCtx.window.LY_THEMES.map((c) => ({ name: c.name(), test: (s) => c.re.test(s.t) })),
+  ...catCtx.window.LY_SETS.map((c) => ({ name: c.name(), test: c.test }))];
+const THIN = 6;
+function thinBonus(s, have) {
+  return CATS.filter((c) => c.test(s) && (have.get(c.name) || 0) < THIN).length * 25;
+}
+function catalogCounts(lr, yt) {
+  const have = new Map();
+  for (const s of candidates) if (lr[key(s)] && yt[key(s)] && yt[key(s)].id) for (const c of CATS) if (c.test(s)) have.set(c.name, (have.get(c.name) || 0) + 1);
+  return have;
+}
 
 async function lrclibSearch(s) {
   const artist = SongMatch.mainArtist(s);
@@ -210,7 +226,9 @@ async function stepYoutube() {
   }
   // 3) wyszukiwarka YouTube – najpopularniejsze piosenki bez filmu, potem te z jednym filmem (zapasowe filmy na wypadek
   // blokady osadzania); najpierw nagranie „… – Topic” (wersja z płyty), potem oficjalne kanały, potem pozostałe
-  const queue = [...candidates.filter((s) => lr[key(s)] && !hasVideo(yt[key(s)]) && retryDue(yt[key(s)])),
+  const have = catalogCounts(lr, yt);
+  const score = (s) => (s.p || 0) + (tagged(s) ? 40 : 0) + thinBonus(s, have);
+  const queue = [...candidates.filter((s) => lr[key(s)] && !hasVideo(yt[key(s)]) && retryDue(yt[key(s)])).sort((a, b) => score(b) - score(a)),
     ...candidates.filter((s) => lr[key(s)] && hasVideo(yt[key(s)]) && !yt[key(s)].alts && !yt[key(s)].altsSearched)];
   for (const s of queue) {
     const l = lr[key(s)];
@@ -258,6 +276,9 @@ function stepBuild() {
     + `window.LYRICS_SONGS = ${JSON.stringify(out, null, 0).replace(/\],"/g, '],\n"')};\n`;
   writeFileSync(new URL('lyrics-catalog.js', dir), js);
   console.log(`lyrics-catalog.js: ${Object.keys(out).length} piosenek`);
+  const have = catalogCounts(lr, yt);
+  console.log(`kategorie z co najmniej 2 piosenkami: ${CATS.filter((c) => (have.get(c.name) || 0) >= 2).length} z ${CATS.length}`
+    + ` (mało piosenek: ${CATS.filter((c) => (have.get(c.name) || 0) < THIN).map((c) => c.name).join(', ')})`);
 }
 
 const step = process.argv[2];
