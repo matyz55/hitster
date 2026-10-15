@@ -173,6 +173,11 @@
         <b>Ułóż piątkę</b>
         <span class="muted">Pięć krótkich fragmentów do ułożenia od najstarszego do najnowszego – masz na to 90 sekund.</span>
       </button>
+      <button class="mode" data-mode="bingo" data-ctx="single multi">
+        <span class="mode-icon">🟩</span>
+        <b>Bingo muzyczne</b>
+        <span class="muted">Plansza 3×3 z kategoriami (dekady, gatunki, kraje…). Przy każdej piosence zaznacz pasujące pole – trzy w linii to BINGO.</span>
+      </button>
       <button class="mode" data-mode="bid" data-ctx="single multi">
         <span class="mode-icon">💰</span>
         <b>Licytacja</b>
@@ -252,7 +257,7 @@
 
     <section class="card">
       <h2>Odtwarzanie</h2>
-      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist country bid coop">Długość fragmentu
+      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist country bid coop bingo">Długość fragmentu
         <select id="clip-length">
           <option value="30">30 s (cały)</option>
           <option value="15">15 s</option>
@@ -370,7 +375,7 @@
           <label><input type="radio" name="guess" value="both"> Tytuł i wykonawcę</label>
         </div>
       </div>
-      <div data-for="melody steps buzz duel year artist country bid sort5">
+      <div data-for="melody steps buzz duel year artist country bid sort5 bingo">
         <label class="row" style="margin-top:12px"><span id="rounds-label">Piosenek na gracza</span>
           <input type="number" id="rounds" min="1" max="30" value="5">
         </label>
@@ -412,6 +417,7 @@
       <p id="audio-note" class="muted small hidden"></p>
       <p id="special-badge" class="special-badge hidden"></p>
       <div id="buzzers" class="buzzers hidden"></div>
+      <div id="bingo-boards" class="bingo-boards hidden"></div>
       <p id="buzz-who" class="buzz-who hidden"></p>
       <form id="guess-form" class="guess hidden" autocomplete="off">
         <div class="suggest-wrap">

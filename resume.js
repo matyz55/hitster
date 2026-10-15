@@ -23,7 +23,7 @@ function scheduleSave() {
   saveTimer = setTimeout(saveGame, 300);
 }
 function saveGame() {
-  if (!state.players.length || !state.deck || state.mode === 'daily') return;
+  if (!state.players.length || !state.deck || state.mode === 'daily' || state.mode === 'bingo') return;
   if (state.phase === 'ended' && !(state.party && !state.party.done)) return;
   const deckLeft = [...state.deck.allLists()].flat().map(songKey);
   const data = {

@@ -155,3 +155,34 @@ test('liga wieczoru: punkty za miejsca w kolejnych grach', async ({ page }) => {
   expect(rows[1]).toContain('4 pkt');
   await expect(page.locator('.league-box h3')).toContainText('2 grach');
 });
+
+test('bingo: plansze 3×3, trafione pole skreślone, trzy w linii kończą grę', async ({ page }) => {
+  await lobby(page, 2);
+  await page.click('.mode[data-mode=bingo]');
+  await page.fill('#rounds', '10');
+  await page.click('#btn-start');
+  await ready(page);
+  await expect(page.locator('#bingo-boards .bingo-board')).toHaveCount(2);
+  await expect(page.locator('#bingo-boards .bingo-board >> nth=0 >> .bingo-cell')).toHaveCount(9);
+  // gracz 1 wybiera pole pasujące do piosenki, gracz 2 – niepasujące (jeśli takie ma)
+  const pick = await page.evaluate(() => {
+    const b0 = state.bingo.boards[0]; const b1 = state.bingo.boards[1];
+    const okCell = b0.cells.findIndex((id) => state.bingo.cats[id].test(state.current));
+    const badCell = b1.cells.findIndex((id) => !state.bingo.cats[id].test(state.current));
+    return { okCell, badCell };
+  });
+  test.skip(pick.okCell < 0, 'żadne pole nie pasuje do wylosowanej piosenki');
+  await page.click(`#bingo-boards .bingo-board >> nth=0 >> .bingo-cell >> nth=${pick.okCell}`);
+  if (pick.badCell >= 0) await page.click(`#bingo-boards .bingo-board >> nth=1 >> .bingo-cell >> nth=${pick.badCell}`);
+  await page.click('#actions button.primary');
+  await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(1);
+  expect(await page.evaluate(() => state.players[1].score)).toBe(0);
+  // trzy w linii → BINGO i koniec gry
+  await page.evaluate(() => { const b = state.bingo.boards[1]; b.marked = [true, true, false, false, false, false, false, false, false]; });
+  await page.click('#actions button.primary');
+  await ready(page);
+  await page.evaluate(() => { const b = state.bingo.boards[1]; b.pick = 2; state.bingo.cats[b.cells[2]].test = () => true; bingoReveal(); });
+  await expect(page.locator('#reveal')).toContainText('BINGO');
+  await page.click('#actions button.primary');
+  await expect(page.locator('#winner-title')).toContainText('BINGO');
+});

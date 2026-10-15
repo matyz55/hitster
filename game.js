@@ -443,6 +443,7 @@ const MODES = {
   bid: { title: T('Licytacja'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   daily: { title: T('Wyzwanie dnia'), minPlayers: 1, maxPlayers: 1 },
   sort5: { title: T('Ułóż piątkę'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  bingo: { title: T('Bingo muzyczne'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   // współpraca: wszyscy razem przeciw grze – wspólna oś i wspólne pomyłki (zasady osi jednego gracza)
   coop: { title: T('Współpraca'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
 };
@@ -694,6 +695,8 @@ function handleRemote(msg, from) {
     const expected = state.phase === 'challenge' ? state.challenger : state.turn;
     if (who === null || who === expected) onSlotClick(msg.slot);
   }
+  // Bingo: pole zaznaczone na telefonie gracza
+  if (msg.bingoPick != null && from && state.mode === 'bingo') { const i = playerIndexOf(from.name); if (i >= 0) bingoPick(i, msg.bingoPick); }
   // „Rok co do roku”: rok wpisany na telefonie gracza z turą
   if (msg.yearAnswer != null && from && controlNames().includes(from.name) && isYearQuiz()) answerQuiz(msg.yearAnswer);
   // rok podany przez wyzywającego na jego telefonie (wariant wyzwania „dokładny rok”)
@@ -727,6 +730,7 @@ function playerIndexOf(name) {
 function controlNames() {
   if (!state.players.length || !state.current) return [];
   if (state.mode === 'buzz') return state.buzz && state.buzz.answering != null ? [state.players[state.buzz.answering].name] : [];
+  if (state.mode === 'bingo') return [];
   const p = activePlayer();
   return [p.name, answering(p)].filter(Boolean);
 }
@@ -850,6 +854,7 @@ function tvSync() {
       challengeInput: state.phase === 'challenge' && state.challenger != null && state.challengeMode === 'year'
         ? { who: state.players[state.challenger].name } : null,
       // „Rok co do roku”: pole roku na telefonie gracza z turą
+      bingo: bingoSnapshot(),
       yearAsk: isYearQuiz() && state.phase === 'listen' && state.current ? { who: controlNames() } : null,
       phase: state.phase, turnName: activePlayer().name, turnWho: answering(activePlayer()), playing: !audio.paused, hasSong: !!state.current,
       // drużyny: do której drużyny należy gracz z telefonem
@@ -1762,7 +1767,7 @@ function startGame(over = {}) {
   state.expert = isTimeline() && !party ? expertParts() : [];
   state.letterHint = filterState.letterHint;
   const plShare = poolValue() === 'ALL' ? filterState.plShare / 100 : (poolValue() === 'PL' ? 1 : 0);
-  const needed = state.mode === 'buzz' ? state.rounds : state.mode === 'sort5' ? names.length * state.rounds * 5
+  const needed = state.mode === 'buzz' || state.mode === 'bingo' ? state.rounds : state.mode === 'sort5' ? names.length * state.rounds * 5
     : (state.hiloMulti ? names.length * state.rounds + 2 : (isTimeline() || state.mode === 'hilo' ? names.length * 3 : names.length * state.rounds));
   let base = songPool();
   // tryby quizowe: podpowiedzi z tej samej puli; „Skąd jest wykonawca?” – tylko piosenki z flagą kraju
@@ -1794,6 +1799,8 @@ function startGame(over = {}) {
     members: teams || state.coop ? (r.members || '').split(/[,;\n]+/).map((m) => m.trim()).filter(Boolean) : [], member: 0,
   }));
   if (isTimeline()) dealStartYears(songPool());
+  state.bingo = null;
+  if (state.mode === 'bingo') startBingo();
   state.turn = Math.floor(Math.random() * names.length);
   state.turnsPlayed = 0;
   state.history = [];
@@ -2093,6 +2100,7 @@ async function drawSong() {
         buzz: T('Włącz fragment – kto pierwszy naciśnie swój przycisk, ten odpowiada.'),
         hilo: T('Posłuchaj: starsza czy nowsza od poprzedniej karty?'),
         duel: T('Posłuchaj i wybierz dekadę.'),
+        bingo: T('Posłuchaj i zaznacz na swojej planszy pole, które pasuje do tej piosenki.'),
       }[state.mode] || T('Posłuchaj i wybierz miejsce na swojej osi czasu.');
       $('#mystery-status').replaceChildren(status);
       // karta specjalna: co ok. piąta karta na osi czasu (jeśli włączone)
@@ -2886,8 +2894,8 @@ function nextTurn() {
     state.ref = state.current;
     return startTurn();
   }
-  if (state.mode === 'buzz') {
-    if (state.turnsPlayed >= state.rounds) return endGame();
+  if (state.mode === 'buzz' || state.mode === 'bingo') {
+    if (state.turnsPlayed >= state.rounds || (state.bingo && state.bingo.winners.length)) return endGame();
     return startTurn();
   }
   if (isTimeline()) {
@@ -2959,6 +2967,9 @@ function endGame() {
     extra = [el('h3', {}, T('Najlepsze wyniki – {0}, poziom „{1}”', timeLabel(state.timeLimit), lvlName)),
       el('ol', { class: 'ranking' }, list.slice(0, 10).map((r, i) => el('li', { class: i === pos ? 'me' : '' },
         `${cardsLabel(r.score)} · ${r.date}${i === pos ? T(' ← teraz') : ''}`)))];
+  } else if (state.mode === 'bingo' && state.bingo.winners.length) {
+    title.textContent = T('🎉 BINGO! Wygrywa {0}', state.bingo.winners.map((i) => state.players[i].name).join(', '));
+    won = true;
   } else if (state.mode === 'hilo' && !state.hiloMulti) {
     const prev = saveRecord(`hilo${state.difficulty}`, state.streak, T('Starsza czy nowsza?, {0}', lvlName));
     won = state.streak > prev;
@@ -3232,10 +3243,10 @@ function render() {
 
   renderHeader(p, timeline);
 
-  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !['steps', 'buzz', 'hilo', 'duel', 'sort5'].includes(state.mode) && !isQuiz();
+  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !['steps', 'buzz', 'hilo', 'duel', 'sort5', 'bingo'].includes(state.mode) && !isQuiz();
   $('#btn-skip').textContent = timeline ? T('⏭ Pomiń ({0} żeton)', SKIP_COST) : T('⏭ Inna piosenka');
   $('#btn-skip').disabled = !canSkip || (timeline && p.tokens < SKIP_COST);
-  $('#btn-skip').classList.toggle('hidden', ['steps', 'buzz', 'hilo', 'duel', 'sort5'].includes(state.mode) || isQuiz());
+  $('#btn-skip').classList.toggle('hidden', ['steps', 'buzz', 'hilo', 'duel', 'sort5', 'bingo'].includes(state.mode) || isQuiz());
   // Ułóż piątkę: każdy fragment ma własny przycisk ▶
   $('#btn-play').classList.toggle('hidden', state.mode === 'sort5');
 
@@ -3263,6 +3274,7 @@ function render() {
   }
   renderStepsBar();
   renderBuzzers();
+  renderBingoBoards();
   renderSpecialBadge();
 
   const hints = {
@@ -3285,7 +3297,8 @@ function render() {
   if (state.mode === 'duel') hints.listen = T('Z której dekady jest ta piosenka?');
   if (isQuiz()) hints.listen = QUIZ[state.mode].hint();
   if (state.mode === 'sort5') hints.listen = sortHint();
-  if (state.mode === 'hilo' || state.mode === 'duel' || isQuiz() || state.mode === 'sort5') $('#hint').textContent = state.current && state.phase === 'listen' ? hints.listen : '';
+  if (state.mode === 'bingo') hints.listen = T('Każdy zaznacza na swojej planszy jedno pole, które pasuje do tej piosenki. Trzy skreślone w linii – BINGO!');
+  if (state.mode === 'hilo' || state.mode === 'duel' || isQuiz() || state.mode === 'sort5' || state.mode === 'bingo') $('#hint').textContent = state.current && state.phase === 'listen' ? hints.listen : '';
 
   const tl = $('#timeline');
   tl.classList.toggle('hidden', !timeline && state.mode !== 'hilo');
@@ -3302,7 +3315,7 @@ function render() {
 // tablica wyników i tytuł tury – zależnie od trybu
 function renderHeader(p, timeline) {
   const sb = $('#scoreboard');
-  sb.classList.toggle('hidden', state.players.length === 1 && !isMelody() && state.mode !== 'duel' && !isQuiz() && state.mode !== 'sort5');
+  sb.classList.toggle('hidden', state.players.length === 1 && !isMelody() && state.mode !== 'duel' && !isQuiz() && state.mode !== 'sort5' && state.mode !== 'bingo');
   // impreza: która minigra i ile zostało
   const pt = state.party;
   $('#party-bar').classList.toggle('hidden', !pt);
@@ -3311,7 +3324,7 @@ function renderHeader(p, timeline) {
     $('#party-bar').textContent = T('🥳 Minigra {0} z {1}: {2} {3}', pt.idx + 1, pt.plan.length, g.icon, T(g.name));
   }
   sb.replaceChildren(...state.players.map((pl, i) => el('div', {
-    class: 'score' + (i === state.turn && state.mode !== 'buzz' ? ' active' : ''),
+    class: 'score' + (i === state.turn && state.mode !== 'buzz' && state.mode !== 'bingo' ? ' active' : ''),
     style: state.mode === 'buzz' ? `border-color:${BUZZ_COLORS[i]}` : null,
   }, pl.name, ': ', timeline
     ? [el('b', {}, String(pl.timeline.length)), T('/{0} kart · ', state.winTarget), el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || '–')]
@@ -3320,7 +3333,10 @@ function renderHeader(p, timeline) {
   const info = $('#turn-info');
   info.classList.toggle('tokens', timeline);
   const songNo = state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1);
-  if (state.mode === 'buzz') {
+  if (state.mode === 'bingo') {
+    title.textContent = T('Piosenka {0} z {1}', Math.min(songNo, state.rounds), state.rounds);
+    info.textContent = T('Trzy w linii – BINGO!');
+  } else if (state.mode === 'buzz') {
     title.textContent = T('Piosenka {0} z {1}', Math.min(songNo, state.rounds), state.rounds);
     info.textContent = TOUCH_ONLY ? T('Dotknij swojego pola, gdy znasz odpowiedź') : T('Naciśnij swój przycisk albo klawisz, gdy znasz odpowiedź');
   } else if (state.mode === 'hilo' && state.hiloMulti) {
@@ -3485,7 +3501,9 @@ function renderTimeline(container, timeline, interactive, marks) {
 function renderActions() {
   const p = activePlayer();
   const btns = [];
-  if (state.mode === 'sort5') {
+  if (state.mode === 'bingo') {
+    btns.push(...bingoActions());
+  } else if (state.mode === 'sort5') {
     btns.push(...sortActions());
   } else if (isQuiz()) {
     btns.push(...quizActions());

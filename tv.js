@@ -341,7 +341,9 @@ function render(s) {
   })()) : null;
   // pole odpowiedzi nie może zniknąć w trakcie pisania – zachowujemy wpisany tekst między odświeżeniami
   const keep = app.querySelector('.guess-form');
-  const card = h('section', 'turn-card', head, main, steps, buzzers, hint, guess, actions);
+  const bingo = s.bingo ? h('div', 'bingo-boards', s.bingo.boards.map((b) => h('div', 'bingo-board' + (b.won ? ' won' : ''),
+    h('div', 'bingo-name', b.name, b.pick != null ? ' ✔' : ''), bingoGrid(b, false, false)))) : null;
+  const card = h('section', 'turn-card', head, main, steps, buzzers, bingo, hint, guess, actions);
   app.replaceChildren(...[who, scoresRow, card, tls, others].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
   fit();
@@ -477,7 +479,7 @@ function renderPlayer(s) {
   const turnTl = (myView || shared) && active ? vTimeline(active, pick, null) : null;
   const card = h('section', 'ht-card' + (rest.length ? ' with-actions' : ''),
     h('div', 'ht-head', h('h2', '', s.title || ''), h('span', 'ht-info', s.info || '')),
-    h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess, yearForm,
+    h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess, yearForm, bingoBoard(s),
     s.challenge ? h('p', 'ht-hint', s.challenge) : null, s.hint ? h('p', 'ht-hint', s.hint) : null,
     turnTl, rest.length ? h('div', 'ht-actions', rest.map((b) => mk(b))) : null);
   const board = (s.scores || []).length ? h('div', 'ht-scores', s.scores.map((x) => h('span', x.active ? 'act' : '', x.text))) : null;
@@ -509,6 +511,21 @@ function renderPlayer(s) {
 }
 let lastMark = '';
 
+// Bingo: własna plansza gracza na telefonie (stuknięcie = zaznaczenie pola), na dużym ekranie – plansze wszystkich
+function bingoGrid(b, mine, open) {
+  return h('div', 'bingo-grid', b.cells.map((label, c) => {
+    const cell = h('button', 'bingo-cell' + (b.marked[c] ? ' marked' : '') + (b.pick === c ? ' picked' : ''), label);
+    cell.disabled = !mine || !open || b.marked[c];
+    if (mine) cell.addEventListener('click', () => send({ bingoPick: c }));
+    return cell;
+  }));
+}
+function bingoBoard(s) {
+  if (!s.bingo) return null;
+  const b = s.bingo.boards.find((x) => x.name === me);
+  if (!b) return null;
+  return h('div', 'bingo-board' + (b.won ? ' won' : ''), h('div', 'bingo-name', T('Twoja plansza'), b.pick != null ? ' ✔' : ''), bingoGrid(b, true, s.bingo.open));
+}
 /* --- odpowiedź wpisywana na telefonie gracza (z podpowiedziami z bazy piosenek) --- */
 let db = null;
 function loadDb() {

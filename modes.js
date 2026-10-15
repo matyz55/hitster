@@ -329,3 +329,96 @@ function sortHint() {
   const left = s.deadline ? Math.max(0, Math.ceil((s.deadline - Date.now()) / 1000)) : SORT_TIME;
   return T('Od najstarszej: {0} · ⏳ {1} s', s.order.map((k) => SORT_LETTERS[k]).join(' → ') || '…', left);
 }
+
+/* ---------- Bingo muzyczne ---------- */
+// Każdy gracz ma planszę 3×3 z kategoriami. Przy każdej piosence zaznacza jedno pole, które – jego zdaniem – do niej pasuje.
+// Po odkryciu trafione pola zostają skreślone; trzy skreślone w linii (wiersz, kolumna, przekątna) = BINGO.
+// Po ustalonej liczbie piosenek wygrywa ten, kto skreślił najwięcej pól.
+const BINGO_LINES = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+function bingoCategories(pool) {
+  const cats = [];
+  for (const d of [...new Set(pool.map(decadeOf))]) cats.push({ id: `d${d}`, label: decadeLabelLong(d), test: (s) => decadeOf(s) === d });
+  cats.push({ id: 'pl', label: T('Polska piosenka'), test: (s) => s.c === 'PL' });
+  cats.push({ id: 'int', label: T('Zagraniczna piosenka'), test: (s) => s.c !== 'PL' });
+  const genres = new Map();
+  for (const s of pool) for (const g of s.g || []) genres.set(g, (genres.get(g) || 0) + 1);
+  for (const g of genres.keys()) cats.push({ id: `g${g}`, label: genreName(g), test: (s) => (s.g || []).includes(g) });
+  const countries = new Map();
+  for (const s of pool) if (s.cc && s.cc !== 'PL' && hasFlag(s.cc)) countries.set(s.cc, (countries.get(s.cc) || 0) + 1);
+  for (const cc of [...countries].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([c]) => c)) {
+    cats.push({ id: `c${cc}`, label: countryName({ cc }), cc, test: (s) => s.cc === cc });
+  }
+  cats.push({ id: 'old', label: T('Wydana przed 1980 r.'), test: (s) => s.y < 1980 });
+  cats.push({ id: 'new', label: T('Wydana w 2000 r. lub później'), test: (s) => s.y >= 2000 });
+  cats.push({ id: 'duo', label: T('Duet lub kilku wykonawców'), test: (s) => artistsOf(s).length > 1 });
+  // tylko kategorie, które w tej puli trafiają się ani za rzadko, ani za często (5–60% piosenek)
+  return cats.filter((c) => { const f = pool.filter(c.test).length / pool.length; return f >= 0.05 && f <= 0.6; });
+}
+function startBingo() {
+  const cats = bingoCategories(state.quizPool || window.SONGS);
+  state.bingo = {
+    cats: Object.fromEntries(cats.map((c) => [c.id, c])),
+    boards: state.players.map(() => ({ cells: shuffle(cats.map((c) => c.id)).slice(0, 9), marked: Array(9).fill(false), pick: null })),
+    winners: [],
+  };
+}
+function bingoPick(i, cell) {
+  const b = state.bingo && state.bingo.boards[i];
+  if (!b || state.phase !== 'listen' || !state.current || b.marked[cell] || cell < 0 || cell > 8) return;
+  b.pick = b.pick === cell ? null : cell;
+  render();
+}
+function bingoReveal() {
+  if (!state.bingo || state.phase !== 'listen' || !state.current) return;
+  const song = state.current;
+  stopAudio();
+  const lines = [];
+  state.bingo.boards.forEach((b, i) => {
+    const p = state.players[i];
+    if (b.pick == null) return;
+    const cat = state.bingo.cats[b.cells[b.pick]];
+    const ok = cat.test(song);
+    if (ok) { b.marked[b.pick] = true; p.score += 1; }
+    lines.push(el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') }, `${ok ? '✔' : '✘'} ${p.name}: ${cat.label}`));
+    b.pick = null;
+    if (ok && !state.bingo.winners.includes(i) && BINGO_LINES.some((l) => l.every((c) => b.marked[c]))) state.bingo.winners.push(i);
+  });
+  state.turnsPlayed += 1;
+  state.history.push({ song, preview: state.preview, player: '', ok: lines.length > 0, note: T('Bingo – piosenka {0}', state.turnsPlayed) });
+  recordAnswer(song, true);
+  if (state.bingo.winners.length) { fx('win'); lines.unshift(el('div', { class: 'verdict ok bingo-win' }, T('🎉 BINGO: {0}!', state.bingo.winners.map((i) => state.players[i].name).join(', ')))); }
+  showReveal(...lines);
+}
+function bingoActions() {
+  const btns = [];
+  if (state.phase === 'listen' && state.current) {
+    const picked = state.bingo.boards.filter((b) => b.pick != null).length;
+    btns.push(el('button', { class: 'primary', onclick: bingoReveal }, T('✔ Odkryj ({0}/{1} zaznaczyło)', picked, state.players.length)));
+  }
+  if (state.phase === 'revealed') {
+    const last = state.bingo.winners.length || state.turnsPlayed >= state.rounds;
+    btns.push(el('button', { class: 'primary', onclick: nextTurn }, last ? T('Zobacz wyniki →') : T('Następna piosenka →')));
+  }
+  return btns;
+}
+// plansze graczy na ekranie gospodarza (każdy gracz stuka swoje pole; gracze z telefonami – na telefonie)
+function renderBingoBoards() {
+  const box = $('#bingo-boards');
+  if (!box) return;
+  box.classList.toggle('hidden', state.mode !== 'bingo' || !state.bingo);
+  if (state.mode !== 'bingo' || !state.bingo) return;
+  const phones = remoteNames();
+  box.replaceChildren(...state.bingo.boards.map((b, i) => el('div', { class: 'bingo-board' + (state.bingo.winners.includes(i) ? ' won' : '') },
+    el('div', { class: 'bingo-name' }, state.players[i].name, phones.has(state.players[i].name) ? ' 📱' : '', b.pick != null ? ' ✔' : ''),
+    el('div', { class: 'bingo-grid' }, b.cells.map((id, c) => {
+      const cat = state.bingo.cats[id];
+      return el('button', { class: 'bingo-cell' + (b.marked[c] ? ' marked' : '') + (b.pick === c ? ' picked' : ''),
+        disabled: b.marked[c] || state.phase !== 'listen', onclick: () => bingoPick(i, c) }, cat.cc ? flagEl({ cc: cat.cc }) : null, ' ', cat.label);
+    })))));
+}
+// stan plansz dla dużego ekranu i telefonów
+const bingoSnapshot = () => (state.mode === 'bingo' && state.bingo ? {
+  open: state.phase === 'listen' && !!state.current,
+  boards: state.bingo.boards.map((b, i) => ({ name: state.players[i].name, cells: b.cells.map((id) => state.bingo.cats[id].label),
+    marked: b.marked, pick: b.pick, won: state.bingo.winners.includes(i) })),
+} : null);

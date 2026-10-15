@@ -152,3 +152,17 @@ test('@net Rok co do roku: pole roku na telefonie gracza z turą', async ({ brow
   await expect.poll(() => host.evaluate(() => state.players.find((p) => p.name === 'Ania').score)).toBe(3);
   noErrors(host, ania);
 });
+
+test('@net bingo: plansza na telefonie, zaznaczenie trafia do gospodarza', async ({ browser }) => {
+  const { host, code } = await hostLobby(browser);
+  const ania = await join(browser, code, 'Ania');
+  await host.click('#btn-lobby-next');
+  await host.click('.mode[data-mode=bingo]');
+  await host.click('#btn-start');
+  await ready(host);
+  await ania.waitForSelector('.bingo-board .bingo-cell');
+  await expect(ania.locator('.bingo-board .bingo-cell')).toHaveCount(9);
+  await ania.click('.bingo-board .bingo-cell >> nth=4');
+  await expect.poll(() => host.evaluate(() => state.bingo.boards[state.players.findIndex((p) => p.name === 'Ania')].pick)).toBe(4);
+  noErrors(host, ania);
+});

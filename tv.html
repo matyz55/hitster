@@ -362,6 +362,16 @@
     .end-league { margin-top: .8em; border-top: calc(2 * var(--u)) solid #3d3755; padding-top: .5em; }
     .end-league h3 { margin: 0 0 .3em; color: var(--gold); font-size: .9em; }
     .end-league ol { margin: 0; font-size: .85em; }
+    .bingo-boards { display: grid; grid-template-columns: repeat(auto-fill, minmax(14em, 1fr)); gap: .6em; }
+    .bingo-board { background: var(--panel-2); border-radius: .7em; padding: .4em; border: calc(3 * var(--u)) solid transparent; }
+    .bingo-board.won { border-color: var(--gold); }
+    .bingo-name { font-weight: 800; margin-bottom: .3em; font-size: .85em; }
+    .bingo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .25em; }
+    .bingo-cell { font: inherit; font-size: .55em; padding: .5em .3em; min-height: 3.6em; border-radius: .5em; background: var(--panel); border: calc(2 * var(--u)) solid #3d3755; color: var(--text); line-height: 1.15; }
+    .bingo-cell.picked { border-color: var(--accent-2); background: rgba(45, 226, 230, .15); }
+    .bingo-cell.marked { background: var(--ok); color: #0b1d12; border-color: var(--ok); font-weight: 700; }
+    .bingo-cell:disabled { opacity: 1; }
+    body.player .bingo-cell { font-size: 13px; min-height: 58px; }
   </style>
 </head>
 <body>
