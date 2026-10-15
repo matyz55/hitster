@@ -530,6 +530,12 @@ function handleRemote(msg, from) {
     return;
   }
   if (msg.join && from) joinFromPhone(msg.join, from);
+  // ▶/⏸ z telefonu gracza – tylko od gracza, który teraz odpowiada (w drużynie – od odpowiadającego członka)
+  if (msg.playToggle && from && from.name && controlNames().includes(from.name)) {
+    const b = $('#btn-play');
+    if (!b.disabled && !b.closest('.hidden')) b.click();
+    return;
+  }
   // przycisk kliknięty na innym ekranie – klikamy ten sam w oknie gry (sprawdzamy też napis, gdyby stan zdążył się zmienić)
   if (msg.click) {
     const b = tvButtons()[msg.click.i];
@@ -545,6 +551,15 @@ function handleRemote(msg, from) {
     else render();
   }
 }
+// kto steruje odtwarzaniem ze swojego telefonu: gracz z turą (w drużynie także odpowiadający członek),
+// w „Kto pierwszy?” – ten, kto się zgłosił
+function controlNames() {
+  if (!state.players.length || !state.current) return [];
+  if (state.mode === 'buzz') return state.buzz && state.buzz.answering != null ? [state.players[state.buzz.answering].name] : [];
+  const p = activePlayer();
+  return [p.name, answering(p)].filter(Boolean);
+}
+const controlPhone = () => [...remotes].find((r) => r.role === 'player' && r.name && controlNames().includes(r.name));
 // wybór miejsca na osi z innego urządzenia: gracz w swojej turze albo wyzywający (wariant „inne miejsce”)
 const remoteSlotsAllowed = () => isTimeline() && !!state.current
   && (['listen', 'placed'].includes(state.phase) || (state.phase === 'challenge' && state.challenger != null && state.challengeMode === 'place'));
@@ -651,6 +666,8 @@ function tvSync() {
         y: state.current.y, t: state.current.t, a: artistLine(state.current), cc: state.current.cc,
         lines: $$('#reveal .verdict, #reveal .fact').map((n) => n.textContent),
       } : null,
+      // ▶/⏸ dla telefonu gracza, który teraz odpowiada
+      play: state.current && !$('#btn-play').classList.contains('hidden') ? { disabled: $('#btn-play').disabled, playing: !audio.paused, who: controlNames() } : null,
       phase: state.phase, turnName: activePlayer().name, turnWho: answering(activePlayer()), playing: !audio.paused, hasSong: !!state.current,
       // drużyny: do której drużyny należy gracz z telefonem
       teamOf: state.mode === 'teams' ? Object.fromEntries(state.players.flatMap((pl) => (pl.members || []).map((m) => [m, pl.name]))) : null,
@@ -1409,7 +1426,7 @@ function updatePoolInfo() {
   $('#pool-info').textContent = T('{0}{1} piosenek (polskich: {2}, zagranicznych: {3}; {4} wykonawców) z lat {5}–{6}, dekad: {7}. Każdy wykonawca pojawi się w grze najwyżej raz.', preset ? T('Zestaw „{0}”: ', preset.name.replace(/^\S+\s/, '')) : '', pool.length, pl, pool.length - pl, artists, Math.min(...years), Math.max(...years), decades);
 }
 
-$('#btn-start').addEventListener('click', () => startGame());
+$('#btn-start').addEventListener('click', () => { primeAudio(); startGame(); });
 // jeden gracz: „Zagraj ponownie” wraca do ustawień tego trybu, „Zmień tryb” – do listy trybów
 $('#btn-again').addEventListener('click', () => openSetup(state.baseMode || state.mode));
 $('#btn-home').addEventListener('click', () => showModes());
@@ -2735,6 +2752,20 @@ function playClip() {
       : T('Nie udało się odtworzyć: ') + e.message;
   });
 }
+// odblokowanie odtwarzacza w chwili kliknięcia „Zaczynamy” – później muzykę może włączać telefon gracza
+// (Safari na iPhonie pozwala elementowi audio grać bez kliknięcia dopiero, gdy raz zagrał po kliknięciu)
+function primeAudio() {
+  if (!audio.paused || audio.src) return;
+  const n = 800; const buf = new ArrayBuffer(44 + n * 2); const v = new DataView(buf);
+  const w = (o, t) => [...t].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
+  w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt '); v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+  v.setUint32(24, 8000, true); v.setUint32(28, 16000, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true); w(36, 'data'); v.setUint32(40, n * 2, true);
+  const url = URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+  audio.src = url;
+  audio.dataset.prime = '1';
+  const done = () => { if (audio.src === url) { audio.pause(); audio.removeAttribute('src'); } delete audio.dataset.prime; };
+  audio.play().then(done, done);
+}
 /* --- gdzie gra muzyka: ten telefon, duży ekran albo telefon gracza z turą --- */
 // Ten telefon zawsze prowadzi grę (odmierza fragmenty, kroki, zegar); gdy muzyka ma grać gdzie indziej,
 // jego odtwarzacz jest wyciszony, a wybrane urządzenie dostaje polecenia „graj od t do until” i „pauza”.
@@ -2783,6 +2814,8 @@ function applyAudioRoute() {
     note.textContent = remote ? (out === 'tv' ? T('🔈 Muzyka gra na dużym ekranie.') : T('🔈 Muzyka gra na telefonie gracza {0}.', answering(activePlayer()) || activePlayer().name))
       : (out !== 'host' ? (blockedTarget() ? T('🔈 Przeglądarka tamtego urządzenia czeka na naciśnięcie przycisku (pilota lub ekranu) – do tego czasu muzyka gra tutaj.')
         : T('🔈 Brak połączonego urządzenia – muzyka gra na tym telefonie.')) : '');
+    const ph = controlPhone();
+    if (ph) note.textContent = [note.textContent, T('📱 Odtwarzaniem steruje {0} na swoim telefonie.', ph.name)].filter(Boolean).join(' ');
     note.classList.toggle('hidden', !note.textContent);
   }
   return remote;
@@ -2808,6 +2841,7 @@ $('#btn-play').addEventListener('click', () => {
   else softPause(false);
 });
 audio.addEventListener('play', () => {
+  if (audio.dataset.prime) return; // cisza odblokowująca odtwarzacz – to nie piosenka
   state.heard = true;
   // muzyka na innym urządzeniu: start od tego samego miejsca, koniec wycinka (until) liczy tamto urządzenie
   if (applyAudioRoute() && state.preview) {
@@ -2826,7 +2860,7 @@ audio.addEventListener('play', () => {
   };
   requestAnimationFrame(tick);
 });
-audio.addEventListener('pause', () => { $('#vinyl').classList.remove('spinning'); $('#btn-play').textContent = T('▶ Odtwórz'); tvAudio(); });
+audio.addEventListener('pause', () => { if (audio.dataset.prime) return; $('#vinyl').classList.remove('spinning'); $('#btn-play').textContent = T('▶ Odtwórz'); tvAudio(); });
 audio.addEventListener('ended', () => { audio.currentTime = 0; });
 audio.addEventListener('timeupdate', () => {
   if (state.phase !== 'revealed' && audio.currentTime >= state.clipStart + state.clipLen) {

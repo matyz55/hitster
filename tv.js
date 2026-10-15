@@ -392,6 +392,14 @@ function renderPlayer(s) {
       buzz.addEventListener('pointerdown', (e) => { e.preventDefault(); send({ buzz: s.buzzers.items.indexOf(it) }); });
     }
   }
+  // ▶/⏸ – steruje gracz, który teraz odpowiada
+  let play = null;
+  if (s.play && (s.play.who || []).includes(me)) {
+    const playing = audioState.playing;
+    play = h('button', 'p-play' + (playing ? ' on' : ''), playing ? T('⏸ Pauza') : T('▶ Odtwórz'));
+    play.disabled = s.play.disabled;
+    play.addEventListener('click', () => send({ playToggle: true }));
+  }
   const guess = s.guess && (s.guess.who === me || (s.turnWho === me && s.guess.who === s.turnName)) ? guessForm(s.guess) : null;
   // przyciski: tylko te, których ten gracz może teraz użyć
   // w swojej turze – wszystko poza wyzwaniem i żetonem „przy stole” (o nich decydują inni); przy swoim wyzwaniu – wszystko;
@@ -417,7 +425,7 @@ function renderPlayer(s) {
     : (s.scores || []).map((x) => h('span', x.active ? 'act' : '', x.text)));
   const keep = app.querySelector('.guess-form');
   const partyBar = s.party ? h('div', 'p-party', s.party.label) : null;
-  app.replaceChildren(...[top, partyBar, banner, song, buzz, guess, actions, tl, scores.length ? h('div', 'p-scores', scores) : null].filter(Boolean));
+  app.replaceChildren(...[top, partyBar, banner, song, play, buzz, guess, actions, tl, scores.length ? h('div', 'p-scores', scores) : null].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
 }
 
@@ -488,6 +496,8 @@ function updateAudio() {
   if (PLAYER && last && last.screen === 'game') {
     const st = app.querySelector('.p-status');
     if (st) { st.classList.toggle('playing', audioState.playing); st.firstChild.textContent = audioState.playing ? '🎵 ' : ''; }
+    const pb = app.querySelector('.p-play');
+    if (pb) { pb.textContent = audioState.playing ? T('⏸ Pauza') : T('▶ Odtwórz'); pb.classList.toggle('on', audioState.playing); }
     return;
   }
   const v = app.querySelector('.vinyl');

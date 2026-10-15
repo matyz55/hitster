@@ -292,6 +292,7 @@ window.I18N_EN = {
  "🔈 Muzyka gra teraz na telefonie gospodarza. Naciśnij dowolny przycisk pilota (np. OK) albo dotknij ekranu – dalej zagra z tego ekranu.": "🔈 The music is playing on the host's phone for now. Press any remote button (e.g. OK) or touch the screen – then it will play from this screen.",
  "🔊 Naciśnij teraz OK na pilocie (np. „Pełny ekran”) – wtedy muzyka będzie mogła grać z telewizora od razu.": "🔊 Press OK on the remote now (e.g. “Full screen”) – then the music can play from the TV right away.",
  "🔈 Przeglądarka tamtego urządzenia czeka na naciśnięcie przycisku (pilota lub ekranu) – do tego czasu muzyka gra tutaj.": "🔈 That device's browser is waiting for a button press (remote or screen) – until then the music plays here.",
+ "📱 Odtwarzaniem steruje {0} na swoim telefonie.": "📱 {0} controls playback on their phone.",
  "⚔ Kto rzuca wyzwanie? (koszt: 1 żeton)": "⚔ Who is challenging? (cost: 1 token)",
  "🔊 Dotknij, aby włączyć dźwięk na tym urządzeniu": "🔊 Tap to turn on sound on this device",
  "🔈 Muzyka gra na dużym ekranie.": "🔈 The music is playing on the big screen.",
