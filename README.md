@@ -7,9 +7,23 @@ Hitster) oraz tryb w stylu „Jaka to melodia”. Polskie i zagraniczne przeboje
 
 ## Tryby gry
 
+Na ekranie startowym wybiera się **Jeden gracz** albo **Multiplayer**:
+
+- **Jeden gracz** – lista trybów dla jednej osoby (oś czasu, na czas, starsza czy nowsza, pojedynek dekad,
+  Jaka to melodia, krok po kroku i impreza).
+- **Multiplayer** – najpierw lobby: lista graczy (osoby grające na tym urządzeniu i ci, którzy dołączyli
+  telefonem przez kod QR), potem wybór trybu. Gracze z telefonami głosują na tryb (głosy widać na kafelkach,
+  także na dużym ekranie), a decyzję podejmuje gospodarz. Po podsumowaniu gry gospodarz wybiera: jeszcze raz
+  ten sam tryb z tymi samymi ustawieniami (gra rusza od razu), inny tryb (lobby i telefony zostają połączone)
+  albo menu główne (pokój jest zamykany, telefony się rozłączają).
+- **Impreza – minigry** – seria krótkich minigier opartych na pozostałych trybach (Jaka to melodia, krok po
+  kroku, pojedynek dekad, starsza czy nowsza – w multiplayerze po kolei i bez kończenia na pomyłce, Kto pierwszy?,
+  oś czasu – wyścig do 4 kart albo minuta na czas dla jednej osoby). Liczba minigier i ich wybór w ustawieniach.
+  Kilku graczy dostaje 3/2/1 pkt za miejsca w każdej minigrze; jedna osoba sumuje wyniki i bije rekord.
+
 - **Oś czasu – 1 gracz** – układasz piosenki na osi czasu wg roku wydania;
   masz ograniczoną liczbę pomyłek. Wpisanie poprawnego tytułu i wykonawcy daje żeton.
-- **Oś czasu – multiplayer** – 2–16 graczy przy jednym urządzeniu (lub na własnych telefonach – przycisk „📱 Dołącz przez telefon” przy liście graczy), z wyzwaniami
+- **Oś czasu – multiplayer** – 2–16 graczy przy jednym urządzeniu lub na własnych telefonach, z wyzwaniami
   i żetonami jak w planszówce. Żetony: 1 = pominięcie piosenki (gra najpierw pokazuje, co to było),
   3 = kupno karty – przed odkryciem na oś trafia grana piosenka, po odkryciu losowa karta z talii.
 - **Oś czasu – drużyny** – 2–16 drużyn, każda ze wspólną osią czasu; członkowie drużyny
@@ -49,12 +63,12 @@ okładki pobierane są w jakości dopasowanej do ekranu).
 
 **Telewizor przez sieć**: na telewizorze (np. Google TV) lub innym komputerze otwórz `tv.html` i kliknij
 „📶 Połącz z innym urządzeniem” – pojawi się 4-znakowy kod i kod QR. Telefon, na którym toczy się gra, skanuje
-QR (albo w oknie 📺 wpisuje kod) i od tej chwili steruje dużym ekranem. Połączenie: najpierw bezpośrednio
-(WebRTC przez PeerJS), a gdy sieć lub przeglądarka to blokuje – automatycznie przez publiczny serwer pośredniczący
-MQTT (shiftr.io, WebSocket na porcie 443). Biblioteki ładowane są dopiero po kliknięciu.
+QR (albo w oknie 📺 wpisuje kod) i od tej chwili steruje dużym ekranem. Połączenie: dołączające urządzenie próbuje
+naraz bezpośrednio (WebRTC przez PeerJS) i przez publiczny serwer pośredniczący MQTT (shiftr.io, WebSocket na porcie 443) –
+wygrywa kanał, który połączy się pierwszy, drugi jest od razu zamykany. Biblioteki ładowane są dopiero przy łączeniu.
 
-**Gracze na własnych telefonach**: gospodarz (też gra, u niego gra muzyka) w oknie 📺 tworzy pokój – gracze
-skanują QR (`tv.html?join=KOD`), wpisują imię i dostają własny, pionowy widok: baner „Twoja tura”, oś czasu
+**Gracze na własnych telefonach**: w multiplayerze lobby od razu tworzy pokój – gracze skanują QR
+(`tv.html?join=KOD`), wpisują imię, głosują na tryb, a w grze dostają własny, pionowy widok: baner „Twoja tura”, oś czasu
 z przyciskami „＋ tutaj”, odpowiedź z podpowiedziami, duże przyciski (wyzwanie, kupno karty…) i ogromny
 przycisk w „Kto pierwszy?”.
 

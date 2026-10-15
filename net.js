@@ -32,7 +32,7 @@
   const withTimeout = (p, ms, what) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(what || 'timeout')), ms))]);
 
   // połączenie przez serwer pośredniczący – ten sam interfejs co połączenie PeerJS (send, on('data'|'close'), open)
-  function makeConn(send) {
+  function makeConn(send, onLocalClose) {
     const ev = { data: [], close: [] };
     const queue = [];
     const conn = {
@@ -43,7 +43,8 @@
         if (name === 'data') while (queue.length) fn(queue.shift());
         return conn;
       },
-      close: () => conn._close(),
+      // zamknięcie z tej strony – druga strona dostaje wiadomość „bye”
+      close: () => { if (conn.open && onLocalClose) onLocalClose(); conn._close(); },
       _data: (msg) => { if (ev.data.length) ev.data.forEach((f) => f(msg)); else queue.push(msg); },
       _close: () => { if (!conn.open) return; conn.open = false; ev.close.forEach((f) => f()); },
     };
@@ -67,7 +68,7 @@
     const base = topicBase(kind, code);
     const conns = new Map();
     c.subscribe(base + '/up');
-    c.on('message', (topic, payload) => {
+    const onMsg = (topic, payload) => {
       if (topic !== base + '/up') return;
       let m;
       try { m = JSON.parse(payload.toString()); } catch (e) { return; }
@@ -75,42 +76,68 @@
       let conn = conns.get(m.from);
       if (m.bye) { if (conn) { conn._close(); conns.delete(m.from); } return; }
       if (!conn) {
-        conn = makeConn((msg) => c.publish(`${base}/d/${m.from}`, JSON.stringify(msg)));
+        const down = `${base}/d/${m.from}`;
+        conn = makeConn((msg) => c.publish(down, JSON.stringify(msg)), () => { c.publish(down, JSON.stringify({ __bye: true })); conns.delete(m.from); });
         conns.set(m.from, conn);
         onConn(conn);
       }
       conn.seen = Date.now();
       if (m.msg) conn._data(m.msg);
-    });
+    };
+    c.on('message', onMsg);
     // urządzenie, które przez 35 s nic nie wysłało (także sygnału obecności), uznajemy za rozłączone
-    setInterval(() => {
+    const timer = setInterval(() => {
       for (const [id, conn] of conns) if (Date.now() - conn.seen > 35000) { conn._close(); conns.delete(id); }
     }, 5000);
+    // zamknięcie pokoju: wszyscy dołączeni dostają „bye”
+    return () => {
+      clearInterval(timer);
+      for (const conn of [...conns.values()]) conn.close();
+      conns.clear();
+      c.removeListener('message', onMsg);
+      c.unsubscribe(base + '/up');
+    };
   }
   async function mqttConnect(kind, code) {
     const c = await withTimeout(mqttClient(), 12000, 'mqtt');
     const base = topicBase(kind, code);
     const me = rand(10);
-    const conn = makeConn((msg) => c.publish(base + '/up', JSON.stringify({ from: me, msg })));
+    const mine = `${base}/d/${me}`;
+    let ping = null;
+    const bye = () => c.publish(base + '/up', JSON.stringify({ from: me, bye: true }));
+    const onHide = () => bye();
+    const cleanup = () => {
+      clearInterval(ping);
+      c.removeListener('message', onMsg);
+      c.unsubscribe(mine);
+      window.removeEventListener('pagehide', onHide);
+    };
+    const conn = makeConn((msg) => c.publish(base + '/up', JSON.stringify({ from: me, msg })), bye);
+    conn.on('close', cleanup);
     let answered;
     const firstReply = new Promise((resolve) => { answered = resolve; });
-    c.subscribe(`${base}/d/${me}`);
-    c.on('message', (topic, payload) => {
-      if (topic !== `${base}/d/${me}`) return;
-      try { conn._data(JSON.parse(payload.toString())); answered(); } catch (e) { /* uszkodzona wiadomość */ }
-    });
+    function onMsg(topic, payload) {
+      if (topic !== mine) return;
+      let m;
+      try { m = JSON.parse(payload.toString()); } catch (e) { return; }
+      answered();
+      if (m && m.__bye) { conn._close(); return; }
+      conn._data(m);
+    }
+    c.subscribe(mine);
+    c.on('message', onMsg);
     c.publish(base + '/up', JSON.stringify({ from: me, msg: { probe: true } }));
-    const ping = setInterval(() => c.publish(base + '/up', JSON.stringify({ from: me, ping: true })), 10000);
-    window.addEventListener('pagehide', () => c.publish(base + '/up', JSON.stringify({ from: me, bye: true })));
+    ping = setInterval(() => c.publish(base + '/up', JSON.stringify({ from: me, ping: true })), 10000);
+    window.addEventListener('pagehide', onHide);
     try {
       await withTimeout(firstReply, 9000, 'no-host');
     } catch (e) {
-      clearInterval(ping);
+      conn.open = false;
+      cleanup();
       throw e;
     }
     return { conn };
   }
-
   async function peerHost(kind, code, onConn) {
     await loadScript(PEERJS);
     const peer = new window.Peer(peerId(kind, code));
@@ -119,53 +146,75 @@
       peer.on('error', (e) => resolve(e && e.type === 'unavailable-id' ? 'taken' : false));
     }), 10000, 'peer').catch(() => false);
     if (ok !== true) { peer.destroy(); return ok; }
-    peer.on('connection', (conn) => conn.on('open', () => onConn(conn)));
+    const conns = new Set();
+    peer.on('connection', (conn) => conn.on('open', () => {
+      conns.add(conn);
+      conn.on('close', () => conns.delete(conn));
+      onConn(conn);
+    }));
     // serwer pośredniczący zrywa bezczynne połączenie – wracamy z tym samym kodem
     peer.on('disconnected', () => { if (!peer.destroyed) peer.reconnect(); });
-    return true;
+    return () => {
+      for (const conn of conns) { try { conn.send({ __bye: true }); } catch (e) { /* zerwane */ } }
+      // chwila na dostarczenie „bye”, potem zamykamy
+      setTimeout(() => peer.destroy(), 300);
+    };
   }
   async function peerConnect(kind, code) {
     await loadScript(PEERJS);
     const peer = new window.Peer();
-    await withTimeout(new Promise((resolve, reject) => { peer.on('open', resolve); peer.on('error', reject); }), 8000, 'peer');
-    const conn = peer.connect(peerId(kind, code), { reliable: true });
     try {
+      await withTimeout(new Promise((resolve, reject) => { peer.on('open', resolve); peer.on('error', reject); }), 8000, 'peer');
+      const conn = peer.connect(peerId(kind, code), { reliable: true });
       await withTimeout(new Promise((resolve, reject) => {
         conn.on('open', resolve);
         peer.on('error', reject);
-      }), 6000, 'peer');
+      }), 8000, 'peer');
+      // zamknięcie połączenia zamyka też całego „peera” (żeby nie wisiał w tle)
+      conn.on('close', () => peer.destroy());
+      return { peer, conn };
     } catch (e) {
       peer.destroy();
       throw e;
     }
-    return { peer, conn };
   }
 
-  // pokój: to urządzenie czeka na połączenia (onConn dostaje każde nowe – bezpośrednie albo przez MQTT)
+  // pokój: to urządzenie czeka na połączenia (onConn dostaje każde nowe – bezpośrednie albo przez MQTT);
+  // close() zamyka pokój i rozłącza wszystkich
   async function host(kind, onConn, preferred) {
     for (let attempt = 0; attempt < 5; attempt++) {
       const code = attempt === 0 && normCode(preferred).length === 4 ? normCode(preferred) : rand(4);
       const [p, m] = await Promise.allSettled([peerHost(kind, code, onConn), mqttHost(kind, code, onConn)]);
-      if (p.status === 'fulfilled' && p.value === 'taken') continue; // kod zajęty – losujemy inny
-      const peerOk = p.status === 'fulfilled' && p.value === true;
+      if (p.status === 'fulfilled' && p.value === 'taken') { if (m.status === 'fulfilled') m.value(); continue; } // kod zajęty – losujemy inny
+      const peerOk = p.status === 'fulfilled' && typeof p.value === 'function';
       const mqttOk = m.status === 'fulfilled';
-      if (peerOk || mqttOk) return { code, direct: peerOk, relay: mqttOk };
+      const close = () => { if (peerOk) p.value(); if (mqttOk) m.value(); };
+      if (peerOk || mqttOk) return { code, direct: peerOk, relay: mqttOk, close };
       throw new Error('offline');
     }
     throw new Error('unavailable-id');
   }
 
-  // dołączenie do pokoju: najpierw bezpośrednio, a gdy się nie uda – przez serwer pośredniczący
-  async function connect(kind, code) {
+  // dołączenie do pokoju: oba kanały naraz – wygrywa ten, który pierwszy się połączy, drugi od razu zamykamy
+  // (wcześniej najpierw czekaliśmy na WebRTC – przy zablokowanym WebRTC trwało to kilkanaście sekund)
+  function connect(kind, code) {
     code = normCode(code);
     // ?relay=1 – od razu przez serwer pośredniczący (diagnostyka i testy)
     if (/[?&]relay=1/.test(window.location.search)) return mqttConnect(kind, code);
-    try {
-      return await peerConnect(kind, code);
-    } catch (e) {
-      return mqttConnect(kind, code);
-    }
+    const tries = [peerConnect(kind, code), mqttConnect(kind, code)];
+    let winner = null;
+    let failed = 0;
+    return new Promise((resolve, reject) => {
+      tries.forEach((t) => t.then((res) => {
+        if (winner) { try { res.conn.close(); } catch (e) { /* już zamknięte */ } if (res.peer) res.peer.destroy(); return; }
+        winner = res;
+        resolve(res);
+      }, (e) => { failed += 1; if (failed === tries.length) reject(e); }));
+    });
   }
+
+  // biblioteki pobieramy od razu przy starcie strony gracza – oszczędza to sekundę–dwie przy łączeniu
+  const preload = () => Promise.allSettled([loadScript(PEERJS), loadScript(MQTTJS)]);
 
   async function qrSvg(text) {
     await loadScript(QRLIB);
@@ -183,5 +232,5 @@
     return u.toString();
   };
 
-  window.SongsterNet = { host, connect, qrSvg, pageUrl, normCode };
+  window.SongsterNet = { host, connect, qrSvg, pageUrl, normCode, preload };
 }());

@@ -26,61 +26,19 @@
     </div>
   </header>
 
-  <!-- EKRAN STARTOWY: WYBÓR TRYBU -->
+  <!-- EKRAN STARTOWY: JEDEN GRACZ ALBO MULTIPLAYER -->
   <main id="screen-home" class="screen">
-    <p class="lead">Wybierz tryb gry</p>
-    <h3 class="mode-group">Oś czasu</h3>
-    <div class="modes">
-      <button class="mode" data-mode="solo">
-        <span class="mode-icon">🎧</span>
-        <b>Oś czasu – 1 gracz</b>
-        <span class="muted">Układaj piosenki na osi czasu. Masz ograniczoną liczbę pomyłek.</span>
+    <p class="lead">Jak gramy?</p>
+    <div class="modes ctx-pick">
+      <button class="mode ctx" id="btn-single">
+        <span class="mode-icon">👤</span>
+        <b>Jeden gracz</b>
+        <span class="muted">Oś czasu, gra na czas, zgadywanie melodii, szybkie gry i impreza dla jednej osoby.</span>
       </button>
-      <button class="mode" data-mode="timed">
-        <span class="mode-icon">⏳</span>
-        <b>Na czas</b>
-        <span class="muted">Ułóż jak najwięcej kart w 2 minuty (lub inny limit). Osobny ranking rekordów.</span>
-      </button>
-      <button class="mode" data-mode="multi">
+      <button class="mode ctx" id="btn-multi">
         <span class="mode-icon">👥</span>
-        <b>Oś czasu – multiplayer</b>
-        <span class="muted">2–16 graczy przy jednym urządzeniu lub na własnych telefonach, z wyzwaniami i żetonami.</span>
-      </button>
-      <button class="mode" data-mode="teams">
-        <span class="mode-icon">🎉</span>
-        <b>Oś czasu – drużyny</b>
-        <span class="muted">2–16 drużyn, każda ze wspólną osią czasu. Członkowie drużyny odpowiadają na zmianę – w sam raz na imprezę.</span>
-      </button>
-    </div>
-    <h3 class="mode-group">Szybkie gry</h3>
-    <div class="modes">
-      <button class="mode" data-mode="hilo">
-        <span class="mode-icon">↕️</span>
-        <b>Starsza czy nowsza?</b>
-        <span class="muted">Czy ta piosenka jest starsza, czy nowsza od poprzedniej? Seria bez pomyłki – dobra na telefon w jednej ręce.</span>
-      </button>
-      <button class="mode" data-mode="duel">
-        <span class="mode-icon">🥊</span>
-        <b>Pojedynek dekad</b>
-        <span class="muted">Dwie dekady, jedna piosenka: z której jest? Łatwy tryb dla dzieci i osób spoza tematu.</span>
-      </button>
-    </div>
-    <h3 class="mode-group">Zgadywanie</h3>
-    <div class="modes">
-      <button class="mode" data-mode="melody">
-        <span class="mode-icon">🎤</span>
-        <b>Jaka to melodia</b>
-        <span class="muted">Odgadnij tytuł, wykonawcę albo oba. 1–16 graczy, drobne literówki są wybaczane.</span>
-      </button>
-      <button class="mode" data-mode="steps">
-        <span class="mode-icon">⏱️</span>
-        <b>Melodia krok po kroku</b>
-        <span class="muted">Najpierw tylko 1 sekunda, potem 2, 4 i 8 s. Im szybciej zgadniesz, tym więcej punktów.</span>
-      </button>
-      <button class="mode" data-mode="buzz">
-        <span class="mode-icon">🔔</span>
-        <b>Kto pierwszy?</b>
-        <span class="muted">2–16 osób przy jednym urządzeniu lub na własnych telefonach, każda ma swój przycisk. Kto pierwszy naciśnie, ten odpowiada – za błąd traci punkt.</span>
+        <b>Multiplayer</b>
+        <span class="muted">2–16 osób przy jednym urządzeniu albo na własnych telefonach. Najpierw lista graczy, potem wspólny wybór trybu.</span>
       </button>
     </div>
     <div class="center home-links">
@@ -91,6 +49,110 @@
     <div class="center install-box">
       <button id="btn-install" class="ghost hidden">📲 Zainstaluj Songstera na tym urządzeniu</button>
       <p class="muted small hidden" id="ios-install">Na iPhonie: przycisk „Udostępnij” → „Do ekranu początkowego”, aby dodać Songstera jako aplikację.</p>
+    </div>
+  </main>
+
+  <!-- MULTIPLAYER: LISTA GRACZY I DOŁĄCZANIE (LOBBY) -->
+  <main id="screen-lobby" class="screen hidden">
+    <h2 class="screen-title">👥 Multiplayer – gracze</h2>
+    <section class="card">
+      <h2 id="lobby-title">Gracze</h2>
+      <div id="lobby-list"></div>
+      <div class="player-btns">
+        <button id="btn-lobby-add" class="ghost">+ Gracz na tym urządzeniu</button>
+      </div>
+      <p class="muted small">Gracze bez telefonu grają na tym urządzeniu (urządzenie przechodzi z rąk do rąk) – wystarczy dopisać ich imię.</p>
+    </section>
+    <section class="card">
+      <h2>📱 Dołączanie telefonem</h2>
+      <p class="muted">Zeskanuj kod QR (albo otwórz link) i wpisz swoje imię. Na telefonie zagłosujesz na tryb gry, a potem będziesz sterować swoją turą.</p>
+      <div id="lobby-room" class="room-box">
+        <div id="lobby-qr" class="room-qr"></div>
+        <div>
+          <div class="room-code">Kod: <b id="lobby-code">…</b></div>
+          <p class="muted small" id="lobby-link"></p>
+          <p class="muted small" id="lobby-status">Tworzenie pokoju…</p>
+          <button type="button" id="btn-lobby-retry" class="ghost hidden">↻ Spróbuj ponownie</button>
+        </div>
+      </div>
+    </section>
+    <div class="actions">
+      <button id="btn-lobby-back" class="ghost">← Menu główne</button>
+      <button id="btn-lobby-next" class="primary grow">Dalej: wybór trybu →</button>
+    </div>
+  </main>
+
+  <!-- WYBÓR TRYBU (JEDEN GRACZ ALBO MULTIPLAYER Z GŁOSOWANIEM) -->
+  <main id="screen-modes" class="screen hidden">
+    <h2 class="screen-title" id="modes-title">Wybierz tryb gry</h2>
+    <div id="modes-lobby" class="modes-lobby hidden">
+      <div class="chips" id="modes-players"></div>
+      <p class="muted small">Gracze z telefonami głosują na tryb – głosy widać na kafelkach. Decyzję podejmuje gospodarz (to urządzenie).</p>
+    </div>
+    <h3 class="mode-group">Oś czasu</h3>
+    <div class="modes">
+      <button class="mode" data-mode="solo" data-ctx="single">
+        <span class="mode-icon">🎧</span>
+        <b>Oś czasu</b>
+        <span class="muted">Układaj piosenki na osi czasu. Masz ograniczoną liczbę pomyłek.</span>
+      </button>
+      <button class="mode" data-mode="timed" data-ctx="single">
+        <span class="mode-icon">⏳</span>
+        <b>Na czas</b>
+        <span class="muted">Ułóż jak najwięcej kart w 2 minuty (lub inny limit). Osobny ranking rekordów.</span>
+      </button>
+      <button class="mode" data-mode="multi" data-ctx="multi">
+        <span class="mode-icon">👥</span>
+        <b>Oś czasu – multiplayer</b>
+        <span class="muted">Każdy układa swoją oś. Wyzwania i żetony – kto pierwszy zbierze karty, wygrywa.</span>
+      </button>
+      <button class="mode" data-mode="teams" data-ctx="multi">
+        <span class="mode-icon">🎉</span>
+        <b>Oś czasu – drużyny</b>
+        <span class="muted">Drużyny ze wspólną osią czasu. Członkowie drużyny odpowiadają na zmianę.</span>
+      </button>
+    </div>
+    <h3 class="mode-group">Impreza</h3>
+    <div class="modes">
+      <button class="mode party-tile" data-mode="party" data-ctx="single multi">
+        <span class="mode-icon">🥳</span>
+        <b>Impreza – minigry</b>
+        <span class="muted">Seria krótkich minigier z różnych trybów: melodie, kroki, dekady, starsza czy nowsza, kto pierwszy, oś czasu. Punkty za miejsca w każdej minigrze.</span>
+      </button>
+    </div>
+    <h3 class="mode-group">Szybkie gry</h3>
+    <div class="modes">
+      <button class="mode" data-mode="hilo" data-ctx="single">
+        <span class="mode-icon">↕️</span>
+        <b>Starsza czy nowsza?</b>
+        <span class="muted">Czy ta piosenka jest starsza, czy nowsza od poprzedniej? Seria bez pomyłki – dobra na telefon w jednej ręce.</span>
+      </button>
+      <button class="mode" data-mode="duel" data-ctx="single multi">
+        <span class="mode-icon">🥊</span>
+        <b>Pojedynek dekad</b>
+        <span class="muted">Dwie dekady, jedna piosenka: z której jest? Łatwy tryb dla dzieci i osób spoza tematu.</span>
+      </button>
+    </div>
+    <h3 class="mode-group">Zgadywanie</h3>
+    <div class="modes">
+      <button class="mode" data-mode="melody" data-ctx="single multi">
+        <span class="mode-icon">🎤</span>
+        <b>Jaka to melodia</b>
+        <span class="muted">Odgadnij tytuł, wykonawcę albo oba. Drobne literówki są wybaczane.</span>
+      </button>
+      <button class="mode" data-mode="steps" data-ctx="single multi">
+        <span class="mode-icon">⏱️</span>
+        <b>Melodia krok po kroku</b>
+        <span class="muted">Najpierw tylko 1 sekunda, potem 2, 4 i 8 s. Im szybciej zgadniesz, tym więcej punktów.</span>
+      </button>
+      <button class="mode" data-mode="buzz" data-ctx="multi">
+        <span class="mode-icon">🔔</span>
+        <b>Kto pierwszy?</b>
+        <span class="muted">Każdy ma swój przycisk (na tym urządzeniu albo na swoim telefonie). Kto pierwszy naciśnie, ten odpowiada – za błąd traci punkt.</span>
+      </button>
+    </div>
+    <div class="actions">
+      <button id="btn-modes-back" class="ghost">← Wróć</button>
     </div>
   </main>
 
@@ -144,7 +206,7 @@
 
     <section class="card">
       <h2>Odtwarzanie</h2>
-      <label class="row" data-for="solo multi teams melody timed hilo duel buzz">Długość fragmentu
+      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party">Długość fragmentu
         <select id="clip-length">
           <option value="30">30 s (cały)</option>
           <option value="15">15 s</option>
@@ -157,10 +219,10 @@
       <div class="seg" id="audio-out">
         <label><input type="radio" name="audio-out" value="host" checked> Tym urządzeniu</label>
         <label><input type="radio" name="audio-out" value="tv"> Dużym ekranie (TV)</label>
-        <label data-for="multi teams melody steps duel"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
+        <label data-for="multi teams melody steps duel party" data-ctx="multi"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
       </div>
       <p class="muted small" id="audio-out-desc">Duży ekran i telefony graczy łączy się w oknie 📺. Gdy wybranego urządzenia nie ma, muzyka gra na tym urządzeniu.</p>
-      <label class="check" data-for="melody steps buzz"><input type="checkbox" id="hint-decade"> Podpowiedź: pokazuj dekadę piosenki</label>
+      <label class="check" data-for="melody steps buzz party"><input type="checkbox" id="hint-decade"> Podpowiedź: pokazuj dekadę piosenki</label>
       <label class="check" data-for="steps"><input type="checkbox" id="hint-letter"> Podpowiedź z pierwszą literą (kosztuje 1 punkt)</label>
       <p class="muted small" data-for="steps">Kroki: 1 s → 2 s → 4 s → 8 s. Odgadnięcie przy 1 s daje 4 pkt, przy 2 s – 3 pkt, przy 4 s – 2 pkt, przy 8 s – 1 pkt (za każdą zgadywaną część). Błędna odpowiedź od razu wydłuża fragment.</p>
     </section>
@@ -244,7 +306,15 @@
         <label class="check"><input type="checkbox" id="endless"> Gra bez końca – bez celu kart, grasz do wyczerpania pomyłek i bijesz swój rekord</label>
         <p class="muted small" id="record-info"></p>
       </div>
-      <div data-for="melody steps buzz">
+      <div data-for="party">
+        <label class="row">Liczba minigier
+          <input type="number" id="party-games" min="2" max="12" value="5">
+        </label>
+        <p class="label" style="margin-top:12px">Minigry</p>
+        <div class="seg" id="party-pick"></div>
+        <p class="muted small" id="party-desc"></p>
+      </div>
+      <div data-for="melody steps buzz party">
         <p class="label">Co zgadujemy?</p>
         <div class="seg">
           <label><input type="radio" name="guess" value="title" checked> Tytuł</label>
@@ -267,6 +337,7 @@
 
   <!-- EKRAN GRY -->
   <main id="screen-game" class="screen hidden">
+    <p id="party-bar" class="party-bar hidden"></p>
     <section id="scoreboard"></section>
 
     <section class="card player-turn">
@@ -328,9 +399,20 @@
       <h2>Piosenki z tej gry</h2>
       <ol id="played-list" class="played"></ol>
     </section>
-    <div class="actions">
+    <div class="actions" id="end-actions">
       <button id="btn-home" class="ghost">Zmień tryb</button>
       <button id="btn-again" class="primary grow">Zagraj ponownie</button>
+    </div>
+    <!-- multiplayer: gospodarz decyduje, co dalej (lobby i telefony graczy zostają połączone) -->
+    <div class="actions end-multi hidden" id="end-multi">
+      <button id="btn-end-menu" class="ghost">🏠 Menu główne (rozłącz graczy)</button>
+      <button id="btn-end-other" class="ghost">🎛 Inny tryb</button>
+      <button id="btn-end-same" class="primary grow">🔁 Jeszcze raz – ten sam tryb i ustawienia</button>
+    </div>
+    <!-- impreza: przerwa między minigrami -->
+    <div class="actions hidden" id="end-party">
+      <button id="btn-party-stop" class="ghost">Zakończ imprezę</button>
+      <button id="btn-party-next" class="primary grow">▶ Następna minigra</button>
     </div>
   </main>
 
@@ -410,6 +492,17 @@
     <ol>
       <li>Każdy gracz ma swój przycisk na ekranie i klawisz (domyślnie 1–8, w ustawieniach gry każdy może przypisać sobie dowolny). Kto pierwszy naciśnie, ten odpowiada – muzyka się zatrzymuje.</li>
       <li>Dobra odpowiedź: +1 punkt. Zła: −1 punkt, a pozostali mogą odpowiadać dalej.</li>
+    </ol>
+    <h3>Jeden gracz i multiplayer</h3>
+    <ul>
+      <li><b>Jeden gracz</b> – tryby dla jednej osoby (także impreza).</li>
+      <li><b>Multiplayer</b> – najpierw lista graczy: dopisz osoby grające na tym urządzeniu albo niech dołączą telefonem (kod QR). Potem wybór trybu – gracze głosują na telefonach, decyduje gospodarz. Po grze gospodarz wybiera: jeszcze raz ten sam tryb i ustawienia, inny tryb albo menu główne (rozłącza telefony).</li>
+    </ul>
+    <h3>Impreza – minigry</h3>
+    <ol>
+      <li>Seria krótkich minigier (do wyboru w ustawieniach): Jaka to melodia, Melodia krok po kroku, Pojedynek dekad, Starsza czy nowsza?, Kto pierwszy? (od 2 graczy) i Oś czasu (wyścig do 4 kart, do 8 graczy; dla jednej osoby – minuta na czas).</li>
+      <li>Kilku graczy: za każdą minigrę 1. miejsce daje 3 pkt, 2. – 2 pkt, 3. – 1 pkt (remis – tyle samo, wynik 0 – bez punktów). W „Starsza czy nowsza?” gracze odpowiadają po kolei, a pomyłka nie kończy gry.</li>
+      <li>Jedna osoba: wyniki z minigier (punkty, seria, ułożone karty) sumują się – bij swój rekord.</li>
     </ol>
     <h3>Karty specjalne</h3>
     <ul>

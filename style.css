@@ -519,3 +519,24 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 #dlg-connect.join-only > :is(h3, p, button, .connect-row):not(.join-part) { display: none; }
 #dlg-connect.join-only .join-part { display: revert; }
 .tv-url { font-size: 1.1rem; font-weight: 700; color: var(--gold); word-break: break-all; margin: 4px 0 8px; user-select: all; }
+
+/* --- jeden gracz / multiplayer, lobby, głosowanie, impreza --- */
+.ctx-pick .mode.ctx { padding: 28px 22px; }
+.ctx-pick .mode.ctx .mode-icon { font-size: 2.6rem; }
+.ctx-pick .mode.ctx b { font-size: 1.35rem; }
+.mode:disabled { opacity: .45; cursor: default; }
+.mode:disabled:hover { border-color: transparent; }
+.mode-need { font-size: .8rem; color: var(--gold); }
+.mode .votes { font-size: .85rem; font-weight: 700; color: var(--gold); background: rgba(255, 201, 60, .12); border-radius: 999px; padding: 3px 10px; }
+.mode.voted { border-color: rgba(255, 201, 60, .55); }
+.party-tile { background: linear-gradient(135deg, rgba(255, 61, 127, .18), rgba(45, 226, 230, .12)), var(--panel); }
+.modes-lobby { margin-bottom: 4px; }
+.modes-lobby .chips { margin-bottom: 4px; }
+.p-fixed { flex: 1; min-width: 0; padding: 10px 12px; border-radius: 10px; background: var(--panel-2, rgba(255, 255, 255, .05)); font-weight: 600; }
+#lobby-room .room-qr { width: 200px; height: 200px; }
+.party-bar { text-align: center; font-weight: 700; color: var(--accent-2); margin: 0 0 8px; }
+.party-kicker { color: var(--accent-2); font-weight: 700; margin: 0 0 4px; }
+.party-box { margin-top: 8px; }
+.party-box .plus { color: var(--ok, #3ddc84); font-weight: 700; }
+#party-pick label.off { opacity: .4; }
+.end-multi { flex-wrap: wrap; }

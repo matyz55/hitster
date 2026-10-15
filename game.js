@@ -365,7 +365,23 @@ const MODES = {
   hilo: { title: T('Starsza czy nowsza?'), minPlayers: 1, maxPlayers: 1 },
   duel: { title: T('Pojedynek dekad'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   buzz: { title: 'Kto pierwszy?', minPlayers: 2, maxPlayers: MAX_PLAYERS },
+  party: { title: T('Impreza – minigry'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
 };
+// jeden gracz albo multiplayer (lobby z listą graczy, telefonami i głosowaniem na tryb)
+let playCtx = 'single';
+const maxPlayersFor = (mode) => (playCtx === 'single' ? 1 : MODES[mode].maxPlayers);
+const minPlayersFor = (mode) => (playCtx === 'single' ? 1 : MODES[mode].minPlayers);
+// Impreza: krótkie minigry oparte na pozostałych trybach (mode – tryb dla danej liczby graczy, opts – krótsza wersja)
+const PARTY_GAMES = {
+  melody: { icon: '🎤', name: 'Jaka to melodia', mode: () => 'melody', opts: (n) => ({ rounds: n === 1 ? 3 : 1 }) },
+  steps: { icon: '⏱️', name: 'Melodia krok po kroku', mode: () => 'steps', opts: (n) => ({ rounds: n === 1 ? 2 : 1 }) },
+  duel: { icon: '🥊', name: T('Pojedynek dekad'), mode: () => 'duel', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
+  hilo: { icon: '↕️', name: T('Starsza czy nowsza?'), mode: () => 'hilo', opts: (n) => ({ rounds: n === 1 ? 0 : 2 }) },
+  buzz: { icon: '🔔', name: 'Kto pierwszy?', min: 2, mode: () => 'buzz', opts: (n) => ({ rounds: Math.min(8, Math.max(4, n + 2)) }) },
+  // oś czasu: dla jednej osoby – minuta na czas, dla kilku – wyścig do 4 kart (przy wielu graczach trwałoby to za długo)
+  timeline: { icon: '🎧', name: T('Oś czasu'), max: 8, mode: (n) => (n === 1 ? 'timed' : 'multi'), opts: () => ({ winTarget: 4, timeLimit: 60 }) },
+};
+const partyGamesFor = (n) => Object.keys(PARTY_GAMES).filter((k) => n >= (PARTY_GAMES[k].min || 1) && n <= (PARTY_GAMES[k].max || MAX_PLAYERS));
 // klawisze graczy w „Kto pierwszy?” (oprócz przycisków na ekranie)
 // domyślne klawisze „Kto pierwszy?” (kody fizycznych klawiszy – działają niezależnie od układu klawiatury);
 // każdy gracz może w ustawieniach przypisać sobie własny
@@ -438,7 +454,7 @@ function answering(p) {
 const turnName = (p) => (answering(p) ? `${p.name} (odpowiada: ${answering(p)})` : p.name);
 
 /* ---------- nawigacja między ekranami ---------- */
-const SCREENS = ['home', 'setup', 'game', 'end', 'settings', 'stats'];
+const SCREENS = ['home', 'lobby', 'modes', 'setup', 'game', 'end', 'settings', 'stats'];
 let screenBeforeSettings = 'home';
 function showScreen(name) {
   for (const s of SCREENS) $('#screen-' + s).classList.toggle('hidden', s !== name);
@@ -476,6 +492,8 @@ try {
 // połączenia sieciowe (net.js): telewizor z kodem i telefony graczy – { conn, role: 'tv' | 'player', name }
 const remotes = new Set();
 let roomCode = null; // kod pokoju dla telefonów graczy (gdy utworzony)
+// lobby multiplayera: gracze (na tym urządzeniu i z telefonami) i ich głosy na tryb gry
+const lobby = { active: false, players: [], votes: new Map() };
 const hasRemotes = () => !!tvChannel || remotes.size > 0;
 function remoteSend(msg) {
   try { if (tvChannel) tvChannel.postMessage(msg); } catch (e) { /* okno TV zamknięte */ }
@@ -486,6 +504,15 @@ function remoteSend(msg) {
 // polecenia z dużego ekranu i z telefonów graczy
 function handleRemote(msg, from) {
   if (!msg) return;
+  // druga strona zamknęła połączenie (np. telewizor wyłączył pokój)
+  if (msg.__bye && from) { try { from.conn.close(); } catch (e) { /* zerwane */ } return; }
+  // głos gracza na tryb gry (wybór trybu w multiplayerze – decyduje gospodarz)
+  if (msg.vote && from && from.name && lobby.active) {
+    if (msg.vote === '-') lobby.votes.delete(from.name); else lobby.votes.set(from.name, String(msg.vote));
+    renderModes();
+    tvSync();
+    return;
+  }
   if (msg.hello) {
     if (!from) tvWindowSeen = true; // okno dużego ekranu na tym urządzeniu
     if (from) { from.role = msg.role || from.role; from.name = msg.name || from.name; renderRemoteList(); }
@@ -511,9 +538,8 @@ function handleRemote(msg, from) {
 // wybór miejsca na osi z innego urządzenia: gracz w swojej turze albo wyzywający (wariant „inne miejsce”)
 const remoteSlotsAllowed = () => isTimeline() && !!state.current
   && (['listen', 'placed'].includes(state.phase) || (state.phase === 'challenge' && state.challenger != null && state.challengeMode === 'place'));
-// czy jest podłączony duży ekran (okno na tym urządzeniu albo telewizor przez sieć)
+// czy jest podłączone okno dużego ekranu na tym urządzeniu
 let tvWindowSeen = false;
-const hasDisplay = () => tvWindowSeen || [...remotes].some((r) => r.role === 'tv');
 // wybrane opcje rozgrywki – czytane z widocznych pól ekranu ustawień (pokazywane na dużym ekranie)
 function setupSummary() {
   const out = [];
@@ -570,21 +596,39 @@ function tvSync() {
   if (!hasRemotes()) return;
   const screen = SCREENS.find((x) => !$('#screen-' + x).classList.contains('hidden'));
   const txt = (sel) => ($(sel) ? $(sel).textContent.trim() : '');
-  const snap = { screen, mode: state.mode, players: state.players.map((pl) => pl.name), room: roomCode };
+  const snap = { screen, mode: state.mode, players: state.players.map((pl) => pl.name), room: roomCode, multi: lobby.active };
+  const joinUrl = roomCode ? window.SongsterNet.pageUrl('tv.html', { join: roomCode }) : null;
+  if (lobby.active) {
+    const phones = remoteNames();
+    snap.lobby = { names: lobby.players.map((p) => p.name), phones: lobby.players.filter((p) => phones.has(p.name)).map((p) => p.name),
+      full: lobby.players.length >= MAX_PLAYERS, joinUrl };
+  }
+  if (screen === 'modes') {
+    snap.modes = { ctx: playCtx, items: modeTiles().map((b) => ({
+      id: b.dataset.mode, icon: b.querySelector('.mode-icon').textContent, title: b.querySelector('b').textContent,
+      desc: b.querySelector('.muted').textContent, disabled: b.disabled,
+      votes: [...lobby.votes].filter(([, m]) => m === b.dataset.mode).map(([who]) => who),
+    })) };
+  }
   if (screen === 'setup' && MODES[state.mode]) {
     const cfg = MODES[state.mode];
     const names = readSetupRows().map((r) => r.name.trim()).filter(Boolean);
     snap.setup = {
-      title: cfg.title, teams: !!cfg.teams, names, full: names.length >= cfg.maxPlayers, multi: cfg.maxPlayers > 1,
-      options: setupSummary(), poolInfo: $('#pool-info').textContent,
-      joinUrl: roomCode ? window.SongsterNet.pageUrl('tv.html', { join: roomCode }) : null,
+      title: cfg.title, teams: !!cfg.teams, names, full: names.length >= maxPlayersFor(state.mode), multi: playCtx === 'multi',
+      options: setupSummary(), poolInfo: $('#pool-info').textContent, joinUrl,
     };
-    // duży ekran przy ustawieniach gry wieloosobowej: od razu pokój, żeby gracze mogli dołączać z QR na telewizorze
-    if (cfg.maxPlayers > 1 && !roomCode && hasDisplay()) openRoom();
+  }
+  // impreza: która minigra (na dużym ekranie i telefonach)
+  if (state.party && (screen === 'game' || screen === 'end')) {
+    const pt = state.party;
+    const g = PARTY_GAMES[pt.plan[Math.min(pt.plan.length - 1, screen === 'game' ? pt.idx : Math.max(0, pt.idx - 1))]];
+    snap.party = { label: pt.done ? T('🥳 Koniec imprezy!') : T('🥳 Minigra {0} z {1}: {2} {3}', screen === 'game' ? pt.idx + 1 : pt.idx, pt.plan.length, g.icon, T(g.name)) };
   }
   if (screen === 'end') {
     snap.winner = txt('#winner-title');
-    snap.ranking = $$('#ranking li').map((li) => li.textContent);
+    // w imprezie – klasyfikacja całej imprezy, a nie tylko ostatniej minigry
+    snap.ranking = ($('.party-standings') ? $$('.party-standings li') : $$('#ranking li')).map((li) => li.textContent);
+    if ($('.party-box p')) snap.next = $('.party-box p').textContent;
   } else if (screen === 'game' && state.players.length) {
     const revealed = state.phase === 'revealed' && state.current;
     Object.assign(snap, {
@@ -597,7 +641,9 @@ function tvSync() {
         y: state.current.y, t: state.current.t, a: artistLine(state.current), cc: state.current.cc,
         lines: $$('#reveal .verdict, #reveal .fact').map((n) => n.textContent),
       } : null,
-      phase: state.phase, turnName: activePlayer().name, playing: !audio.paused, hasSong: !!state.current,
+      phase: state.phase, turnName: activePlayer().name, turnWho: answering(activePlayer()), playing: !audio.paused, hasSong: !!state.current,
+      // drużyny: do której drużyny należy gracz z telefonem
+      teamOf: state.mode === 'teams' ? Object.fromEntries(state.players.flatMap((pl) => (pl.members || []).map((m) => [m, pl.name]))) : null,
       challenger: state.challenger != null ? state.players[state.challenger].name : null,
       slots: remoteSlotsAllowed(),
       // pasek kroków (Melodia krok po kroku): 1 s · 2 s · 4 s · 8 s
@@ -708,27 +754,53 @@ function openRoom() {
   if (!roomOpening) roomOpening = openRoomNow().finally(() => { roomOpening = null; });
   return roomOpening;
 }
+let roomClose = null; // zamknięcie pokoju (rozłącza telefony graczy)
 async function openRoomNow() {
   $('#btn-room').disabled = true;
   $('#btn-room').textContent = T('Tworzenie pokoju…');
+  $('#lobby-status').textContent = T('Tworzenie pokoju…');
+  $('#btn-lobby-retry').classList.add('hidden');
   try {
-    const { code } = await window.SongsterNet.host('room', (conn) => addRemote(conn, 'player'), store.get('roomCode', ''));
+    const { code, close } = await window.SongsterNet.host('room', (conn) => addRemote(conn, 'player'), store.get('roomCode', ''));
     roomCode = code;
+    roomClose = close;
     store.set('roomCode', code);
     const url = window.SongsterNet.pageUrl('tv.html', { join: code });
+    const svg = await window.SongsterNet.qrSvg(url);
     $('#room-code').textContent = code;
     $('#room-link').textContent = url;
-    $('#room-qr').innerHTML = await window.SongsterNet.qrSvg(url);
+    $('#room-qr').innerHTML = svg;
     $('#room-box').classList.remove('hidden');
     $('#btn-room').classList.add('hidden');
+    $('#lobby-code').textContent = code;
+    $('#lobby-link').textContent = url;
+    $('#lobby-qr').innerHTML = svg;
+    $('#lobby-status').textContent = '';
     renderRemoteList();
     tvSync();
     window.track && window.track('pokoj-graczy');
   } catch (e) {
     $('#btn-room').disabled = false;
     $('#btn-room').textContent = T('Utwórz pokój dla graczy');
+    $('#lobby-status').textContent = T('Nie udało się utworzyć pokoju (brak połączenia z serwerem pośredniczącym). Gracze mogą grać na tym urządzeniu.');
+    $('#btn-lobby-retry').classList.remove('hidden');
     if ($('#dlg-connect').open) alert(T('Nie udało się utworzyć pokoju (brak połączenia z serwerem pośredniczącym). Spróbuj ponownie.'));
   }
+}
+// zamknięcie pokoju – telefony graczy dostają „bye” i pokazują ekran rozłączenia
+function closeRoom() {
+  if (roomClose) { try { roomClose(); } catch (e) { /* już zamknięty */ } }
+  roomClose = null;
+  roomCode = null;
+  for (const r of [...remotes]) if (r.role === 'player') { remotes.delete(r); try { r.conn.close(); } catch (e) { /* zerwane */ } }
+  $('#room-box').classList.add('hidden');
+  $('#btn-room').classList.remove('hidden');
+  $('#btn-room').disabled = false;
+  $('#btn-room').textContent = T('Utwórz pokój dla graczy');
+  $('#lobby-code').textContent = '…';
+  $('#lobby-qr').replaceChildren();
+  $('#lobby-link').textContent = '';
+  renderRemoteList();
 }
 $('#btn-room').addEventListener('click', openRoom);
 function renderRemoteList() {
@@ -737,6 +809,8 @@ function renderRemoteList() {
   const players = [...remotes].filter((r) => r.role === 'player');
   list.replaceChildren(...(players.length ? players.map((r) => el('li', {}, '📱 ', r.name || T('(jeszcze nie wybrano gracza)')))
     : [el('li', { class: 'muted' }, T('Nikt jeszcze nie dołączył.'))]));
+  // znaczki 📱 przy graczach w lobby i na liście trybów
+  if (lobby.active) { renderLobby(); renderModes(); }
 }
 // adres z kodu QR telewizora: index.html?tv=KOD
 {
@@ -753,7 +827,8 @@ function renderRemoteList() {
 $('#logo').addEventListener('click', () => {
   if ($('#screen-game').classList.contains('hidden') || confirm(T('Przerwać grę i wrócić do ekranu startowego?'))) {
     state.drawId++;
-    showScreen('home');
+    // w multiplayerze – do wyboru trybu (lobby i telefony zostają połączone)
+    if (lobby.active) showModes(); else showScreen('home');
   }
 });
 $('#btn-rules').addEventListener('click', () => $('#dlg-rules').showModal());
@@ -764,7 +839,7 @@ $('#btn-settings').addEventListener('click', () => {
   if (visible === 'settings') return;
   if (visible === 'game' && !confirm(T('Przerwać grę i przejść do ustawień?'))) return;
   state.drawId++;
-  screenBeforeSettings = visible === 'game' ? 'home' : visible;
+  screenBeforeSettings = visible === 'game' ? (lobby.active ? 'modes' : 'home') : visible;
   renderSettings();
   showScreen('settings');
 });
@@ -774,8 +849,110 @@ $('#btn-settings-back').addEventListener('click', () => {
   showScreen(screenBeforeSettings);
 });
 
-/* ---------- ekran startowy ---------- */
-$$('.mode').forEach((b) => b.addEventListener('click', () => openSetup(b.dataset.mode)));
+/* ---------- ekran startowy: jeden gracz albo multiplayer ---------- */
+$('#btn-single').addEventListener('click', () => {
+  if (lobby.active) closeLobby();
+  playCtx = 'single';
+  showModes();
+});
+$('#btn-multi').addEventListener('click', openLobby);
+$$('#screen-modes .mode').forEach((b) => b.addEventListener('click', () => { if (!b.disabled) openSetup(b.dataset.mode); }));
+$('#btn-modes-back').addEventListener('click', () => showScreen(playCtx === 'multi' ? 'lobby' : 'home'));
+
+/* ---------- multiplayer: lobby (lista graczy, pokój dla telefonów) ---------- */
+const sameName = (a, b) => a.trim().toLowerCase() === b.trim().toLowerCase();
+function openLobby() {
+  playCtx = 'multi';
+  lobby.active = true;
+  if (!lobby.players.length) {
+    lobby.players = store.get('lobbyLocal', [T('Gracz {0}', 1)]).slice(0, MAX_PLAYERS).map((name) => ({ name }));
+    if (!lobby.players.length) lobby.players = [{ name: T('Gracz {0}', 1) }];
+  }
+  renderLobby();
+  showScreen('lobby');
+  openRoom();
+  window.track && window.track('multiplayer');
+}
+// wyjście z multiplayera: rozłączenie telefonów i zamknięcie pokoju
+function closeLobby() {
+  lobby.active = false;
+  lobby.votes.clear();
+  lobby.players = lobby.players.filter((p) => !remoteNames().has(p.name));
+  closeRoom();
+  playCtx = 'single';
+}
+const saveLobbyLocal = () => store.set('lobbyLocal', lobby.players.filter((p) => !remoteNames().has(p.name)).map((p) => p.name));
+function renderLobby() {
+  const phones = remoteNames();
+  $('#lobby-title').textContent = T('Gracze ({0}/{1})', lobby.players.length, MAX_PLAYERS);
+  $('#lobby-list').replaceChildren(...lobby.players.map((p, i) => el('div', { class: 'player-row' },
+    phones.has(p.name)
+      ? el('span', { class: 'p-name p-fixed' }, p.name)
+      : el('input', { type: 'text', value: p.name, maxlength: '20', class: 'p-name', 'aria-label': T('Gracz {0}', i + 1),
+        onchange: (e) => { p.name = e.target.value.trim() || T('Gracz {0}', i + 1); e.target.value = p.name; saveLobbyLocal(); tvSync(); } }),
+    phones.has(p.name) ? el('span', { class: 'p-phone', title: T('Dołączył(a) przez telefon') }, '📱') : null,
+    lobby.players.length > 1 ? el('button', { class: 'ghost', title: T('Usuń'), onclick: () => {
+      lobby.players.splice(i, 1);
+      lobby.votes.delete(p.name);
+      saveLobbyLocal(); renderLobby(); tvSync();
+    } }, '✕') : null)));
+  $('#btn-lobby-add').classList.toggle('hidden', lobby.players.length >= MAX_PLAYERS);
+}
+$('#btn-lobby-add').addEventListener('click', () => {
+  let n = lobby.players.length + 1;
+  while (lobby.players.some((p) => sameName(p.name, T('Gracz {0}', n)))) n++;
+  lobby.players.push({ name: T('Gracz {0}', n) });
+  saveLobbyLocal(); renderLobby(); tvSync();
+  const inputs = $$('#lobby-list input.p-name');
+  if (inputs.length) { inputs[inputs.length - 1].focus(); inputs[inputs.length - 1].select(); }
+});
+$('#btn-lobby-retry').addEventListener('click', openRoom);
+$('#btn-lobby-next').addEventListener('click', () => {
+  // zatwierdzenie ewentualnie edytowanego pola
+  if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  showModes();
+});
+$('#btn-lobby-back').addEventListener('click', () => {
+  if (remoteNames().size && !confirm(T('Wyjść do menu głównego? Telefony graczy zostaną rozłączone.'))) return;
+  closeLobby();
+  showScreen('home');
+});
+
+/* ---------- wybór trybu: jeden gracz albo multiplayer (z głosami z telefonów) ---------- */
+function showModes() {
+  lobby.votes.clear();
+  renderModes();
+  showScreen('modes');
+}
+function modeTiles() {
+  return $$('#screen-modes .mode').filter((b) => b.dataset.ctx.split(' ').includes(playCtx));
+}
+function renderModes() {
+  const multi = playCtx === 'multi';
+  $('#modes-title').textContent = multi ? T('👥 Wybierz tryb gry') : T('👤 Jeden gracz – wybierz tryb');
+  $('#modes-lobby').classList.toggle('hidden', !multi);
+  const phones = remoteNames();
+  if (multi) {
+    $('#modes-players').replaceChildren(...lobby.players.map((p) => el('span', { class: 'chip on' }, phones.has(p.name) ? '📱 ' : '', p.name)));
+  }
+  const n = lobby.players.length;
+  for (const b of $$('#screen-modes .mode')) {
+    const show = b.dataset.ctx.split(' ').includes(playCtx);
+    b.classList.toggle('hidden', !show);
+    b.querySelectorAll('.votes, .mode-need').forEach((x) => x.remove());
+    const need = multi ? MODES[b.dataset.mode].minPlayers : 1;
+    b.disabled = show && multi && n < need;
+    if (b.disabled) b.append(el('span', { class: 'mode-need' }, T('Potrzeba co najmniej {0} graczy', need)));
+    const voters = multi ? [...lobby.votes].filter(([, m]) => m === b.dataset.mode).map(([who]) => who) : [];
+    if (voters.length) b.append(el('span', { class: 'votes' }, `🗳 ${voters.length}: ${voters.join(', ')}`));
+    b.classList.toggle('voted', voters.length > 0);
+  }
+  // nagłówki grup bez widocznych kafelków chowamy
+  for (const g of $$('#screen-modes .mode-group')) {
+    const box = g.nextElementSibling;
+    g.classList.toggle('hidden', !box.querySelector('.mode:not(.hidden)'));
+  }
+}
 {
   const pl = window.SONGS.filter((s) => s.c === 'PL').length;
   $('#home-info').textContent = T('{0} piosenek w bazie: {1} polskich i {2} zagranicznych.', window.SONGS.length, pl, window.SONGS.length - pl);
@@ -784,37 +961,46 @@ $$('.mode').forEach((b) => b.addEventListener('click', () => openSetup(b.dataset
 /* ---------- ekran ustawień rozgrywki ---------- */
 function openSetup(mode) {
   state.mode = mode;
+  state.party = null;
   const cfg = MODES[mode];
   $('#setup-title').textContent = cfg.title;
   $$('[data-for]').forEach((n) => n.classList.toggle('hidden', !n.dataset.for.split(' ').includes(mode)));
-  if (cfg.teams) {
-    // domyślnie tylko drużyna właściciela telefonu – kolejne dodaje się przyciskiem albo dołączają telefonem
-    let teams = store.get('teams', [{ name: T('Drużyna {0}', 1), members: '' }]);
-    // jednorazowo: dawna domyślna lista dwóch drużyn → jedna (potem lista zostaje taka, jaką ustawiono)
-    if (!store.get('defaultOne', false) && teams.length === 2 && teams.every((t) => /^(Drużyna|Team) \d+$/.test(t.name) && !t.members)) teams = teams.slice(0, 1);
-    renderSetupPlayers(teams.slice(0, cfg.maxPlayers));
+  // opcje tylko dla multiplayera (np. muzyka na telefonie gracza z turą)
+  $$('#screen-setup [data-ctx]').forEach((n) => { if (!n.dataset.ctx.split(' ').includes(playCtx)) n.classList.add('hidden'); });
+  if (playCtx === 'multi') {
+    renderSetupPlayers(lobbyRows(mode));
   } else {
-    // domyślnie jeden gracz – ten, czyj jest telefon; zapamiętane własne imiona zostają
-    let names = store.get('players', [T('Gracz {0}', 1)]);
-    // jednorazowo: dawna domyślna lista „Gracz 1, Gracz 2” → jeden gracz (potem lista zostaje, np. przy „Zagraj ponownie”)
-    if (!store.get('defaultOne', false) && names.length === 2 && names.every((n) => /^(Gracz|Player) \d+$/.test(n))) names = names.slice(0, 1);
-    store.set('defaultOne', true);
-    if (!names.length) names = [T('Gracz {0}', 1)];
-    if (names.length > cfg.maxPlayers) names = names.slice(0, cfg.maxPlayers);
-    const keys = store.get('buzzKeys', BUZZ_KEYS);
-    renderSetupPlayers(names.map((name, i) => ({ name, key: keys[i] })));
+    // jeden gracz – właściciel telefonu (zapamiętane imię)
+    const names = store.get('players', [T('Gracz {0}', 1)]);
+    renderSetupPlayers([{ name: names[0] || T('Gracz {0}', 1) }]);
   }
   $('#rounds-label').textContent = mode === 'buzz' ? T('Liczba piosenek') : (cfg.teams ? T('Piosenek na drużynę') : T('Piosenek na gracza'));
   if (mode === 'duel') renderDuelPick();
+  if (mode === 'party') renderPartyPick();
   updatePoolInfo();
   showScreen('setup');
+}
+// gracze z lobby jako wiersze ustawień gry; w drużynach – gracze podzieleni na dwie drużyny (do zmiany)
+function lobbyRows(mode) {
+  const names = lobby.players.map((p) => p.name);
+  if (MODES[mode].teams) {
+    const count = Math.max(1, Math.min(MAX_TEAMS, names.length >= 2 ? 2 : 1));
+    const teams = Array.from({ length: count }, (_, i) => ({ name: T('Drużyna {0}', i + 1), members: [] }));
+    names.forEach((n, i) => teams[i % count].members.push(n));
+    return teams.map((t) => ({ name: t.name, members: t.members.join(', ') }));
+  }
+  const keys = store.get('buzzKeys', BUZZ_KEYS);
+  const byName = store.get('buzzKeyByName', {});
+  return names.slice(0, MODES[mode].maxPlayers).map((name, i) => ({ name, key: byName[name] || keys[i] }));
 }
 
 // rows: [{name, members?}] – w trybie drużyn każdy wiersz ma też listę członków
 function renderSetupPlayers(rows) {
   const cfg = MODES[state.mode];
+  const max = maxPlayersFor(state.mode);
+  const min = minPlayersFor(state.mode);
   const noun = cfg.teams ? T('Drużyny') : T('Gracze');
-  $('#sec-players h2').textContent = cfg.maxPlayers === 1 ? T('Gracz') : `${noun} (${cfg.minPlayers}–${cfg.maxPlayers})`;
+  $('#sec-players h2').textContent = max === 1 ? T('Gracz') : `${noun} (${min}–${max})`;
   // „Kto pierwszy?”: każdy gracz ma swój klawisz (bez powtórzeń)
   if (state.mode === 'buzz') {
     const used = [];
@@ -831,36 +1017,52 @@ function renderSetupPlayers(rows) {
       placeholder: T('Członkowie, np. Ania, Bartek, Ola'), 'aria-label': T('Członkowie drużyny {0}', i + 1),
     }) : null,
     remoteNames().has(r.name) ? el('span', { class: 'p-phone', title: T('Dołączył(a) przez telefon') }, '📱') : null,
-    rows.length > 1
+    rows.length > 1 && max > 1
       ? el('button', { class: 'ghost', title: T('Usuń'), onclick: () => {
         const cur = readSetupRows(); cur.splice(i, 1); renderSetupPlayers(cur);
       } }, '✕')
       : null,
   )));
   $('#btn-add-player').textContent = cfg.teams ? T('+ Dodaj drużynę') : T('+ Dodaj gracza');
-  $('#btn-add-player').classList.toggle('hidden', rows.length >= cfg.maxPlayers);
-  // dołączanie przez telefon – w trybach, w których gra więcej niż jedna osoba
-  $('#btn-join-phone').classList.toggle('hidden', cfg.maxPlayers === 1 || rows.length >= cfg.maxPlayers);
-  $('#players-min').textContent = rows.length < cfg.minPlayers
-    ? T('W tym trybie potrzeba co najmniej {0} – dodaj kolejnego gracza albo dołącz go przez telefon.', cfg.minPlayers) : '';
+  $('#btn-add-player').classList.toggle('hidden', rows.length >= max);
+  // dołączanie przez telefon – w multiplayerze
+  $('#btn-join-phone').classList.toggle('hidden', max === 1 || rows.length >= max);
+  $('#players-min').textContent = rows.length < min
+    ? T('W tym trybie potrzeba co najmniej {0} – dodaj kolejnego gracza albo dołącz go przez telefon.', min) : '';
   tvSync();
 }
 const remoteNames = () => new Set([...remotes].filter((r) => r.role === 'player' && r.name).map((r) => r.name));
-// gracz dołącza telefonem w trakcie ustawiania gry: jego imię trafia na listę graczy (albo drużyn)
+// gracz dołącza telefonem: trafia do lobby, a gdy gospodarz ustawia już grę – także na listę graczy (albo do drużyny)
 function joinFromPhone(name, from) {
   name = String(name || '').trim().slice(0, 20);
   if (!name) return;
-  const onSetup = !$('#screen-setup').classList.contains('hidden');
-  const rows = onSetup ? readSetupRows() : [];
-  const cfg = MODES[state.mode] || {};
-  if (onSetup && !rows.some((r) => r.name.trim().toLowerCase() === name.toLowerCase())) {
-    if (rows.length >= cfg.maxPlayers) { from.conn.send({ joinError: 'full' }); return; }
-    rows.push({ name, members: '', key: undefined });
+  if (!lobby.active) { from.conn.send({ joinError: 'closed' }); return; }
+  const known = lobby.players.find((p) => sameName(p.name, name));
+  if (known) name = known.name;
+  else {
+    if (lobby.players.length >= MAX_PLAYERS) { from.conn.send({ joinError: 'full' }); return; }
+    lobby.players.push({ name });
   }
   from.name = name;
   from.conn.send({ joined: name });
-  if (onSetup) renderSetupPlayers(rows);
+  if (!$('#screen-setup').classList.contains('hidden')) {
+    const rows = readSetupRows();
+    const cfg = MODES[state.mode] || {};
+    if (cfg.teams) {
+      // nowy członek do najmniejszej drużyny (jeśli jeszcze go nie ma w żadnej)
+      const members = (r) => r.members.split(/[,;\n]+/).map((m) => m.trim()).filter(Boolean);
+      if (!rows.some((r) => sameName(r.name, name) || members(r).some((m) => sameName(m, name))) && rows.length) {
+        const small = rows.reduce((x, y) => (members(y).length < members(x).length ? y : x));
+        small.members = [...members(small), name].join(', ');
+      }
+      renderSetupPlayers(rows);
+    } else if (!rows.some((r) => sameName(r.name, name)) && rows.length < maxPlayersFor(state.mode)) {
+      rows.push({ name, members: '', key: undefined });
+      renderSetupPlayers(rows);
+    }
+  }
   renderRemoteList();
+  tvSync();
   fx('place');
 }
 $('#btn-join-phone').addEventListener('click', () => {
@@ -905,7 +1107,7 @@ $('#btn-add-player').addEventListener('click', () => {
   rows.push({ name: `${MODES[state.mode].teams ? T('Drużyna') : T('Gracz')} ${rows.length + 1}`, members: '', key: freeBuzzKey(rows.map((r) => r.key)) });
   renderSetupPlayers(rows);
 });
-$('#btn-back').addEventListener('click', () => showScreen('home'));
+$('#btn-back').addEventListener('click', () => { renderModes(); showScreen('modes'); });
 $$('input[name=pool]').forEach((r) => r.addEventListener('change', updatePoolInfo));
 
 const poolValue = () => document.querySelector('input[name=pool]:checked').value;
@@ -1197,40 +1399,92 @@ function updatePoolInfo() {
   $('#pool-info').textContent = T('{0}{1} piosenek (polskich: {2}, zagranicznych: {3}; {4} wykonawców) z lat {5}–{6}, dekad: {7}. Każdy wykonawca pojawi się w grze najwyżej raz.', preset ? T('Zestaw „{0}”: ', preset.name.replace(/^\S+\s/, '')) : '', pool.length, pl, pool.length - pl, artists, Math.min(...years), Math.max(...years), decades);
 }
 
-$('#btn-start').addEventListener('click', startGame);
-$('#btn-again').addEventListener('click', () => openSetup(state.mode));
-$('#btn-home').addEventListener('click', () => showScreen('home'));
+$('#btn-start').addEventListener('click', () => startGame());
+// jeden gracz: „Zagraj ponownie” wraca do ustawień tego trybu, „Zmień tryb” – do listy trybów
+$('#btn-again').addEventListener('click', () => openSetup(state.baseMode || state.mode));
+$('#btn-home').addEventListener('click', () => showModes());
+// multiplayer: od razu kolejna gra w tym samym trybie i z tymi samymi ustawieniami (z nowymi graczami z lobby)
+$('#btn-end-same').addEventListener('click', () => {
+  state.mode = state.baseMode || state.mode;
+  addLobbyToSetup();
+  startGame();
+});
+$('#btn-end-other').addEventListener('click', () => showModes());
+$('#btn-end-menu').addEventListener('click', () => {
+  if (!confirm(T('Wyjść do menu głównego? Telefony graczy zostaną rozłączone.'))) return;
+  closeLobby();
+  showScreen('home');
+});
+// gracze, którzy dołączyli do lobby w trakcie gry, wchodzą do następnej
+function addLobbyToSetup() {
+  if (playCtx !== 'multi' || MODES[state.mode].teams) return;
+  const rows = readSetupRows();
+  for (const p of lobby.players) {
+    if (rows.length < maxPlayersFor(state.mode) && !rows.some((r) => sameName(r.name, p.name))) rows.push({ name: p.name, members: '', key: undefined });
+  }
+  renderSetupPlayers(rows);
+}
 
 /* ---------- przebieg gry ---------- */
-function startGame() {
+// over – ustawienia minigry w trybie „Impreza” (party: rodzaj minigry, rounds, winTarget, timeLimit)
+function startGame(over = {}) {
+  const party = over.party || null;
+  if (!party) {
+    state.baseMode = state.mode;
+    state.party = null;
+    if (state.mode === 'party') { startParty(); return; }
+  }
   const teams = !!MODES[state.mode].teams;
-  if (readSetupRows().length < MODES[state.mode].minPlayers) {
-    alert(T('W tym trybie potrzeba co najmniej {0} – dodaj kolejnego gracza albo dołącz go przez telefon.', MODES[state.mode].minPlayers));
+  const setupRows = party ? state.party.rows : readSetupRows();
+  if (setupRows.length < minPlayersFor(party ? 'party' : state.mode)) {
+    alert(T('W tym trybie potrzeba co najmniej {0} – dodaj kolejnego gracza albo dołącz go przez telefon.', minPlayersFor(state.mode)));
     return;
   }
-  const rows = readSetupRows().map((r, i) => ({ name: r.name.trim() || `${teams ? T('Drużyna') : T('Gracz')} ${i + 1}`, members: r.members }));
+  const rows = setupRows.map((r, i) => ({ name: r.name.trim() || `${teams ? T('Drużyna') : T('Gracz')} ${i + 1}`, members: r.members }));
   const names = rows.map((r) => r.name);
-  if (teams) store.set('teams', rows); else store.set('players', names);
-  state.buzzKeys = readSetupRows().map((r, i) => r.key || BUZZ_KEYS[i]);
-  if (state.mode === 'buzz') store.set('buzzKeys', state.buzzKeys);
+  if (!party) {
+    if (teams) store.set('teams', rows); else store.set('players', names);
+    // gracze ustawieni w grze wieloosobowej wracają do lobby (zmienione imiona, dopisani gracze)
+    if (playCtx === 'multi' && !teams) {
+      const phones = remoteNames();
+      lobby.players = [...names.map((name) => ({ name })), ...lobby.players.filter((p) => phones.has(p.name) && !names.includes(p.name))].slice(0, MAX_PLAYERS);
+      saveLobbyLocal();
+    }
+  }
+  // klawisze „Kto pierwszy?” – bez powtórzeń (w imprezie gracze nie wybierali ich w ustawieniach)
+  const usedKeys = [];
+  state.buzzKeys = setupRows.map((r) => {
+    const k = r.key && !usedKeys.includes(r.key) ? r.key : freeBuzzKey(usedKeys);
+    usedKeys.push(k);
+    return k;
+  });
+  if (state.mode === 'buzz' && !party) {
+    store.set('buzzKeys', state.buzzKeys);
+    const byName = store.get('buzzKeyByName', {});
+    names.forEach((n, i) => { byName[n] = state.buzzKeys[i]; });
+    store.set('buzzKeyByName', byName);
+  }
   const startTokens = clampInt($('#start-tokens').value, 0, MAX_TOKENS, 2);
   const lives = clampInt($('#lives').value, 1, 10, 3);
-  state.winTarget = clampInt($('#win-target').value, 3, 30, 10);
-  state.rounds = clampInt($('#rounds').value, 1, 30, 5);
+  state.winTarget = over.winTarget || clampInt($('#win-target').value, 3, 30, 10);
+  state.rounds = over.rounds != null ? over.rounds : clampInt($('#rounds').value, 1, 30, 5);
+  // „Starsza czy nowsza?” dla kilku graczy: kolejno, każdy po rounds piosenek (bez kończenia na pomyłce)
+  state.hiloMulti = state.mode === 'hilo' && names.length > 1;
   state.guessType = document.querySelector('input[name=guess]:checked').value;
   state.difficulty = filterState.level;
   state.showAll = filterState.showAll;
-  state.endless = state.mode === 'solo' && filterState.endless;
+  state.endless = state.mode === 'solo' && !party && filterState.endless;
   state.challengeMode = filterState.challenge;
   state.challengeYear = null;
   state.recordLevel = recordKey();
-  state.expert = isTimeline() ? expertParts() : [];
+  state.expert = isTimeline() && !party ? expertParts() : [];
   state.letterHint = filterState.letterHint;
   const plShare = poolValue() === 'ALL' ? filterState.plShare / 100 : (poolValue() === 'PL' ? 1 : 0);
-  const needed = state.mode === 'buzz' ? state.rounds : (isTimeline() || state.mode === 'hilo' ? names.length * 3 : names.length * state.rounds);
+  const needed = state.mode === 'buzz' ? state.rounds
+    : (state.hiloMulti ? names.length * state.rounds + 2 : (isTimeline() || state.mode === 'hilo' ? names.length * 3 : names.length * state.rounds));
   let base = songPool();
   if (state.mode === 'duel') {
-    state.duel = pickDuelDecades(base, needed);
+    state.duel = pickDuelDecades(base, needed, !!party);
     if (!state.duel) { alert(T('Za mało piosenek w wybranej puli dla tych ustawień.')); return; }
     base = base.filter((s) => state.duel.includes(decadeOf(s)));
   }
@@ -1242,9 +1496,9 @@ function startGame() {
     alert(T('Za mało piosenek w wybranej puli dla tych ustawień.'));
     return;
   }
-  state.timeLimit = filterState.timeLimit || 120;
+  state.timeLimit = over.timeLimit || filterState.timeLimit || 120;
   state.timeLeft = state.timeLimit * 1000;
-  state.specials = isTimeline() ? (filterState.specials || []).filter((k) => isMulti() || k === 'double') : [];
+  state.specials = isTimeline() && !party ? (filterState.specials || []).filter((k) => isMulti() || k === 'double') : [];
   state.startedAt = Date.now();
   state.buzz = null;
   state.ref = null;
@@ -1262,20 +1516,151 @@ function startGame() {
     state.ref = state.deck.draw();
     markPlayed(state.ref);
   }
-  window.track && window.track('start-gry', {
-    tryb: state.mode, poziom: (LEVELS[filterState.level] || LEVELS[1]).name, zestaw: filterState.tag || (renderPresetsActive() || 'wlasne'),
+  if (!party) window.track && window.track('start-gry', {
+    tryb: state.mode, gra: playCtx, poziom: (LEVELS[filterState.level] || LEVELS[1]).name, zestaw: filterState.tag || (renderPresetsActive() || 'wlasne'),
     graczy: names.length, ekspert: state.expert.join('+') || 'nie', specjalne: state.specials.join('+') || 'nie', jezyk: LANG,
   });
   showScreen('game');
   startTurn();
+  return true;
+}
+
+/* ---------- Impreza: seria minigier ---------- */
+// wybór minigier w ustawieniach (zapamiętany); niedostępne dla tej liczby graczy są wyszarzone
+function renderPartyPick() {
+  const n = readSetupRows().length || 1;
+  const avail = partyGamesFor(n);
+  const chosen = new Set(store.get('partyGames', Object.keys(PARTY_GAMES)));
+  $('#party-pick').replaceChildren(...Object.entries(PARTY_GAMES).map(([id, g]) => {
+    const input = el('input', { type: 'checkbox', value: id });
+    input.checked = chosen.has(id);
+    input.disabled = !avail.includes(id);
+    input.addEventListener('change', () => {
+      const set = new Set(store.get('partyGames', Object.keys(PARTY_GAMES)));
+      if (input.checked) set.add(id); else set.delete(id);
+      store.set('partyGames', [...set]);
+      renderPartyPick();
+    });
+    return el('label', { class: input.disabled ? 'off' : '' }, input, ` ${g.icon} ${T(g.name)}`);
+  }));
+  const games = partyChoice(n);
+  $('#party-desc').textContent = (n === 1
+    ? T('Jedna osoba: wyniki z minigier sumują się (punkty, seria, ułożone karty). Minigra „Oś czasu” to minuta na czas.')
+    : T('Za każdą minigrę: 1. miejsce – 3 pkt, 2. – 2 pkt, 3. – 1 pkt (remis – tyle samo). Minigra „Oś czasu” to wyścig do 4 kart (do 8 graczy), „Kto pierwszy?” – od 2 graczy.'))
+    + ' ' + T('W grze: {0}.', games.map((id) => `${PARTY_GAMES[id].icon} ${T(PARTY_GAMES[id].name)}`).join(', '));
+}
+$('#players-list').addEventListener('click', () => { if (state.mode === 'party') setTimeout(renderPartyPick, 0); });
+// minigry, które zagrają: wybrane i dostępne dla tej liczby graczy (gdy nic nie wybrano – wszystkie dostępne)
+function partyChoice(n) {
+  const avail = partyGamesFor(n);
+  const chosen = store.get('partyGames', Object.keys(PARTY_GAMES)).filter((id) => avail.includes(id));
+  return chosen.length ? chosen : avail;
+}
+function startParty() {
+  const rows = readSetupRows().map((r, i) => ({ ...r, name: r.name.trim() || `${T('Gracz')} ${i + 1}` }));
+  if (!rows.length) return;
+  const count = clampInt($('#party-games').value, 2, 12, 5);
+  const games = partyChoice(rows.length);
+  // kolejność: losowo, każda minigra przed powtórką, bez dwóch takich samych pod rząd
+  const plan = [];
+  while (plan.length < count) {
+    const round = shuffle(games.slice());
+    if (plan.length && round.length > 1 && round[0] === plan[plan.length - 1]) round.push(round.shift());
+    plan.push(...round);
+  }
+  state.party = { rows, plan: plan.slice(0, count), idx: 0, points: rows.map(() => 0), last: [], done: false };
+  store.set('players', rows.map((r) => r.name));
+  window.track && window.track('start-gry', { tryb: 'party', gra: playCtx, graczy: rows.length, minigier: count, jezyk: LANG });
+  playPartyGame();
+}
+function playPartyGame() {
+  const pt = state.party;
+  const n = pt.rows.length;
+  while (pt.idx < pt.plan.length) {
+    const g = PARTY_GAMES[pt.plan[pt.idx]];
+    state.mode = g.mode(n);
+    if (startGame({ party: pt.plan[pt.idx], ...g.opts(n) })) return;
+    pt.idx += 1; // za mało piosenek dla tej minigry – następna
+  }
+  state.mode = 'party';
+  $('#ranking').replaceChildren();
+  partyStandings(true);
+  updateEndButtons();
+  showScreen('end');
+}
+// wynik gracza w minigrze: seria, ułożone karty albo punkty
+function partyMetric(p) {
+  if (state.mode === 'hilo' && !state.hiloMulti) return state.streak;
+  if (isTimeline()) return p.timeline.filter((c) => !c.start).length;
+  return p.score;
+}
+// po minigrze: punkty imprezy (jedna osoba – suma wyników, kilka – 3/2/1 pkt za miejsca) i klasyfikacja
+function partyAfterGame() {
+  const pt = state.party;
+  const res = state.players.map((p) => partyMetric(p));
+  const gained = res.map((v) => {
+    if (pt.rows.length === 1) return v;
+    if (v <= 0) return 0;
+    const better = new Set(res.filter((x) => x > v)).size;
+    return Math.max(0, 3 - better);
+  });
+  gained.forEach((g, i) => { pt.points[i] += g; });
+  pt.last = gained;
+  pt.idx += 1;
+  partyStandings(pt.idx >= pt.plan.length);
+}
+function partyStandings(final) {
+  const pt = state.party;
+  pt.done = final;
+  const g = PARTY_GAMES[pt.plan[Math.max(0, pt.idx - 1)]];
+  const order = pt.rows.map((r, i) => ({ name: r.name, pts: pt.points[i], last: pt.last[i] || 0 })).sort((a, b) => b.pts - a.pts);
+  const title = $('#winner-title');
+  const kicker = el('p', { class: 'party-kicker' }, final ? T('🥳 Koniec imprezy!') : T('🥳 Minigra {0} z {1}: {2} {3}', pt.idx, pt.plan.length, g.icon, T(g.name)));
+  if (final) {
+    if (pt.rows.length === 1) {
+      const prev = saveRecord(`party${state.difficulty}`, order[0].pts, T('Impreza, {0}', (LEVELS[state.difficulty] || LEVELS[1]).name));
+      title.textContent = order[0].pts > prev ? T('🏆 Nowy rekord imprezy: {0} pkt (poprzedni: {1})!', order[0].pts, prev)
+        : T('Wynik imprezy: {0} pkt (rekord: {1}).', order[0].pts, prev);
+    } else {
+      const tie = order.length > 1 && order[1].pts === order[0].pts;
+      title.textContent = tie ? T('🤝 Remis! ({0} pkt)', order[0].pts) : T('🏆 Imprezę wygrywa {0} ({1} pkt)!', order[0].name, order[0].pts);
+    }
+    fx('win');
+    celebrate();
+  }
+  $$('.party-kicker, .party-box').forEach((n) => n.remove());
+  title.before(kicker);
+  const next = !final && PARTY_GAMES[pt.plan[pt.idx]];
+  $('#ranking').append(el('div', { class: 'party-box' },
+    el('h3', {}, final ? T('Klasyfikacja końcowa') : T('Klasyfikacja imprezy')),
+    el('ol', { class: 'ranking party-standings' }, order.map((o) => el('li', {}, `${o.name} – ${o.pts} ${T('pkt')}`, o.last ? el('span', { class: 'plus' }, ` (+${o.last})`) : null))),
+    next ? el('p', { class: 'muted' }, T('Następna minigra: {0} {1}', next.icon, T(next.name))) : null));
+  if (final) $('#winner-timeline').classList.add('hidden');
+}
+$('#btn-party-next').addEventListener('click', () => playPartyGame());
+$('#btn-party-stop').addEventListener('click', () => {
+  state.party.plan = state.party.plan.slice(0, state.party.idx);
+  state.mode = 'party';
+  $('#ranking').replaceChildren();
+  partyStandings(true);
+  updateEndButtons();
+  tvSync();
+});
+// przyciski pod podsumowaniem: impreza w toku / multiplayer / jeden gracz
+function updateEndButtons() {
+  const between = !!(state.party && !state.party.done);
+  $('#end-party').classList.toggle('hidden', !between);
+  $('#end-multi').classList.toggle('hidden', between || playCtx !== 'multi');
+  $('#end-actions').classList.toggle('hidden', between || playCtx === 'multi');
+  if (state.party && state.party.done) state.mode = 'party';
 }
 
 // Pojedynek dekad: wybrane w ustawieniach albo losowe – dwie dekady z wystarczającą liczbą piosenek
-function pickDuelDecades(pool, needed) {
+function pickDuelDecades(pool, needed, random) {
   const count = new Map();
   for (const s of pool) count.set(decadeOf(s), (count.get(decadeOf(s)) || 0) + 1);
   const enough = [...count.keys()].filter((d) => count.get(d) >= Math.ceil(needed / 2) + 2);
-  let [a, b] = [filterState.duelA, filterState.duelB].map((d) => (d != null && count.has(d) ? d : null));
+  let [a, b] = random ? [null, null] : [filterState.duelA, filterState.duelB].map((d) => (d != null && count.has(d) ? d : null));
   if (a == null) a = shuffle(enough.filter((d) => d !== b))[0];
   if (b == null || b === a) b = shuffle(enough.filter((d) => d !== a))[0];
   if (a == null || b == null) return null;
@@ -1951,6 +2336,20 @@ function answerHilo(older) {
   const song = state.current;
   const ok = older ? song.y <= state.ref.y : song.y >= state.ref.y;
   stopAudio();
+  if (state.hiloMulti) {
+    // kilku graczy: kolejno, dobra odpowiedź = punkt, pomyłka nie kończy gry
+    const p = activePlayer();
+    if (ok) p.score += 1;
+    state.turnsPlayed += 1;
+    state.history.push({ song, preview: state.preview, player: p.name, ok,
+      note: `${p.name}: ${older ? T('starsza') : T('nowsza')} ${T('niż')} ${state.ref.y}` });
+    recordAnswer(song, ok);
+    fx(ok ? 'good' : 'bad');
+    showReveal(el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') }, ok
+      ? T('✔ Dobrze! {0} {1} {2}. +1 pkt', song.y, song.y === state.ref.y ? '=' : (song.y < state.ref.y ? '<' : '>'), state.ref.y)
+      : T('✘ Pudło – {0} {1} {2}.', song.y, song.y < state.ref.y ? '<' : '>', state.ref.y)));
+    return;
+  }
   if (ok) state.streak += 1; else state.hiloLost = true;
   state.history.push({ song, preview: state.preview, player: activePlayer().name, ok,
     note: `${older ? T('starsza') : T('nowsza')} ${T('niż')} ${state.ref.y}` });
@@ -2085,10 +2484,10 @@ function quickActions() {
     }
   }
   if (state.phase === 'revealed') {
-    const last = state.mode === 'hilo' ? state.hiloLost
+    const last = state.mode === 'hilo' && !state.hiloMulti ? state.hiloLost
       : state.turnsPlayed >= state.rounds * (state.mode === 'buzz' ? 1 : state.players.length);
     btns.push(el('button', { class: 'primary', onclick: nextTurn }, last ? T('Zobacz wyniki →')
-      : (state.mode === 'duel' && state.players.length > 1 ? T('Następny gracz →') : T('Następna piosenka →'))));
+      : ((state.mode === 'duel' || state.hiloMulti) && state.players.length > 1 ? T('Następny gracz →') : T('Następna piosenka →'))));
   }
   return btns;
 }
@@ -2141,6 +2540,12 @@ function swapButtons(p) {
 /* --- wspólne --- */
 function nextTurn() {
   if (state.mode === 'hilo') {
+    if (state.hiloMulti) {
+      if (state.turnsPlayed >= state.rounds * state.players.length) return endGame();
+      state.ref = state.current;
+      state.turn = (state.turn + 1) % state.players.length;
+      return startTurn();
+    }
     if (state.hiloLost) return endGame();
     state.ref = state.current;
     return startTurn();
@@ -2218,7 +2623,7 @@ function endGame() {
     extra = [el('h3', {}, T('Najlepsze wyniki – {0}, poziom „{1}”', timeLabel(state.timeLimit), lvlName)),
       el('ol', { class: 'ranking' }, list.slice(0, 10).map((r, i) => el('li', { class: i === pos ? 'me' : '' },
         `${cardsLabel(r.score)} · ${r.date}${i === pos ? T(' ← teraz') : ''}`)))];
-  } else if (state.mode === 'hilo') {
+  } else if (state.mode === 'hilo' && !state.hiloMulti) {
     const prev = saveRecord(`hilo${state.difficulty}`, state.streak, T('Starsza czy nowsza?, {0}', lvlName));
     won = state.streak > prev;
     title.textContent = won ? T('🏆 Nowy rekord! Seria: {0} (poprzedni: {1}).', state.streak, prev)
@@ -2252,6 +2657,9 @@ function endGame() {
   if (isTimeline()) renderTimeline(tl, best.timeline, false);
   renderPlayedList();
   recordGame(best, Math.round((Date.now() - (state.startedAt || Date.now())) / 1000));
+  $$('.party-kicker').forEach((n) => n.remove());
+  if (state.party) partyAfterGame();
+  updateEndButtons();
   showScreen('end');
 }
 
@@ -2328,8 +2736,10 @@ function audioTargets() {
     return tvs.length || tvWindowSeen ? { remotes: tvs, channel: tvWindowSeen && !!tvChannel } : null;
   }
   if (out === 'player' && state.players.length) {
-    const name = state.mode === 'buzz' ? null : activePlayer().name;
-    const ph = [...remotes].filter((r) => r.role === 'player' && r.name && r.name === name);
+    const p = activePlayer();
+    // w drużynach – telefon członka, który teraz odpowiada (albo telefon z nazwą drużyny)
+    const names = state.mode === 'buzz' ? [] : [p.name, answering(p)].filter(Boolean);
+    const ph = [...remotes].filter((r) => r.role === 'player' && r.name && names.includes(r.name));
     return ph.length ? { remotes: ph, channel: false } : null;
   }
   return null;
@@ -2349,7 +2759,7 @@ function applyAudioRoute() {
   const note = $('#audio-note');
   if (note) {
     const out = audioOut();
-    note.textContent = remote ? (out === 'tv' ? T('🔈 Muzyka gra na dużym ekranie.') : T('🔈 Muzyka gra na telefonie gracza {0}.', activePlayer().name))
+    note.textContent = remote ? (out === 'tv' ? T('🔈 Muzyka gra na dużym ekranie.') : T('🔈 Muzyka gra na telefonie gracza {0}.', answering(activePlayer()) || activePlayer().name))
       : (out !== 'host' ? T('🔈 Brak połączonego urządzenia – muzyka gra na tym telefonie.') : '');
     note.classList.toggle('hidden', !note.textContent);
   }
@@ -2518,6 +2928,13 @@ function render() {
 function renderHeader(p, timeline) {
   const sb = $('#scoreboard');
   sb.classList.toggle('hidden', state.players.length === 1 && !isMelody() && state.mode !== 'duel');
+  // impreza: która minigra i ile zostało
+  const pt = state.party;
+  $('#party-bar').classList.toggle('hidden', !pt);
+  if (pt) {
+    const g = PARTY_GAMES[pt.plan[pt.idx]];
+    $('#party-bar').textContent = T('🥳 Minigra {0} z {1}: {2} {3}', pt.idx + 1, pt.plan.length, g.icon, T(g.name));
+  }
   sb.replaceChildren(...state.players.map((pl, i) => el('div', {
     class: 'score' + (i === state.turn && state.mode !== 'buzz' ? ' active' : ''),
     style: state.mode === 'buzz' ? `border-color:${BUZZ_COLORS[i]}` : null,
@@ -2531,6 +2948,9 @@ function renderHeader(p, timeline) {
   if (state.mode === 'buzz') {
     title.textContent = T('Piosenka {0} z {1}', Math.min(songNo, state.rounds), state.rounds);
     info.textContent = TOUCH_ONLY ? T('Dotknij swojego pola, gdy znasz odpowiedź') : T('Naciśnij swój przycisk albo klawisz, gdy znasz odpowiedź');
+  } else if (state.mode === 'hilo' && state.hiloMulti) {
+    title.textContent = T('Tura: {0}', p.name);
+    info.textContent = T('Runda {0}/{1}', Math.min(state.rounds, Math.floor(state.turnsPlayed / state.players.length) + 1), state.rounds);
   } else if (state.mode === 'hilo') {
     const rec = store.get('records', {})[`hilo${state.difficulty}`] || 0;
     title.textContent = T('Seria: {0}', state.streak);

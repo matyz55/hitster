@@ -226,6 +226,39 @@
     body.player .timelines { flex: none; align-content: start; }
     body.player .tl-name { width: 20vw; }
     body.player .wrap { height: auto; min-height: 100%; }
+    /* lobby i wybór trybu na dużym ekranie */
+    .modes-board { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 2vh; }
+    .mb-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 2vw; }
+    .mb-head h1 { font-size: 2em; margin: .1em 0 0; }
+    .mb-join { color: var(--gold); font-weight: 800; font-size: 1.1em; }
+    .mb-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16em, 1fr)); gap: 1.5vh 1.5vw; align-content: center; }
+    .mb-tile { background: var(--panel); border-radius: calc(16 * var(--u)); padding: .8em 1em; border: calc(3 * var(--u)) solid transparent; }
+    .mb-tile.voted { border-color: var(--gold); }
+    .mb-tile.off { opacity: .4; }
+    .mb-icon { font-size: 1.6em; }
+    .mb-title { font-weight: 800; font-size: 1.05em; }
+    .mb-votes { color: var(--gold); font-weight: 700; font-size: .8em; min-height: 1.2em; }
+    .mb-hint { color: var(--muted); text-align: center; margin: 0; }
+    .end-next { color: var(--accent-2); font-size: 1.2em; }
+    /* telefon gracza: głosowanie, oczekiwanie, impreza */
+    .vote-view h2 { margin: .3em 0 0; }
+    .vote-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+    .vote { display: flex; align-items: center; gap: 12px; text-align: left; font: inherit; padding: 12px 14px; border-radius: 14px;
+      border: 2px solid #3d3755; background: var(--panel); color: var(--text); }
+    .vote.mine { border-color: var(--gold); background: rgba(255, 201, 60, .12); }
+    .vote:disabled { opacity: .4; }
+    .vote .vi { font-size: 1.6em; }
+    .vote .vt { flex: 1; min-width: 0; }
+    .vote .vt small { display: block; color: var(--muted); font-size: .8em; }
+    .vote .vn { color: var(--gold); font-weight: 800; white-space: nowrap; }
+    .phone-info { text-align: center; }
+    .phone-info .p-scores { justify-content: center; }
+    .p-opts { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; text-align: left; font-size: .9em; margin: 10px 0; }
+    .p-opts dt { color: var(--muted); }
+    .p-opts dd { margin: 0; font-weight: 600; }
+    .p-rank { text-align: left; display: inline-block; font-size: 1.05em; }
+    .p-party { text-align: center; color: var(--accent-2); font-weight: 700; }
+    .join-view .join-form input { font-size: 1.1em; }
   </style>
 </head>
 <body>

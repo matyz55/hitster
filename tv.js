@@ -68,8 +68,16 @@ function rowItems(t, pick) {
 }
 
 let last = null;
-// czy ten telefon gracza może teraz działać: jego tura, wyzwanie albo jego odpowiedź w „Kto pierwszy?”
-const myTurn = (s) => PLAYER && me && (s.turnName === me || s.challenger === me);
+// gracz z telefonem: jego imię, a w drużynach także nazwa jego drużyny
+const myIds = (s) => [me, s && s.teamOf && s.teamOf[me]].filter(Boolean);
+// czy ten gracz ma teraz turę: w drużynach odpowiada wskazany członek (albo telefon z nazwą drużyny)
+const turnIsMine = (s) => !!me && (s.turnWho ? (s.turnWho === me || s.turnName === me) : myIds(s).includes(s.turnName));
+// czy ten telefon gracza może teraz działać: jego tura albo jego wyzwanie
+const myTurn = (s) => PLAYER && !!me && (turnIsMine(s) || (!!s.challenger && myIds(s).includes(s.challenger)));
+const inGame = (s) => !!me && ((s.players || []).includes(me) || !!(s.teamOf && s.teamOf[me]));
+// lista graczy w lobby (multiplayer) – albo, gdy jej nie ma, lista z ustawień gry
+const lobbyNames = (s) => (s && s.lobby ? s.lobby.names : (s && s.setup ? s.setup.names : []));
+const joinedLobby = (s) => !!me && lobbyNames(s).includes(me);
 function playerPicker(s) {
   const names = s.players || [];
   return h('div', 'picker', h('h2', '', T('Kim jesteś?')),
@@ -79,51 +87,152 @@ function playerPicker(s) {
       return b;
     })) : h('p', 'muted', T('Gospodarz jeszcze nie rozpoczął gry – lista graczy pojawi się po starcie.')));
 }
-// telefon gracza w trakcie ustawiania gry: wpisuje imię i trafia na listę graczy u gospodarza
+// telefon gracza: wpisuje imię i trafia na listę graczy u gospodarza
+let draftName = '';
 function joinView(s) {
-  const st = s.setup;
-  const joined = me && st.names.includes(me);
-  if (joined) {
-    return h('div', 'picker', h('h2', '', T('✔ Jesteś na liście jako: {0}', me)), h('p', 'muted', T('Czekaj, aż gospodarz rozpocznie grę ({0}).', st.title)),
-      h('p', 'muted', T('Na liście: {0}', st.names.join(', '))));
-  }
+  const names = lobbyNames(s);
+  const full = s.lobby ? s.lobby.full : !!(s.setup && s.setup.full);
   const input = h('input', 'join-name');
-  input.type = 'text'; input.maxLength = 20; input.value = me || ''; input.placeholder = st.teams ? T('Nazwa drużyny') : T('Twoje imię');
+  input.type = 'text'; input.maxLength = 20; input.value = draftName || me || ''; input.placeholder = T('Twoje imię');
+  input.autocomplete = 'off';
+  input.addEventListener('input', () => { draftName = input.value; });
   const go = h('button', 'primary', T('Dołącz do gry'));
   const form = h('form', 'join-form', input, go);
-  form.addEventListener('submit', (e) => { e.preventDefault(); if (input.value.trim()) send({ join: input.value.trim() }); });
-  return h('div', 'picker', h('h2', '', st.teams ? T('Dołącz drużynę do gry') : T('Dołącz do gry')), h('p', 'muted', st.title),
-    st.full ? h('p', 'muted', T('Lista graczy jest pełna.')) : form,
-    st.names.length ? h('p', 'muted', T('Na liście: {0}', st.names.join(', '))) : null);
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = input.value.trim();
+    if (!name) { input.focus(); return; }
+    go.disabled = true; go.textContent = T('Dołączanie…');
+    input.blur();
+    send({ join: name });
+  });
+  return h('div', 'picker join-view', h('h2', '', T('👋 Dołącz do gry')),
+    s.setup && s.screen === 'setup' ? h('p', 'muted', s.setup.title) : null,
+    full ? h('p', 'muted', T('Lista graczy jest pełna.')) : form,
+    h('p', 'muted join-names', names.length ? T('Na liście: {0}', names.join(', ')) : ''));
 }
-function render(s) {
-  last = s;
-  if (s && s.screen === 'setup' && PLAYER && s.setup) {
-    const keep = document.activeElement && document.activeElement.classList.contains('join-name') ? document.activeElement.value : null;
-    app.replaceChildren(joinView(s));
-    if (keep != null && app.querySelector('.join-name')) { app.querySelector('.join-name').value = keep; app.querySelector('.join-name').focus(); }
-    return;
-  }
-  if (s && s.screen === 'game' && PLAYER && (!me || !(s.players || []).includes(me))) {
+// telefon gracza poza rozgrywką: lobby, głosowanie na tryb, ustawienia gry, podsumowanie
+function phoneInfo(title, ...kids) {
+  return h('div', 'picker phone-info', h('h2', '', title), ...kids);
+}
+function voteView(s) {
+  const items = s.modes.items;
+  const mine = (items.find((it) => it.votes.includes(me)) || {}).id;
+  return h('div', 'vote-view', h('div', 'p-top', h('div', 'p-me', h('b', '', me), h('small', '', T('jesteś w grze'))), (() => {
+    const b = h('button', 'link', T('zmień gracza'));
+    b.addEventListener('click', () => { me = ''; render(last); });
+    return b;
+  })()),
+  h('h2', '', T('🗳 Na jaki tryb głosujesz?')), h('p', 'muted', T('Decyzję podejmuje gospodarz – widzi głosy wszystkich.')),
+  h('div', 'vote-list', items.map((it) => {
+    const b = h('button', 'vote' + (it.id === mine ? ' mine' : ''), h('span', 'vi', it.icon),
+      h('span', 'vt', h('b', '', it.title), h('small', '', it.disabled ? T('za mało graczy') : it.desc)),
+      h('span', 'vn', it.votes.length ? `🗳 ${it.votes.length}` : ''));
+    b.disabled = it.disabled;
+    b.addEventListener('click', () => send({ vote: it.id === mine ? '-' : it.id }));
+    return b;
+  })));
+}
+function renderPhone(s) {
+  app.style.fontSize = '';
+  app.classList.remove('compact', 'many');
+  if (!s) { app.replaceChildren(waiting); return; }
+  if (s.screen === 'game') {
+    if (inGame(s)) { renderPlayer(s); return; }
+    if (joinedLobby(s)) {
+      app.replaceChildren(phoneInfo(T('⏳ Ta gra już trwa'), h('p', 'muted', T('Jesteś na liście – zagrasz w następnej grze. Na razie śledź wyniki:')),
+        h('div', 'p-scores', (s.scores || []).map((x) => h('span', x.active ? 'act' : '', x.text)))));
+      return;
+    }
     app.replaceChildren(playerPicker(s));
     return;
   }
-  if (s && s.screen === 'game' && PLAYER) { renderPlayer(s); return; }
+  const multi = !!(s.multi || s.setup);
+  if (multi && !joinedLobby(s) && ['lobby', 'modes', 'setup', 'end'].includes(s.screen)) {
+    // pole imienia nie może zniknąć ani się wyczyścić w trakcie pisania – odświeżamy tylko listę graczy
+    const cur = app.querySelector('.join-view');
+    if (cur && cur.querySelector('.join-form')) {
+      const names = lobbyNames(s);
+      cur.querySelector('.join-names').textContent = names.length ? T('Na liście: {0}', names.join(', ')) : '';
+      return;
+    }
+    app.replaceChildren(joinView(s));
+    return;
+  }
+  const others = (names) => h('p', 'muted', T('Na liście: {0}', names.join(', ')));
+  if (s.screen === 'lobby') {
+    app.replaceChildren(phoneInfo(T('✔ Jesteś na liście jako: {0}', me), h('p', 'muted', T('Czekaj, aż gospodarz przejdzie do wyboru trybu gry.')), others(lobbyNames(s))));
+    return;
+  }
+  if (s.screen === 'modes' && s.modes) { app.replaceChildren(voteView(s)); return; }
+  if (s.screen === 'setup' && s.setup) {
+    app.replaceChildren(phoneInfo(T('⚙ Gospodarz ustawia grę'), h('h3', '', s.setup.title),
+      h('dl', 'p-opts', (s.setup.options || []).flatMap(([k, v]) => [h('dt', '', k === '✔' ? '' : k), h('dd', '', (k === '✔' ? '✔ ' : '') + v)])),
+      others(s.setup.names)));
+    return;
+  }
+  if (s.screen === 'end') {
+    app.replaceChildren(phoneInfo(s.winner || T('Koniec gry'), s.party ? h('p', 'p-party', s.party.label) : null,
+      h('ol', 'p-rank', (s.ranking || []).map((r) => h('li', '', r))),
+      s.next ? h('p', '', s.next) : null,
+      h('p', 'muted', T('Gospodarz wybiera, co dalej…'))));
+    return;
+  }
+  app.replaceChildren(waiting);
+  waitingText.textContent = T('Połączono z pokojem {0}. Czekaj na gospodarza.', JOIN.toUpperCase());
+}
+// duży ekran: lobby multiplayera – kto już dołączył i duży kod QR
+function lobbyBoard(s) {
+  const lb = s.lobby;
+  const phones = new Set(lb.phones || []);
+  const left = h('div', 'sb-left', h('div', 'sb-kicker', T('Multiplayer')), h('h1', '', T('Dołączcie do gry!')),
+    h('div', 'sb-players', h('div', 'sb-sub', T('Gracze ({0})', lb.names.length)),
+      h('div', 'chips', lb.names.map((n) => h('span', 'pchip', phones.has(n) ? '📱 ' : '', n)))),
+    h('p', 'sb-pool', T('Kto ma telefon – skanuje kod i wpisuje imię. Pozostali grają na urządzeniu gospodarza. Potem wybieramy tryb gry.')));
+  return h('div', 'setup-board', left, qrSide(lb.joinUrl, lb.full));
+}
+function qrSide(url, full) {
+  const qr = h('div', 'sb-qr');
+  const right = h('div', 'sb-right', qr);
+  if (url) {
+    qrInto(qr, url);
+    right.append(h('div', 'sb-code', (new URL(url)).searchParams.get('join')), h('p', '', full ? T('Lista graczy jest pełna.') : T('Zeskanuj telefonem, wpisz imię i dołącz do gry')));
+  } else {
+    right.append(h('p', '', T('Przygotowuję kod do dołączania…')));
+  }
+  return right;
+}
+// duży ekran: wybór trybu z głosami graczy
+function modesBoard(s) {
+  const code = s.lobby && s.lobby.joinUrl ? (new URL(s.lobby.joinUrl)).searchParams.get('join') : '';
+  return h('div', 'modes-board', h('div', 'mb-head', h('div', '', h('div', 'sb-kicker', T('Multiplayer')), h('h1', '', T('Wybór trybu gry'))),
+    code ? h('div', 'mb-join', T('Dołącz: kod {0}', code)) : null),
+  h('div', 'mb-grid', s.modes.items.map((it) => h('div', 'mb-tile' + (it.votes.length ? ' voted' : '') + (it.disabled ? ' off' : ''),
+    h('div', 'mb-icon', it.icon), h('div', 'mb-title', it.title),
+    h('div', 'mb-votes', it.votes.length ? `🗳 ${it.votes.length} · ${it.votes.join(', ')}` : '')))),
+  h('p', 'mb-hint', T('Głosujcie na telefonach – decyzję podejmuje gospodarz.')));
+}
+function render(s) {
+  last = s;
+  if (PLAYER) { renderPhone(s); return; }
+  if (s && s.screen === 'lobby' && s.lobby) { app.replaceChildren(lobbyBoard(s)); fit(); return; }
+  if (s && s.screen === 'modes' && s.modes && s.modes.ctx === 'multi') { app.replaceChildren(modesBoard(s)); fit(); return; }
   if (!PLAYER && s && s.screen === 'setup' && s.setup) { app.replaceChildren(setupBoard(s.setup)); fit(); return; }
-  if (!PLAYER && s && (s.screen === 'home' || s.screen === 'settings' || s.screen === 'stats')) {
+  if (!PLAYER && s && (s.screen === 'home' || s.screen === 'settings' || s.screen === 'stats' || s.screen === 'modes')) {
     app.replaceChildren(h('div', 'connected', h('div', 'big', '📱 ✔'), h('h1', '', T('Telefon połączony')),
       h('p', '', T('Wybierz tryb gry na telefonie – tutaj pojawią się ustawienia, a potem rozgrywka.')),
       tvCode ? h('p', 'muted', T('Kod tego ekranu: {0}', tvCode)) : null));
     return;
   }
-  if (!s || s.screen === 'home' || s.screen === 'setup' || s.screen === 'settings' || s.screen === 'stats') {
+  if (!s || ['home', 'setup', 'settings', 'stats', 'lobby', 'modes'].includes(s.screen)) {
     app.replaceChildren(waiting);
     waiting.querySelectorAll('.picker').forEach((n) => n.remove());
     if (PLAYER && s) waiting.append(playerPicker(s));
     return;
   }
   if (s.screen === 'end') {
-    app.replaceChildren(h('div', 'end', h('h2', '', s.winner || ''), h('ol', '', (s.ranking || []).map((r) => h('li', '', r)))));
+    app.replaceChildren(h('div', 'end', s.party ? h('div', 'sb-kicker', s.party.label) : null, h('h2', '', s.winner || ''),
+      h('ol', '', (s.ranking || []).map((r) => h('li', '', r))), s.next ? h('p', 'end-next', s.next) : null));
     fit();
     return;
   }
@@ -134,7 +243,7 @@ function render(s) {
     ? h('div', 'others', allRows.filter((t) => !rows.includes(t)).map((t) => h('span', '', h('b', '', t.name), t.sub ? ` ${t.sub}` : ''))) : null;
   app.classList.toggle('compact', rows.length > 2);
   app.classList.toggle('many', rows.length <= 1 && (s.scores || []).length > 4);
-  const head = h('header', '', h('div', '', h('h1', '', s.title || ''), rows.length > 1 ? null : h('div', 'info', s.info || '')),
+  const head = h('header', '', h('div', '', s.party ? h('div', 'sb-kicker', s.party.label) : null, h('h1', '', s.title || ''), rows.length > 1 ? null : h('div', 'info', s.info || '')),
     // przy osiach czasu stan graczy jest przy każdej osi – górnej tablicy wyników nie dublujemy
     rows.length > 1 ? null : h('div', 'scores', (s.scores || []).map((x) => h('div', 'score' + (x.active ? ' active' : ''), x.text))));
   const vinyl = h('div', 'vinyl' + (s.art ? ' cover' : '') + (audioState.playing ? ' spinning' : ''), h('div', 'lbl', '?'));
@@ -254,7 +363,8 @@ function vTimeline(t, pick, title) {
 function renderPlayer(s) {
   app.style.fontSize = '';
   const tls = s.timelines || [];
-  const mine = tls.find((t) => t.name === me);
+  const ids = myIds(s);
+  const mine = tls.find((t) => ids.includes(t.name));
   const active = tls.find((t) => t.active);
   const mineTurn = myTurn(s);
   const answering = s.buzzers && s.buzzers.answering === me;
@@ -265,7 +375,7 @@ function renderPlayer(s) {
   })());
   const bannerText = s.mode === 'buzz'
     ? (answering ? T('🔔 Odpowiadasz!') : (s.buzzers && s.buzzers.answering ? T('🔔 Odpowiada: {0}', s.buzzers.answering) : T('Słuchaj i naciśnij, gdy znasz odpowiedź')))
-    : (s.challenger === me && s.phase === 'challenge' ? T('⚔ Twoje wyzwanie – wskaż inne miejsce') : (s.turnName === me ? T('🎯 Twoja tura!') : T('Tura: {0}', s.turnName)));
+    : (ids.includes(s.challenger) && s.phase === 'challenge' ? T('⚔ Twoje wyzwanie – wskaż inne miejsce') : (turnIsMine(s) ? T('🎯 Twoja tura!') : T('Tura: {0}', s.turnWho ? `${s.turnName} (${s.turnWho})` : s.turnName)));
   const banner = h('div', 'p-banner' + (mineTurn || answering ? ' mine' : ''), bannerText);
   const song = s.reveal
     ? h('div', 'p-reveal', h('div', 'y', s.reveal.y), h('div', 't', s.reveal.t), h('div', 'a', s.reveal.a, ' ', flag(s.reveal.cc)),
@@ -282,13 +392,13 @@ function renderPlayer(s) {
       buzz.addEventListener('pointerdown', (e) => { e.preventDefault(); send({ buzz: s.buzzers.items.indexOf(it) }); });
     }
   }
-  const guess = s.guess && s.guess.who === me ? guessForm(s.guess) : null;
+  const guess = s.guess && (s.guess.who === me || (s.turnWho === me && s.guess.who === s.turnName)) ? guessForm(s.guess) : null;
   // przyciski: tylko te, których ten gracz może teraz użyć
   // w swojej turze – wszystko poza wyzwaniem i żetonem „przy stole” (o nich decydują inni); przy swoim wyzwaniu – wszystko;
   // poza swoją turą – wyzwanie, żeton „przy stole” i wybór siebie jako wyzywającego
   const tableBtn = (b) => /\b(gold|ok)\b/.test(b.cls);
   const allowed = (b) => (s.mode === 'buzz' ? answering
-    : (s.challenger === me && s.phase === 'challenge') || (s.turnName === me ? !tableBtn(b) : (tableBtn(b) || b.text === me)));
+    : (ids.includes(s.challenger) && s.phase === 'challenge') || (turnIsMine(s) ? !tableBtn(b) : (tableBtn(b) || ids.includes(b.text))));
   const btns = (s.buttons || []).map((b, i) => ({ ...b, i })).filter((b) => allowed(b));
   const actions = btns.length ? h('div', 'p-actions', btns.map((b) => {
     const btn = h('button', b.cls, b.text);
@@ -297,16 +407,17 @@ function renderPlayer(s) {
     return btn;
   })) : null;
   // oś: w swojej turze (albo przy swoim wyzwaniu) – oś gracza z turą z miejscami do stuknięcia; poza tym własna
-  const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || s.challenger === me));
+  const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || ids.includes(s.challenger)));
   let tl = null;
-  if (active && (pick || s.reveal || active.name === me)) tl = vTimeline(active, pick, active.name === me ? T('Twoja oś') : T('Oś: {0}', active.name));
+  if (active && (pick || s.reveal || ids.includes(active.name))) tl = vTimeline(active, pick, ids.includes(active.name) ? T('Twoja oś') : T('Oś: {0}', active.name));
   else if (mine) tl = vTimeline(mine, false, T('Twoja oś'));
   if (tl && !mine && active && tls.length === 1) tl.querySelector('.vtl-title') && tl.querySelector('.vtl-title').remove();
   const others = tls.filter((t) => t !== mine && t !== active && t.sub);
   const scores = (others.length ? others.map((t) => h('span', '', h('b', '', t.name), ` ${t.sub}`))
     : (s.scores || []).map((x) => h('span', x.active ? 'act' : '', x.text)));
   const keep = app.querySelector('.guess-form');
-  app.replaceChildren(...[top, banner, song, buzz, guess, actions, tl, scores.length ? h('div', 'p-scores', scores) : null].filter(Boolean));
+  const partyBar = s.party ? h('div', 'p-party', s.party.label) : null;
+  app.replaceChildren(...[top, partyBar, banner, song, buzz, guess, actions, tl, scores.length ? h('div', 'p-scores', scores) : null].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
 }
 
@@ -449,10 +560,16 @@ function musicCmd(m) {
   }
 }
 function onMessage(m) {
-  if (!m) return;
+  // sygnał obecności gospodarza – nie jest stanem gry (wcześniej nadpisywał ekran wpisywania imienia)
+  if (!m || m.ping || m.probe) return;
   if (m.audioCmd) { musicCmd(m); return; }
   if (m.joined) { setMe(m.joined); return; }
-  if (m.joinError) { alert(T('Lista graczy jest pełna.')); return; }
+  if (m.joinError) {
+    alert(m.joinError === 'closed' ? T('Gospodarz nie ma teraz otwartej listy graczy.') : T('Lista graczy jest pełna.'));
+    app.replaceChildren();
+    if (last) render(last);
+    return;
+  }
   if (m.audio) { audioState = m.audio; updateAudio(); return; }
   render(m);
 }
@@ -547,17 +664,32 @@ if (PLAYER) {
   waitingText.textContent = T('Łączenie z pokojem {0}…', JOIN.toUpperCase());
   window.SongsterNet.connect('room', JOIN).then(({ conn }) => {
     sendFn = (m) => { try { conn.send(m); } catch (e) { /* zerwane */ } };
-    conn.on('data', onMessage);
-    conn.on('close', () => { app.replaceChildren(waiting); waitingText.textContent = T('Rozłączono z pokojem. Odśwież stronę, aby dołączyć ponownie.'); });
+    conn.on('data', (m) => {
+      if (m && m.__bye) { conn.close(); return; } // gospodarz zamknął pokój
+      onMessage(m);
+    });
+    conn.on('close', () => {
+      sendFn = null;
+      app.replaceChildren(waiting);
+      waiting.querySelectorAll('.picker').forEach((n) => n.remove());
+      waitingText.textContent = T('Rozłączono z pokojem (gospodarz zakończył grę albo zerwało się połączenie).');
+      const again = h('button', 'primary', T('↻ Dołącz ponownie'));
+      again.addEventListener('click', () => window.location.reload());
+      waiting.append(h('div', 'picker', again));
+    });
     waitingText.textContent = T('Połączono z pokojem {0}. Czekaj na start gry.', JOIN.toUpperCase());
     send({ hello: true, role: 'player', name: me });
   }).catch(() => {
     waitingText.textContent = T('Nie udało się dołączyć – sprawdź kod pokoju i czy gospodarz ma otwartą grę.');
+    const again = h('button', 'primary', T('↻ Spróbuj ponownie'));
+    again.addEventListener('click', () => window.location.reload());
+    waiting.append(h('div', 'picker', again));
   });
 } else {
   // kanały do pilota: okno na tym urządzeniu (BroadcastChannel) i telefon przez sieć (ostatnio połączony)
   let channel = null;
   let controller = null;
+  const conns = new Set();
   let lastMsg = 0;
   sendFn = (m) => {
     try { if (channel) channel.postMessage(m); } catch (e) { /* zamknięte */ }
@@ -579,11 +711,19 @@ if (PLAYER) {
     try {
       let saved = '';
       try { saved = localStorage.getItem('songster.tvcode') || ''; } catch (e) { /* bez zapisu */ }
+      // telefon łączy się naraz dwoma kanałami i zamyka wolniejszy – pilotem jest ostatnie połączenie,
+      // z którego przyszły dane; po zamknięciu jednego zostaje drugie (dopiero bez żadnego – powrót do kodu)
       const { code } = await window.SongsterNet.host('tv', (conn) => {
+        conns.add(conn);
         controller = conn;
         lastMsg = Date.now();
-        conn.on('data', (m) => { if (conn === controller) onAny(m); });
-        conn.on('close', () => { if (conn === controller) lost(); });
+        conn.on('data', (m) => { controller = conn; onAny(m); });
+        conn.on('close', () => {
+          conns.delete(conn);
+          if (conn !== controller) return;
+          controller = [...conns].pop() || null;
+          if (!controller) lost();
+        });
         conn.send({ hello: true, role: 'tv' });
       }, saved);
       tvCode = code;
