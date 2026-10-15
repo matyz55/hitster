@@ -669,7 +669,7 @@ window.I18N_EN = {
  "✔ Zatwierdź i odkryj": "✔ Confirm and reveal",
  "⚔ Wyzwanie": "⚔ Challenge",
  "Kup tę kartę ({0} żetony)": "Buy this card ({0} tokens)",
- "Kup kartę ({0} żetony)": "Buy a card ({0} tokens)",
+ "Kup losową kartę ({0} żetony)": "Buy a random card ({0} tokens)",
  "Za 3 żetony odtwarzana piosenka trafia od razu na właściwe miejsce Twojej osi": "For 3 tokens the song that is playing goes straight to the right spot on your timeline",
  "Za 3 żetony dobierasz losową kartę z talii, która od razu trafia na właściwe miejsce osi": "For 3 tokens you draw a random card from the deck that goes straight to the right spot on your timeline",
  "🛒 Kupiona losowa karta: {0} – {1} ({2})": "🛒 Bought a random card: {0} – {1} ({2})",
