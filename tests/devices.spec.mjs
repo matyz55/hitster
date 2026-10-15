@@ -136,3 +136,19 @@ test('@net stan połączenia: telefon odpowiada na sygnał obecności, po zamkni
   await expect(host.locator('#lobby-list .conn-off')).toHaveCount(1, { timeout: 45000 });
   noErrors(host);
 });
+
+test('@net Rok co do roku: pole roku na telefonie gracza z turą', async ({ browser }) => {
+  const { host, code } = await hostLobby(browser);
+  const ania = await join(browser, code, 'Ania');
+  await host.click('#btn-lobby-next');
+  await host.click('.mode[data-mode=year]');
+  await host.click('#btn-start');
+  await ready(host);
+  await host.evaluate(() => { state.turn = state.players.findIndex((p) => p.name === 'Ania'); startTurn(); });
+  await ready(host);
+  await ania.waitForSelector('.year-form input');
+  await ania.fill('.year-form input', String(await host.evaluate(() => state.current.y)));
+  await ania.click('.year-form button');
+  await expect.poll(() => host.evaluate(() => state.players.find((p) => p.name === 'Ania').score)).toBe(3);
+  noErrors(host, ania);
+});

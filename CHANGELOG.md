@@ -377,3 +377,14 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - **Uczciwy „Kto pierwszy?”**: zgłoszenia z telefonów są zbierane przez krótką chwilę (opóźnienie najwolniejszego
   telefonu + 80 ms, najwyżej 0,6 s) i wygrywa to, które po odjęciu opóźnienia sieci danego telefonu było najwcześniejsze.
   Bez telefonów zgłoszenie działa od razu.
+
+## 5.11.0 – 15.10.2026 (`HASH`)
+
+- Cztery nowe tryby w grupie **Quizy** (dla jednej osoby i w multiplayerze):
+  - **📅 Rok co do roku** – wpisujesz rok wydania; dokładnie – 3 pkt, do 2 lat różnicy – 1 pkt
+    (na telefonie gracza z turą pojawia się pole roku),
+  - **🎙️ Kto to śpiewa?** – czterech wykonawców do wyboru (podobne lata i ta sama kategoria polska/zagraniczna),
+  - **🌍 Skąd jest wykonawca?** – cztery kraje z flagami do wyboru,
+  - **💰 Licytacja** – start z 5 pkt; przed odpowiedzią stawiasz 1–3 pkt, potem wskazujesz dekadę
+    (dobrze – zyskujesz stawkę, źle – tracisz).
+- Rok co do roku, Kto to śpiewa? i Skąd jest wykonawca? są też minigrami w trybie Impreza.

@@ -436,6 +436,11 @@ const MODES = {
   duel: { title: T('Pojedynek dekad'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   buzz: { title: 'Kto pierwszy?', minPlayers: 2, maxPlayers: MAX_PLAYERS },
   party: { title: T('Impreza – minigry'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  // tryby quizowe (modes.js)
+  year: { title: T('Rok co do roku'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  artist: { title: T('Kto to śpiewa?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  country: { title: T('Skąd jest wykonawca?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  bid: { title: T('Licytacja'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
 };
 // jeden gracz albo multiplayer (lobby z listą graczy, telefonami i głosowaniem na tryb)
 let playCtx = 'single';
@@ -446,6 +451,9 @@ const PARTY_GAMES = {
   melody: { icon: '🎤', name: 'Jaka to melodia', mode: () => 'melody', opts: (n) => ({ rounds: n === 1 ? 3 : 1 }) },
   steps: { icon: '⏱️', name: 'Melodia krok po kroku', mode: () => 'steps', opts: (n) => ({ rounds: n === 1 ? 2 : 1 }) },
   duel: { icon: '🥊', name: T('Pojedynek dekad'), mode: () => 'duel', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
+  year: { icon: '📅', name: T('Rok co do roku'), mode: () => 'year', opts: (n) => ({ rounds: n === 1 ? 4 : 1 }) },
+  artist: { icon: '🎙️', name: T('Kto to śpiewa?'), mode: () => 'artist', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
+  country: { icon: '🌍', name: T('Skąd jest wykonawca?'), mode: () => 'country', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
   hilo: { icon: '↕️', name: T('Starsza czy nowsza?'), mode: () => 'hilo', opts: (n) => ({ rounds: n === 1 ? 0 : 2 }) },
   buzz: { icon: '🔔', name: 'Kto pierwszy?', min: 2, mode: () => 'buzz', opts: (n) => ({ rounds: Math.min(8, Math.max(4, n + 2)) }) },
   // oś czasu: dla jednej osoby – minuta na czas, dla kilku – wyścig do 4 kart (przy wielu graczach trwałoby to za długo)
@@ -682,6 +690,8 @@ function handleRemote(msg, from) {
     const expected = state.phase === 'challenge' ? state.challenger : state.turn;
     if (who === null || who === expected) onSlotClick(msg.slot);
   }
+  // „Rok co do roku”: rok wpisany na telefonie gracza z turą
+  if (msg.yearAnswer != null && from && controlNames().includes(from.name) && state.mode === 'year') answerQuiz(msg.yearAnswer);
   // rok podany przez wyzywającego na jego telefonie (wariant wyzwania „dokładny rok”)
   if (msg.challengeYear != null && from && state.phase === 'challenge' && state.challengeMode === 'year'
     && state.challenger != null && playerIndexOf(from.name) === state.challenger) {
@@ -833,6 +843,8 @@ function tvSync() {
       // wyzwanie „dokładny rok”: pole roku na telefonie wyzywającego
       challengeInput: state.phase === 'challenge' && state.challenger != null && state.challengeMode === 'year'
         ? { who: state.players[state.challenger].name } : null,
+      // „Rok co do roku”: pole roku na telefonie gracza z turą
+      yearAsk: state.mode === 'year' && state.phase === 'listen' && state.current ? { who: controlNames() } : null,
       phase: state.phase, turnName: activePlayer().name, turnWho: answering(activePlayer()), playing: !audio.paused, hasSong: !!state.current,
       // drużyny: do której drużyny należy gracz z telefonem
       teamOf: state.mode === 'teams' ? Object.fromEntries(state.players.flatMap((pl) => (pl.members || []).map((m) => [m, pl.name]))) : null,
@@ -1733,6 +1745,9 @@ function startGame(over = {}) {
   const needed = state.mode === 'buzz' ? state.rounds
     : (state.hiloMulti ? names.length * state.rounds + 2 : (isTimeline() || state.mode === 'hilo' ? names.length * 3 : names.length * state.rounds));
   let base = songPool();
+  // tryby quizowe: podpowiedzi z tej samej puli; „Skąd jest wykonawca?” – tylko piosenki z flagą kraju
+  if (state.mode === 'country') base = base.filter((s) => s.cc && hasFlag(s.cc));
+  state.quizPool = base;
   if (state.mode === 'duel') {
     state.duel = pickDuelDecades(base, needed, !!party);
     if (!state.duel) { alert(T('Za mało piosenek w wybranej puli dla tych ustawień.')); return; }
@@ -1755,7 +1770,7 @@ function startGame(over = {}) {
   state.ref = null;
   state.streak = 0;
   state.players = rows.map((r) => ({
-    name: r.name, tokens: startTokens, timeline: [], score: 0, lives,
+    name: r.name, tokens: startTokens, timeline: [], score: state.mode === 'bid' ? BID_START : 0, lives,
     members: teams ? (r.members || '').split(/[,;\n]+/).map((m) => m.trim()).filter(Boolean) : [], member: 0,
   }));
   if (isTimeline()) dealStartYears(songPool());
@@ -2028,7 +2043,8 @@ async function drawSong() {
         state.clipStart = filterState.random && filterState.clip < 30 ? Math.random() * (29 - filterState.clip) : 0;
       }
       setAudioSource(preview);
-      const status = {
+      if (isQuiz()) prepareQuiz(song);
+      const status = isQuiz() ? QUIZ[state.mode].status() : {
         steps: T('Posłuchaj {0} sekundy i zgaduj – albo wydłuż fragment.', STEPS[0].len),
         melody: T('Posłuchaj i wpisz odpowiedź.'),
         buzz: T('Włącz fragment – kto pierwszy naciśnie swój przycisk, ten odpowiada.'),
@@ -2905,10 +2921,11 @@ function endGame() {
     won = state.streak > prev;
     title.textContent = won ? T('🏆 Nowy rekord! Seria: {0} (poprzedni: {1}).', state.streak, prev)
       : T('Koniec serii: {0}. Rekord: {1}.', state.streak, prev);
-  } else if ((isMelody() || state.mode === 'duel') && state.players.length === 1) {
+  } else if ((isMelody() || state.mode === 'duel' || isQuiz()) && state.players.length === 1) {
     const max = state.mode === 'duel' ? state.rounds
-      : state.rounds * (state.guessType === 'both' ? 2 : 1) * (state.mode === 'steps' ? STEPS[0].pts : 1);
-    title.textContent = T('{0} Twój wynik: {1} z {2} pkt', { steps: '⏱️', duel: '🥊' }[state.mode] || '🎤', best.score, max);
+      : (isQuiz() ? state.rounds * QUIZ[state.mode].max() + (state.mode === 'bid' ? BID_START : 0)
+        : state.rounds * (state.guessType === 'both' ? 2 : 1) * (state.mode === 'steps' ? STEPS[0].pts : 1));
+    title.textContent = T('{0} Twój wynik: {1} z {2} pkt', { steps: '⏱️', duel: '🥊', year: '📅', artist: '🎙️', country: '🌍', bid: '💰' }[state.mode] || '🎤', best.score, max);
     won = best.score >= max / 2 && best.score > 0;
   } else if (state.mode === 'solo' && state.endless) {
     const placed = best.timeline.filter((c) => !c.start).length;
@@ -3170,10 +3187,10 @@ function render() {
 
   renderHeader(p, timeline);
 
-  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !['steps', 'buzz', 'hilo', 'duel'].includes(state.mode);
+  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !['steps', 'buzz', 'hilo', 'duel'].includes(state.mode) && !isQuiz();
   $('#btn-skip').textContent = timeline ? T('⏭ Pomiń ({0} żeton)', SKIP_COST) : T('⏭ Inna piosenka');
   $('#btn-skip').disabled = !canSkip || (timeline && p.tokens < SKIP_COST);
-  $('#btn-skip').classList.toggle('hidden', ['steps', 'buzz', 'hilo', 'duel'].includes(state.mode));
+  $('#btn-skip').classList.toggle('hidden', ['steps', 'buzz', 'hilo', 'duel'].includes(state.mode) || isQuiz());
 
   // pola odpowiedzi: zawsze w „Jaka to melodia”; przy osi czasu – w trybie ekspert (wymagane)
   // i w solo (tytuł + wykonawca opcjonalnie, za żeton)
@@ -3219,7 +3236,8 @@ function render() {
 
   if (state.mode === 'hilo') hints.listen = T('Ta piosenka jest starsza czy nowsza od karty poniżej?');
   if (state.mode === 'duel') hints.listen = T('Z której dekady jest ta piosenka?');
-  if (state.mode === 'hilo' || state.mode === 'duel') $('#hint').textContent = state.current && state.phase === 'listen' ? hints.listen : '';
+  if (isQuiz()) hints.listen = QUIZ[state.mode].hint();
+  if (state.mode === 'hilo' || state.mode === 'duel' || isQuiz()) $('#hint').textContent = state.current && state.phase === 'listen' ? hints.listen : '';
 
   const tl = $('#timeline');
   tl.classList.toggle('hidden', !timeline && state.mode !== 'hilo');
@@ -3236,7 +3254,7 @@ function render() {
 // tablica wyników i tytuł tury – zależnie od trybu
 function renderHeader(p, timeline) {
   const sb = $('#scoreboard');
-  sb.classList.toggle('hidden', state.players.length === 1 && !isMelody() && state.mode !== 'duel');
+  sb.classList.toggle('hidden', state.players.length === 1 && !isMelody() && state.mode !== 'duel' && !isQuiz());
   // impreza: która minigra i ile zostało
   const pt = state.party;
   $('#party-bar').classList.toggle('hidden', !pt);
@@ -3264,6 +3282,8 @@ function renderHeader(p, timeline) {
     const rec = store.get('records', {})[`hilo${state.difficulty}`] || 0;
     title.textContent = T('Seria: {0}', state.streak);
     info.textContent = T('Rekord: {0}', Math.max(rec, state.streak));
+  } else if (isQuiz()) {
+    quizHeader(p, title, info);
   } else if (state.mode === 'duel') {
     const round = Math.min(state.rounds, Math.floor(state.turnsPlayed / state.players.length) + 1);
     title.textContent = state.players.length > 1 ? T('Tura: {0}', p.name) : T('Piosenka {0} z {1}', songNo, state.rounds);
@@ -3416,7 +3436,9 @@ function renderTimeline(container, timeline, interactive, marks) {
 function renderActions() {
   const p = activePlayer();
   const btns = [];
-  if (state.mode === 'hilo' || state.mode === 'duel' || state.mode === 'buzz') {
+  if (isQuiz()) {
+    btns.push(...quizActions());
+  } else if (state.mode === 'hilo' || state.mode === 'duel' || state.mode === 'buzz') {
     btns.push(...quickActions(p));
   } else if (isMelody()) {
     if (state.mode === 'steps' && state.phase === 'listen' && state.current) {

@@ -224,7 +224,7 @@ function modesBoard(s) {
 let lastKey = '';
 // pole roku przy wyzwaniu – wpisany tekst przetrwa odświeżenia ekranu
 let yearDraft = '';
-function challengeYearForm() {
+function challengeYearForm(label, key) {
   const input = h('input', 'year-input');
   input.type = 'number'; input.inputMode = 'numeric'; input.min = '1900'; input.max = String(new Date().getFullYear());
   input.placeholder = T('Rok, np. 1984'); input.value = yearDraft;
@@ -232,8 +232,8 @@ function challengeYearForm() {
   const ok = () => { const y = parseInt(input.value, 10); return y >= 1900 && y <= new Date().getFullYear() ? y : null; };
   go.disabled = ok() == null;
   input.addEventListener('input', () => { yearDraft = input.value; go.disabled = ok() == null; });
-  const form = h('form', 'year-form', h('label', '', T('⚔ Twoje wyzwanie: podaj dokładny rok wydania')), input, go);
-  form.addEventListener('submit', (e) => { e.preventDefault(); if (ok() != null) { send({ challengeYear: ok() }); yearDraft = ''; input.blur(); } });
+  const form = h('form', 'year-form', h('label', '', label), input, go);
+  form.addEventListener('submit', (e) => { e.preventDefault(); if (ok() != null) { send({ [key]: ok() }); yearDraft = ''; input.blur(); } });
   setTimeout(() => { if (document.activeElement !== input && !input.value) input.focus(); }, 0);
   return form;
 }
@@ -453,7 +453,8 @@ function renderPlayer(s) {
   };
   const skipB = myView ? btns.find((b) => /^⏭/.test(b.text)) : null;
   // wyzwanie „dokładny rok” – pole roku u wyzywającego (zamiast przycisku „Odkryj kartę” gospodarza)
-  const yearForm = s.challengeInput && ids.includes(s.challengeInput.who) ? challengeYearForm() : null;
+  const yearForm = s.challengeInput && ids.includes(s.challengeInput.who) ? challengeYearForm(T('⚔ Twoje wyzwanie: podaj dokładny rok wydania'), 'challengeYear')
+    : (s.yearAsk && s.yearAsk.who.includes(me) ? challengeYearForm(T('📅 W którym roku wydano tę piosenkę?'), 'yearAnswer') : null);
   const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text) && !(yearForm && b.cls.includes('primary')));
   const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || ids.includes(s.challenger)));
   // karta tury – jak na urządzeniu gospodarza

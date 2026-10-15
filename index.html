@@ -141,6 +141,29 @@
         <span class="muted">Dwie dekady, jedna piosenka: z której jest? Łatwy tryb dla dzieci i osób spoza tematu.</span>
       </button>
     </div>
+    <h3 class="mode-group">Quizy</h3>
+    <div class="modes">
+      <button class="mode" data-mode="year" data-ctx="single multi">
+        <span class="mode-icon">📅</span>
+        <b>Rok co do roku</b>
+        <span class="muted">Wpisz rok wydania piosenki. Dokładnie – 3 pkt, do 2 lat różnicy – 1 pkt.</span>
+      </button>
+      <button class="mode" data-mode="artist" data-ctx="single multi">
+        <span class="mode-icon">🎙️</span>
+        <b>Kto to śpiewa?</b>
+        <span class="muted">Czterech wykonawców do wyboru – łatwe, dobre dla dzieci i na duży ekran.</span>
+      </button>
+      <button class="mode" data-mode="country" data-ctx="single multi">
+        <span class="mode-icon">🌍</span>
+        <b>Skąd jest wykonawca?</b>
+        <span class="muted">Cztery kraje z flagami do wyboru.</span>
+      </button>
+      <button class="mode" data-mode="bid" data-ctx="single multi">
+        <span class="mode-icon">💰</span>
+        <b>Licytacja</b>
+        <span class="muted">Najpierw postaw 1–3 pkt na swoją pewność, potem wskaż dekadę. Dobrze – zyskujesz stawkę, źle – tracisz.</span>
+      </button>
+    </div>
     <h3 class="mode-group">Zgadywanie</h3>
     <div class="modes">
       <button class="mode" data-mode="melody" data-ctx="single multi">
@@ -214,7 +237,7 @@
 
     <section class="card">
       <h2>Odtwarzanie</h2>
-      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party">Długość fragmentu
+      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist country bid">Długość fragmentu
         <select id="clip-length">
           <option value="30">30 s (cały)</option>
           <option value="15">15 s</option>
@@ -228,7 +251,7 @@
       <div class="seg" id="audio-out">
         <label><input type="radio" name="audio-out" value="host" checked> Tym urządzeniu</label>
         <label id="audio-out-tv"><input type="radio" name="audio-out" value="tv"> Dużym ekranie (TV)</label>
-        <label data-for="multi teams melody steps duel party" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
+        <label data-for="multi teams melody steps duel party year artist country bid" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
       </div>
       <p class="muted small" id="audio-out-desc">Duży ekran i telefony graczy łączy się w oknie 📺. Gdy wybranego urządzenia nie ma, muzyka gra na tym urządzeniu.</p>
       </div>
@@ -332,7 +355,7 @@
           <label><input type="radio" name="guess" value="both"> Tytuł i wykonawcę</label>
         </div>
       </div>
-      <div data-for="melody steps buzz duel">
+      <div data-for="melody steps buzz duel year artist country bid">
         <label class="row" style="margin-top:12px"><span id="rounds-label">Piosenek na gracza</span>
           <input type="number" id="rounds" min="1" max="30" value="5">
         </label>
@@ -577,6 +600,7 @@
   <script src="match.js"></script>
   <script src="net.js"></script>
   <script src="game.js"></script>
+  <script src="modes.js"></script>
   <script src="stats.js"></script>
   <script src="resume.js"></script>
   <script>

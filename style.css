@@ -567,3 +567,5 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .conn-slow { color: var(--gold); }
 .conn-off { color: var(--bad, #ff5c5c); }
 .conn-strip { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .85rem; margin: 0 0 8px; }
+/* --- tryby quizowe --- */
+#quiz-year, #challenge-year { flex: 1 1 9em; min-width: 9em; font-size: 1.1rem; }
