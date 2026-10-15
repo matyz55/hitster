@@ -1,7 +1,7 @@
 'use strict';
 
 // aktualna wersja gry – ta sama co ostatni wpis w CHANGELOG.md (pokazywana na dole ekranu startowego)
-const GAME_VERSION = '5.22.4';
+const GAME_VERSION = '5.23.0';
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -368,6 +368,8 @@ async function findPreview(song, { quiet = false } = {}) {
           url: hit.previewUrl,
           art: (hit.artworkUrl100 || '').replace('100x100', '300x300'),
           link: hit.trackViewUrl,
+          // oznaczenie wydawcy w Apple Music: tekst z przekleństwami
+          ex: hit.trackExplicitness === 'explicit' ? 1 : 0,
         };
         break;
       }

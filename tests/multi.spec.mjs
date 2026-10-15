@@ -258,3 +258,27 @@ test('najciekawsze momenty na podsumowaniu', async ({ page }) => {
   await expect(page.locator('.moments-box li').first()).toBeVisible();
   await expect(page.locator('.moments-box')).toContainText('Najstarsza piosenka');
 });
+
+for (const n of [4, 5]) {
+  test(`bingo ${n}×${n}: plansza z ${n * n} polami, BINGO po pełnym wierszu`, async ({ page }) => {
+    await lobby(page, 2);
+    await page.click('.mode[data-mode=bingo]');
+    await page.check(`input[name=bingo-size][value="${n}"]`);
+    await page.fill('#rounds', '10');
+    await page.click('#btn-start');
+    await ready(page);
+    expect(await page.evaluate(() => state.bingo.n)).toBe(n);
+    await expect(page.locator('#bingo-boards .bingo-board >> nth=0 >> .bingo-cell')).toHaveCount(n * n);
+    // różne kategorie na planszy i siatka n kolumn
+    expect(await page.evaluate(() => new Set(state.bingo.boards[0].cells).size)).toBe(n * n);
+    const cols = await page.locator('#bingo-boards .bingo-grid >> nth=0').evaluate((g) => getComputedStyle(g).gridTemplateColumns.split(' ').length);
+    expect(cols).toBe(n);
+    // brakuje jednego pola w pierwszym wierszu – po jego trafieniu BINGO
+    await page.evaluate((k) => {
+      const b = state.bingo.boards[1];
+      b.marked = b.marked.map((m, i) => i < k - 1);
+      b.pick = k - 1; state.bingo.cats[b.cells[k - 1]].test = () => true; bingoReveal();
+    }, n);
+    await expect(page.locator('#reveal')).toContainText('BINGO');
+  });
+}

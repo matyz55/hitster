@@ -78,6 +78,30 @@ for (const [pid, name] of Object.entries(props)) {
   console.log(`${pid} (${name}) gotowe`);
 }
 
+// 2b) film / serial / gra / musical, którego ścieżka dźwiękowa (P406) ma tę piosenkę na liście utworów (P658)
+for (let i = 0; i < songQids.length; i += 150) {
+  const batch = songQids.slice(i, i + 150);
+  const rows = await sparql(`SELECT DISTINCT ?song ?v ?vLabel ?date WHERE {
+    VALUES ?song { ${batch.map((x) => 'wd:' + x).join(' ')} }
+    ?v wdt:P406 ?album . ?album wdt:P658 ?song .
+    VALUES ?cls { wd:Q2431196 wd:Q15416 wd:Q2743 wd:Q7889 } ?v wdt:P31/wdt:P279* ?cls .
+    OPTIONAL { ?v wdt:P577 ?date }
+    SERVICE wikibase:label { bd:serviceParam wikibase:language "pl,en,mul". }
+  }`, `fsoundtrack-${i}`);
+  for (const r of rows) {
+    const q = qidOf(r.song);
+    const name2 = label(r, 'vLabel').replace(/\s*\((film|serial|\d{4}[^)]*)\)$/i, '');
+    if (!name2 || isQid(name2)) continue;
+    const f = songFacts.get(q) || {};
+    f.work = f.work || [];
+    const y = yearOf(r.date);
+    const cur = f.work.find((x) => x.name === name2);
+    if (cur) { if (y && (!cur.year || y < cur.year)) cur.year = y; } else f.work.push({ name: name2, year: y, qid: qidOf(r.v) });
+    songFacts.set(q, f);
+  }
+}
+console.log('ścieżki dźwiękowe gotowe');
+
 // 3) wykonawcy: prawdziwe imię i nazwisko, miejsce urodzenia / powstania zespołu
 const artistFacts = new Map();
 for (let i = 0; i < qids.length; i += 150) {

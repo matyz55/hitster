@@ -143,62 +143,86 @@ function opoleYear(roman) {
 // wszystkie ciekawostki o piosence: z pola f w songs.js i z Wikidata (facts.js: piosenka, potem wykonawca)
 function songFacts(song) {
   const out = [];
+  // rodzaj ciekawostki – w zestawie tematycznym pokazujemy pasującą (np. w Eurowizji – o Eurowizji)
+  let kind = 'other';
+  const push = (txt) => out.push({ txt, kind });
   for (const f of song.f || []) {
-    const [kind, a, b, c] = f.split(':');
-    if (kind === 'e' && a === '2020') {
+    const [code, a, b, c] = f.split(':');
+    kind = { e: 'euro', jr: 'euro', ep: 'euro', o: 'opole', t1: 'trojka', tp: 'trojka', w: 'film' }[code] || 'other';
+    if (code === 'e' && a === '2020') {
       // Eurowizja 2020 w Rotterdamie została odwołana 18 marca 2020 r. z powodu pandemii COVID-19
-      out.push(T('🎤 Wybrana na Eurowizję 2020 ({0}) – konkurs się nie odbył z powodu pandemii COVID-19', c ? countryName({ cc: c }) : ''));
-    } else if (kind === 'e') {
+      push(T('🎤 Wybrana na Eurowizję 2020 ({0}) – konkurs się nie odbył z powodu pandemii COVID-19', c ? countryName({ cc: c }) : ''));
+    } else if (code === 'e') {
       const country = c ? countryName({ cc: c }) : '';
-      out.push(b === '1' ? T('🏆 Zwycięzca Eurowizji {0} ({1})', a, country)
+      push(b === '1' ? T('🏆 Zwycięzca Eurowizji {0} ({1})', a, country)
         : (b ? T('🎤 Eurowizja {0}: {1}. miejsce ({2})', a, b, country) : T('🎤 Występ na Eurowizji {0} ({1})', a, country)));
-    } else if (kind === 'jr') {
+    } else if (code === 'jr') {
       const country = c ? countryName({ cc: c }) : '';
-      out.push(b === '1' ? T('🏆 Zwycięzca Eurowizji Junior {0} ({1})', a, country)
+      push(b === '1' ? T('🏆 Zwycięzca Eurowizji Junior {0} ({1})', a, country)
         : (b ? T('🎤 Eurowizja Junior {0}: {1}. miejsce ({2})', a, b, country) : T('🎤 Występ na Eurowizji Junior {0} ({1})', a, country)));
-    } else if (kind === 't1') out.push(T('📻 1. miejsce na Liście Przebojów Programu Trzeciego'));
-    else if (kind === 'tp') out.push(T('📻 W plebiscycie „Polski Top Wszech Czasów” Trójki'));
-    else if (kind === 'o') {
+    } else if (code === 'ep') {
+      // preselekcje (krajowe eliminacje) – ep:rok:kraj:miejsce
+      const country = b ? countryName({ cc: b }) : '';
+      push(c ? T('🎤 Preselekcje do Eurowizji {0} ({1}): {2}. miejsce', a, country, c) : T('🎤 W preselekcjach do Eurowizji {0} ({1})', a, country));
+    } else if (code === 'w') {
+      // film / serial / musical / gra, w którym piosenka zabrzmiała – w:nazwa (dwukropki w nazwie zapisane jako „꞉”)
+      push(T('🎬 Zabrzmiała w: „{0}”', f.slice(2)));
+    } else if (code === 't1') push(T('📻 1. miejsce na Liście Przebojów Programu Trzeciego'));
+    else if (code === 'tp') push(T('📻 W plebiscycie „Polski Top Wszech Czasów” Trójki'));
+    else if (code === 'o') {
       const y = opoleYear(a);
-      out.push(y ? T('🎙 Śpiewana na {0} Krajowym Festiwalu Piosenki Polskiej w Opolu ({1})', a, y)
+      push(y ? T('🎙 Śpiewana na {0} Krajowym Festiwalu Piosenki Polskiej w Opolu ({1})', a, y)
         : T('🎙 Śpiewana na {0} Krajowym Festiwalu Piosenki Polskiej w Opolu', a));
-    } else if (kind === 'b') out.push(b ? T('🇺🇸 Billboard Year-End Hot 100 ({0}): {1}. miejsce', a, b) : T('🇺🇸 Na liście Billboard Year-End Hot 100 ({0})', a));
-    else if (kind === 'n') out.push(T('🇵🇱 Nr 1 na liście przebojów w Polsce ({0})', a));
+    } else if (code === 'b') push(b ? T('🇺🇸 Billboard Year-End Hot 100 ({0}): {1}. miejsce', a, b) : T('🇺🇸 Na liście Billboard Year-End Hot 100 ({0})', a));
+    else if (code === 'n') push(T('🇵🇱 Nr 1 na liście przebojów w Polsce ({0})', a));
     // nagrody z Wikidata (tools/awards.mjs, lista w AWARDS.md)
-    else if (kind === 'a') {
+    else if (code === 'a') {
       const txt = { oscar: T('🏆 Oscar za najlepszą piosenkę filmową'), globe: T('🏆 Złoty Glob za najlepszą piosenkę'),
         soty: T('🏆 Grammy – piosenka roku'), roty: T('🏆 Grammy – nagranie roku'), grammy: T('🏆 Nagroda Grammy'),
         ghof: T('🏛 W Grammy Hall of Fame'), lgrammy: T('🏆 Latin Grammy') }[a];
-      if (txt) out.push(T('{0} ({1}, wg Wikidata)', txt, b));
+      if (txt) push(T('{0} ({1}, wg Wikidata)', txt, b));
     }
   }
   const wd = (txt) => T('{0} (wg Wikidata)', txt);
   for (const [k, a, b] of (window.SONG_FACTS && window.SONG_FACTS[songKey(song)]) || []) {
-    if (k === 'ml') out.push(wd(T('🎼 Muzyka i słowa: {0}', a)));
-    else if (k === 'm' && a && b) out.push(wd(T('🎼 Muzyka: {0} · słowa: {1}', a, b)));
-    else if (k === 'm' && a) out.push(wd(T('🎼 Muzyka: {0}', a)));
-    else if (k === 'm' && b) out.push(wd(T('✍️ Słowa: {0}', b)));
-    else if (k === 'w') out.push(wd(b ? T('🎬 Zabrzmiała w: „{0}” ({1})', a, b) : T('🎬 Zabrzmiała w: „{0}”', a)));
-    else if (k === 'al') out.push(wd(T('💿 Z albumu „{0}” ({1})', a, b)));
-    else if (k === 'pr') out.push(wd(T('🎚 Producent nagrania: {0}', a)));
-    else if (k === 'bo') out.push(wd(b ? T('🔁 Oparta na utworze „{0}” ({1})', a, b) : T('🔁 Oparta na utworze „{0}”', a)));
+    kind = k === 'w' ? 'film' : 'other';
+    if (k === 'ml') push(wd(T('🎼 Muzyka i słowa: {0}', a)));
+    else if (k === 'm' && a && b) push(wd(T('🎼 Muzyka: {0} · słowa: {1}', a, b)));
+    else if (k === 'm' && a) push(wd(T('🎼 Muzyka: {0}', a)));
+    else if (k === 'm' && b) push(wd(T('✍️ Słowa: {0}', b)));
+    else if (k === 'w') push(wd(b ? T('🎬 Zabrzmiała w: „{0}” ({1})', a, b) : T('🎬 Zabrzmiała w: „{0}”', a)));
+    else if (k === 'al') push(wd(T('💿 Z albumu „{0}” ({1})', a, b)));
+    else if (k === 'pr') push(wd(T('🎚 Producent nagrania: {0}', a)));
+    else if (k === 'bo') push(wd(b ? T('🔁 Oparta na utworze „{0}” ({1})', a, b) : T('🔁 Oparta na utworze „{0}”', a)));
   }
   if (out.length) return out;
   // o wykonawcy – gdy o samej piosence nic nie wiadomo
   const name = mainArtist(song);
+  kind = 'other';
   for (const [k, a, b] of (window.ARTIST_FACTS && window.ARTIST_FACTS[name]) || []) {
-    if (k === 'bn') out.push(wd(T('🪪 {0} to pseudonim – właściwie: {1}', name, a)));
-    else if (k === 'bp') out.push(wd(T('📍 {0} – rok i miejsce urodzenia: {1}, {2}', name, b, a)));
-    else if (k === 'fp') out.push(wd(T('📍 Zespół {0} powstał w {1} ({2})', name, b, a)));
+    if (k === 'bn') push(wd(T('🪪 {0} to pseudonim – właściwie: {1}', name, a)));
+    else if (k === 'bp') push(wd(T('📍 {0} – rok i miejsce urodzenia: {1}, {2}', name, b, a)));
+    else if (k === 'fp') push(wd(T('📍 Zespół {0} powstał w {1} ({2})', name, b, a)));
   }
-  if (!out.length && TOP_SONGS.has(songKey(song))) out.push(T('🔥 Jedna z 1000 najpopularniejszych piosenek w grze (Spotify)'));
+  if (!out.length && TOP_SONGS.has(songKey(song))) push(T('🔥 Jedna z 1000 najpopularniejszych piosenek w grze (Spotify)'));
   return out;
 }
-// przy odkrytej karcie – jedna ciekawostka, losowo wybrana spośród dostępnych (przy kolejnym spotkaniu może być inna)
+// zestaw tematyczny, w którym gramy → rodzaj ciekawostki, który pokazujemy w pierwszej kolejności
+function factTheme() {
+  const tag = filterState.tag;
+  if (tag === 'eurowizja' || tag === 'opole' || tag === 'trojka') return { eurowizja: 'euro', opole: 'opole', trojka: 'trojka' }[tag];
+  if (typeof renderPresetsActive === 'function' && renderPresetsActive() === 'film') return 'film';
+  return null;
+}
+// przy odkrytej karcie – jedna ciekawostka: w zestawie tematycznym pasująca do niego (np. Eurowizja – o występie
+// na Eurowizji, muzyka filmowa – z jakiego filmu), a gdy takiej nie ma albo gramy wszystkimi piosenkami – losowa
 function factLines(song) {
   const all = songFacts(song);
   if (!all.length) return [];
-  return [el('div', { class: 'fact' }, all[Math.floor(Math.random() * all.length)])];
+  const theme = factTheme();
+  const themed = theme ? all.filter((f) => f.kind === theme) : [];
+  const from = themed.length ? themed : all;
+  return [el('div', { class: 'fact' }, from[Math.floor(Math.random() * from.length)].txt)];
 }
 
 function showReveal(...extra) {

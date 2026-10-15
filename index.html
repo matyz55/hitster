@@ -292,6 +292,8 @@
         <label><input type="radio" name="level" value="2"> Trudny</label>
       </div>
       <p class="muted" id="difficulty-desc"></p>
+      <label class="check" style="margin-top:10px"><input type="checkbox" id="no-explicit"> 🔞 Pomijaj piosenki niecenzuralne</label>
+      <p class="muted small">Bez piosenek z przekleństwami w tekście – w dowolnym języku (wg oznaczenia „explicit” wydawców w Deezer i Apple Music oraz słów w tytule).</p>
     </section>
 
     <section class="card">
@@ -389,6 +391,15 @@
           <label><input type="radio" name="guess" value="artist"> Wykonawcę</label>
           <label><input type="radio" name="guess" value="both"> Tytuł i wykonawcę</label>
         </div>
+      </div>
+      <div data-for="bingo">
+        <p class="label" style="margin-top:12px">Plansza bingo</p>
+        <div class="seg">
+          <label><input type="radio" name="bingo-size" value="3" checked> 3×3</label>
+          <label><input type="radio" name="bingo-size" value="4"> 4×4</label>
+          <label><input type="radio" name="bingo-size" value="5"> 5×5</label>
+        </div>
+        <p class="muted small">Większa plansza – więcej kategorii i dłuższa gra (BINGO to cały wiersz, kolumna albo przekątna).</p>
       </div>
       <div data-for="melody steps buzz duel year artist country bid sort5 bingo">
         <label class="row" style="margin-top:12px"><span id="rounds-label">Piosenek na gracza</span>

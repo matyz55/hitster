@@ -395,6 +395,8 @@ async function drawSong() {
     if (preview && preview.gone) { forgetPreview(song); preview = await withAudio(await findPreview(song)); }
     if (preview && preview.gone) preview = null;
     if (myDraw !== state.drawId) return; // gra została przerwana
+    // „pomijaj niecenzuralne”: piosenka bez oznaczenia w bazie, ale oznaczona w Apple Music – losujemy inną
+    if (preview && preview.ex && filterState.noExplicit) continue;
     if (preview) {
       markPlayed(song);
       state.current = song;

@@ -553,12 +553,16 @@ let lastMark = '';
 
 // Bingo: własna plansza gracza na telefonie (stuknięcie = zaznaczenie pola), na dużym ekranie – plansze wszystkich
 function bingoGrid(b, mine, open) {
-  return h('div', 'bingo-grid', b.cells.map((label, c) => {
+  // plansza 3×3, 4×4 albo 5×5 – liczba kolumn z liczby pól
+  const n = Math.round(Math.sqrt(b.cells.length)) || 3;
+  const grid = h('div', 'bingo-grid n' + n, b.cells.map((label, c) => {
     const cell = h('button', 'bingo-cell' + (b.marked[c] ? ' marked' : '') + (b.pick === c ? ' picked' : ''), label);
     cell.disabled = !mine || !open || b.marked[c];
     if (mine) cell.addEventListener('click', () => send({ bingoPick: c }));
     return cell;
   }));
+  grid.style.setProperty('--n', n);
+  return grid;
 }
 function bingoBoard(s) {
   if (!s.bingo) return null;

@@ -206,13 +206,14 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Ethel Merman – Anything Goes (Q4778332): ml · Cole Porter
 - Ethel Merman – I Get a Kick Out of You (Q1108383): ml · Cole Porter
 - Glenn Miller – In the Mood (Q1413725): m · Joe Garland, Wingy Manone · Andy Razaf
+- Gene Kelly – Singin' In The Rain (Q131631671): w · Deszczowa piosenka · 1952
 - The Chordettes – Mr. Sandman (Q931296): pr · Archie Bleyer
 - Chuck Berry – Maybellene (Q2080355): pr · Leonard Chess
 - Johnny Cash – Folsom Prison Blues (Q109501850): pr · Bob Johnston
 - The Four Lads – Moments to Remember (Q6897222): m · Robert Allen · Al Stillman
 - Chuck Berry – School Days (Q944130): m ·  · Chuck Berry | pr · Leonard Chess
 - Ella Fitzgerald – Manhattan (Q124399881): pr · Norman Granz
-- Elvis Presley – Hound Dog (Q27921430): pr · Steve Sholes
+- Elvis Presley – Hound Dog (Q27921430): w · Lilo i Stich · 2002 | pr · Steve Sholes
 - Elvis Presley – Love Me Tender (Q1426427): m · Ken Darby, George R. Poulton, Elvis Presley · Ken Darby, Elvis Presley | bo · Aura Lea · 1861
 - The Four Lads – No, Not Much (Q7042743): m · Robert Allen · 
 - Charlie Gracie – Butterfly (Q5002911): ml · Bernie Lowe, Kal Mann
@@ -292,6 +293,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Gilbert Bécaud – Nathalie (Q3336529): m · Gilbert Bécaud · Pierre Delanoë
 - Herman's Hermits – Mrs. Brown, You've Got a Lovely Daughter (Q11990157): ml · Trevor Peacock
 - Hugues Aufray – Dès que le printemps revient (Q3246530): m · Hugues Aufray · Jacques Plante
+- Jay and the Americans – Come a Little Bit Closer (Q2229035): w · Strażnicy Galaktyki vol. 2 · 2017
 - Louis Armstrong – Hello, Dolly! (Q1267483): ml · Jerry Herman
 - Mary Wells – My Guy (Q6945602): m ·  · Smokey Robinson | pr · Smokey Robinson
 - Nat King Cole – L-O-V-E (Q1535561): m · Bert Kaempfert · Kenji Sazanami, Bert Kaempfert, Milt Gabler | pr · Raphael Saadiq
@@ -303,6 +305,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Animals – Don't Let Me Be Misunderstood (Q124359880): pr · Mickie Most
 - The Beach Boys – Help Me, Rhonda (Q263436): ml · Brian Wilson | pr · Brian Wilson
 - The Byrds – Mr. Tambourine Man (Q109984131): pr · Terry Melcher
+- The Righteous Brothers – Unchained Melody (Q64358942): w · Uwierz w ducha · 1990
 - The Righteous Brothers – You've Lost That Lovin' Feelin' (Q1487396): m · Phil Spector, Cynthia Weil, Barry Mann · Phil Spector | pr · Phil Spector
 - The Yardbirds – Heart Full of Soul (Q5692002): pr · Giorgio Gomelsky
 - Barry Sadler – The Ballad of the Green Berets (Q2636072): ml · Robin Moore, Barry Sadler
@@ -331,13 +334,14 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Canned Heat – On the Road Again (Q3293023): ml · Alan Wilson | al · Boogie with Canned Heat · 1968
 - Deep Purple – Hush (Q2631389): al · Shades of Deep Purple · 1968 | pr · Joe South
 - Fleetwood Mac – Albatross (Q1809189): m · Peter Green ·  | pr · Mike Vernon
+- Harry Nilsson – Everybody's Talkin' (Q57976800): w · Nocny kowboj · 1969
 - Mary Hopkin – Those Were The Days (Q88229004): pr · Paul McCartney
 - Stevie Wonder – For Once In My Life (Q3747882): pr · Henry Cosby
 - The Zombies – Time of the Season (Q3772309): m ·  · Rod Argent
 - B.B. King – The Thrill Is Gone (Q3523013): m ·  · Roy Hawkins | pr · Bill Szymczyk
 - Cass Elliot – Make Your Own Kind Of Music (Q6126616): al · Bubblegum, Lemonade, and... Something for Mama · 1969 | pr · Steve Barri
 - David Bowie – Space Oddity (Q581952): ml · David Bowie | al · Space Oddity · 1969 | pr · Gus Dudgeon
-- Elvis Presley – Suspicious Minds (Q27921396): pr · Chips Moman
+- Elvis Presley – Suspicious Minds (Q27921396): w · Lilo i Stich · 2002 | pr · Chips Moman
 - Led Zeppelin – Babe I'm Gonna Leave You (Q787873): m ·  · Robert Plant | al · Led Zeppelin · 1969 | pr · Jimmy Page
 - Led Zeppelin – Heartbreaker (Q392695): ml · Jimmy Page | al · Led Zeppelin II · 1969 | pr · Jimmy Page
 - Louis Armstrong – We Have all The Time in the World (Q3566917): m · John Barry · Hal David | pr · Phil Ramone
@@ -364,7 +368,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Deep Purple – Fireball (Q1418848): m ·  · Ritchie Blackmore
 - Don McLean – Vincent (Q920366): m ·  · Don McLean
 - Elton John – Tiny Dancer (Q2562766): m ·  · Elton John | al · Madman Across the Water · 1971 | pr · Gus Dudgeon
-- Ennio Morricone & Carlo Nistri – Chi Mai (Q2592251): m · Ennio Morricone · 
+- Ennio Morricone & Carlo Nistri – Chi Mai (Q2592251): m · Ennio Morricone ·  | w · Magdalena · 1971
 - Jethro Tull – Aqualung (Q2542129): m ·  · Ian Anderson | al · Aqualung · 1971
 - Jethro Tull – Locomotive Breath (Q2281864): m ·  · Ian Anderson | al · Aqualung · 1971 | pr · Ian Anderson
 - Led Zeppelin – Rock and Roll (Q2331674): m · Jimmy Page · Robert Plant | al · Led Zeppelin IV · 1971 | pr · Jimmy Page
@@ -395,7 +399,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Yes – Close to the Edge (i. The Solid Time of Change, ii. Total Mass Retain, iii. I Get up I Get Down, iv. Seasons of Man) (Q648858): al · Close to the Edge · 1972 | pr · Eddie Offord
 - Barbra Streisand – The Way We Were (Q126149): m · Alan Bergman, Marvin Hamlisch, Marilyn Bergman · Alan Bergman, Marilyn Bergman | al · The Way We Were · 1974
 - Billy Joel – Piano Man (Q1813850): m ·  · Billy Joel
-- Blue Swede & Björn Skifs – Hooked On A Feeling (Q111691973): pr · Bengt Palmers
+- Blue Swede & Björn Skifs – Hooked On A Feeling (Q111691973): w · Strażnicy Galaktyki · 2014 | pr · Bengt Palmers
 - Cliff Richard – Power to All Our Friends (Q7236638): m · Guy Fletcher · 
 - Demis Roussos – Goodbye My Love Goodbye (Q21186618): pr · Leo Leandros
 - Elton John – Goodbye Yellow Brick Road (Q2454066): m ·  · Elton John | pr · Gus Dudgeon
@@ -427,7 +431,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Billy Ocean – Love Really Hurts Without You (Q15878874): al · Billy Ocean · 1976
 - Bob Dylan – Hurricane (Q1419882): ml · Bob Dylan | al · Desire (album Boba Dylana) · 1976 | pr · Don DeVito
 - Carpenters – Solitaire (Q7558181): m ·  · Neil Sedaka | pr · Richard Carpenter
-- Earth, Wind & Fire – Shining Star (Q2406780): m ·  · Maurice White | pr · Maurice White
+- Earth, Wind & Fire – Shining Star (Q2406780): m ·  · Maurice White | w · That's the Way of the World · 1975 | pr · Maurice White
 - Elton John & Kiki Dee – Don't Go Breaking My Heart (Q1242292): ml · Elton John | pr · Gus Dudgeon
 - Harry Belafonte – Day-O (The Banana Boat Song) (Q806079): ml · traditional, DP
 - Hot Chocolate – You Sexy Thing (Q4023015): ml · Errol Brown | pr · Mickie Most
@@ -453,7 +457,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Stevie Wonder – Sir Duke (Q2165252): ml · Stevie Wonder | pr · Stevie Wonder
 - The Doors – L.A. Woman (Q2354169): m ·  · The Doors | pr · Bruce Botnick
 - Thin Lizzy – The Boys Are Back In Town (Q2624339): ml · Phil Lynott
-- Bee Gees – Night Fever (Q2659767): m ·  · Barry Gibb | al · Saturday Night Fever: The Original Movie Sound Track · 1977 | pr · Robert Stigwood
+- Bee Gees – Night Fever (Q2659767): m ·  · Barry Gibb | w · Gorączka sobotniej nocy · 1977 | al · Saturday Night Fever: The Original Movie Sound Track · 1977 | pr · Robert Stigwood
 - Bill Withers – Lovely Day (Q6692274): al · Menagerie · 1977
 - Billy Joel – She's Always a Woman (Q7491784): m ·  · Billy Joel | al · The Stranger · 1977
 - Billy Joel – The Stranger (Q7766943): m ·  · Billy Joel | al · The Stranger · 1977
@@ -662,7 +666,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Los Lobos – La Bamba (Q641677): m ·  · domena publiczna, Ritchie Valens
 - Madonna – Who's That Girl (Q1509118): m ·  · Patrick Leonard, Madonna | al · Who's That Girl — Original Motion Picture Soundtrack · 1987 | pr · Patrick Leonard, Madonna
 - Mötley Crüe – Girls, Girls, Girls (Q592626): m · Tommy Lee, Nikki Sixx, Mick Mars · Nikki Sixx | al · Girls, Girls, Girls · 1987 | pr · Tom Werman
-- New Order – True Faith (Q2599551): m ·  · Bernard Sumner
+- New Order – True Faith (Q2599551): m ·  · Bernard Sumner | w · American Psycho · 2000
 - Patrick Swayze & Wendy Fraser – She's Like the Wind (Q1669968): ml · Stacy Widelitz, Patrick Swayze | pr · Michael Lloyd
 - R.E.M. – It's The End Of The World As We Know It (And I Feel Fine) (Q1675438): pr · Scott Litt
 - R.E.M. – The One I Love (Q1780906): m ·  · Bill Berry | pr · Scott Litt
@@ -720,7 +724,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - The Stone Roses – I Wanna Be Adored (Q1584695): m ·  · Ian Brown | pr · John Leckie
 - AC/DC – Thunderstruck (Q2430003): m ·  · Angus Young | pr · Bruce Fairbairn
 - Azúcar Moreno – Bandido (Q4854600): m · Raúl Orellana · 
-- Cher – The Shoop Shoop Song (It's In His Kiss) (Q88963703): pr · Peter Asher
+- Cher – The Shoop Shoop Song (It's In His Kiss) (Q88963703): w · Syreny · 1990 | pr · Peter Asher
 - Damn Yankees – High Enough (Q5755391): pr · Ron Nevison
 - Depeche Mode – Policy of Truth (Q2305046): m ·  · Martin Gore | pr · Depeche Mode
 - Depeche Mode – World In My Eyes (Q2428773): ml · Martin Gore | pr · Depeche Mode
@@ -765,7 +769,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Bon Jovi – Keep The Faith (Q1737747): m ·  · Jon Bon Jovi | pr · Bob Rock
 - Dr. Alban – It's My Life (Q558000): m ·  · Dr Alban | pr · RedOne
 - Dr. Dre & Snoop Dogg – Nuthin' But A "G" Thang (Q1933481): m ·  · Dr. Dre | pr · Dr. Dre
-- Haddaway – What Is Love (Q550158): m ·  · Tony Hendrik
+- Haddaway – What Is Love (Q550158): m ·  · Tony Hendrik | w · Odlotowy duet · 1998
 - Kris Kross – Jump (Q15635928): ml · Jermaine Dupri | pr · Jermaine Dupri
 - Manic Street Preachers – Motorcycle Emptiness (Q2214059): m · James Dean Bradfield, Sean Moore, Nicky Wire · 
 - Megadeth – Symphony Of Destruction (Q2277543): ml · Dave Mustaine | al · Countdown to Extinction · 1992 | pr · Max Norman
@@ -774,8 +778,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Stereo MC's – Connected (Q4178112): al · Connected · 1992
 - Tasmin Archer – Sleeping Satellite (Q4180091): m ·  · Tasmin Archer | pr · Julian Mendelsohn
 - The Cranberries – Linger (Q2734705): m · Noel Hogan · Dolores O’Riordan | pr · Stephen Street
-- Urge Overkill – Girl, You'll Be a Woman Soon (Q124544708): pr · Kramer
-- Vangelis – Conquest of Paradise (Q2789951): m · Vangelis ·  | pr · Vangelis
+- Urge Overkill – Girl, You'll Be a Woman Soon (Q124544708): w · Pulp Fiction · 1994 | pr · Kramer
+- Vangelis – Conquest of Paradise (Q2789951): m · Vangelis ·  | w · 1492. Wyprawa do raju · 1992 | pr · Vangelis
 - Whitney Houston – I Have Nothing (Q2460910): m ·  · David Foster, Linda Thompson | al · Bodyguard · 1992 | pr · David Foster
 - Aerosmith – Amazing (Q2561481): m ·  · Steven Tyler | pr · Bruce Fairbairn
 - Aerosmith – Crazy (Q1139219): m · Desmond Child, Steven Tyler, Joe Perry · Desmond Child
@@ -813,7 +817,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Wet Wet Wet – Love Is All Around (Q480274): m ·  · Reg Presley | pr · Larry Page
 - Youssou N'Dour & Neneh Cherry – 7 Seconds (Q2297244): m · Youssou N'Dour, Neneh Cherry, Cameron McVey · Youssou N'Dour | al · The Guide (Wommat) · 1994 | pr · Cameron McVey, Christian Falk, Jonny Dollar
 - Babylon Zoo – Spaceman (Q582898): pr · Jas Mann
-- Bryan Adams – Have You Ever Really Loved A Woman? (Q2574224): m ·  · Michael Kamen | pr · Robert John Lange
+- Bryan Adams – Have You Ever Really Loved A Woman? (Q2574224): m ·  · Michael Kamen | w · Don Juan DeMarco · 1995 | pr · Robert John Lange
 - Coolio – Gangsta's Paradise (Q1493554): bo · Pastime Paradise · 1976
 - D'Angelo – Lady (Q20649237): al · Brown Sugar · 1995 | pr · Raphael Saadiq
 - Faith No More – Evidence (Q5418333): pr · Andy Wallace (producent muzyczny)
@@ -1274,7 +1278,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Robin Schulz & Francesco Yates – Sugar (Q20720799): pr · Robin Schulz
 - Tame Impala – Let It Happen (Q20856956): al · Currents · 2015 | pr · Kevin Parker
 - Tame Impala – The Less I Know The Better (Q23763048): m ·  · Kevin Parker | al · Currents · 2015 | pr · Kevin Parker
-- Wiz Khalifa & Charlie Puth – See You Again (Q19756862): m ·  · Charlie Puth | pr · Wiz Khalifa, Charlie Puth, Andrew Cedar | bo · Szybcy i Wściekli · 2015
+- Wiz Khalifa & Charlie Puth – See You Again (Q19756862): m ·  · Charlie Puth | w · Szybcy i Wściekli · 2015 | pr · Wiz Khalifa, Charlie Puth, Andrew Cedar | bo · Szybcy i Wściekli · 2015
 - X Ambassadors – Renegades (Q20648386): m ·  · X Ambassadors, Alex da Kid | pr · X Ambassadors, Alex da Kid
 - Zara Larsson – Lush Life (Q20735591): al · So Good · 2017
 - Zaz – Si jamais j'oublie (Q22249293): m ·  · Ycare
@@ -1287,7 +1291,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Calvin Harris & Rihanna – This Is What You Came For (Q23936576): m · Taylor Swift ·  | pr · Calvin Harris
 - Dami Im – Sound of Silence (Q23020974): m · Anthony Egizii ·  | pr · DNA
 - Fifth Harmony & Ty Dolla Sign – Work from Home (Q23010728): m ·  · Ammo | al · 7/27 · 2016 | pr · Ammo
-- Imany – Don't Be So Shy (Q25410899): m ·  · Stéfane Goldman, Imany
+- Imany – Don't Be So Shy (Q25410899): m ·  · Stéfane Goldman, Imany | w · Sous les jupes des filles · 2014
 - James Arthur – Say You Won't Let Go (Q26963266): m ·  · James Arthur | al · Back from the Edge · 2016
 - Jax Jones & RAYE – You Don't Know Me (Q28453007): pr · Jax Jones
 - Jonas Blue – Perfect Strangers (Q25352531): m ·  · Jonas Blue | al · Blue · 2018 | pr · Jonas Blue
@@ -1347,8 +1351,8 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - George Ezra – Shotgun (Q55064455): m ·  · George Ezra
 - Jessica Mauboy – We Got Love (Q50351362): m · Anthony Egizii · 
 - Juice Wrld – Lucid Dreams (Q54869141): m ·  · Sting, Juice Wrld | al · Goodbye & Good Riddance · 2018
-- Lady Gaga – Always Remember Us This Way (Q57461813): al · A Star Is Born · 2018 | pr · Lady Gaga, Dave Cobb
-- Lady Gaga & Bradley Cooper – Shallow (Q56770393): al · A Star Is Born · 2018
+- Lady Gaga – Always Remember Us This Way (Q57461813): w · Narodziny gwiazdy · 2018 | al · A Star Is Born · 2018 | pr · Lady Gaga, Dave Cobb
+- Lady Gaga & Bradley Cooper – Shallow (Q56770393): w · Narodziny gwiazdy · 2018 | al · A Star Is Born · 2018
 - Lewis Capaldi – Someone You Loved (Q60768202): pr · TMS
 - Lil Baby & Drake – Yes Indeed (Q53759192): m ·  · Lil Baby | al · Harder Than Ever · 2018
 - Lil Baby & Gunna – Drip Too Hard (Q57550152): m ·  · Lil Baby, Gunna | al · Drip Harder · 2018
@@ -1448,6 +1452,7 @@ Wikidata to otwarta baza edytowana przez społeczność – w grze ciekawostki m
 - Metro Boomin & The Weeknd – Creepin' (Q115660191): m · 21 Savage, Johan Lenox, Kashif ·  | al · Heroes & Villains · 2022 | pr · Jason Quenneville, Metro Boomin
 - Nathan Dawe & Ella Henderson – 21 Reasons (Q114586402): m ·  · Ella Henderson | pr · Nathan Dawe
 - Noah Kahan – Stick Season (Q123418409): al · Stick Season · 2022
+- OneRepublic – I Ain't Worried (Q111995678): w · Top Gun: Maverick · 2022
 - Rosa Linn – SNAP (Q111291890): m · Tamar Kaprelian · Rosa Linn
 - Sam Smith & Kim Petras – Unholy (Q113876065): al · Gloria · 2023
 - Sigala – Melody (Q113494972): pr · Sigala

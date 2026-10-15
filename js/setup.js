@@ -260,6 +260,7 @@ function songPool(ignore) {
   // własna lista piosenek (playlists.js) – bez filtra poziomu trudności, bo piosenki wybrał gracz
   const list = tag && tag.startsWith('list:') ? playlistKeys(tag) : null;
   return window.SONGS.filter((s) => (p === 'ALL' || s.c === p)
+    && !(filterState.noExplicit && s.ex)
     && (list ? list.has(songKey(s)) : lvl.ok(s) && (!tag || (s.tg && s.tg.includes(tag))))
     && Object.keys(FILTERS).every((f) => f === ignore
       || FILTERS[f].values(s).some((v) => !filterState[f].includes(String(v)))));
@@ -300,6 +301,9 @@ $$('input[name=level]').forEach((r) => {
   r.checked = Number(r.value) === filterState.level;
   r.addEventListener('change', () => { filterState.level = Number(r.value); saveFilters(); updatePoolInfo(); });
 });
+// piosenki niecenzuralne (pole ex w songs.js – tools/explicit.mjs; w trakcie gry także oznaczenie z iTunes)
+$('#no-explicit').checked = !!filterState.noExplicit;
+$('#no-explicit').addEventListener('change', (e) => { filterState.noExplicit = e.target.checked; saveFilters(); updatePoolInfo(); tvSync(); });
 $('#pl-share').value = String(filterState.plShare);
 $('#pl-share').addEventListener('input', (e) => { filterState.plShare = Number(e.target.value); saveFilters(); updatePoolInfo(); });
 $('#endless').checked = filterState.endless;
@@ -326,6 +330,11 @@ function updatePlaybackOptions() {
   const avail = { host: true, tv: display, player: playerOk }[cur];
   $$('input[name=audio-out]').forEach((r) => { r.checked = avail ? r.value === cur : r.value === 'host'; });
 }
+// bingo: rozmiar planszy (3×3, 4×4, 5×5)
+$$('input[name=bingo-size]').forEach((r) => {
+  r.checked = Number(r.value) === (filterState.bingoSize || 3);
+  r.addEventListener('change', () => { filterState.bingoSize = Number(r.value); saveFilters(); tvSync(); });
+});
 $$('input[name=challenge]').forEach((r) => {
   r.checked = r.value === filterState.challenge;
   r.addEventListener('change', () => { filterState.challenge = r.value; saveFilters(); updateModeOptions(); });

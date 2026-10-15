@@ -368,7 +368,9 @@
     .bingo-board { background: var(--panel-2); border-radius: .7em; padding: .4em; border: calc(3 * var(--u)) solid transparent; }
     .bingo-board.won { border-color: var(--gold); }
     .bingo-name { font-weight: 800; margin-bottom: .3em; font-size: .85em; }
-    .bingo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .25em; }
+    .bingo-grid { display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); gap: .25em; }
+    .bingo-grid.n5 .bingo-cell { font-size: .45em; min-height: 3em; }
+    body.player .bingo-grid.n5 .bingo-cell { font-size: 11px; min-height: 48px; }
     .bingo-cell { font: inherit; font-size: .55em; padding: .5em .3em; min-height: 3.6em; border-radius: .5em; background: var(--panel); border: calc(2 * var(--u)) solid #3d3755; color: var(--text); line-height: 1.15; }
     .bingo-cell.picked { border-color: var(--accent-2); background: rgba(45, 226, 230, .15); }
     .bingo-cell.marked { background: var(--ok); color: #0b1d12; border-color: var(--ok); font-weight: 700; }

@@ -146,11 +146,11 @@ test('ciekawostki: nagroda z Wikidata, rok festiwalu w Opolu, przy karcie jedna 
     const bodo = window.SONGS.find((s) => s.t === 'Umówiłem się z nią na dziewiątą');
     const withMany = window.SONGS.find((s) => songFacts(s).length >= 3);
     return {
-      oscar: songFacts(oscar).join(' | '),
-      bodo: songFacts(bodo).join(' | '),
+      oscar: songFacts(oscar).map((f) => f.txt).join(' | '),
+      bodo: songFacts(bodo).map((f) => f.txt).join(' | '),
       years: [opoleYear('I'), opoleYear('XIX'), opoleYear('XX'), opoleYear('LIII'), opoleYear('LXII')],
       shown: factLines(withMany).length,
-      composer: songFacts(window.SONGS.find((s) => s.t === 'Miłość ci wszystko wybaczy')).join(' | '),
+      composer: songFacts(window.SONGS.find((s) => s.t === 'Miłość ci wszystko wybaczy')).map((f) => f.txt).join(' | '),
     };
   });
   expect(r.oscar).toContain('Oscar');
@@ -160,6 +160,22 @@ test('ciekawostki: nagroda z Wikidata, rok festiwalu w Opolu, przy karcie jedna 
   expect(r.bodo).toContain('LIII Krajowym Festiwalu Piosenki Polskiej w Opolu (2016)');
   expect(r.shown).toBe(1);
   expect(r.composer).toContain('Henryk Wars');
+});
+
+test('ciekawostka zależna od zestawu: w Eurowizji – o Eurowizji, we wszystkich – dowolna', async ({ page }) => {
+  await page.goto('/');
+  await page.waitForFunction(() => !!window.SONG_FACTS, null, { timeout: 15000 });
+  const r = await page.evaluate(() => {
+    // piosenka z ciekawostką o Eurowizji i inną (np. kompozytor z Wikidata)
+    const song = window.SONGS.find((s) => songFacts(s).some((f) => f.kind === 'euro') && songFacts(s).some((f) => f.kind !== 'euro'));
+    filterState.tag = 'eurowizja';
+    const euro = new Set(Array.from({ length: 30 }, () => factLines(song)[0].textContent));
+    filterState.tag = null;
+    const any = new Set(Array.from({ length: 60 }, () => factLines(song)[0].textContent));
+    return { euro: [...euro], any: any.size };
+  });
+  expect(r.euro.every((t) => /Eurowizj/.test(t))).toBe(true);
+  expect(r.any).toBeGreaterThan(1);
 });
 
 test('wersja angielska interfejsu', async ({ page }) => {

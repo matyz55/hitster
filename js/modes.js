@@ -246,6 +246,7 @@ async function drawSort5() {
     if (!song) break;
     const preview = await withAudio(await findPreview(song));
     if (myDraw !== state.drawId) return;
+    if (preview && preview.ex && filterState.noExplicit) continue;
     if (preview && !preview.gone) { markPlayed(song); items.push({ song, preview }); } else state.deck.release(song, !previewCache.has(songKey(song)));
   }
   if (items.length < SORT_N) { $('#mystery-status').textContent = T('Talia się skończyła!'); endGame(); return; }
@@ -346,11 +347,16 @@ function sortHint() {
 }
 
 /* ---------- Bingo muzyczne ---------- */
-// Każdy gracz ma planszę 3×3 z kategoriami. Przy każdej piosence zaznacza jedno pole, które – jego zdaniem – do niej pasuje.
-// Po odkryciu trafione pola zostają skreślone; trzy skreślone w linii (wiersz, kolumna, przekątna) = BINGO.
-// Po ustalonej liczbie piosenek wygrywa ten, kto skreślił najwięcej pól.
-const BINGO_LINES = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-function bingoCategories(pool) {
+// Każdy gracz ma planszę n×n (3×3, 4×4 albo 5×5 – w ustawieniach) z kategoriami. Przy każdej piosence zaznacza jedno pole,
+// które – jego zdaniem – do niej pasuje. Po odkryciu trafione pola zostają skreślone; cały wiersz, kolumna albo
+// przekątna = BINGO. Po ustalonej liczbie piosenek wygrywa ten, kto skreślił najwięcej pól.
+function bingoLines(n) {
+  const r = [...Array(n).keys()];
+  return [...r.map((i) => r.map((j) => i * n + j)), ...r.map((j) => r.map((i) => i * n + j)),
+    r.map((i) => i * n + i), r.map((i) => i * n + (n - 1 - i))];
+}
+const words = (t) => t.replace(/\s*[([].*?[)\]]/g, '').trim().split(/\s+/).filter(Boolean);
+function bingoCategories(pool, need = 9) {
   const cats = [];
   for (const d of [...new Set(pool.map(decadeOf))]) cats.push({ id: `d${d}`, label: decadeLabelLong(d), test: (s) => decadeOf(s) === d });
   cats.push({ id: 'pl', label: T('Polska piosenka'), test: (s) => s.c === 'PL' });
@@ -360,26 +366,44 @@ function bingoCategories(pool) {
   for (const g of genres.keys()) cats.push({ id: `g${g}`, label: genreName(g), test: (s) => (s.g || []).includes(g) });
   const countries = new Map();
   for (const s of pool) if (s.cc && s.cc !== 'PL' && hasFlag(s.cc)) countries.set(s.cc, (countries.get(s.cc) || 0) + 1);
-  for (const cc of [...countries].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([c]) => c)) {
+  for (const cc of [...countries].sort((a, b) => b[1] - a[1]).slice(0, 10).map(([c]) => c)) {
     cats.push({ id: `c${cc}`, label: countryName({ cc }), cc, test: (s) => s.cc === cc });
   }
   cats.push({ id: 'old', label: T('Wydana przed 1980 r.'), test: (s) => s.y < 1980 });
   cats.push({ id: 'new', label: T('Wydana w 2000 r. lub później'), test: (s) => s.y >= 2000 });
   cats.push({ id: 'duo', label: T('Duet lub kilku wykonawców'), test: (s) => artistsOf(s).length > 1 });
-  // tylko kategorie, które w tej puli trafiają się ani za rzadko, ani za często (5–60% piosenek)
-  return cats.filter((c) => { const f = pool.filter(c.test).length / pool.length; return f >= 0.05 && f <= 0.6; });
+  // dodatkowe kategorie – potrzebne przy większych planszach
+  cats.push({ id: 'w1', label: T('Tytuł z jednego słowa'), test: (s) => words(s.t).length === 1 });
+  cats.push({ id: 'w4', label: T('Tytuł z co najmniej 4 słów'), test: (s) => words(s.t).length >= 4 });
+  for (const d of [...new Set(pool.map(decadeOf))]) {
+    for (const half of [0, 5]) {
+      const from = d + half;
+      cats.push({ id: `h${from}`, label: T('Lata {0}–{1}', from, from + 4), test: (s) => s.y >= from && s.y <= from + 4 });
+    }
+  }
+  // najpierw kategorie, które w tej puli trafiają się ani za rzadko, ani za często (5–60% piosenek);
+  // gdy na większą planszę to za mało – także rzadsze i częstsze (2–80%)
+  const share = (c) => pool.filter(c.test).length / pool.length;
+  const main = cats.filter((c) => { const f = share(c); return f >= 0.05 && f <= 0.6; });
+  if (main.length >= need) return main;
+  return [...main, ...cats.filter((c) => !main.includes(c) && share(c) >= 0.02 && share(c) <= 0.8)];
 }
 function startBingo() {
-  const cats = bingoCategories(state.quizPool || window.SONGS);
+  const pool = state.quizPool || window.SONGS;
+  // największa plansza, na jaką starcza kategorii w tej puli piosenek (nie większa niż wybrana)
+  let n = filterState.bingoSize || 3;
+  let cats = bingoCategories(pool, n * n);
+  while (n > 3 && cats.length < n * n) { n -= 1; cats = bingoCategories(pool, n * n); }
   state.bingo = {
+    n,
     cats: Object.fromEntries(cats.map((c) => [c.id, c])),
-    boards: state.players.map(() => ({ cells: shuffle(cats.map((c) => c.id)).slice(0, 9), marked: Array(9).fill(false), pick: null })),
+    boards: state.players.map(() => ({ cells: shuffle(cats.map((c) => c.id)).slice(0, n * n), marked: Array(n * n).fill(false), pick: null })),
     winners: [],
   };
 }
 function bingoPick(i, cell) {
   const b = state.bingo && state.bingo.boards[i];
-  if (!b || state.phase !== 'listen' || !state.current || b.marked[cell] || cell < 0 || cell > 8) return;
+  if (!b || state.phase !== 'listen' || !state.current || b.marked[cell] || cell < 0 || cell >= b.cells.length) return;
   b.pick = b.pick === cell ? null : cell;
   render();
 }
@@ -395,7 +419,7 @@ function bingoReveal() {
     if (ok) { b.marked[b.pick] = true; p.score += 1; }
     lines.push(el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') }, `${ok ? '✔' : '✘'} ${p.name}: ${cat.label}`));
     b.pick = null;
-    if (ok && !state.bingo.winners.includes(i) && BINGO_LINES.some((l) => l.every((c) => b.marked[c]))) state.bingo.winners.push(i);
+    if (ok && !state.bingo.winners.includes(i) && bingoLines(state.bingo.n || 3).some((l) => l.every((c) => b.marked[c]))) state.bingo.winners.push(i);
   });
   state.turnsPlayed += 1;
   state.history.push({ song, preview: state.preview, player: '', ok: lines.length > 0, note: T('Bingo – piosenka {0}', state.turnsPlayed) });
@@ -424,7 +448,7 @@ function renderBingoBoards() {
   const phones = remoteNames();
   box.replaceChildren(...state.bingo.boards.map((b, i) => el('div', { class: 'bingo-board' + (state.bingo.winners.includes(i) ? ' won' : '') },
     el('div', { class: 'bingo-name' }, state.players[i].name, phones.has(state.players[i].name) ? ' 📱' : '', b.pick != null ? ' ✔' : ''),
-    el('div', { class: 'bingo-grid' }, b.cells.map((id, c) => {
+    el('div', { class: 'bingo-grid', style: `--n:${state.bingo.n || 3}` }, b.cells.map((id, c) => {
       const cat = state.bingo.cats[id];
       return el('button', { class: 'bingo-cell' + (b.marked[c] ? ' marked' : '') + (b.pick === c ? ' picked' : ''),
         disabled: b.marked[c] || state.phase !== 'listen', onclick: () => bingoPick(i, c) }, cat.cc ? flagEl({ cc: cat.cc }) : null, ' ', cat.label);

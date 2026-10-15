@@ -513,3 +513,15 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.22.4 – 15.10.2026 (`1ade1d5`)
 
 - Przycisk po odkryciu karty znów nazywa się „Kup losową kartę” (cofnięta zmiana z 5.22.2).
+
+## 5.23.0 – 15.10.2026 (`HASH`)
+
+- **Bingo 4×4 i 5×5** – wybór planszy w ustawieniach gry (BINGO = cały wiersz, kolumna albo przekątna). Nowe kategorie
+  na większe plansze: tytuł z jednego słowa, tytuł z co najmniej 4 słów, pięciolecia (np. lata 1985–1989), więcej krajów.
+- **Pomijanie piosenek niecenzuralnych** – przełącznik w ustawieniach gry (przy poziomie trudności): bez piosenek
+  oznaczonych przez wydawców jako „explicit” (tekst z przekleństwami, w dowolnym języku); w trakcie gry dodatkowo
+  sprawdzane oznaczenie z Apple Music.
+- **Ciekawostki zależne od zestawu**: w zestawie Eurowizja – o występie na Eurowizji, w Opolu – o festiwalu, w Przebojach
+  Trójki – o Liście Przebojów, w muzyce filmowej – z jakiego filmu; we wszystkich piosenkach – losowa.
+- Nowe rodzaje ciekawostek: występ w preselekcjach do Eurowizji (z rokiem i miejscem) oraz film/serial/gra, w którym
+  piosenka zabrzmiała (m.in. ze ścieżek dźwiękowych filmów w Wikidata).
