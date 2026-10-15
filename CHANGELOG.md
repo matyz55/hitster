@@ -608,7 +608,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   wyszukiwaniami, a piosenki bez filmu sprawdza ponownie najwcześniej po 30 dniach (zmiany z sesji pomocniczej:
   `1863a8d`, `c689c90`, `a27bbfc`).
 
-## 5.29.0 – 15.10.2026 (`HASH`)
+## 5.29.0 – 15.10.2026 (`49deac6`)
 
 - **Tak to leciało! – nowa plansza:** każdy gracz ma 3×3 kategorie z samymi nazwami (zagrane zostają wyszarzone
   i niedostępne), a nad nimi szeroki kafelek „Hit za 100 000 zł”, dostępny dopiero na końcu – wtedy grasz albo
