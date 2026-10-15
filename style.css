@@ -599,3 +599,7 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .team-col.target { border-color: var(--accent-2); cursor: pointer; }
 .team-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .chip.on { border-color: var(--accent-2); color: var(--text); background: rgba(45, 226, 230, .15); }
+
+/* --- własna lista piosenek --- */
+#dlg-playlist textarea, #dlg-playlist input[type=text] { width: 100%; box-sizing: border-box; font: inherit; color: var(--text); background: var(--panel-2); border: 1px solid #3d3755; border-radius: 8px; padding: 8px 10px; margin: 6px 0; }
+.pl-missing { max-height: 180px; overflow: auto; font-size: .85rem; color: var(--muted); }

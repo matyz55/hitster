@@ -1479,13 +1479,16 @@ filterState.decade = filterState.decade.filter((d) => Number(d) >= OLDEST_DECADE
 
 function saveFilters() { store.set('filters', filterState); }
 
+// piosenki zapisanej własnej listy (playlists.js) – klucze „wykonawca|tytuł”
+const playlistKeys = (id) => new Set((store.get('playlists', {})[id] || []));
 function songPool(ignore) {
   const p = poolValue();
   const lvl = LEVELS[filterState.level] || LEVELS[1];
   const tag = filterState.tag;
+  // własna lista piosenek (playlists.js) – bez filtra poziomu trudności, bo piosenki wybrał gracz
+  const list = tag && tag.startsWith('list:') ? playlistKeys(tag) : null;
   return window.SONGS.filter((s) => (p === 'ALL' || s.c === p)
-    && lvl.ok(s)
-    && (!tag || (s.tg && s.tg.includes(tag)))
+    && (list ? list.has(songKey(s)) : lvl.ok(s) && (!tag || (s.tg && s.tg.includes(tag))))
     && Object.keys(FILTERS).every((f) => f === ignore
       || FILTERS[f].values(s).some((v) => !filterState[f].includes(String(v)))));
 }
@@ -1689,6 +1692,7 @@ function renderPresets() {
       onclick: () => {
         if (!confirm(T('Usunąć zestaw „{0}”?', p.name))) return;
         store.set('presets', store.get('presets', []).filter((x) => x.id !== p.id));
+        if (p.set.tag && p.set.tag.startsWith('list:')) { const l = store.get('playlists', {}); delete l[p.set.tag]; store.set('playlists', l); }
         renderPresets();
       },
     }, '✕') : null)));

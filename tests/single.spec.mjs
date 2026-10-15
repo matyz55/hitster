@@ -113,3 +113,26 @@ test('gatunek disco polo usunięty z bazy i filtrów', async ({ page }) => {
   await page.goto('/');
   expect(await page.evaluate(() => window.SONGS.some((s) => (s.g || []).includes('disco polo')))).toBe(false);
 });
+
+test('własna lista piosenek: dopasowanie do bazy, zestaw i gra tylko z listy', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=melody]');
+  const lines = await page.evaluate(() => {
+    const picks = window.SONGS.filter((s, i) => i % 300 === 0).slice(0, 12);
+    return picks.map((s, i) => (i % 2 ? `${s.t} – ${s.a}` : `${s.a} - ${s.t}`)).concat(['Nieistniejący Zespół – Piosenka, której nie ma']);
+  });
+  await page.click('#btn-playlist');
+  await page.fill('#pl-text', lines.join('\n'));
+  await page.click('#btn-pl-match');
+  await expect(page.locator('#pl-result')).toContainText('12 z 13');
+  await page.fill('#pl-name', 'Test');
+  await page.click('#btn-pl-save');
+  await expect(page.locator('#presets .chip[aria-pressed=true]')).toContainText('Test');
+  expect(await page.evaluate(() => songPool().length)).toBe(12);
+  await page.fill('#rounds', '1');
+  await page.click('#btn-start');
+  await ready(page);
+  const keys = await page.evaluate(() => [...playlistKeys(filterState.tag)]);
+  expect(keys).toContain(await page.evaluate(() => songKey(state.current)));
+});

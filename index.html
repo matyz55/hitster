@@ -254,6 +254,7 @@
       </details>
       <p class="muted" id="pool-info"></p>
       <button type="button" id="btn-save-preset" class="ghost">💾 Zapisz te ustawienia jako własny zestaw</button>
+      <button type="button" id="btn-playlist" class="ghost">📋 Wklej własną listę piosenek</button>
     </section>
 
     <section class="card">
@@ -602,6 +603,16 @@
     <form method="dialog"><button class="primary">OK</button></form>
   </dialog>
 
+  <dialog id="dlg-playlist">
+    <h2>📋 Własna lista piosenek</h2>
+    <p class="muted">Wklej piosenki – każda w osobnej linii, np. „Maanam – Kocham cię, kochanie moje” (kolejność wykonawcy i tytułu dowolna; może być też tabulator lub średnik, np. z arkusza). Gra dopasuje je do piosenek z bazy (z lat wydania sprawdzonych w kilku źródłach).</p>
+    <textarea id="pl-text" rows="8" placeholder="Wykonawca – Tytuł"></textarea>
+    <input type="text" id="pl-name" maxlength="30" placeholder="Nazwa listy, np. Wesele Ani">
+    <div class="actions"><button type="button" id="btn-pl-match" class="ghost">🔍 Dopasuj</button><button type="button" id="btn-pl-save" class="primary" disabled>💾 Zapisz jako zestaw</button></div>
+    <div id="pl-result"></div>
+    <form method="dialog"><button class="ghost">Zamknij</button></form>
+  </dialog>
+
   <dialog id="dlg-connect">
     <h2>📺 Duży ekran i telefony graczy</h2>
     <h3>Duży ekran na tym urządzeniu</h3>
@@ -635,6 +646,7 @@
   <script src="net.js"></script>
   <script src="game.js"></script>
   <script src="modes.js"></script>
+  <script src="playlists.js"></script>
   <script src="stats.js"></script>
   <script src="resume.js"></script>
   <script>
