@@ -494,7 +494,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Ciekawostka o festiwalu w Opolu podaje też rok (np. LIII KFPP – 2016).
 - Poprawiona data: Eugeniusz Bodo – „Umówiłem się z nią na dziewiątą”: 1937 (film „Piętro wyżej”) zamiast 2005.
 
-## 5.22.1 – 15.10.2026 (`HASH`)
+## 5.22.1 – 15.10.2026 (`6985106`)
 
 - Muzyka nie cichnie już po udzieleniu odpowiedzi – we wszystkich trybach (m.in. Kto to śpiewa?, Rok co do roku,
   Skąd jest wykonawca?, Licytacja, Starsza czy nowsza?, Pojedynek dekad, Kto pierwszy?, Melodia krok po kroku, Bingo,
