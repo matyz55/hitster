@@ -628,3 +628,9 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   za dobrą odpowiedź), Mikser, Ułóż piątkę, Licytacja sekund, Gorąca bomba i Ostatni na placu boju.
 - Katalog: tylko filmy z oficjalnych kanałów i sprawdzenie wszystkich zapisanych filmów (zmiana z sesji pomocniczej:
   `5d3a7d9`).
+
+## 5.29.1 – 15.10.2026 (`HASH`)
+
+- Tak to leciało!: szybszy start piosenki – film zaczyna się ładować od razu po wyborze (tekst dochodzi w trakcie),
+  teksty piosenek z planszy pobierają się w tle, zanim gracz coś wybierze, a przeglądarka wcześniej łączy się
+  z YouTube i lrclib.net.

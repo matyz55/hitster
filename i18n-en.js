@@ -1,6 +1,7 @@
 'use strict';
 // Słownik angielski: tekst polski → angielski (patrz i18n.js)
 window.I18N_EN = {
+ "Wczytywanie tekstu…": "Loading the lyrics…",
  "Jedzenie i picie": "Food and drink",
  "Ciało": "Body",
  "W drodze": "On the road",

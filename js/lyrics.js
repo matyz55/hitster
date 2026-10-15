@@ -135,15 +135,34 @@ function lyMakeBoard(used) {
 
 /* ---------- tekst z czasami (LRC z lrclib.net) ---------- */
 const lyLyricsCache = new Map();
-async function lyFetchLyrics(id) {
-  if (lyLyricsCache.has(id)) return lyLyricsCache.get(id);
-  const res = await fetch(`https://lrclib.net/api/get/${id}`);
-  if (!res.ok) throw new Error('lrclib ' + res.status);
-  const data = await res.json();
-  const lines = lyParseLrc(data.syncedLyrics || '');
-  if (lines.length < 8) throw new Error('brak tekstu');
-  lyLyricsCache.set(id, lines);
-  return lines;
+// pamięć obietnic – ten sam tekst pobierany raz, także gdy wczytywanie w tle jeszcze trwa
+function lyFetchLyrics(id) {
+  if (!lyLyricsCache.has(id)) {
+    const p = fetch(`https://lrclib.net/api/get/${id}`).then((res) => {
+      if (!res.ok) throw new Error('lrclib ' + res.status);
+      return res.json();
+    }).then((data) => {
+      const lines = lyParseLrc(data.syncedLyrics || '');
+      if (lines.length < 8) throw new Error('brak tekstu');
+      return lines;
+    });
+    p.catch(() => lyLyricsCache.delete(id));
+    lyLyricsCache.set(id, p);
+  }
+  return lyLyricsCache.get(id);
+}
+// teksty piosenek z planszy pobierane w tle (po dwa naraz), żeby po wyborze piosenka startowała od razu
+let lyPrefetchQueue = [];
+let lyPrefetching = 0;
+function lyPrefetch(ids) {
+  lyPrefetchQueue.push(...ids.filter((id) => !lyLyricsCache.has(id) && !lyPrefetchQueue.includes(id)));
+  const next = () => {
+    if (lyPrefetching >= 2 || !lyPrefetchQueue.length) return;
+    lyPrefetching += 1;
+    lyFetchLyrics(lyPrefetchQueue.shift()).catch(() => {}).finally(() => { lyPrefetching -= 1; next(); });
+    next();
+  };
+  next();
 }
 function lyParseLrc(text) {
   const out = [];
@@ -178,7 +197,7 @@ function lyWordOk(given, want) {
 // miejsce przerwy: cały wers (same słowa, bez znaków interpunkcyjnych jako osobnych pól), który do tej pory
 // nie padł w piosence; liczba słów i miejsce w piosence zależą od etapu – gdy nic nie pasuje, warunki łagodnieją
 const lyKey = (text) => lyWords(text).map(lyFold).filter(Boolean).join(' ');
-function lyPickGap(lines, stage, duration) {
+function lyPickGap(lines, stage, duration, minT = 0) {
   const dur = duration || lines[lines.length - 1].t + 5;
   const [minW, maxW] = LY_WORDS[stage - 1];
   const [from, to] = LY_BANDS[stage - 1];
@@ -191,7 +210,7 @@ function lyPickGap(lines, stage, duration) {
     const out = [];
     for (let i = 2; i < lines.length; i++) {
       const t = lines[i].t;
-      if (t < 10 || (strict >= 1 && (t / dur < from || t / dur > to))) continue;
+      if (t < Math.max(10, minT) || (strict >= 1 && (t / dur < from || t / dur > to))) continue;
       if (!fresh(i)) continue;
       let span = [i];
       let n = words(i).length;
@@ -336,17 +355,24 @@ async function lyStartSong() {
   const ly = state.lyrics;
   const cur = ly.cur;
   try {
-    const [player, lines] = await Promise.all([lyPlayer(), lyFetchLyrics(cur.it.lr)]);
+    const lyricsP = lyFetchLyrics(cur.it.lr);
+    const player = await lyPlayer();
+    if (ly.cur !== cur) return;
+    // gra od początku – film rusza od razu, a tekst dochodzi w trakcie (zwykle pierwsze wersy są po kilku sekundach)
+    if (!ly.mini) { state.phase = 'play'; lyRender(); lyLoadVideo(player); }
+    const lines = await lyricsP;
     if (ly.cur !== cur) return;
     cur.lines = lines;
-    cur.gap = lyPickGap(lines, ly.mini ? 2 : lyMe().stage + 1, cur.it.d);
+    // film mógł już ruszyć – przerwa najwcześniej kilka sekund od bieżącego miejsca
+    const now = !ly.mini && lyYT && lyYT.getCurrentTime ? lyYT.getCurrentTime() || 0 : 0;
+    cur.gap = lyPickGap(lines, ly.mini ? 2 : lyMe().stage + 1, cur.it.d, now ? now + 4 : 0);
     if (!cur.gap) throw new Error('brak miejsca na przerwę');
     cur.given = cur.gap.blanks.map(() => '');
     // minigra: od początku zwrotki albo refrenu z przerwą (kilka wersów wcześniej), a nie od początku piosenki
     cur.startAt = ly.mini ? Math.max(0, lines[Math.max(0, cur.gap.line - 4)].t - 1.5) : 0;
     state.phase = 'play';
     lyRender();
-    lyLoadVideo(player);
+    if (ly.mini) lyLoadVideo(player);
   } catch (e) {
     if (ly.cur === cur) lySongFailed(T('Nie udało się wczytać tekstu tej piosenki.'));
   }
@@ -608,6 +634,7 @@ function lyRender() {
         el('b', {}, it.song.t), el('span', { class: 'muted' }, artistLine(it.song))))),
       el('button', { class: 'ghost', onclick: () => { ly.pickCat = null; lyRender(); } }, T('← Inna kategoria'))));
     }
+    lyPrefetch(me.board.filter((c) => !c.done).flatMap((c) => c.songs.map((it) => it.lr)));
     if (me.stage > 0 && !hitReady) items.push(el('button', { class: 'ghost ly-quit', onclick: lyQuit }, T('✋ Rezygnuję – zabieram {0}', lyMoney(me.score))));
     board.replaceChildren(...items);
     tvSync();
@@ -616,7 +643,7 @@ function lyRender() {
   const cur = ly.cur;
   $('#ly-song').textContent = cur ? `${cur.cat} · ${cur.it.song.t} — ${artistLine(cur.it.song)}` : '';
   $('#ly-status').textContent = state.phase === 'loading' ? T('Wczytywanie piosenki i tekstu…')
-    : state.phase === 'play' ? T('Śpiewaj razem z tekstem – muzyka przerwie się przed wersem do uzupełnienia.')
+    : state.phase === 'play' ? (cur && cur.lines ? T('Śpiewaj razem z tekstem – muzyka przerwie się przed wersem do uzupełnienia.') : T('Wczytywanie tekstu…'))
       : state.phase === 'answer' ? T('Dokończ wers: {0}', T('słów: {0}', cur.gap.blanks.length)) : '';
   lyRenderLyrics(lyYT && lyYT.getCurrentTime ? lyYT.getCurrentTime() : 0);
   lyRenderAnswer();
