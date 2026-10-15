@@ -37,8 +37,16 @@ const words = (t) => t.toLowerCase().replace(/ł/g, 'l').normalize('NFKD').repla
 const isTopic = (ch) => / - Topic$/.test(ch);
 // tytuł filmu musi zawierać tytuł piosenki (np. „Trójkąty i kwadraty” ≠ film „Małomiasteczkowy”)
 const titleMatches = (v, s) => ` ${words(v.title || '')} `.includes(` ${words(clean(s.t)).trim()} `);
+// kanał „X - Topic” musi być kanałem wykonawcy tej piosenki (np. „Kombi Łosowski - Topic” to późniejsze nagranie,
+// a nie wersja Kombi); w innych kanałach nazwa wykonawcy musi być w nazwie kanału albo w tytule filmu
+function artistMatches(v, s) {
+  const artists = SongMatch.artistsOf(s).map(norm).filter((a) => a.length >= 2);
+  if (isTopic(v.channel)) return artists.includes(norm(v.channel.replace(/ - Topic$/, '')));
+  const where = norm(`${v.channel} ${v.title || ''}`);
+  return artists.some((a) => where.includes(a));
+}
 function usableVideo(v, s) {
-  if (!v.channel || !titleMatches(v, s)) return false;
+  if (!v.channel || !titleMatches(v, s) || !artistMatches(v, s)) return false;
   return isTopic(v.channel) || !BAD_TITLE.test(words(v.title || ''));
 }
 function officialVideo(v, s) {

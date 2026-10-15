@@ -433,7 +433,10 @@
     .ly-hint { color: var(--gold); font-weight: 700; font-size: 1.2em; }
     .verdict { font-size: 1.4em; font-weight: 800; }
     body.player .ly-lines, body.player .ly-blanks { font-size: 1.05em; }
-    body.player .ly-blanks input { width: 7em; font-size: 1em; padding: 8px; text-align: center; }
+    body.player .ly-phone-form input { font-size: 1.05em; padding: 12px; border-radius: 12px; }
+    .ly-dots { display: flex; flex-wrap: wrap; gap: .35em; justify-content: center; }
+    .ly-dot { min-width: 1.1em; height: 1.1em; padding: 0 .3em; border-radius: 1em; border: 2px solid var(--gold); display: inline-grid; place-items: center; font-size: .8em; }
+    .ly-dot.shown { background: rgba(255, 201, 60, .25); }
     body.player .ly-phone-form { display: flex; flex-direction: column; gap: 10px; }
     body.player .ly-phone-form button { padding: 12px; font-size: 1.05em; border-radius: 12px; }
   </style>

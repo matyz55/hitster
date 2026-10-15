@@ -6,9 +6,11 @@
 // Pliki js/*.js to zwykłe skrypty ładowane po kolei (index.html) – współdzielą zmienne globalne.
 
 /* ---------- zasady: drabinka (jak w teleturnieju, serie 10–18), progi gwarantowane, koła ratunkowe ---------- */
-const LY_LADDER = [500, 1000, 2000, 5000, 7000, 10000, 15000, 30000, 50000, 100000];
-// po 4. etapie 5000 zł jest gwarantowane; kto gra o główną nagrodę (10. etap) i się pomyli – dostaje 30 000 zł
-const lyGuaranteed = (stage) => (stage >= 9 ? LY_LADDER[7] : stage >= 4 ? LY_LADDER[3] : 0);
+const LY_LADDER = [500, 1000, 2000, 5000, 10000, 15000, 25000, 50000, 75000, 100000];
+// po 5. piosence 10 000 zł jest gwarantowane; po 9. można zrezygnować z 50 000 zł albo grać o 100 000 zł (już bez kół)
+const LY_SAFE = 4;
+const LY_QUIT_FINAL = 50000;
+const lyGuaranteed = (stage) => (stage > LY_SAFE + 1 ? LY_LADDER[LY_SAFE] : 0);
 // przerwa: cały wers, który wcześniej w piosence nie padł; z etapem rośnie liczba słów (od–do) i przerwa wypada
 // dalej w piosence (ułamek długości); na ostatnich etapach przy krótkim wersie – dwa kolejne wersy
 const LY_WORDS = [[3, 6], [3, 6], [3, 7], [4, 8], [4, 8], [5, 9], [5, 10], [6, 12], [6, 14], [7, 16]];
@@ -64,7 +66,9 @@ const LY_SETS = [
   { name: () => T('Lata 2010.'), test: (s) => s.y >= 2010 && s.y < 2020 },
   { name: () => T('Najnowsze przeboje'), test: (s) => s.y >= 2020 },
   { name: () => T('Złote przeboje'), test: (s) => s.y < 1995 && (s.p || 0) >= 40 },
-  { name: () => T('Tytuł po angielsku'), test: (s) => /^[A-Za-z0-9 '’,.!?&-]+$/.test(s.t) && /\b(the|you|love|my|me|I|of|to|in|on|is|it|be)\b/i.test(s.t) },
+  { name: () => T('Tytuł po angielsku'), test: (s) => /^[A-Za-z0-9 '’,.!?&-]+$/.test(s.t)
+    && /\b(the|you|your|love|baby|me|of|is|it's|i'm|don't|can't|be|are|what|why|when|this|that|with|for|feel|night|dance|girl|boy|heart|world|life|never|forever|tonight|again|like|just|yeah|oh)\b/i.test(s.t)
+    && !/\b(i|w|z|na|się|nie|jak|co|ty|ja|mi|wam|sobie|jest|już|tak)\b/i.test(s.t) },
   { name: () => T('Panie przy mikrofonie'), test: (s) => /^(Maryla|Anna|Ania|Kasia|Katarzyna|Edyta|Doda|Sylwia|Natalia|Beata|Kayah|Margaret|Krystyna|Urszula|Irena|Halina|Ewa|Maria|Justyna|Monika|Agnieszka|Basia|Sanah|sanah|Daria|Brodka|Viki|Roxie|Bovska|Mela|Julia|Kaśka|Zalia)/.test(s.a) },
 ];
 
@@ -225,19 +229,24 @@ function lyPickGap(lines, stage, duration, minT = 0) {
   if (!cands.length) return null;
   const span = cands[Math.floor(Math.random() * cands.length)];
   const blanks = span.flatMap((i, k) => words(i).map((w) => ({ want: w, next: k > 0 })));
-  return { line: span[0], lines: span, prefix: '', blanks, pauseAt: Math.max(0, lines[span[0]].t - 0.2) };
+  return { line: span[0], lines: span, prefix: '', blanks, pauseAt: Math.max(0, lines[span[0]].t - 0.6),
+    end: lines[span[span.length - 1] + 1] ? lines[span[span.length - 1] + 1].t : lines[span[span.length - 1]].t + 4 };
 }
-// „trzy wersje wersu”: dwie błędne wersje z podmienionymi słowami (z tej samej piosenki)
+// „trzy wersje wersu”: dwie błędne wersje z podmienionymi słowami (z tej samej piosenki) – wielkość liter jak w oryginale
+const lyCaseLike = (w, like) => (/^\p{Lu}/u.test(like) ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : w.toLowerCase());
 function lyVariants(lines, gap) {
   const want = gap.blanks.map((b) => b.want);
-  const pool = [...new Set(lines.flatMap((l) => lyWords(l.text)))].filter((w) => !want.some((x) => lyFold(x) === lyFold(w)) && lyNorm(w));
+  const pool = [...new Set(lines.flatMap((l) => lyWords(l.text)).map((w) => w.replace(/[^\p{L}\p{N}'’-]/gu, '')))]
+    .filter((w) => w && !want.some((x) => lyFold(x) === lyFold(w)));
   const variants = new Set([want.join(' ')]);
-  for (let tries = 0; variants.size < 3 && tries < 40; tries++) {
+  for (let tries = 0; variants.size < 3 && tries < 60; tries++) {
     const v = want.slice();
     const changes = Math.min(v.length, 1 + Math.floor(Math.random() * 2));
     for (const idx of shuffle(v.map((_, i) => i)).slice(0, changes)) {
-      const w = pool[Math.floor(Math.random() * pool.length)];
-      if (w) v[idx] = w;
+      // podobna długość słowa – trudniej odróżnić
+      const near = pool.filter((w) => Math.abs(w.length - lyNorm(v[idx]).length) <= 2);
+      const w = (near.length ? near : pool)[Math.floor(Math.random() * (near.length || pool.length))];
+      if (w) v[idx] = lyCaseLike(w, want[idx]) + (want[idx].match(/[^\p{L}\p{N}]+$/u) || [''])[0];
     }
     variants.add(v.join(' '));
   }
@@ -267,7 +276,7 @@ async function lyPlayer() {
   return new Promise((resolve) => {
     lyYT = new window.YT.Player('ly-player', {
       width: '100%', height: '100%',
-      playerVars: { playsinline: 1, rel: 0, controls: 0, disablekb: 1, fs: 0, iv_load_policy: 3 },
+      playerVars: { playsinline: 1, rel: 0, controls: 0, disablekb: 1, fs: 0, iv_load_policy: 3, cc_load_policy: 0 },
       events: {
         onReady: () => resolve(lyYT),
         onStateChange: (e) => lyOnState(e.data),
@@ -325,7 +334,7 @@ function lyAnySong(extraAvoid = []) {
 }
 function lyPlay(it, other, cat) {
   const ly = state.lyrics;
-  ly.cur = { it, other, cat, vi: 0, gap: null, lines: null, given: [], revealed: new Set(), variants: null, hint: null, started: false };
+  ly.cur = { it, other, cat, vi: 0, gap: null, lines: null, given: [], text: '', revealed: new Set(), variants: null, hint: null, started: false };
   ly.pickCat = null;
   ly.hitAsk = false;
   ly.used.add(songKey(it.song));
@@ -384,7 +393,7 @@ function lyLoadVideo(player) {
   cur.videoId = cur.it.yts[cur.vi];
   player.loadVideoById({ videoId: cur.videoId, startSeconds: cur.startAt || 0 });
   clearInterval(lyTick);
-  lyTick = setInterval(lyOnTick, 100);
+  lyTick = setInterval(lyOnTick, 50);
 }
 function lyVideoFailed(msg) {
   const ly = state.lyrics;
@@ -417,8 +426,10 @@ function lyOnState(s) {
   // pierwsze odtwarzanie: długość filmu musi pasować do nagrania z tekstem (inaczej wersy by się rozjechały)
   if (s === 1 && !cur.started) {
     cur.started = true;
+    // bez napisów w odtwarzaczu (zdradzałyby tekst)
+    try { lyYT.unloadModule('captions'); lyYT.unloadModule('cc'); } catch (e) { /* starszy odtwarzacz */ }
     const d = lyYT.getDuration();
-    if (cur.it.d && d && Math.abs(d - cur.it.d) > 4) { lyVideoFailed(T('Film ma inną długość niż nagranie z tekstem.')); return; }
+    if (cur.it.d && d && Math.abs(d - cur.it.d) > 2.5) { lyVideoFailed(T('Film ma inną długość niż nagranie z tekstem.')); return; }
     state.lyrics.fails = 0;
   }
   if (state.phase === 'play' || state.phase === 'result') lyRender();
@@ -430,12 +441,17 @@ function lyOnTick() {
   if (state.phase === 'play' && cur.gap && cur.started && t >= cur.gap.pauseAt) {
     lyYT.pauseVideo();
     state.phase = 'answer';
+    fx('tick');
     lyRender();
-    const first = $('#ly-blanks input');
-    if (first) first.focus();
+    const inp = $('#ly-input');
+    if (inp) inp.focus();
     return;
   }
-  if (state.phase === 'result' && t >= cur.resumeUntil) { lyYT.pauseVideo(); clearInterval(lyTick); lyTick = null; }
+  // po odpowiedzi: od dwóch wersów wcześniej, prawidłowy wers pojawia się słowo po słowie, potem chwila muzyki
+  if (state.phase === 'result') {
+    if (!cur.revealing && t >= cur.gap.pauseAt + 0.4) { cur.revealing = true; lyRenderAnswer(); }
+    if (t >= cur.resumeUntil) { lyYT.pauseVideo(); clearInterval(lyTick); lyTick = null; }
+  }
   lyRenderLyrics(t);
 }
 // wymiana piosenki: druga piosenka z tej samej kategorii (raz na grę)
@@ -454,7 +470,6 @@ function lyRevealWord(i) {
   if (lyMe().lifes.words < 1 || cur.revealed.has(i) || state.phase !== 'answer') return;
   lyMe().lifes.words -= 1;
   cur.revealed.add(i);
-  cur.given[i] = cur.gap.blanks[i].want;
   cur.picking = false;
   lyRender();
 }
@@ -483,7 +498,16 @@ function lyHint(text, from) {
   lyRender();
   tvSync();
 }
-// śpiewanie: rozpoznawanie mowy przeglądarki (Chrome, Edge, Safari) – słowa trafiają do pustych pól
+// odpowiedź: jedno pole tekstowe – kolejne wpisane słowa trafiają na kolejne nieodsłonięte miejsca
+const lyOpen = (cur) => cur.gap.blanks.map((_, i) => i).filter((i) => !cur.revealed.has(i));
+function lyGiven(cur) {
+  const typed = lyWords(cur.text || '');
+  const out = cur.gap.blanks.map((b, i) => (cur.revealed.has(i) ? b.want : ''));
+  lyOpen(cur).forEach((i, k) => { out[i] = typed[k] || ''; });
+  return out;
+}
+const lySetText = (cur, words) => { cur.text = lyOpen(cur).map((i) => words[i] || '').join(' ').trim(); };
+// śpiewanie: rozpoznawanie mowy przeglądarki (Chrome, Edge, Safari) – rozpoznane słowa trafiają do pola odpowiedzi
 const LySpeech = window.SpeechRecognition || window.webkitSpeechRecognition;
 function lySing() {
   if (!LySpeech || state.phase !== 'answer') return;
@@ -506,7 +530,7 @@ function lySing() {
         if (!best || score > best.score) best = { score, win };
       }
     }
-    if (best) best.win.forEach((w, i) => { if (!cur.revealed.has(i)) cur.given[i] = w; });
+    if (best) lySetText(cur, best.win);
   };
   rec.onend = () => { cur.listening = false; lyRender(); };
   rec.onerror = () => { cur.listening = false; lyRender(); };
@@ -518,7 +542,9 @@ function lySubmit() {
   const ly = state.lyrics;
   const cur = ly.cur;
   const me = lyMe();
-  $$('#ly-blanks input').forEach((inp, i) => { if (!cur.revealed.has(i)) cur.given[i] = inp.value; });
+  const inp = $('#ly-input');
+  if (inp) cur.text = inp.value;
+  cur.given = lyGiven(cur);
   cur.marks = cur.gap.blanks.map((b, i) => lyWordOk(cur.given[i] || '', b.want));
   const ok = cur.marks.every(Boolean);
   const stage = me.stage + 1;
@@ -537,16 +563,31 @@ function lySubmit() {
   cur.ok = ok;
   state.history.push({ song: cur.it.song, ok, note: ly.mini ? (ok ? '+1' : T('pomyłka')) : (ok ? lyMoney(me.score) : T('pomyłka')), preview: null });
   state.phase = 'result';
-  // muzyka gra dalej – słychać prawidłowy wers
-  cur.resumeUntil = cur.gap.pauseAt + 9;
-  try { lyYT.playVideo(); } catch (e) { /* odtwarzacz niedostępny */ }
-  if (!lyTick) lyTick = setInterval(lyOnTick, 100);
+  // piosenka wraca o dwa wersy i gra dalej – prawidłowy wers pojawia się w chwili, gdy jest śpiewany
+  const back = cur.lines[Math.max(0, cur.gap.line - 2)];
+  cur.revealing = false;
+  cur.resumeUntil = cur.gap.end + 3;
+  try { lyYT.seekTo(Math.max(0, back.t - 0.5), true); lyYT.playVideo(); } catch (e) { /* odtwarzacz niedostępny */ }
+  clearInterval(lyTick);
+  lyTick = setInterval(lyOnTick, 50);
+  lyRender();
+}
+// zła wersja piosenki albo błędy w tekście – film pomijany w kolejnych grach na tym urządzeniu, zgłoszenie zapisane
+function lyReport() {
+  const cur = state.lyrics && state.lyrics.cur;
+  if (!cur || cur.reported) return;
+  cur.reported = true;
+  if (cur.videoId) lyMarkBad(cur.videoId);
+  store.set('lyReports', [...store.get('lyReports', []), { k: songKey(cur.it.song), v: cur.videoId, l: cur.it.lr, d: new Date().toISOString().slice(0, 10) }].slice(-200));
   lyRender();
 }
 function lyQuit() {
   const me = lyMe();
   if (state.phase !== 'board' || me.stage === 0) return;
-  if (!confirm(T('Rezygnujesz i zabierasz {0}?', lyMoney(me.score)))) return;
+  // przed hitem za 100 000 zł rezygnacja daje 50 000 zł
+  const take = me.stage === 9 ? LY_QUIT_FINAL : me.score;
+  if (!confirm(T('Rezygnujesz i zabierasz {0}?', lyMoney(take)))) return;
+  me.score = take;
   me.out = true;
   me.quit = true;
   lyNextTurn();
@@ -585,11 +626,13 @@ function lyEnd() {
 function lyLadderEl(p) {
   return el('ol', { class: 'ly-ladder', reversed: true }, LY_LADDER.slice().reverse().map((v, ri) => {
     const i = LY_LADDER.length - 1 - ri;
-    const cls = [i < p.stage ? 'done' : '', i === p.stage && !p.out ? 'now' : '', i === 3 || i === 7 ? 'safe' : ''].join(' ').trim();
+    const cls = [i < p.stage ? 'done' : '', i === p.stage && !p.out ? 'now' : '', i === LY_SAFE ? 'safe' : '', i === 9 ? 'top' : ''].join(' ').trim();
     return el('li', { class: cls }, el('span', {}, String(i + 1)), el('b', {}, lyMoney(v)));
   }));
 }
+// koła ratunkowe – w finale (hit za 100 000 zł) znikają
 function lyLifesEl(p) {
+  if (p.stage >= 9) return null;
   const multi = state.players.length > 1;
   return el('div', { class: 'ly-lifes' },
     el('span', { class: p.lifes.words ? '' : 'used' }, T('🔤 Trzy słowa: {0}', p.lifes.words)),
@@ -606,7 +649,7 @@ function lyRender() {
   $('#ly-ladder').classList.toggle('hidden', !!ly.mini);
   $('#ly-scores').replaceChildren(...(multi ? state.players.map((p, i) => el('span', { class: `score${i === state.turn ? ' active' : ''}${p.out ? ' out' : ''}` },
     ly.mini ? `${p.name}: ${pointsLabel(p.score)}` : `${p.name}: ${lyMoney(p.score)}${p.out ? (p.quit ? ' ✋' : ' ✖') : ''}`)) : []));
-  $('#ly-ladder').replaceChildren(lyLadderEl(me), lyLifesEl(me));
+  $('#ly-ladder').replaceChildren(lyLadderEl(me), lyLifesEl(me) || '');
   $('#ly-msg').textContent = ly.msg || '';
   $('#ly-msg').classList.toggle('hidden', !ly.msg);
   const board = $('#ly-board');
@@ -615,62 +658,72 @@ function lyRender() {
   stageBox.classList.toggle('hidden', state.phase === 'board');
   if (state.phase === 'board') {
     const hitReady = me.stage === 9;
-    const head = el('p', { class: 'ly-step' }, hitReady ? T('Został hit za {0} – grasz czy rezygnujesz z {1}?', lyMoney(LY_LADDER[9]), lyMoney(me.score))
-      : T('Etap {0} – gra o {1}. Wybierz kategorię.', me.stage + 1, lyMoney(LY_LADDER[me.stage])));
-    // u góry szeroki kafelek „Hit za 100 000 zł” – dostępny dopiero na końcu; pod nim 3×3 kategorie (zagrane – wyszarzone)
-    const hit = el('button', { class: `ly-hit${hitReady ? ' ready' : ''}`, disabled: !hitReady, onclick: () => { ly.hitAsk = true; ly.pickCat = null; lyRender(); } },
-      el('b', {}, T('🏆 Hit za {0}', lyMoney(LY_LADDER[9]))));
-    const grid = el('div', { class: 'ly-cats' }, me.board.map((c, ci) => el('button', {
-      class: `ly-cat${c.done ? ' done' : ''}${ly.pickCat === ci ? ' picked' : ''}`, disabled: c.done || hitReady, onclick: () => lyChooseCat(ci),
-    }, el('b', {}, c.name))));
-    const items = [head, hit, grid];
-    if (ly.hitAsk && hitReady) {
-      items.push(el('div', { class: 'ly-choice' },
-        el('button', { class: 'primary', onclick: lyPlayHit }, T('🎤 Gram o {0}', lyMoney(LY_LADDER[9]))),
-        el('button', { class: 'ghost', onclick: lyQuit }, T('✋ Rezygnuję – zabieram {0}', lyMoney(me.score)))));
-    } else if (ly.pickCat != null) {
+    const items = [];
+    if (ly.pickCat != null) {
+      // wybrana kategoria: zamiast kafelków dwie piosenki (z rokiem wydania); innej kategorii już nie można wybrać
       const c = me.board[ly.pickCat];
-      items.push(el('div', { class: 'ly-choice' }, el('h3', {}, c.name), el('div', { class: 'ly-songs' }, c.songs.map((it, si) => el('button', { class: 'ly-song', onclick: () => lyChooseSong(ly.pickCat, si) },
-        el('b', {}, it.song.t), el('span', { class: 'muted' }, artistLine(it.song))))),
-      el('button', { class: 'ghost', onclick: () => { ly.pickCat = null; lyRender(); } }, T('← Inna kategoria'))));
+      items.push(el('p', { class: 'ly-step' }, T('Etap {0} – gra o {1}. Wybierz piosenkę.', me.stage + 1, lyMoney(LY_LADDER[me.stage]))),
+        el('h3', { class: 'ly-catname' }, c.name),
+        el('div', { class: 'ly-songs' }, c.songs.map((it, si) => el('button', { class: 'ly-song', style: `--i:${si}`, onclick: () => lyChooseSong(ly.pickCat, si) },
+          el('span', { class: 'ly-year' }, String(it.song.y)), el('b', {}, it.song.t), el('span', { class: 'muted' }, artistLine(it.song))))));
+    } else {
+      items.push(el('p', { class: 'ly-step' }, hitReady ? T('Został hit za {0} – grasz bez kół ratunkowych czy rezygnujesz i zabierasz {1}?', lyMoney(LY_LADDER[9]), lyMoney(LY_QUIT_FINAL))
+        : T('Etap {0} – gra o {1}. Wybierz kategorię.', me.stage + 1, lyMoney(LY_LADDER[me.stage]))));
+      // u góry szeroki kafelek „Hit za 100 000 zł” – dostępny dopiero na końcu; pod nim 3×3 kategorie (zagrane – wyszarzone)
+      items.push(el('button', { class: `ly-hit${hitReady ? ' ready' : ''}`, disabled: !hitReady, onclick: () => { ly.hitAsk = true; lyRender(); } },
+        el('b', {}, T('🏆 Hit za {0}', lyMoney(LY_LADDER[9])))));
+      if (ly.hitAsk && hitReady) {
+        items.push(el('div', { class: 'ly-choice' },
+          el('button', { class: 'primary', onclick: lyPlayHit }, T('🎤 Gram o {0}', lyMoney(LY_LADDER[9]))),
+          el('button', { class: 'ghost', onclick: lyQuit }, T('✋ Rezygnuję – zabieram {0}', lyMoney(LY_QUIT_FINAL)))));
+      }
+      items.push(el('div', { class: 'ly-cats' }, me.board.map((c, ci) => el('button', {
+        class: `ly-cat${c.done ? ' done' : ''}`, style: `--i:${ci}`, disabled: c.done || hitReady, onclick: () => lyChooseCat(ci),
+      }, el('b', {}, c.name)))));
+      if (me.stage > 0 && !hitReady) items.push(el('button', { class: 'ghost ly-quit', onclick: lyQuit }, T('✋ Rezygnuję – zabieram {0}', lyMoney(me.score))));
     }
     lyPrefetch(me.board.filter((c) => !c.done).flatMap((c) => c.songs.map((it) => it.lr)));
-    if (me.stage > 0 && !hitReady) items.push(el('button', { class: 'ghost ly-quit', onclick: lyQuit }, T('✋ Rezygnuję – zabieram {0}', lyMoney(me.score))));
     board.replaceChildren(...items);
     tvSync();
     return;
   }
   const cur = ly.cur;
-  $('#ly-song').textContent = cur ? `${cur.cat} · ${cur.it.song.t} — ${artistLine(cur.it.song)}` : '';
-  $('#ly-status').textContent = state.phase === 'loading' ? T('Wczytywanie piosenki i tekstu…')
-    : state.phase === 'play' ? (cur && cur.lines ? T('Śpiewaj razem z tekstem – muzyka przerwie się przed wersem do uzupełnienia.') : T('Wczytywanie tekstu…'))
-      : state.phase === 'answer' ? T('Dokończ wers: {0}', T('słów: {0}', cur.gap.blanks.length)) : '';
+  $('#ly-song').replaceChildren(...(cur ? [el('span', { class: 'ly-cattag' }, cur.cat), ` ${cur.it.song.t} — ${artistLine(cur.it.song)} `, el('span', { class: 'ly-year' }, String(cur.it.song.y))] : []));
+  // w trakcie piosenki bez zapowiedzi przerwy – ma być zaskoczeniem
+  $('#ly-status').textContent = state.phase === 'loading' ? T('Wczytywanie piosenki…')
+    : state.phase === 'play' ? (cur && cur.lines ? T('🎤 Śpiewaj razem z tekstem!') : T('Wczytywanie tekstu…')) : '';
   lyRenderLyrics(lyYT && lyYT.getCurrentTime ? lyYT.getCurrentTime() : 0);
   lyRenderAnswer();
   tvSync();
 }
-// karaoke: wersy do bieżącego miejsca (ostatnie kilka), bieżący wyróżniony; dalej tylko wersy przed przerwą
+// karaoke: jeden wers poprzedni, bieżący i kolejne (razem LY_ROWS); na początku – pierwsze wersy, na końcu – ostatnie;
+// wersów z przerwą nie widać aż do odpowiedzi (podgląd je pomija, żeby przerwa była zaskoczeniem)
+const LY_ROWS = 5;
 function lyRenderLyrics(t) {
   const cur = state.lyrics && state.lyrics.cur;
   const box = $('#ly-lines');
-  if (!cur || !cur.lines || !cur.gap) { box.replaceChildren(); return; }
-  const gapLine = cur.gap.line;
-  const after = state.phase === 'result';
+  if (!cur || !cur.lines || !cur.gap) { box.replaceChildren(); box.dataset.key = ''; return; }
+  const hidden = state.phase === 'result' ? new Set() : new Set(cur.gap.lines);
+  const seq = cur.lines.map((_, i) => i).filter((i) => !hidden.has(i));
   let now = -1;
-  cur.lines.forEach((l, i) => { if (l.t <= t + 0.05) now = i; });
-  const last = after ? Math.min(cur.lines.length - 1, Math.max(now, gapLine + 1)) : gapLine - 1;
-  const from = Math.max(0, Math.min(now, last) - 3);
-  const rows = [];
-  for (let i = from; i <= Math.min(last, Math.max(now, from) + 1); i++) {
-    if (!after && i >= gapLine) break;
-    rows.push(el('p', { class: i === now ? 'now' : (i < now ? 'past' : 'next') }, cur.lines[i].text));
+  cur.lines.forEach((l, i) => { if (l.t <= t + 0.05 && !hidden.has(i)) now = i; });
+  const p = seq.indexOf(now);
+  let rows;
+  if (state.phase === 'answer') rows = seq.slice(Math.max(0, p - 1), p + 1); // przerwa: wers wcześniej i bieżący, dalej pola
+  else {
+    let start = p < 0 ? 0 : Math.max(0, p - 1);
+    start = Math.max(0, Math.min(start, seq.length - LY_ROWS));
+    rows = seq.slice(start, start + LY_ROWS);
   }
-  const k = rows.map((r) => r.className + r.textContent).join('|');
-  if (box.dataset.key !== k) {
-    box.dataset.key = k;
-    box.replaceChildren(...rows);
-    tvSync(); // nowy wers – także na dużym ekranie i telefonach
-  }
+  const gapSet = new Set(cur.gap.lines);
+  const k = rows.map((i) => `${i}${i === now ? '*' : ''}`).join('|');
+  if (box.dataset.key === k) return;
+  const old = box.dataset.key ? box.dataset.key.split('|').map((x) => parseInt(x, 10)) : [];
+  box.dataset.key = k;
+  box.replaceChildren(...rows.map((i) => el('p', {
+    class: [i === now ? 'now' : (i < now ? 'past' : 'next'), old.includes(i) ? '' : 'in', state.phase === 'result' && gapSet.has(i) ? `gapline ${cur.ok ? 'ok' : 'bad'}` : ''].join(' ').trim(),
+  }, cur.lines[i].text)));
+  tvSync(); // nowy wers – także na dużym ekranie i telefonach
 }
 function lyRenderAnswer() {
   const ly = state.lyrics;
@@ -678,58 +731,59 @@ function lyRenderAnswer() {
   const box = $('#ly-answer');
   if (!cur || !['answer', 'result'].includes(state.phase)) { box.replaceChildren(); return; }
   const me = lyMe();
-  const result = state.phase === 'result';
-  const blanks = el('div', { id: 'ly-blanks', class: 'ly-blanks' }, cur.gap.prefix ? el('span', { class: 'ly-prefix' }, cur.gap.prefix) : null,
-    cur.gap.blanks.flatMap((b, i) => (b.next && i > 0 && !cur.gap.blanks[i - 1].next
-      ? [el('span', { class: 'ly-break' }), lyBlankInput(b, i, result)] : [lyBlankInput(b, i, result)])));
-  const parts = [blanks];
-  if (!result) {
-    if (cur.variants) {
-      parts.push(el('div', { class: 'ly-variants' }, cur.variants.map((v) => el('button', { class: 'ghost', onclick: () => { lyWords(v).forEach((w, i) => { if (!cur.revealed.has(i)) cur.given[i] = w; }); lyRender(); } }, v))));
-    }
-    if (cur.picking) parts.push(el('p', { class: 'muted small' }, T('Stuknij puste pole, które ma zostać odsłonięte.')));
-    if (cur.hint) parts.push(el('p', { class: 'ly-hint' }, T('🙋 Podpowiedź suflera: {0}', cur.hint)));
-    if (cur.helper != null) parts.push(el('p', { class: 'muted' }, T('🙋 {0} wpisuje podpowiedź…', state.players[cur.helper].name)),
-      lyHelperForm(cur.helper));
-    const actions = el('div', { class: 'actions' },
-      el('button', { class: 'primary', onclick: lySubmit }, T('Tak to leciało!')),
-      LySpeech ? el('button', { class: 'ghost', onclick: lySing, disabled: cur.listening }, cur.listening ? T('🎤 Słucham…') : T('🎤 Zaśpiewaj')) : null,
-      ly.mini ? null : el('span', { class: 'ly-lifebtns' },
+  const final = !ly.mini && me.stage >= 9 && state.phase === 'answer';
+  if (state.phase === 'result') {
+    // prawidłowa odpowiedź pojawia się słowo po słowie, gdy piosenka dochodzi do tego miejsca
+    const words = el('div', { class: `ly-reveal${cur.revealing ? ' go' : ''}` }, cur.gap.blanks.map((b, i) => el('span', {
+      class: `ly-word ${cur.marks[i] ? 'ok' : 'bad'}`, style: `--i:${i}`,
+    }, b.want)));
+    const mine = cur.ok ? null : el('p', { class: 'muted small' }, T('Twoja odpowiedź: {0}', (cur.text || '').trim() || '—'));
+    const p = lyMe();
+    const verdict = el('p', { class: `verdict ${cur.ok ? 'ok' : 'bad'}` }, ly.mini ? (cur.ok ? T('✅ Tak to leciało! +1 pkt') : T('❌ Niestety, nie tak to leciało.')) : cur.ok
+      ? (p.stage === 10 ? T('🏆 Brawo! Główna nagroda: {0}!', lyMoney(p.score)) : T('✅ Tak to leciało! Masz {0}.', lyMoney(p.score)))
+      : T('❌ Niestety. Wygrana: {0}.', lyMoney(p.score)));
+    const last = ly.mini ? state.players.every((pl) => pl.played + (pl === p ? 1 : 0) >= ly.mini.rounds) : !lyActive().length;
+    box.replaceChildren(words, verdict, mine || '', el('div', { class: 'actions' },
+      el('button', { class: 'primary', onclick: lyNextTurn }, last ? T('Koniec gry') : T('Dalej')),
+      el('button', { class: 'ghost small', disabled: cur.reported, onclick: lyReport }, cur.reported ? T('Zgłoszono – ten film nie wróci') : T('⚠️ Zła wersja piosenki / błędy w tekście'))));
+    return;
+  }
+  // liczba słów: kropki, które zapełniają się przy pisaniu; odsłonięte słowa widać w ich miejscu
+  const given = lyGiven(cur);
+  const dots = el('div', { class: 'ly-dots', 'aria-label': T('słów: {0}', cur.gap.blanks.length) }, cur.gap.blanks.map((b, i) => el('span', {
+    class: `ly-dot${cur.revealed.has(i) ? ' shown' : (given[i] ? ' filled' : '')}${cur.picking && !cur.revealed.has(i) ? ' pick' : ''}`,
+    style: `--i:${i}`, onclick: () => { if (cur.picking) lyRevealWord(i); },
+  }, cur.revealed.has(i) ? b.want : '')));
+  const input = el('input', { id: 'ly-input', type: 'text', autocomplete: 'off', spellcheck: 'false', placeholder: T('Dokończ wers…'), 'aria-label': T('Dokończ wers') });
+  input.value = cur.text || '';
+  input.addEventListener('input', () => {
+    cur.text = input.value;
+    const g = lyGiven(cur);
+    $$('#ly-blanks .ly-dot').forEach((d, i) => { if (!cur.revealed.has(i)) d.classList.toggle('filled', !!g[i]); });
+  });
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); lySubmit(); } });
+  const parts = [el('div', { id: 'ly-blanks', class: 'ly-blanks' }, el('p', { class: 'ly-count' }, T('Brakuje słów: {0}', cur.gap.blanks.length)), dots, input)];
+  if (cur.variants) {
+    parts.push(el('div', { class: 'ly-variants' }, cur.variants.map((v) => el('button', { class: 'ghost', onclick: () => { lySetText(cur, lyWords(v)); lyRender(); } }, v))));
+  }
+  if (cur.picking) parts.push(el('p', { class: 'muted small' }, T('Stuknij kropkę – słowo w tym miejscu zostanie odsłonięte.')));
+  if (cur.hint) parts.push(el('p', { class: 'ly-hint' }, T('🙋 Podpowiedź suflera: {0}', cur.hint)));
+  if (cur.helper != null) parts.push(el('p', { class: 'muted' }, T('🙋 {0} wpisuje podpowiedź…', state.players[cur.helper].name)), lyHelperForm(cur.helper));
+  const actions = el('div', { class: 'actions' },
+    el('button', { class: 'primary', onclick: lySubmit }, T('Tak to leciało!')),
+    LySpeech ? el('button', { class: 'ghost', onclick: lySing, disabled: cur.listening }, cur.listening ? T('🎤 Słucham…') : T('🎤 Zaśpiewaj')) : null,
+    ly.mini || final ? null : el('span', { class: 'ly-lifebtns' },
       el('button', { class: 'ghost', disabled: !me.lifes.words, onclick: () => { cur.picking = !cur.picking; lyRender(); } }, T('🔤 Odsłoń słowo ({0})', me.lifes.words)),
       el('button', { class: 'ghost', disabled: !me.lifes.three || !!cur.variants, onclick: lyThree }, T('🎯 Trzy wersje wersu')),
       el('button', { class: 'ghost', disabled: !me.lifes.swap || !cur.other || ly.played.has(songKey(cur.other.song)), onclick: lySwap }, T('🔁 Wymiana piosenki'))));
-    if (state.players.length > 1 && me.lifes.help && cur.helper == null && !cur.hint) {
-      actions.append(el('span', { class: 'ly-help' }, T('🙋 Sufler:'), state.players.map((p, i) => (i === state.turn ? null
-        : el('button', { class: 'ghost small', onclick: () => lyAskHelper(i) }, p.name)))));
-    }
-    parts.push(actions);
-  } else {
-    const p = lyMe();
-    parts.push(el('p', { class: `verdict ${cur.ok ? 'ok' : 'bad'}` }, ly.mini ? (cur.ok ? T('✅ Tak to leciało! +1 pkt') : T('❌ Niestety, nie tak to leciało.')) : cur.ok
-      ? (p.stage === 10 ? T('🏆 Brawo! Główna nagroda: {0}!', lyMoney(p.score)) : T('✅ Tak to leciało! Masz {0}.', lyMoney(p.score)))
-      : T('❌ Niestety. Wygrana: {0}.', lyMoney(p.score))));
-    const last = ly.mini ? state.players.every((pl) => pl.played + (pl === p ? 1 : 0) >= ly.mini.rounds) : !lyActive().length;
-    parts.push(el('div', { class: 'actions' }, el('button', { class: 'primary', onclick: lyNextTurn }, last ? T('Koniec gry') : T('Dalej'))));
+  if (!final && state.players.length > 1 && me.lifes.help && cur.helper == null && !cur.hint) {
+    actions.append(el('span', { class: 'ly-help' }, T('🙋 Sufler:'), state.players.map((p, i) => (i === state.turn ? null
+      : el('button', { class: 'ghost small', onclick: () => lyAskHelper(i) }, p.name)))));
   }
+  parts.push(actions);
+  const focused = document.activeElement && document.activeElement.id === 'ly-input';
   box.replaceChildren(...parts);
-}
-function lyBlankInput(b, i, result) {
-  const cur = state.lyrics.cur;
-  if (result) {
-    return el('span', { class: `ly-word ${cur.marks[i] ? 'ok' : 'bad'}` }, cur.marks[i] ? b.want : `${cur.given[i] || '—'} → ${b.want}`);
-  }
-  const inp = el('input', { type: 'text', autocomplete: 'off', spellcheck: 'false', 'aria-label': T('Słowo {0}', i + 1),
-    size: Math.max(4, Math.min(14, b.want.length + 1)), class: cur.revealed.has(i) ? 'revealed' : '' });
-  inp.style.width = `${Math.max(4, Math.min(16, b.want.length + 2))}ch`; // szerokość podpowiada długość słowa
-  inp.value = cur.given[i] || '';
-  inp.readOnly = cur.revealed.has(i);
-  inp.addEventListener('input', () => { cur.given[i] = inp.value; });
-  inp.addEventListener('click', () => { if (cur.picking) lyRevealWord(i); });
-  inp.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); lySubmit(); }
-    if (e.key === ' ' && inp.value.trim()) { e.preventDefault(); const nxt = $$('#ly-blanks input')[i + 1]; if (nxt) nxt.focus(); }
-  });
-  return inp;
+  if (focused) { const i = $('#ly-input'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }
 }
 // sufler bez telefonu: podpowiedź wpisywana na tym urządzeniu (gracz podaje mu urządzenie)
 function lyHelperForm(i) {
@@ -743,26 +797,27 @@ function lyrSnapshot() {
   if (!ly) return null;
   const me = lyMe();
   const cur = ly.cur;
+  const result = state.phase === 'result';
   return {
     phase: state.phase, turn: me.name, stage: me.stage, ladder: LY_LADDER, money: state.players.map((p) => ({ name: p.name, v: p.score, out: p.out })),
-    lifes: me.lifes, cat: cur ? cur.cat : null, song: cur ? { t: cur.it.song.t, a: artistLine(cur.it.song) } : null,
+    lifes: me.lifes, cat: cur ? cur.cat : null, song: cur ? { t: cur.it.song.t, a: artistLine(cur.it.song), y: cur.it.song.y } : null,
     lines: $$('#ly-lines p').map((p) => ({ cls: p.className, text: p.textContent })),
-    blanks: cur && cur.gap && ['answer', 'result'].includes(state.phase) ? { prefix: cur.gap.prefix, n: cur.gap.blanks.length,
-      given: state.phase === 'result' ? cur.gap.blanks.map((b) => b.want) : cur.given, marks: state.phase === 'result' ? cur.marks : null } : null,
+    blanks: cur && cur.gap && ['answer', 'result'].includes(state.phase) ? { prefix: '', n: cur.gap.blanks.length,
+      given: result ? cur.gap.blanks.map((b) => b.want) : cur.gap.blanks.map((b, i) => (cur.revealed.has(i) ? b.want : '')), marks: result ? cur.marks : null } : null,
     helper: cur && cur.helper != null ? state.players[cur.helper].name : null,
     hint: cur ? cur.hint : null, verdict: $('#ly-answer .verdict') ? $('#ly-answer .verdict').textContent : '',
     board: state.phase === 'board' ? { cats: me.board.map((c) => ({ name: c.name, done: c.done })), hit: me.stage === 9,
-      pick: ly.pickCat != null ? me.board[ly.pickCat].songs.map((it) => `${it.song.t} — ${artistLine(it.song)}`) : null } : null,
+      pick: ly.pickCat != null ? me.board[ly.pickCat].songs.map((it) => `${it.song.t} — ${artistLine(it.song)} (${it.song.y})`) : null } : null,
   };
 }
-// odpowiedź gracza z telefonu (słowa w pustych polach) i podpowiedź suflera
+// odpowiedź gracza z telefonu (tekst albo lista słów) i podpowiedź suflera
 function lyFromPhone(msg, name) {
   const i = state.players.findIndex((p) => p.name === name);
   if (i < 0 || !state.lyrics) return;
   if (msg.lyHint != null) lyHint(msg.lyHint, i);
-  if (msg.lyAnswer && i === state.turn && state.phase === 'answer') {
+  if (msg.lyAnswer != null && i === state.turn && state.phase === 'answer') {
     const cur = state.lyrics.cur;
-    msg.lyAnswer.slice(0, cur.gap.blanks.length).forEach((w, k) => { if (!cur.revealed.has(k)) cur.given[k] = String(w || ''); });
+    cur.text = Array.isArray(msg.lyAnswer) ? msg.lyAnswer.join(' ') : String(msg.lyAnswer);
     lyRender();
     if (msg.lySubmit) lySubmit();
   }

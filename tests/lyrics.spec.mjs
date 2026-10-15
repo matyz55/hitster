@@ -20,12 +20,18 @@ async function startLyrics(page, players = 1) {
 }
 async function playToGap(page) {
   await page.locator('.ly-cat').first().click();
+  // po wyborze kategorii: zamiast kafelków dwie piosenki z rokiem wydania, bez powrotu do innej kategorii
+  await expect(page.locator('.ly-cat')).toHaveCount(0);
+  await expect(page.locator('.ly-song .ly-year')).toHaveCount(2);
+  await expect(page.getByRole('button', { name: /Inna kategoria/ })).toHaveCount(0);
   await page.locator('.ly-song').first().click();
   await expect.poll(() => page.evaluate(() => state.phase), { timeout: 20000 }).toBe('answer');
 }
 const fillCorrect = (page) => page.evaluate(() => {
   const cur = state.lyrics.cur;
-  document.querySelectorAll('#ly-blanks input').forEach((inp, i) => { inp.value = cur.gap.blanks[i].want; inp.dispatchEvent(new Event('input')); });
+  const inp = document.querySelector('#ly-input');
+  inp.value = cur.gap.blanks.filter((b, i) => !cur.revealed.has(i)).map((b) => b.want).join(' ');
+  inp.dispatchEvent(new Event('input'));
 });
 
 test('Tak to leciało!: plansza 9 kategorii, przerwa przed wersem, dobra odpowiedź – 500 zł', async ({ page }) => {
@@ -37,7 +43,7 @@ test('Tak to leciało!: plansza 9 kategorii, przerwa przed wersem, dobra odpowie
     const c = state.lyrics.cur; const k = (t) => lyKey(t);
     return { n: c.gap.blanks.length, words: c.lines[c.gap.line].text.split(/\s+/).length, before: c.lines.slice(0, c.gap.line).some((l) => k(l.text) === k(c.lines[c.gap.line].text)) };
   });
-  await expect(page.locator('#ly-blanks input')).toHaveCount(gap.n);
+  await expect(page.locator('.ly-dot')).toHaveCount(gap.n);
   expect(gap.n).toBe(gap.words);
   expect(gap.before).toBe(false);
   // karaoke: wersy sprzed przerwy, bez wersu do uzupełnienia
@@ -46,6 +52,8 @@ test('Tak to leciało!: plansza 9 kategorii, przerwa przed wersem, dobra odpowie
   await fillCorrect(page);
   await page.getByRole('button', { name: 'Tak to leciało!' }).click();
   await expect(page.locator('#ly-answer .verdict')).toContainText('500 zł');
+  // piosenka wraca o dwa wersy, a prawidłowy wers pojawia się, gdy jest śpiewany
+  await expect(page.locator('.ly-reveal.go')).toHaveCount(1, { timeout: 15000 });
   await page.getByRole('button', { name: 'Dalej' }).click();
   await expect(page.locator('.ly-ladder li.now')).toContainText('1000 zł');
   // zagrana kategoria zostaje na planszy – wyszarzona i niedostępna; hit za 100 000 zł – dopiero na końcu
@@ -57,12 +65,15 @@ test('Tak to leciało!: plansza 9 kategorii, przerwa przed wersem, dobra odpowie
 
 test('Tak to leciało!: po 9 kategoriach – hit za 100 000 zł albo rezygnacja z 50 000 zł', async ({ page }) => {
   await startLyrics(page);
-  await page.evaluate(() => { const p = state.players[0]; p.stage = 9; p.score = 50000; p.board.forEach((c) => { c.done = true; }); lyRender(); });
+  await page.evaluate(() => { const p = state.players[0]; p.stage = 9; p.score = 75000; p.board.forEach((c) => { c.done = true; }); lyRender(); });
   expect(await page.locator('.ly-hit').isDisabled()).toBe(false);
   await page.locator('.ly-hit').click();
   await expect(page.getByRole('button', { name: /Rezygnuję – zabieram 50 000/ })).toBeVisible();
+  // w finale bez kół ratunkowych
   await page.getByRole('button', { name: /Gram o 100 000/ }).click();
   await expect.poll(() => page.evaluate(() => state.phase), { timeout: 20000 }).toBe('answer');
+  await expect(page.locator('.ly-lifebtns')).toHaveCount(0);
+  await expect(page.locator('.ly-lifes')).toHaveCount(0);
   await fillCorrect(page);
   await page.getByRole('button', { name: 'Tak to leciało!' }).click();
   await expect(page.locator('#ly-answer .verdict')).toContainText('100 000 zł');
@@ -73,8 +84,8 @@ test('Tak to leciało!: koła ratunkowe – trzy słowa, trzy wersje, wymiana pi
   await playToGap(page);
   // odsłonięcie słowa: wybór koła, potem stuknięcie pustego pola
   await page.getByRole('button', { name: /Odsłoń słowo \(3\)/ }).click();
-  await page.locator('#ly-blanks input').nth(1).click();
-  await expect(page.locator('#ly-blanks input').nth(1)).toHaveValue(await page.evaluate(() => state.lyrics.cur.gap.blanks[1].want));
+  await page.locator('.ly-dot').nth(1).click();
+  await expect(page.locator('.ly-dot').nth(1)).toHaveText(await page.evaluate(() => state.lyrics.cur.gap.blanks[1].want));
   expect(await page.evaluate(() => state.players[0].lifes.words)).toBe(2);
   // trzy wersje wersu – jedna prawdziwa
   await page.getByRole('button', { name: /Trzy wersje wersu/ }).click();
@@ -87,7 +98,7 @@ test('Tak to leciało!: koła ratunkowe – trzy słowa, trzy wersje, wymiana pi
   await expect.poll(() => page.evaluate(() => state.phase), { timeout: 20000 }).toBe('answer');
   expect(await page.evaluate(() => songKey(state.lyrics.cur.it.song))).not.toBe(before);
   // zła odpowiedź – koniec gry (przed 4. etapem bez kwoty gwarantowanej)
-  await page.locator('#ly-blanks input').first().fill('zupełnie');
+  await page.locator('#ly-input').fill('zupełnie');
   await page.getByRole('button', { name: 'Tak to leciało!' }).click();
   await expect(page.locator('#ly-answer .verdict')).toContainText('0 zł');
   await page.getByRole('button', { name: 'Koniec gry' }).click();

@@ -634,3 +634,25 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Tak to leciało!: szybszy start piosenki – film zaczyna się ładować od razu po wyborze (tekst dochodzi w trakcie),
   teksty piosenek z planszy pobierają się w tle, zanim gracz coś wybierze, a przeglądarka wcześniej łączy się
   z YouTube i lrclib.net.
+
+## 5.30.0 – 16.10.2026 (`HASH`)
+
+- **Tak to leciało! – nowa drabinka:** 500, 1000, 2000, 5000, 10 000 (kwota gwarantowana), 15 000, 25 000, 50 000,
+  75 000 zł i finał za 100 000 zł. Przed finałem można zrezygnować i zabrać 50 000 zł; w finale nie ma kół
+  ratunkowych (znikają z ekranu).
+- Po wyborze kategorii zamiast kafelków pokazują się dwie piosenki z rokiem wydania; innej kategorii nie da się już
+  wybrać. Rok wydania widać też przy granej piosence.
+- Tekst jak w karaoke: na początku kilka pierwszych wersów, potem jeden wers poprzedni, bieżący i kolejne; na końcu
+  ostatnie wersy. Przerwa jest zaskoczeniem – wers do uzupełnienia nie pojawia się wcześniej w podglądzie, a gra nie
+  zapowiada, kiedy muzyka stanie. Muzyka staje też nieco wcześniej (nie słychać już pierwszego brakującego słowa).
+- Odpowiedź wpisuje się w jedno pole; liczbę brakujących słów pokazują kropki, które zapełniają się przy pisaniu
+  (odsłonięte słowa widać w kropkach).
+- Po „Tak to leciało!” piosenka wraca o dwa wersy, a prawidłowy wers pojawia się słowo po słowie, gdy jest śpiewany.
+- „Trzy wersje wersu”: podmienione słowa mają taką samą wielkość liter jak w prawdziwym wersie.
+- Wyłączone napisy w odtwarzaczu YouTube.
+- Przycisk „Zła wersja piosenki / błędy w tekście” – film nie wróci w kolejnych grach na tym urządzeniu.
+- Kategoria „Tytuł po angielsku” nie łapie już polskich tytułów (np. „Sobie i wam”).
+- Animacje planszy, wyboru piosenki, przewijania tekstu i odpowiedzi; na telefonie 100 000 zł jest zawsze szerokim
+  polem na górze drabinki.
+- Katalog: film z kanału „… – Topic” musi być kanałem wykonawcy tej piosenki (np. bez późniejszego nagrania Kombi
+  Łosowski zamiast Kombi); dane skanu tekstów (`60e1d6c`, `29405ac`).

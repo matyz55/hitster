@@ -57,6 +57,8 @@
     getCurrentTime() { return this.t0 == null ? this.base : this.base + ((performance.now() - this.t0) / 1000) * window.__ytSpeed; }
     pauseVideo() { this.base = this.getCurrentTime(); this.t0 = null; }
     playVideo() { if (this.t0 == null) this.t0 = performance.now(); }
+    seekTo(t) { this.base = t; if (this.t0 != null) this.t0 = performance.now(); }
+    unloadModule() {}
     getDuration() { return 180; }
   } };
 })();

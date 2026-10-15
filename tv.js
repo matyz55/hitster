@@ -167,7 +167,7 @@ function lyricsBoard(l) {
       h('div', 'ly-tv-hit' + (l.board.hit ? ' ready' : ''), T('🏆 Hit za {0}', lyMoneyTv(l.ladder[9]))),
       l.board.pick ? h('div', 'ly-tv-cats', l.board.pick.map((x) => h('div', 'ly-tv-cat', x)))
         : h('div', 'ly-tv-cats', l.board.cats.map((x) => h('div', 'ly-tv-cat' + (x.done ? ' done' : ''), x.name))))
-    : h('div', 'ly-tv-song', l.song ? h('h2', '', `${l.cat} · ${l.song.t}`, h('small', '', ` — ${l.song.a}`)) : null, lyLinesEl(l), lyBlanksView(l),
+    : h('div', 'ly-tv-song', l.song ? h('h2', '', `${l.cat} · ${l.song.t}`, h('small', '', ` — ${l.song.a} (${l.song.y})`)) : null, lyLinesEl(l), lyBlanksView(l),
       l.hint ? h('p', 'ly-hint', T('🙋 Podpowiedź suflera: {0}', l.hint)) : null,
       l.helper ? h('p', 'muted', T('🙋 {0} wpisuje podpowiedź…', l.helper)) : null,
       l.verdict ? h('p', 'verdict', l.verdict) : null);
@@ -191,16 +191,14 @@ function lyricsPhone(s) {
     return h('div', 'picker', top, h('h2', '', T('🙋 {0} prosi Cię o podpowiedź', l.turn)), lyLinesEl(l), lyBlanksView(l), form);
   }
   if (mine && l.phase === 'answer' && l.blanks) {
-    const inputs = Array.from({ length: l.blanks.n }, (_, i) => {
-      const inp = h('input', '');
-      inp.type = 'text'; inp.autocomplete = 'off'; inp.spellcheck = false;
-      inp.value = lyDraft.words[i] != null ? lyDraft.words[i] : (l.blanks.given[i] || '');
-      inp.addEventListener('input', () => { lyDraft.words[i] = inp.value; });
-      return inp;
-    });
-    const form = h('form', 'ly-phone-form', h('div', 'ly-blanks', l.blanks.prefix ? h('span', 'ly-prefix', l.blanks.prefix) : null, inputs),
-      h('button', 'primary', T('Tak to leciało!')));
-    form.addEventListener('submit', (e) => { e.preventDefault(); send({ lyAnswer: inputs.map((x) => x.value), lySubmit: true }); });
+    // jedno pole na cały wers; liczba słów – kropki
+    const inp = h('input', '');
+    inp.type = 'text'; inp.autocomplete = 'off'; inp.spellcheck = false; inp.placeholder = T('Dokończ wers…');
+    inp.value = lyDraft.words.join(' ');
+    inp.addEventListener('input', () => { lyDraft.words = [inp.value]; });
+    const dots = h('div', 'ly-dots', Array.from({ length: l.blanks.n }, (_, i) => h('span', 'ly-dot' + (l.blanks.given[i] ? ' shown' : ''), l.blanks.given[i] || '')));
+    const form = h('form', 'ly-phone-form', h('p', 'muted', T('Brakuje słów: {0}', l.blanks.n)), dots, inp, h('button', 'primary', T('Tak to leciało!')));
+    form.addEventListener('submit', (e) => { e.preventDefault(); send({ lyAnswer: inp.value, lySubmit: true }); });
     return h('div', 'picker', top, l.hint ? h('p', 'ly-hint', T('🙋 Podpowiedź suflera: {0}', l.hint)) : null, lyLinesEl(l), form,
       h('p', 'muted', T('Koła ratunkowe wybiera się na urządzeniu gospodarza.')));
   }
