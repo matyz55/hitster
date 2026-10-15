@@ -501,6 +501,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   Ułóż piątkę) gra dalej do końca podglądu i zatrzymuje się dopiero przy przejściu do kolejnej piosenki.
   Dotyczy też muzyki grającej na dużym ekranie i na telefonie gracza.
 
-## 5.22.2 – 15.10.2026 (`HASH`)
+## 5.22.2 – 15.10.2026 (`d111100`)
 
 - Przycisk „Kup losową kartę” nazywa się teraz „Kup kartę”.
