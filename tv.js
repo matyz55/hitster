@@ -681,7 +681,9 @@ function musicCmd(m) {
 }
 function onMessage(m) {
   // sygnał obecności gospodarza – nie jest stanem gry (wcześniej nadpisywał ekran wpisywania imienia)
-  if (!m || m.ping || m.probe) return;
+  if (!m || m.probe) return;
+  // sygnał obecności gospodarza – odpowiadamy (gospodarz mierzy opóźnienie i wie, że jesteśmy połączeni)
+  if (m.ping) { if (PLAYER) send({ pong: m.ping }); return; }
   // gospodarz ma inną wersję gry – odświeżamy tę stronę (raz), żeby znała wszystkie ekrany
   if (m.ver && m.ver !== window.SongsterNet.version) { window.SongsterNet.updateTo(m.ver); }
   if (m.whoAreYou) { if (PLAYER) send({ hello: true, role: 'player', name: me }); return; }

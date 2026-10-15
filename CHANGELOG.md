@@ -368,3 +368,12 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   piosenki. W multiplayerze pokój otwiera się z tym samym kodem – telefony wracają przyciskiem „↻ Dołącz ponownie”
   albo same, jeśli połączenie przez serwer pośredniczący się nie zerwało.
 - Zapis znika po zakończeniu gry albo po wyjściu z niej do menu.
+
+## 5.10.0 – 15.10.2026 (`HASH`)
+
+- **Stan połączenia telefonów** u gospodarza: przy graczach w lobby i na pasku nad grą widać „📱 połączony”,
+  „🐢 słabe połączenie” albo „📵 rozłączony” (z podpowiedzią, że na telefonie wystarczy stuknąć „↻ Dołącz ponownie”).
+  Telefony odpowiadają na sygnał obecności co 4 s, z czego gospodarz mierzy opóźnienie.
+- **Uczciwy „Kto pierwszy?”**: zgłoszenia z telefonów są zbierane przez krótką chwilę (opóźnienie najwolniejszego
+  telefonu + 80 ms, najwyżej 0,6 s) i wygrywa to, które po odjęciu opóźnienia sieci danego telefonu było najwcześniejsze.
+  Bez telefonów zgłoszenie działa od razu.

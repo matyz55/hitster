@@ -126,3 +126,13 @@ test('@net przeładowanie gospodarza: wznowienie gry, telefon wraca jednym stukn
   await ania.waitForSelector('.ht-card', { timeout: 40000 });
   noErrors(host, ania);
 });
+
+test('@net stan połączenia: telefon odpowiada na sygnał obecności, po zamknięciu – rozłączony', async ({ browser }) => {
+  const { host, code } = await hostLobby(browser);
+  const ania = await join(browser, code, 'Ania');
+  await host.waitForFunction(() => [...remotes].some((r) => r.name === 'Ania' && r.rtt != null), null, { timeout: 15000 });
+  await expect(host.locator('#lobby-list .conn-on')).toHaveCount(1);
+  await ania.context().close();
+  await expect(host.locator('#lobby-list .conn-off')).toHaveCount(1, { timeout: 45000 });
+  noErrors(host);
+});

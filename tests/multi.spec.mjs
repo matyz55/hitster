@@ -95,3 +95,30 @@ test('przycisk ← i systemowe „wstecz”', async ({ page }) => {
   await page.click('#btn-nav-back');
   await expect.poll(() => screen(page)).toBe('home');
 });
+
+test('uczciwy „Kto pierwszy?”: zgłoszenie z wolniejszego telefonu wcześniejsze o opóźnienie sieci wygrywa', async ({ page }) => {
+  await lobby(page, 2);
+  await page.click('.mode[data-mode=buzz]');
+  await page.click('#btn-start');
+  await ready(page);
+  const winner = await page.evaluate(async () => {
+    // udawany telefon gracza 2 z czasem odpowiedzi 400 ms (opóźnienie w jedną stronę ok. 200 ms)
+    const fake = { role: 'player', name: state.players[1].name, rtt: 400, seen: Date.now(), conn: { open: true, send() {} } };
+    remotes.add(fake);
+    requestBuzz(0); // gracz 1 na tym urządzeniu
+    await new Promise((r) => setTimeout(r, 100));
+    requestBuzz(1, fake.rtt / 2); // dotarło 100 ms później, ale naciśnięte ok. 100 ms wcześniej
+    await new Promise((r) => setTimeout(r, 600));
+    remotes.delete(fake);
+    return state.buzz.answering;
+  });
+  expect(winner).toBe(1);
+});
+
+test('„Kto pierwszy?” bez telefonów: zgłoszenie od razu', async ({ page }) => {
+  await lobby(page, 2);
+  await page.click('.mode[data-mode=buzz]');
+  await page.click('#btn-start');
+  await ready(page);
+  expect(await page.evaluate(() => { requestBuzz(1); return state.buzz.answering; })).toBe(1);
+});

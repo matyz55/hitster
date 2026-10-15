@@ -560,3 +560,10 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .resume-box { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border: 2px solid var(--accent); }
 .resume-box p { margin: 4px 0 0; }
 .resume-btns { display: flex; gap: 8px; }
+
+/* --- stan połączenia telefonów graczy --- */
+.p-phone { font-size: .8rem; white-space: nowrap; }
+.conn-on { color: var(--ok); }
+.conn-slow { color: var(--gold); }
+.conn-off { color: var(--bad, #ff5c5c); }
+.conn-strip { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .85rem; margin: 0 0 8px; }

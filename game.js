@@ -688,7 +688,13 @@ function handleRemote(msg, from) {
     const y = parseInt(msg.challengeYear, 10);
     if (y >= 1900 && y <= new Date().getFullYear()) { state.challengeYear = y; revealTimeline(); }
   }
-  if (msg.buzz != null) buzz(msg.buzz);
+  // czas odpowiedzi telefonu na sygnał obecności (średnia krocząca) – do stanu połączenia i uczciwego „Kto pierwszy?”
+  if (msg.pong != null && from) {
+    const rtt = Math.max(0, Date.now() - msg.pong);
+    from.rtt = from.rtt == null ? rtt : Math.round(from.rtt * 0.7 + rtt * 0.3);
+    return;
+  }
+  if (msg.buzz != null) requestBuzz(msg.buzz, from && from.rtt ? from.rtt / 2 : 0);
   if (msg.guess) {
     $('#guess-song').value = msg.guess.text || '';
     guessPick = msg.guess.pick ? { ...msg.guess.pick, label: msg.guess.text } : null;
@@ -748,7 +754,8 @@ function setupSummary() {
   return out.filter(([k, v]) => v);
 }
 // sygnał obecności – duży ekran wie, że pilot nadal jest połączony (inaczej po chwili wraca do kodu QR)
-setInterval(() => { if (hasRemotes()) remoteSend({ ping: Date.now() }); }, 8000);
+// co 4 s – telefony odpowiadają (pong), z czego wiemy, kto jest połączony i z jakim opóźnieniem
+setInterval(() => { if (hasRemotes()) remoteSend({ ping: Date.now() }); renderConnStrip(); }, 4000);
 // zmiana dowolnej opcji na ekranie ustawień od razu trafia na duży ekran
 $('#screen-setup').addEventListener('change', () => tvSync());
 $('#screen-setup').addEventListener('click', () => setTimeout(tvSync, 0));
@@ -897,9 +904,9 @@ $('#btn-open-tv-window').addEventListener('click', () => { $('#dlg-connect').clo
 
 // nowe połączenie (telewizor albo telefon gracza): stan gry → urządzenie, polecenia ← urządzenie
 function addRemote(conn, role) {
-  const r = { conn, role, name: '' };
+  const r = { conn, role, name: '', seen: Date.now(), rtt: null };
   remotes.add(r);
-  conn.on('data', (msg) => handleRemote(msg, r));
+  conn.on('data', (msg) => { r.seen = Date.now(); handleRemote(msg, r); });
   // telefon, który połączył się sam (np. po przeładowaniu gospodarza), przedstawia się na prośbę
   if (role === 'player') { try { conn.send({ whoAreYou: true }); } catch (e) { /* zerwane */ } }
   conn.on('close', () => {
@@ -1083,7 +1090,29 @@ function closeLobby() {
   closeRoom();
   playCtx = 'single';
 }
-const saveLobbyLocal = () => store.set('lobbyLocal', lobby.players.filter((p) => !remoteNames().has(p.name)).map((p) => p.name));
+// stan połączenia telefonu gracza: online, słabe połączenie (duże opóźnienie) albo rozłączony
+function phoneState(name) {
+  const rs = [...remotes].filter((r) => r.role === 'player' && r.name === name);
+  if (!rs.length || rs.every((r) => Date.now() - r.seen > 15000)) return 'off';
+  const rtt = Math.min(...rs.map((r) => (r.rtt == null ? 0 : r.rtt)));
+  return rtt > 800 ? 'slow' : 'on';
+}
+function connBadge(name) {
+  const st = phoneState(name);
+  const txt = { on: T('📱 połączony'), slow: T('🐢 słabe połączenie'), off: T('📵 rozłączony') }[st];
+  return el('span', { class: 'p-phone conn-' + st, title: st === 'off' ? T('Na telefonie stuknij „↻ Dołącz ponownie”') : txt }, txt);
+}
+// pasek stanu telefonów w trakcie gry (tylko gdy ktoś gra na telefonie)
+function renderConnStrip() {
+  const strip = $('#conn-strip');
+  if (!strip) return;
+  const names = lobby.active ? lobby.players.filter((p) => p.phone).map((p) => p.name) : [];
+  strip.classList.toggle('hidden', !names.length || $('#screen-game').classList.contains('hidden'));
+  strip.replaceChildren(...names.map((n) => el('span', { class: 'conn-item' }, n, ' ', connBadge(n))));
+  // lobby: odświeżamy znaczki, ale nie w trakcie wpisywania imienia
+  if (lobby.active && !$('#screen-lobby').classList.contains('hidden') && !$('#lobby-list').contains(document.activeElement)) renderLobby();
+}
+const saveLobbyLocal = () => store.set('lobbyLocal', lobby.players.filter((p) => !p.phone && !remoteNames().has(p.name)).map((p) => p.name));
 function renderLobby() {
   const phones = remoteNames();
   $('#lobby-title').textContent = T('Gracze ({0}/{1})', lobby.players.length, MAX_PLAYERS);
@@ -1092,7 +1121,7 @@ function renderLobby() {
       ? el('span', { class: 'p-name p-fixed' }, p.name)
       : el('input', { type: 'text', value: p.name, maxlength: '20', class: 'p-name', 'aria-label': T('Gracz {0}', i + 1),
         onchange: (e) => { p.name = e.target.value.trim() || T('Gracz {0}', i + 1); e.target.value = p.name; saveLobbyLocal(); tvSync(); } }),
-    phones.has(p.name) ? el('span', { class: 'p-phone', title: T('Dołączył(a) przez telefon') }, '📱') : null,
+    phones.has(p.name) || p.phone ? connBadge(p.name) : null,
     lobby.players.length > 1 ? el('button', { class: 'ghost', title: T('Usuń'), onclick: () => {
       lobby.players.splice(i, 1);
       lobby.votes.delete(p.name);
@@ -1240,10 +1269,9 @@ function joinFromPhone(name, from) {
   if (!name) return;
   if (!lobby.active) { from.conn.send({ joinError: 'closed' }); return; }
   const known = lobby.players.find((p) => sameName(p.name, name));
-  if (known) name = known.name;
-  else {
+  if (known) { name = known.name; known.phone = true; } else {
     if (lobby.players.length >= MAX_PLAYERS) { from.conn.send({ joinError: 'full' }); return; }
-    lobby.players.push({ name });
+    lobby.players.push({ name, phone: true });
   }
   from.name = name;
   from.conn.send({ joined: name });
@@ -2628,8 +2656,8 @@ function renderBuzzers() {
       disabled: b.locked.has(i), style: `--c:${BUZZ_COLORS[i]}`,
     }, el('b', {}, pl.name), TOUCH_ONLY ? null : el('kbd', {}, keyLabel((state.buzzKeys || BUZZ_KEYS)[i])));
     // reakcja już w chwili dotknięcia (liczy się, kto pierwszy), a nie po puszczeniu palca
-    btn.addEventListener('pointerdown', (e) => { e.preventDefault(); buzz(i); });
-    btn.addEventListener('click', () => buzz(i));
+    btn.addEventListener('pointerdown', (e) => { e.preventDefault(); requestBuzz(i); });
+    btn.addEventListener('click', () => requestBuzz(i));
     return btn;
   }));
   // pola zajmują ekran od miejsca, w którym się zaczynają, do dołu (co najmniej połowę wysokości)
@@ -2638,6 +2666,28 @@ function renderBuzzers() {
     const bar = $('#actions').getBoundingClientRect().height || 0;
     box.style.height = `${Math.max(window.innerHeight * 0.4, window.innerHeight - box.getBoundingClientRect().top - bar - 24)}px`;
   });
+}
+// Uczciwe zgłoszenia: zgłoszenie z telefonu dociera z opóźnieniem sieci, więc chwilę (okno) zbieramy wszystkie
+// zgłoszenia i wygrywa to, które – po odjęciu połowy czasu odpowiedzi danego telefonu – było najwcześniej.
+// Okno: najwolniejszy telefon (połowa czasu odpowiedzi) + 80 ms, najwyżej 600 ms; bez telefonów – od razu.
+let buzzWindow = null;
+function buzzWindowMs() {
+  const lags = [...remotes].filter((r) => r.role === 'player' && r.rtt != null).map((r) => r.rtt / 2);
+  return lags.length ? Math.min(600, Math.max(...lags) + 80) : 0;
+}
+function requestBuzz(i, lag = 0) {
+  const b = state.buzz;
+  if (state.mode !== 'buzz' || !b || b.answering != null || b.locked.has(i) || i >= state.players.length) return;
+  const ms = buzzWindowMs();
+  if (!ms) { buzz(i); return; }
+  const t = performance.now() - lag;
+  if (!buzzWindow) buzzWindow = { c: [], timer: setTimeout(() => {
+    const w = buzzWindow;
+    buzzWindow = null;
+    w.c.sort((x, y) => x.t - y.t);
+    buzz(w.c[0].i);
+  }, ms) };
+  if (!buzzWindow.c.some((x) => x.i === i)) buzzWindow.c.push({ i, t });
 }
 function buzz(i) {
   const b = state.buzz;
@@ -2655,7 +2705,7 @@ document.addEventListener('keydown', (e) => {
   // klawisze numeryczne działają też z klawiatury numerycznej
   let i = keys.indexOf(e.code);
   if (i < 0 && e.code.startsWith('Numpad')) i = keys.indexOf('Digit' + e.code.slice(6));
-  if (i >= 0) { e.preventDefault(); buzz(i); }
+  if (i >= 0) { e.preventDefault(); requestBuzz(i); }
 });
 function buzzGuess() {
   const b = state.buzz;
