@@ -555,3 +555,8 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
   .nav-back:not(.hidden) ~ .topbar-actions #btn-rules { font-size: 0; padding: 8px 12px; }
   .nav-back:not(.hidden) ~ .topbar-actions #btn-rules::before { content: '?'; font-size: 1rem; font-weight: 700; }
 }
+
+/* --- wznowienie przerwanej gry --- */
+.resume-box { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; border: 2px solid var(--accent); }
+.resume-box p { margin: 4px 0 0; }
+.resume-btns { display: flex; gap: 8px; }

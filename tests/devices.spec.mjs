@@ -108,3 +108,21 @@ test('@net „muzyka gra na”: duży ekran i telefon gracza pojawiają się dop
   await expect(host.locator('#audio-out-tv')).toBeHidden();
   noErrors(host, ania);
 });
+
+test('@net przeładowanie gospodarza: wznowienie gry, telefon wraca jednym stuknięciem', async ({ browser }) => {
+  const { host, code } = await hostLobby(browser);
+  const ania = await join(browser, code, 'Ania');
+  await host.click('#btn-lobby-next');
+  await host.click('.mode[data-mode=melody]');
+  await host.click('#btn-start');
+  await ready(host);
+  await host.waitForTimeout(500);
+  await host.reload();
+  await ania.waitForSelector('text=Rozłączono', { timeout: 20000 });
+  await host.click('#btn-resume');
+  await ready(host);
+  await host.waitForFunction((c) => roomCode === c, code, { timeout: 40000 });
+  await ania.click('text=Dołącz ponownie');
+  await ania.waitForSelector('.ht-card', { timeout: 40000 });
+  noErrors(host, ania);
+});

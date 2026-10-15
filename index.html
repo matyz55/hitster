@@ -29,6 +29,13 @@
 
   <!-- EKRAN STARTOWY: JEDEN GRACZ ALBO MULTIPLAYER -->
   <main id="screen-home" class="screen">
+    <section id="resume-box" class="card resume-box hidden">
+      <div><b>⏸ Przerwana gra</b><p class="muted small" id="resume-info"></p></div>
+      <div class="resume-btns">
+        <button id="btn-resume" class="primary">▶ Wznów grę</button>
+        <button id="btn-resume-drop" class="ghost">✕</button>
+      </div>
+    </section>
     <p class="lead">Jak gramy?</p>
     <div class="modes ctx-pick">
       <button class="mode ctx" id="btn-single">
@@ -570,6 +577,7 @@
   <script src="net.js"></script>
   <script src="game.js"></script>
   <script src="stats.js"></script>
+  <script src="resume.js"></script>
   <script>
     if ('serviceWorker' in navigator && location.protocol !== 'file:') {
       window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch((e) => console.warn('SW', e)));

@@ -684,6 +684,7 @@ function onMessage(m) {
   if (!m || m.ping || m.probe) return;
   // gospodarz ma inną wersję gry – odświeżamy tę stronę (raz), żeby znała wszystkie ekrany
   if (m.ver && m.ver !== window.SongsterNet.version) { window.SongsterNet.updateTo(m.ver); }
+  if (m.whoAreYou) { if (PLAYER) send({ hello: true, role: 'player', name: me }); return; }
   if (m.audioCmd) { musicCmd(m); return; }
   if (m.joined) { setMe(m.joined); return; }
   if (m.joinError) {

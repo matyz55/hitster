@@ -527,6 +527,10 @@ const turnName = (p) => (answering(p) ? `${p.name} (odpowiada: ${answering(p)})`
 const SCREENS = ['home', 'lobby', 'modes', 'setup', 'game', 'end', 'settings', 'stats'];
 let screenBeforeSettings = 'home';
 function showScreen(name) {
+  // wyjście z gry do menu (logo, „wstecz”, wybór trybu…) – zapisana gra nie jest już potrzebna
+  if (['home', 'lobby', 'modes', 'setup'].includes(name) && typeof clearSavedGame === 'function'
+    && (!$('#screen-game').classList.contains('hidden') || !$('#screen-end').classList.contains('hidden'))) clearSavedGame();
+  if (name === 'home' && typeof renderResumeBox === 'function') renderResumeBox();
   for (const s of SCREENS) $('#screen-' + s).classList.toggle('hidden', s !== name);
   $('#btn-nav-back').classList.toggle('hidden', name === 'home');
   navGuard(name);
@@ -896,6 +900,8 @@ function addRemote(conn, role) {
   const r = { conn, role, name: '' };
   remotes.add(r);
   conn.on('data', (msg) => handleRemote(msg, r));
+  // telefon, który połączył się sam (np. po przeładowaniu gospodarza), przedstawia się na prośbę
+  if (role === 'player') { try { conn.send({ whoAreYou: true }); } catch (e) { /* zerwane */ } }
   conn.on('close', () => {
     remotes.delete(r); renderRemoteList();
     if (role !== 'tv') return;
@@ -2881,6 +2887,8 @@ function endGame() {
   $$('.party-kicker').forEach((n) => n.remove());
   if (state.party) partyAfterGame();
   updateEndButtons();
+  // koniec gry – zapis niepotrzebny; w trakcie imprezy (między minigrami) zapisujemy, żeby dało się wznowić
+  if (typeof saveGame === 'function') { if (state.party && !state.party.done) saveGame(); else clearSavedGame(); }
   showScreen('end');
 }
 
@@ -3172,6 +3180,7 @@ function render() {
   renderOthers();
   renderActions();
   tvSync();
+  if (typeof scheduleSave === 'function') scheduleSave();
 }
 
 // tablica wyników i tytuł tury – zależnie od trybu

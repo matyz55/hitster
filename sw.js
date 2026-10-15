@@ -2,8 +2,8 @@
 // Service worker Songstera: szybkie uruchamianie i działanie bez sieci (poza fragmentami z iTunes).
 // Pliki gry: najpierw sieć (zawsze najnowsza wersja), a gdy jej brak – kopia z pamięci podręcznej.
 // Flagi i ikony: najpierw pamięć podręczna (nie zmieniają się).
-const CACHE = 'songster-v15';
-const CORE = ['./', 'index.html', 'style.css', 'game.js', 'stats.js', 'match.js', 'songs.js', 'songs-sp.js', 'i18n.js', 'i18n-en.js', 'analytics.js', 'tv.html', 'tv.js', 'net.js',
+const CACHE = 'songster-v16';
+const CORE = ['./', 'index.html', 'style.css', 'game.js', 'stats.js', 'resume.js', 'match.js', 'songs.js', 'songs-sp.js', 'i18n.js', 'i18n-en.js', 'analytics.js', 'tv.html', 'tv.js', 'net.js',
   'flags/codes.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png'];
 

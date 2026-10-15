@@ -359,3 +359,12 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - „Muzyka gra na” pokazuje się tylko, gdy jest podłączony duży ekran albo (w multiplayerze) telefon gracza – i tylko
   z dostępnymi w danej chwili możliwościami.
 - Usunięty gatunek disco polo (5 piosenek; „Wyglądasz idealnie” Skolima jest teraz bez gatunku).
+
+## 5.9.0 – 15.10.2026 (`HASH`)
+
+- **Wznowienie przerwanej gry**: po każdym ruchu gra zapisuje się w przeglądarce urządzenia gospodarza. Po
+  przeładowaniu, zamknięciu karty albo zgaszeniu telefonu ekran startowy proponuje „▶ Wznów grę” (przez 12 godzin).
+  Wracają gracze, osie, punkty, żetony, tura, talia (bez zagranych piosenek) i postęp imprezy; tura zaczyna się od nowej
+  piosenki. W multiplayerze pokój otwiera się z tym samym kodem – telefony wracają przyciskiem „↻ Dołącz ponownie”
+  albo same, jeśli połączenie przez serwer pośredniczący się nie zerwało.
+- Zapis znika po zakończeniu gry albo po wyjściu z niej do menu.
