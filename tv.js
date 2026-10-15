@@ -70,6 +70,15 @@ function rowItems(t, pick) {
 let last = null;
 // gracz z telefonem: jego imię, a w drużynach także nazwa jego drużyny
 const myIds = (s) => [me, s && s.teamOf && s.teamOf[me]].filter(Boolean);
+// krótka informacja na dole ekranu (znika sama)
+function toast(text) {
+  let t = document.getElementById('toast');
+  if (!t) { t = h('div', 'toast'); t.id = 'toast'; document.body.append(t); }
+  t.textContent = text;
+  t.classList.add('on');
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => t.classList.remove('on'), 5000);
+}
 // czy ten gracz ma teraz turę: w drużynach odpowiada wskazany członek (albo telefon z nazwą drużyny)
 const turnIsMine = (s) => !!me && (s.turnWho ? (s.turnWho === me || s.turnName === me) : myIds(s).includes(s.turnName));
 // czy ten telefon gracza może teraz działać: jego tura albo jego wyzwanie
@@ -212,9 +221,17 @@ function modesBoard(s) {
     h('div', 'mb-votes', it.votes.length ? `🗳 ${it.votes.length} · ${it.votes.join(', ')}` : '')))),
   h('p', 'mb-hint', T('Głosujcie na telefonach – decyzję podejmuje gospodarz.')));
 }
+let lastKey = '';
 function render(s) {
   last = s;
-  if (PLAYER) { renderPhone(s); return; }
+  if (PLAYER) {
+    // ten sam stan co poprzednio – bez przebudowy ekranu (przebudowa w trakcie stuknięcia gubiła kliknięcie przycisku)
+    const key = me + '|' + JSON.stringify(s);
+    if (key === lastKey && app.firstChild) return;
+    lastKey = key;
+    renderPhone(s);
+    return;
+  }
   if (s && s.screen === 'lobby' && s.lobby) { app.replaceChildren(lobbyBoard(s)); fit(); return; }
   if (s && s.screen === 'modes' && s.modes && s.modes.ctx === 'multi') { app.replaceChildren(modesBoard(s)); fit(); return; }
   if (!PLAYER && s && s.screen === 'setup' && s.setup) { app.replaceChildren(setupBoard(s.setup)); fit(); return; }
@@ -398,7 +415,11 @@ function renderPlayer(s) {
     const playing = audioState.playing;
     play = h('button', 'p-play' + (playing ? ' on' : ''), playing ? T('⏸ Pauza') : T('▶ Odtwórz'));
     play.disabled = s.play.disabled;
-    play.addEventListener('click', () => send({ playToggle: true }));
+    play.addEventListener('click', () => {
+      send({ playToggle: true });
+      // natychmiastowa reakcja – właściwy stan przyjdzie od gospodarza
+      play.textContent = '…';
+    });
   }
   const guess = s.guess && (s.guess.who === me || (s.turnWho === me && s.guess.who === s.turnName)) ? guessForm(s.guess) : null;
   // przyciski: tylko te, których ten gracz może teraz użyć
@@ -590,6 +611,8 @@ function musicTick() {
   requestAnimationFrame(musicTick);
 }
 music.addEventListener('play', () => requestAnimationFrame(musicTick));
+// fragmentu nie da się tu odtworzyć (np. format) – muzyka gra u gospodarza
+music.addEventListener('error', () => { if (music.dataset.url) send({ audioBlocked: true }); });
 // Przeglądarki pozwalają grać z dźwiękiem dopiero po jakiejkolwiek interakcji ze stroną (klawisz pilota, dotyk, klik).
 // Nie blokujemy gry przyciskiem: gdy dźwięk tutaj jest zablokowany, informujemy gospodarza – muzyka gra wtedy
 // od razu u niego – a pierwsze naciśnięcie dowolnego przycisku pilota (lub dotknięcie) przenosi ją tutaj.
@@ -638,6 +661,8 @@ function musicCmd(m) {
       music.volume = 0;
       music.play().then(() => { soundHint(false); fadeTo(1, 150); }).catch((e) => {
         if (e.name === 'NotAllowedError') { soundBlocked = true; soundHint(true); send({ audioBlocked: true }); }
+        // inny błąd (np. nieobsługiwany format) – muzyka gra u gospodarza
+        else if (e.name !== 'AbortError') send({ audioBlocked: true });
       });
     };
     if (music.readyState >= 1) start(); else music.addEventListener('loadedmetadata', start, { once: true });
@@ -656,6 +681,14 @@ function onMessage(m) {
   if (m.joinError) {
     alert(m.joinError === 'closed' ? T('Gospodarz nie ma teraz otwartej listy graczy.') : T('Lista graczy jest pełna.'));
     app.replaceChildren();
+    lastKey = '';
+    if (last) render(last);
+    return;
+  }
+  if (m.playError) {
+    toast(m.playError === 'loading' ? T('Piosenka jeszcze się wczytuje – spróbuj za chwilę.')
+      : T('Urządzenie gospodarza zablokowało dźwięk – niech ktoś raz naciśnie na nim ▶ (wymóg przeglądarki), potem ten przycisk zadziała.'));
+    lastKey = '';
     if (last) render(last);
     return;
   }
@@ -665,6 +698,7 @@ function onMessage(m) {
     audioState = { playing: m.playing, progress: m.playing ? audioState.progress : (m.hasSong ? audioState.progress : 0) };
   }
   render(m);
+  if (PLAYER) updateAudio();
 }
 
 // wszystkie osie na ekranie bez przewijania (fitTimelines): oś aktywnego gracza na całą szerokość u góry, pozostałe

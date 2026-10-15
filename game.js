@@ -577,7 +577,15 @@ function handleRemote(msg, from) {
   // ▶/⏸ z telefonu gracza – tylko od gracza, który teraz odpowiada (w drużynie – od odpowiadającego członka)
   if (msg.playToggle && from && from.name && controlNames().includes(from.name)) {
     const b = $('#btn-play');
-    if (!b.disabled && !b.closest('.hidden')) b.click();
+    if (b.disabled || b.closest('.hidden')) { from.conn.send({ playError: 'loading' }); return; }
+    if (!audio.paused) { softPause(false); return; }
+    // przeglądarka gospodarza może zablokować dźwięk włączony nie jego dotknięciem – wtedy telefon gracza się o tym dowie
+    playClip().then(() => {
+      if (!audio.paused) return;
+      from.conn.send({ playError: 'blocked' });
+      $('#audio-note').textContent = T('🔇 Przeglądarka tego urządzenia zablokowała dźwięk włączony z telefonu gracza – naciśnij tu raz ▶, potem telefon będzie już sterował.');
+      $('#audio-note').classList.remove('hidden');
+    });
     return;
   }
   // przycisk kliknięty na innym ekranie – klikamy ten sam w oknie gry (sprawdzamy też napis, gdyby stan zdążył się zmienić)
