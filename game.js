@@ -2726,7 +2726,7 @@ function endGame() {
   const ranking = state.players.slice().sort((a, b) => metric(b) - metric(a));
   const best = ranking[0];
   const lvlName = (LEVELS[state.difficulty] || LEVELS[1]).name;
-  let won = false;
+  let won;
   let extra = [];
   const title = $('#winner-title');
   if (state.mode === 'timed') {

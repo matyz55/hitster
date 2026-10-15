@@ -138,6 +138,18 @@ otwierają od razu aplikację, a gdy jej nie ma – stronę serwisu). Te same ik
 - poprawianie roku wydania i kraju wykonawcy dowolnej piosenki (zapisywane w przeglądarce;
   kraj decyduje też, czy piosenka jest polska, czy zagraniczna).
 
+## Testy
+
+```bash
+npm install
+npx playwright install chromium   # przeglądarka do testów (jednorazowo)
+npm test                          # wszystkie testy
+npx playwright test --grep-invert @net   # tylko testy bez sieci (iTunes jest w nich podstawiony)
+npm run lint                      # sprawdzanie kodu (ESLint)
+```
+
+Testy uruchamiają się automatycznie na GitHubie przy każdej zmianie (`.github/workflows/test.yml`).
+
 ## Jak uruchomić lokalnie
 
 To statyczna strona – bez instalacji i bez budowania.

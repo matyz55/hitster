@@ -88,7 +88,7 @@
       // dodatkowy wykonawca spoza piosenki + wydanie ponad 10 lat po roku piosenki → pomijamy
       if (isLaterDuet(r, song)) continue;
       const track = r.trackName || '';
-      let score = 0;
+      let score;
       if (exact.has(norm(track))) score = 4;
       else if (base.has(baseTitle(track))) score = 2;
       else continue;

@@ -339,3 +339,10 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.7.1 – 15.10.2026 (`73980ab`)
 
 - Dodana ta historia zmian (`CHANGELOG.md`).
+
+## 5.7.2 – 15.10.2026 (`HASH`)
+
+- Dla twórców: automatyczne testy gry w repozytorium (Playwright, bez łączenia z iTunes – fragmenty podstawiane
+  w teście), osobne testy telefonów i dużego ekranu przez sieć, sprawdzanie kodu (ESLint) i uruchamianie wszystkiego
+  przy każdej zmianie na GitHubie.
+- Poprawki drobnych usterek w kodzie wykrytych przez ESLint (bez zmian w działaniu gry).
