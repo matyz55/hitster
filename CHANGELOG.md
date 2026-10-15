@@ -597,7 +597,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   pokazuje drabinkę i tekst.
 - Poprawiony niestabilny test wyzwania „wszyscy naraz” z telefonów.
 
-## 5.28.0 – 15.10.2026 (`HASH`)
+## 5.28.0 – 15.10.2026 (`b3bd9ed`)
 
 - **„Tak to leciało!” jest już w grze** – katalog ma 88 polskich piosenek z tekstem z czasami wersów (lrclib.net)
   i filmem na YouTube (osadzalnym i niezablokowanym w Polsce, o długości zgodnej z nagraniem). Kolejne piosenki
