@@ -151,3 +151,30 @@ test('Ułóż piątkę: koniec czasu sprawdza bieżącą kolejność', async ({ 
   await expect.poll(() => page.evaluate(() => state.phase), { timeout: 5000 }).toBe('revealed');
   await expect(page.locator('#reveal .verdict').first()).toContainText('Koniec czasu');
 });
+
+// odpowiedź nie zatrzymuje muzyki – po odkryciu gra dalej (do końca podglądu); zatrzymuje ją dopiero następna piosenka
+for (const [mode, answer] of [
+  ['artist', () => answerQuiz(state.quiz.options.findIndex((o) => o.ok))],
+  ['year', () => answerQuiz(state.current.y)],
+  ['duel', () => answerDuel(decadeOf(state.current))],
+  ['hilo', () => answerHilo(true)],
+]) {
+  test(`muzyka gra dalej po odpowiedzi (${mode}), cichnie dopiero przy następnej piosence`, async ({ page }) => {
+    if (mode === 'hilo') {
+      await page.goto('/');
+      await page.click('#btn-single');
+      await page.click('.mode[data-mode=hilo]');
+      await page.click('#btn-start');
+      await ready(page);
+    } else await start(page, mode, '3');
+    await page.click('#btn-play');
+    await expect.poll(() => page.evaluate(() => !audio.paused)).toBe(true);
+    await page.evaluate(answer);
+    expect(await page.evaluate(() => state.phase)).toBe('revealed');
+    // dłużej niż krótki fragment przed odpowiedzią – nadal gra
+    await page.waitForTimeout(600);
+    expect(await page.evaluate(() => !audio.paused)).toBe(true);
+    await page.click('#actions button.primary');
+    await expect.poll(() => page.evaluate(() => audio.paused)).toBe(true);
+  });
+}

@@ -10,6 +10,14 @@ function stopAudio() {
   $('#btn-play').textContent = T('▶ Odtwórz');
 }
 const clipEnd = () => state.clipStart + (state.phase === 'revealed' ? 30 : state.clipLen);
+// po odkryciu karty muzyka gra dalej (do końca podglądu) – także na dużym ekranie / telefonie gracza,
+// które same kończą wycinek: wysyłamy im nowy koniec; zatrzymuje ją dopiero następna piosenka (startTurn)
+let extendedFor = null;
+function keepPlayingAfterReveal() {
+  if (state.phase !== 'revealed' || audio.paused || !state.preview || extendedFor === state.preview.url) return;
+  extendedFor = state.preview.url;
+  if (audioTargets()) sendAudioCmd({ audioCmd: 'until', until: clipEnd() });
+}
 
 // Płynne wejście i wyjście dźwięku (150 ms): <audio> podpięte pod Web Audio (GainNode). Fragmenty są blobami
 // z tej samej domeny albo plikami iTunes z nagłówkiem CORS „*”, więc dźwięk nie jest wyciszany przez przeglądarkę.

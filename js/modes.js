@@ -112,7 +112,6 @@ function answerQuiz(choice) {
     }
     opt.picked = true;
   }
-  stopAudio();
   p.score += pts;
   state.turnsPlayed += 1;
   state.history.push({ song, preview: state.preview, player: p.name, ok,
@@ -289,8 +288,8 @@ function moveSort(from, to) {
 function checkSort(timeUp) {
   if (!state.sort || state.phase !== 'listen') return;
   clearInterval(sortTimer);
-  stopAudio();
-  const { items, order } = state.sort;
+  const s5 = state.sort;
+  const { items, order } = s5;
   const p = activePlayer();
   let pairs = 0;
   for (let i = 0; i + 1 < order.length; i++) if (items[order[i]].song.y <= items[order[i + 1]].song.y) pairs += 1;
@@ -304,8 +303,10 @@ function checkSort(timeUp) {
   }
   fx(pts >= 4 ? 'good' : 'bad');
   state.phase = 'revealed';
-  state.current = sorted[sorted.length - 1].song;
-  state.preview = sorted[sorted.length - 1].preview;
+  // muzyka gra dalej – bieżącą piosenką zostaje ta, której fragment właśnie słychać
+  const keep = s5.playing != null ? items[s5.playing] : sorted[sorted.length - 1];
+  state.current = keep.song;
+  state.preview = keep.preview;
   $('#reveal').replaceChildren(
     el('div', { class: 'verdict ' + (pts >= 4 ? 'ok' : 'bad') }, (timeUp ? T('⏳ Koniec czasu! ') : '')
       + T('Twoja kolejność: {0} – {1} pkt', order.map((k) => SORT_LETTERS[k]).join(' ') || '–', pts)),
@@ -385,7 +386,6 @@ function bingoPick(i, cell) {
 function bingoReveal() {
   if (!state.bingo || state.phase !== 'listen' || !state.current) return;
   const song = state.current;
-  stopAudio();
   const lines = [];
   state.bingo.boards.forEach((b, i) => {
     const p = state.players[i];

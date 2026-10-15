@@ -734,6 +734,8 @@ function musicCmd(m) {
     if (music.readyState >= 1) start(); else music.addEventListener('loadedmetadata', start, { once: true });
     return;
   }
+  // po odkryciu karty – ta sama piosenka gra dalej, tylko dłużej (bez przewijania i wyciszania)
+  if (m.audioCmd === 'until') { if (!music.paused) musicUntil = m.until; return; }
   if (m.audioCmd === 'pause' || m.audioCmd === 'stop') {
     musicUntil = null;
     if (!music.paused) fadeTo(0, 150, () => music.pause());

@@ -453,7 +453,6 @@ function stepsExtend(msg) {
 function revealSteps(gaveUp) {
   const song = state.current;
   const p = activePlayer();
-  stopAudio();
   const parts = stepParts();
   const raw = parts.reduce((sum, part) => sum + (state.solved[part] || 0), 0);
   const points = Math.max(0, raw - (raw ? state.hintCost : 0));
@@ -586,7 +585,6 @@ function renderHiloCards(container) {
 function answerHilo(older) {
   const song = state.current;
   const ok = older ? song.y <= state.ref.y : song.y >= state.ref.y;
-  stopAudio();
   if (state.hiloMulti) {
     // kilku graczy: kolejno, dobra odpowiedź = punkt, pomyłka nie kończy gry
     const p = activePlayer();
@@ -616,7 +614,6 @@ function answerDuel(decade) {
   const song = state.current;
   const p = activePlayer();
   const ok = decadeOf(song) === decade;
-  stopAudio();
   if (ok) p.score += 1;
   state.turnsPlayed += 1;
   state.history.push({ song, preview: state.preview, player: p.name, ok, note: `${p.name}: ${decadeLabelLong(decade)}` });
@@ -728,7 +725,6 @@ function buzzGuess() {
 }
 function revealBuzz(winner, ok, lastWrong) {
   const song = state.current;
-  stopAudio();
   state.turnsPlayed += 1;
   const name = winner != null ? state.players[winner].name : T('nikt');
   state.history.push({ song, preview: state.preview, player: name, ok, note: ok ? T('{0}: +1 pkt', name) : T('nikt nie zgadł') });

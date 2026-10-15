@@ -86,6 +86,7 @@ function render() {
   renderDragCard();
   renderOthers();
   renderActions();
+  keepPlayingAfterReveal();
   tvSync();
   if (typeof scheduleSave === 'function') scheduleSave();
 }
