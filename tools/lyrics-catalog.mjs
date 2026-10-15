@@ -8,7 +8,8 @@
 //                                              porównuje długość filmu w trakcie odtwarzania)
 //   node tools/lyrics-catalog.mjs build      – zapisuje lyrics-catalog.js
 // Film jest przyjmowany, gdy można go osadzić, nie jest zablokowany w Polsce, a jego długość różni się od długości
-// nagrania z tekstem o najwyżej 3 s (wtedy czasy wersów pasują do filmu). Kolejność: najpopularniejsze piosenki.
+// nagrania z tekstem o najwyżej 3 s (wtedy czasy wersów pasują do filmu), a kanał jest oficjalny (OFFICIAL_LABELS niżej).
+// Kolejność: najpopularniejsze piosenki.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { SONGS, SongMatch, sparql, sleep, dir } from './wd-lib.mjs';
 
@@ -23,6 +24,24 @@ const load = (name, def) => { const f = new URL(FILES[name] || name, dataDir); r
 const save = (name, v) => writeFileSync(new URL(FILES[name] || name, dataDir),
   `{\n${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}: ${JSON.stringify(v[k])}`).join(',\n')}\n}\n`);
 const key = (s) => `${s.a}|${s.t}`;
+
+// Oficjalne kanały: „… - Topic” (YouTube Music), kanały VEVO, kanał z nazwą głównego wykonawcy albo wytwórnia z tej listy
+// (porównanie bez wielkości liter, polskich znaków i odstępów – fragment nazwy kanału).
+const OFFICIAL_LABELS = ['Universal Music Polska', 'Sony Music Poland', 'Warner Music Poland', 'Kayax', 'Agora', 'Polskie Nagrania',
+  'Mystic Production', 'Pomaton', 'Step Records', 'QueQuality', 'SBM Label', 'Asfalt Records', 'Prosto', 'My Music', 'Magic Records',
+  'Fonografika', 'Tonpress', 'S.P. Records', 'MTJ Wytwórnia Muzyczna', 'Agencja Muzyczna Polskiego Radia', 'MaxFloRec'];
+// Nieoficjalne wersje i wrzutki (nie dotyczy kanałów „- Topic”, gdzie np. „(Live)” to nagranie z płyty).
+const BAD_TITLE = /\b(tekst|lyrics|karaoke|cover|live|na zywo|remix|8d|slowed)\b/;
+const words = (t) => t.toLowerCase().replace(/ł/g, 'l').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ');
+const isTopic = (ch) => / - Topic$/.test(ch);
+function officialVideo(v, s) {
+  if (!v.channel) return false;
+  if (isTopic(v.channel)) return true;
+  if (BAD_TITLE.test(words(v.title || ''))) return false;
+  const ch = norm(v.channel);
+  const artist = norm(SongMatch.mainArtist(s));
+  return /vevo/.test(ch) || (artist.length >= 3 && ch.includes(artist)) || OFFICIAL_LABELS.some((l) => ch.includes(norm(l)));
+}
 const MAX_DIFF = 3;
 
 // kandydaci: polskie piosenki – najpierw najpopularniejsze (Spotify), potem z zestawów Trójki, Opola i Memów
@@ -110,7 +129,9 @@ async function videoInfo(ids) {
       || (v.contentDetails.regionRestriction.allowed && !v.contentDetails.regionRestriction.allowed.includes('PL')))),
   }));
 }
-const fits = (v, lr) => v && v.embeddable && !v.blockedPL && Math.abs(v.d - lr.d) <= MAX_DIFF;
+const fits = (v, lr, s) => v && v.embeddable && !v.blockedPL && Math.abs(v.d - lr.d) <= MAX_DIFF && officialVideo(v, s);
+const entry = (v, src) => ({ id: v.id, src, channel: v.channel, title: v.title });
+const songByKey = new Map(candidates.map((s) => [key(s), s]));
 
 const WD_YT = `SELECT ?songLabel ?perfLabel ?yt WHERE { ?song wdt:P1651 ?yt ; wdt:P175 ?perf .
     ?perf wdt:P27|wdt:P495 wd:Q36 . SERVICE wikibase:label { bd:serviceParam wikibase:language "pl,en". } }`;
@@ -144,9 +165,30 @@ async function stepYoutube() {
   const wdIds = [...new Set(wd.values())];
   const info = new Map();
   for (let i = 0; i < wdIds.length; i += 50) for (const v of await videoInfo(wdIds.slice(i, i + 50)) || []) info.set(v.id, v);
-  for (const [k, id] of wd) if (fits(info.get(id), lr[k])) yt[k] = { id, src: 'wikidata' };
+  for (const [k, id] of wd) if (fits(info.get(id), lr[k], songByKey.get(k))) yt[k] = entry(info.get(id), 'wikidata');
   save('youtube-pl.json', yt);
-  // 2) wyszukiwarka YouTube – najpopularniejsze piosenki bez filmu; najpierw nagranie „… – Topic” (wersja z płyty)
+  // 2) ponowne sprawdzenie zapisanych filmów (1 jednostka na 50) – nieoficjalne, niedostępne lub niepasujące usuwamy,
+  // żeby zostały wyszukane od nowa; pozostałym uzupełniamy kanał i tytuł
+  const saved = Object.keys(yt).filter((k) => hasVideo(yt[k]) && !wd.has(k));
+  const savedIds = [...new Set(saved.map((k) => yt[k].id))];
+  const now = new Map();
+  let checked = true;
+  for (let i = 0; i < savedIds.length; i += 50) {
+    const vs = await videoInfo(savedIds.slice(i, i + 50));
+    if (!vs) { checked = false; break; }
+    for (const v of vs) now.set(v.id, v);
+  }
+  let removed = 0;
+  if (checked) {
+    for (const k of saved) {
+      const v = now.get(yt[k].id);
+      if (songByKey.has(k) && lr[k] && fits(v, lr[k], songByKey.get(k))) yt[k] = entry(v, yt[k].src);
+      else { delete yt[k]; removed += 1; }
+    }
+    save('youtube-pl.json', yt);
+    console.log(`YouTube: sprawdzone zapisane filmy ${saved.length}, usunięte ${removed}`);
+  }
+  // 3) wyszukiwarka YouTube – najpopularniejsze piosenki bez filmu; najpierw nagranie „… – Topic” (wersja z płyty)
   for (const s of candidates) {
     const l = lr[key(s)];
     if (!l || hasVideo(yt[key(s)]) || !retryDue(yt[key(s)])) continue;
@@ -161,10 +203,10 @@ async function stepYoutube() {
       if (ids.length && !(vids = await videoInfo(ids))) continue;
     } catch { break; }
     if (!vids.length) { yt[key(s)] = noVideo(yt[key(s)]); save('youtube-pl.json', yt); continue; }
-    const ok = vids.filter((v) => fits(v, l));
+    const ok = vids.filter((v) => fits(v, l, s));
     // pierwszeństwo: kanał „… - Topic” (dźwięk z płyty, czasy tekstu pasują najlepiej), potem oficjalne kanały
-    ok.sort((a, b) => (/ - Topic$/.test(b.channel) - / - Topic$/.test(a.channel)) || Math.abs(a.d - l.d) - Math.abs(b.d - l.d));
-    yt[key(s)] = ok.length ? { id: ok[0].id, src: 'search' } : noVideo(yt[key(s)]);
+    ok.sort((a, b) => (isTopic(b.channel) - isTopic(a.channel)) || Math.abs(a.d - l.d) - Math.abs(b.d - l.d));
+    yt[key(s)] = ok.length ? entry(ok[0], 'search') : noVideo(yt[key(s)]);
     save('youtube-pl.json', yt);
   }
   const found = Object.values(yt).filter(hasVideo).length;
