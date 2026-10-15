@@ -442,6 +442,7 @@ const MODES = {
   country: { title: T('Skąd jest wykonawca?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   bid: { title: T('Licytacja'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   daily: { title: T('Wyzwanie dnia'), minPlayers: 1, maxPlayers: 1 },
+  sort5: { title: T('Ułóż piątkę'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   // współpraca: wszyscy razem przeciw grze – wspólna oś i wspólne pomyłki (zasady osi jednego gracza)
   coop: { title: T('Współpraca'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
 };
@@ -1761,7 +1762,7 @@ function startGame(over = {}) {
   state.expert = isTimeline() && !party ? expertParts() : [];
   state.letterHint = filterState.letterHint;
   const plShare = poolValue() === 'ALL' ? filterState.plShare / 100 : (poolValue() === 'PL' ? 1 : 0);
-  const needed = state.mode === 'buzz' ? state.rounds
+  const needed = state.mode === 'buzz' ? state.rounds : state.mode === 'sort5' ? names.length * state.rounds * 5
     : (state.hiloMulti ? names.length * state.rounds + 2 : (isTimeline() || state.mode === 'hilo' ? names.length * 3 : names.length * state.rounds));
   let base = songPool();
   // tryby quizowe: podpowiedzi z tej samej puli; „Skąd jest wykonawca?” – tylko piosenki z flagą kraju
@@ -2000,7 +2001,7 @@ async function startTurn() {
   $('#letter-hint').classList.add('hidden');
   render();
   applyAudioRoute();
-  await drawSong();
+  await (state.mode === 'sort5' ? drawSort5() : drawSong());
 }
 
 // dobiera kolejną piosenkę, pomijając te bez dostępnego fragmentu
@@ -2963,11 +2964,11 @@ function endGame() {
     won = state.streak > prev;
     title.textContent = won ? T('🏆 Nowy rekord! Seria: {0} (poprzedni: {1}).', state.streak, prev)
       : T('Koniec serii: {0}. Rekord: {1}.', state.streak, prev);
-  } else if ((isMelody() || state.mode === 'duel' || isQuiz()) && state.players.length === 1) {
-    const max = state.mode === 'duel' ? state.rounds
+  } else if ((isMelody() || state.mode === 'duel' || isQuiz() || state.mode === 'sort5') && state.players.length === 1) {
+    const max = state.mode === 'duel' ? state.rounds : state.mode === 'sort5' ? state.rounds * 5
       : (isQuiz() ? state.rounds * QUIZ[state.mode].max() + (state.mode === 'bid' ? BID_START : 0)
         : state.rounds * (state.guessType === 'both' ? 2 : 1) * (state.mode === 'steps' ? STEPS[0].pts : 1));
-    title.textContent = T('{0} Twój wynik: {1} z {2} pkt', { steps: '⏱️', duel: '🥊', year: '📅', artist: '🎙️', country: '🌍', bid: '💰', daily: '📆' }[state.mode] || '🎤', best.score, max);
+    title.textContent = T('{0} Twój wynik: {1} z {2} pkt', { steps: '⏱️', duel: '🥊', year: '📅', artist: '🎙️', country: '🌍', bid: '💰', daily: '📆', sort5: '🔢' }[state.mode] || '🎤', best.score, max);
     if (state.mode === 'daily') extra = dailyEnd();
     won = best.score >= max / 2 && best.score > 0;
   } else if (state.mode === 'solo' && state.endless) {
@@ -3231,10 +3232,12 @@ function render() {
 
   renderHeader(p, timeline);
 
-  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !['steps', 'buzz', 'hilo', 'duel'].includes(state.mode) && !isQuiz();
+  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !['steps', 'buzz', 'hilo', 'duel', 'sort5'].includes(state.mode) && !isQuiz();
   $('#btn-skip').textContent = timeline ? T('⏭ Pomiń ({0} żeton)', SKIP_COST) : T('⏭ Inna piosenka');
   $('#btn-skip').disabled = !canSkip || (timeline && p.tokens < SKIP_COST);
-  $('#btn-skip').classList.toggle('hidden', ['steps', 'buzz', 'hilo', 'duel'].includes(state.mode) || isQuiz());
+  $('#btn-skip').classList.toggle('hidden', ['steps', 'buzz', 'hilo', 'duel', 'sort5'].includes(state.mode) || isQuiz());
+  // Ułóż piątkę: każdy fragment ma własny przycisk ▶
+  $('#btn-play').classList.toggle('hidden', state.mode === 'sort5');
 
   // pola odpowiedzi: zawsze w „Jaka to melodia”; przy osi czasu – w trybie ekspert (wymagane)
   // i w solo (tytuł + wykonawca opcjonalnie, za żeton)
@@ -3281,7 +3284,8 @@ function render() {
   if (state.mode === 'hilo') hints.listen = T('Ta piosenka jest starsza czy nowsza od karty poniżej?');
   if (state.mode === 'duel') hints.listen = T('Z której dekady jest ta piosenka?');
   if (isQuiz()) hints.listen = QUIZ[state.mode].hint();
-  if (state.mode === 'hilo' || state.mode === 'duel' || isQuiz()) $('#hint').textContent = state.current && state.phase === 'listen' ? hints.listen : '';
+  if (state.mode === 'sort5') hints.listen = sortHint();
+  if (state.mode === 'hilo' || state.mode === 'duel' || isQuiz() || state.mode === 'sort5') $('#hint').textContent = state.current && state.phase === 'listen' ? hints.listen : '';
 
   const tl = $('#timeline');
   tl.classList.toggle('hidden', !timeline && state.mode !== 'hilo');
@@ -3298,7 +3302,7 @@ function render() {
 // tablica wyników i tytuł tury – zależnie od trybu
 function renderHeader(p, timeline) {
   const sb = $('#scoreboard');
-  sb.classList.toggle('hidden', state.players.length === 1 && !isMelody() && state.mode !== 'duel' && !isQuiz());
+  sb.classList.toggle('hidden', state.players.length === 1 && !isMelody() && state.mode !== 'duel' && !isQuiz() && state.mode !== 'sort5');
   // impreza: która minigra i ile zostało
   const pt = state.party;
   $('#party-bar').classList.toggle('hidden', !pt);
@@ -3326,7 +3330,7 @@ function renderHeader(p, timeline) {
     const rec = store.get('records', {})[`hilo${state.difficulty}`] || 0;
     title.textContent = T('Seria: {0}', state.streak);
     info.textContent = T('Rekord: {0}', Math.max(rec, state.streak));
-  } else if (isQuiz()) {
+  } else if (isQuiz() || state.mode === 'sort5') {
     quizHeader(p, title, info);
   } else if (state.mode === 'duel') {
     const round = Math.min(state.rounds, Math.floor(state.turnsPlayed / state.players.length) + 1);
@@ -3481,7 +3485,9 @@ function renderTimeline(container, timeline, interactive, marks) {
 function renderActions() {
   const p = activePlayer();
   const btns = [];
-  if (isQuiz()) {
+  if (state.mode === 'sort5') {
+    btns.push(...sortActions());
+  } else if (isQuiz()) {
     btns.push(...quizActions());
   } else if (state.mode === 'hilo' || state.mode === 'duel' || state.mode === 'buzz') {
     btns.push(...quickActions(p));

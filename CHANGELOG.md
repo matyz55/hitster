@@ -402,3 +402,9 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Nowy tryb **📆 Wyzwanie dnia** (jeden gracz): 10 znanych piosenek – ten sam zestaw dla wszystkich danego dnia
   (losowanie zależne tylko od daty). Wpisujesz rok wydania (dokładnie – 3 pkt, do 2 lat różnicy – 1 pkt), na koniec
   wynik z kwadracikami 🟩🟨⬛ i przycisk „📤 Udostępnij wynik”. Liczy się pierwsze podejście danego dnia.
+
+## 5.14.0 – 15.10.2026 (`HASH`)
+
+- Nowy tryb **🔢 Ułóż piątkę** (jeden gracz i multiplayer): 5 fragmentów po 10 s (każdy z własnym przyciskiem ▶ A–E)
+  do ułożenia od najstarszego do najnowszego w 90 sekund od pierwszego odtworzenia. Za każdą dobrze ułożoną sąsiednią
+  parę 1 pkt i 1 pkt premii za całą piątkę (do 5 pkt); po czasie sprawdzana jest bieżąca kolejność.

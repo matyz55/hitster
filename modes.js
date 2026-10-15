@@ -156,7 +156,8 @@ function quizActions() {
 function quizHeader(p, title, info) {
   const round = Math.min(state.rounds, Math.floor(state.turnsPlayed / state.players.length) + 1);
   const songNo = state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1);
-  title.textContent = state.players.length > 1 ? T('Tura: {0}', p.name) : T('Piosenka {0} z {1}', Math.min(songNo, state.rounds), state.rounds);
+  title.textContent = state.players.length > 1 ? T('Tura: {0}', p.name)
+    : T(state.mode === 'sort5' ? 'Piątka {0} z {1}' : 'Piosenka {0} z {1}', Math.min(songNo, state.rounds), state.rounds);
   info.textContent = state.players.length > 1 ? T('Runda {0}/{1}', round, state.rounds) : T('Wynik: {0} pkt', p.score);
 }
 
@@ -221,4 +222,110 @@ function dailyEnd() {
   return [el('p', { class: 'daily-squares' }, squares),
     el('p', { class: 'muted' }, first ? T('To Twój wynik dnia. Jutro nowy zestaw piosenek.') : T('Wynik dnia (pierwsze podejście): {0} pkt. To podejście się nie liczy.', all[day])),
     share];
+}
+
+/* ---------- Ułóż piątkę ---------- */
+// 5 krótkich fragmentów (A–E) do ułożenia od najstarszego do najnowszego; 90 s od pierwszego odtworzenia.
+// Punkty: za każdą dobrze ułożoną sąsiednią parę 1 pkt (najwyżej 4) i 1 pkt premii za całość – razem do 5.
+const SORT_N = 5;
+const SORT_TIME = 90;
+const SORT_LETTERS = ['A', 'B', 'C', 'D', 'E'];
+let sortTimer = null;
+async function drawSort5() {
+  const myDraw = ++state.drawId;
+  $('#btn-play').disabled = true;
+  $('#mystery-status').textContent = T('Szukam 5 piosenek…');
+  const items = [];
+  while (items.length < SORT_N) {
+    const song = state.deck.draw(null);
+    if (!song) break;
+    const preview = await withAudio(await findPreview(song));
+    if (myDraw !== state.drawId) return;
+    if (preview && !preview.gone) { markPlayed(song); items.push({ song, preview }); } else state.deck.release(song, !previewCache.has(songKey(song)));
+  }
+  if (items.length < SORT_N) { $('#mystery-status').textContent = T('Talia się skończyła!'); endGame(); return; }
+  state.sort = { items, order: [], deadline: null, playing: null };
+  Object.assign(state, { current: items[0].song, preview: items[0].preview, clipStart: 0, clipLen: 10 });
+  setAudioSource(items[0].preview);
+  $('#mystery-status').textContent = T('Posłuchaj fragmentów A–E i ułóż je od najstarszego do najnowszego.');
+  render();
+}
+function playSort(k) {
+  const it = state.sort && state.sort.items[k];
+  if (!it || state.phase !== 'listen') return;
+  if (!state.sort.deadline) {
+    state.sort.deadline = Date.now() + SORT_TIME * 1000;
+    clearInterval(sortTimer);
+    sortTimer = setInterval(() => {
+      if (state.mode !== 'sort5' || state.phase !== 'listen' || !state.sort) { clearInterval(sortTimer); return; }
+      if (Date.now() >= state.sort.deadline) { clearInterval(sortTimer); checkSort(true); return; }
+      $('#hint').textContent = sortHint();
+      // duży ekran i telefony – co 5 s (częstsze odświeżanie przeszkadzałoby w stukaniu w przyciski)
+      if (Math.ceil((state.sort.deadline - Date.now()) / 1000) % 5 === 0) tvSync();
+    }, 1000);
+  }
+  state.sort.playing = k;
+  stopAudio();
+  state.current = it.song;
+  state.preview = it.preview;
+  setAudioSource(it.preview);
+  playClip();
+  render();
+}
+function pickSort(k) {
+  if (!state.sort || state.phase !== 'listen' || state.sort.order.includes(k)) return;
+  state.sort.order.push(k);
+  render();
+}
+function checkSort(timeUp) {
+  if (!state.sort || state.phase !== 'listen') return;
+  clearInterval(sortTimer);
+  stopAudio();
+  const { items, order } = state.sort;
+  const p = activePlayer();
+  let pairs = 0;
+  for (let i = 0; i + 1 < order.length; i++) if (items[order[i]].song.y <= items[order[i + 1]].song.y) pairs += 1;
+  const pts = pairs + (order.length === SORT_N && pairs === SORT_N - 1 ? 1 : 0);
+  p.score += pts;
+  state.turnsPlayed += 1;
+  const sorted = items.map((it, k) => ({ ...it, k })).sort((a, b) => a.song.y - b.song.y);
+  for (const it of sorted) {
+    state.history.push({ song: it.song, preview: it.preview, player: p.name, ok: order.indexOf(it.k) === sorted.indexOf(it), note: `${p.name}: ${SORT_LETTERS[it.k]}` });
+    recordAnswer(it.song, order.indexOf(it.k) === sorted.indexOf(it));
+  }
+  fx(pts >= 4 ? 'good' : 'bad');
+  state.phase = 'revealed';
+  state.current = sorted[sorted.length - 1].song;
+  state.preview = sorted[sorted.length - 1].preview;
+  $('#reveal').replaceChildren(
+    el('div', { class: 'verdict ' + (pts >= 4 ? 'ok' : 'bad') }, (timeUp ? T('⏳ Koniec czasu! ') : '')
+      + T('Twoja kolejność: {0} – {1} pkt', order.map((k) => SORT_LETTERS[k]).join(' ') || '–', pts)),
+    ...sorted.map((it, i) => el('div', { class: 'verdict ' + (order[i] === it.k ? 'ok' : 'bad') },
+      `${order[i] === it.k ? '✔' : '✘'} ${SORT_LETTERS[it.k]} · ${it.song.y} · ${it.song.t} — ${artistLine(it.song)}`)),
+  );
+  $('#reveal').classList.remove('hidden');
+  render();
+}
+function sortActions() {
+  const btns = [];
+  const s = state.sort;
+  if (state.phase === 'listen' && s) {
+    s.items.forEach((it, k) => btns.push(el('button', { class: 'ghost sort-play' + (s.playing === k ? ' on' : ''), onclick: () => playSort(k) }, `▶ ${SORT_LETTERS[k]}`)));
+    s.items.forEach((it, k) => btns.push(el('button', { class: 'big-choice sort-pick', disabled: s.order.includes(k), onclick: () => pickSort(k) },
+      T('{0}. miejsce: {1}', s.order.length + 1, SORT_LETTERS[k]))));
+    btns.push(el('button', { class: 'ghost', disabled: !s.order.length, onclick: () => { s.order = []; render(); } }, T('↺ Od nowa')));
+    btns.push(el('button', { class: 'primary', disabled: s.order.length < SORT_N, onclick: () => checkSort(false) }, T('✔ Sprawdź')));
+  }
+  if (state.phase === 'revealed') {
+    const last = state.turnsPlayed >= state.rounds * state.players.length;
+    btns.push(el('button', { class: 'primary', onclick: nextTurn }, last ? T('Zobacz wyniki →')
+      : (state.players.length > 1 ? T('Następny gracz →') : T('Następna piątka →'))));
+  }
+  return btns;
+}
+function sortHint() {
+  const s = state.sort;
+  if (!s || state.phase !== 'listen') return '';
+  const left = s.deadline ? Math.max(0, Math.ceil((s.deadline - Date.now()) / 1000)) : SORT_TIME;
+  return T('Od najstarszej: {0} · ⏳ {1} s', s.order.map((k) => SORT_LETTERS[k]).join(' → ') || '…', left);
 }

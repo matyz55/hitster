@@ -168,6 +168,11 @@
         <b>Skąd jest wykonawca?</b>
         <span class="muted">Cztery kraje z flagami do wyboru.</span>
       </button>
+      <button class="mode" data-mode="sort5" data-ctx="single multi">
+        <span class="mode-icon">🔢</span>
+        <b>Ułóż piątkę</b>
+        <span class="muted">Pięć krótkich fragmentów do ułożenia od najstarszego do najnowszego – masz na to 90 sekund.</span>
+      </button>
       <button class="mode" data-mode="bid" data-ctx="single multi">
         <span class="mode-icon">💰</span>
         <b>Licytacja</b>
@@ -261,7 +266,7 @@
       <div class="seg" id="audio-out">
         <label><input type="radio" name="audio-out" value="host" checked> Tym urządzeniu</label>
         <label id="audio-out-tv"><input type="radio" name="audio-out" value="tv"> Dużym ekranie (TV)</label>
-        <label data-for="multi teams melody steps duel party year artist country bid coop" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
+        <label data-for="multi teams melody steps duel party year artist country bid coop sort5" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
       </div>
       <p class="muted small" id="audio-out-desc">Duży ekran i telefony graczy łączy się w oknie 📺. Gdy wybranego urządzenia nie ma, muzyka gra na tym urządzeniu.</p>
       </div>
@@ -365,7 +370,7 @@
           <label><input type="radio" name="guess" value="both"> Tytuł i wykonawcę</label>
         </div>
       </div>
-      <div data-for="melody steps buzz duel year artist country bid">
+      <div data-for="melody steps buzz duel year artist country bid sort5">
         <label class="row" style="margin-top:12px"><span id="rounds-label">Piosenek na gracza</span>
           <input type="number" id="rounds" min="1" max="30" value="5">
         </label>

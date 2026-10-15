@@ -88,3 +88,34 @@ test('Wyzwanie dnia: ten sam zestaw w dwóch przeglądarkach, wynik do udostępn
   await expect(page.locator('.daily-squares')).toHaveText('🟨🟩🟨🟩🟨🟩🟨🟩🟨🟩');
   await expect(page.locator('#ranking button.primary')).toContainText('Udostępnij');
 });
+
+test('Ułóż piątkę: dobra kolejność daje 5 pkt, każdy fragment ma swój przycisk ▶', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=sort5]');
+  await page.fill('#rounds', '1');
+  await page.click('#btn-start');
+  await page.waitForFunction(() => state.sort && state.sort.items.length === 5, null, { timeout: 30000 });
+  await expect(page.locator('#btn-play')).toBeHidden();
+  await page.click('#actions .sort-play >> nth=2');
+  await expect.poll(() => page.evaluate(() => !audio.paused)).toBe(true);
+  const order = await page.evaluate(() => state.sort.items.map((it, k) => ({ k, y: it.song.y })).sort((a, b) => a.y - b.y).map((x) => x.k));
+  for (const k of order) await page.click(`#actions .sort-pick >> nth=${k}`);
+  await page.click('#actions button.primary');
+  await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(5);
+  await expect(page.locator('#reveal .verdict')).toHaveCount(6);
+  await page.click('#actions button.primary');
+  await expect.poll(() => screen(page)).toBe('end');
+});
+
+test('Ułóż piątkę: koniec czasu sprawdza bieżącą kolejność', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=sort5]');
+  await page.click('#btn-start');
+  await page.waitForFunction(() => state.sort && state.sort.items.length === 5, null, { timeout: 30000 });
+  await page.click('#actions .sort-play >> nth=0');
+  await page.evaluate(() => { state.sort.deadline = Date.now() + 500; });
+  await expect.poll(() => page.evaluate(() => state.phase), { timeout: 5000 }).toBe('revealed');
+  await expect(page.locator('#reveal .verdict').first()).toContainText('Koniec czasu');
+});
