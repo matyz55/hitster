@@ -3891,7 +3891,7 @@ window.SONG_SP = {
   "Jack Savoretti|You Don't Have To Say You Love Me / Io che non vivo senza te - Medley": "2VPhNiZZZS0tmVukzgBoOA",
   "James Hype & Miggy Dela Rosa|Ferrari": "4zN21mbAuaD0WqtmaTZZeP",
   "Joji|Glimpse of Us": "2mlNgAeIBnL78ZriXgrRHz",
-  "KALUSH|Stefania": "0unPBMjVwn0HpWget3DBze",
+  "Kalush Orchestra|Stefania": "0unPBMjVwn0HpWget3DBze",
   "Konstrakta|In corpore sano": "1JaOUMmaSZlWfONvT4HTlg",
   "Leah Kate|10 Things I Hate About You": "7I4XALvCb2VEmOCtGUe5uY",
   "Lewis Capaldi|Forget Me": "3iHzKA9HlXf5wsGdsrsnSA",

@@ -232,7 +232,19 @@ function factTheme() {
 }
 // przy odkrytej karcie – jedna ciekawostka: w zestawie tematycznym pasująca do niego (np. Eurowizja – o występie
 // na Eurowizji, muzyka filmowa – z jakiego filmu), a gdy takiej nie ma albo gramy wszystkimi piosenkami – losowa
+// żarty (easter egg) – co trzecia ciekawostka przy piosenkach tych wykonawczyń
+const FACT_EGGS = {
+  'Edyta Górniak': () => T('📍 Edyta Górniak – rok i miejsce urodzenia: ok. 4000 lat p.n.e., Wszechświat'),
+  'Maryla Rodowicz': () => T('📍 Maryla Rodowicz – rok i miejsce urodzenia: A co, już sylwester?'),
+};
+const factEgg = (song) => {
+  const egg = FACT_EGGS[mainArtist(song)];
+  return egg && Math.random() < (window.__factEggChance ?? 1 / 3) ? egg() : null;
+};
 function factLines(song) {
+  // w zestawie tematycznym (np. Eurowizja) pierwszeństwo ma ciekawostka z tematu
+  const egg = factTheme() ? null : factEgg(song);
+  if (egg) return [el('div', { class: 'fact' }, egg)];
   const all = songFacts(song);
   if (!all.length) return [];
   const theme = factTheme();

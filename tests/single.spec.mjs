@@ -268,3 +268,18 @@ test('iPhone: przycisk „Zainstaluj” pokazuje, jak dodać grę do ekranu pocz
   await page.click('#btn-install');
   await expect(page.locator('#ios-install')).toContainText('Do ekranu początkowego');
 });
+
+test('ciekawostki: żarty przy piosenkach Edyty Górniak i Maryli Rodowicz (co jakiś czas)', async ({ page }) => {
+  await page.goto('/');
+  const r = await page.evaluate(() => {
+    const by = (a) => window.SONGS.find((s) => mainArtist(s) === a);
+    window.__factEggChance = 1;
+    const egg = [factLines(by('Edyta Górniak'))[0].textContent, factLines(by('Maryla Rodowicz'))[0].textContent];
+    window.__factEggChance = 0;
+    const plain = factLines(by('Edyta Górniak')).map((e) => e.textContent).join(' ');
+    return { egg, plain };
+  });
+  expect(r.egg[0]).toContain('ok. 4000 lat p.n.e., Wszechświat');
+  expect(r.egg[1]).toContain('A co, już sylwester?');
+  expect(r.plain).not.toContain('Wszechświat');
+});
