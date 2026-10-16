@@ -763,6 +763,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Film, który sam nie ruszył, jest zapisywany w tej przeglądarce (widać go w ustawieniach wśród zgłoszonych) i nie wraca w kolejnych grach. Gdy kilka filmów z rzędu nie rusza, gra uznaje, że przeglądarka blokuje autoodtwarzanie, i pokazuje przycisk „Odtwórz piosenkę”.
 - Przerwy wypadają tylko w polskich wersach. Usunięta kategoria „Tytuł po angielsku”; nowe kategorie: „Być albo nie być”, „Mowa i słowa”, „Krok po kroku”; „Pytania” obejmują też tytuły ze słowami „czy”, „gdzie”, „dlaczego”.
 
-## 5.41.1 – 16.10.2026 (`HASH`)
+## 5.41.1 – 16.10.2026 (`273ec6c`)
 
 - „Tak to leciało!”: kafelki z poprawnymi słowami odsłaniają się z animacją tylko raz – po przewinięciu piosenki albo odświeżeniu ekranu stoją już bez ruchu (tak samo napis z wynikiem).
