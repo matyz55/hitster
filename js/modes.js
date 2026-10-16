@@ -423,8 +423,7 @@ function prepareQuiz(song) {
     state.quiz = { options: screenOptions(song) || quizOptions(song, 'artist'), bet: 0, year: null };
     return;
   }
-  state.quiz = { options: quizOptions(song), bet: 0, year: null, typed: state.mode === 'country' && countryTyped() && !(typeof controlPhone === 'function' && controlPhone()) };
-  // (gracz z telefonem na razie dostaje cztery odpowiedzi – pole do wpisania kraju na telefonie jest w przygotowaniu)
+  state.quiz = { options: quizOptions(song), bet: 0, year: null, typed: state.mode === 'country' && countryTyped() };
 }
 
 function answerQuiz(choice) {

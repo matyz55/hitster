@@ -165,7 +165,8 @@ audio.addEventListener('play', () => {
   state.heard = true;
   if (state.live && !state.live.t0 && state.phase === 'listen') state.live.t0 = Date.now();
   // muzyka na innym urządzeniu: start od tego samego miejsca, koniec wycinka (until) liczy tamto urządzenie
-  if (applyAudioRoute() && state.preview) {
+  // fragment zerowej długości (licytacja sekund przed końcem licytacji, „Pierwsze słowa” na krokach bez dźwięku) – tam nic nie gra
+  if (applyAudioRoute() && state.preview && (state.phase === 'revealed' || state.clipLen > 0)) {
     sendAudioCmd({ audioCmd: 'play', url: state.preview.url, t: audio.currentTime, until: clipEnd() });
   }
   $('#vinyl').classList.add('spinning'); $('#btn-play').textContent = T('⏸ Pauza');

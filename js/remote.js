@@ -247,13 +247,22 @@ function tvSync() {
     const revealed = state.phase === 'revealed' && state.current;
     Object.assign(snap, {
       title: txt('#turn-title'), info: txt('#turn-info'), hint: txt('#hint'),
-      status: revealed ? '' : txt('#mystery-status') + (state.special && SPECIALS[state.special] ? ` · ${txt('#special-badge')}` : ''),
+      status: revealed ? '' : txt('#mystery-status'), decadeHint: revealed ? '' : txt('#mystery-status .decade-hint'),
+      // karta specjalna (podwójna, kradzież, tarcza…) – osobny pasek jak u gospodarza
+      special: state.current && state.special && SPECIALS[state.special] ? txt('#special-badge') : '',
+      // kupiona podpowiedź (pierwsza litera) i odgadnięte już części odpowiedzi
+      letterHint: $('#letter-hint') && !$('#letter-hint').classList.contains('hidden') ? txt('#letter-hint') : '',
+      solved: $('#guess-solved') && !$('#guess-solved').classList.contains('hidden') ? txt('#guess-solved') : '',
       scores: state.players.length > 1 ? $$('#scoreboard .score').map((n, i) => ({ text: n.textContent, active: n.classList.contains('active') || (state.buzz && state.buzz.answering === i) })) : [],
       art: revealed && state.preview ? state.preview.art : null,
       buttons: tvButtons().map((b) => ({ text: b.textContent.trim(), cls: b.className, disabled: b.disabled, title: b.title || '' })),
       reveal: revealed ? {
         y: state.current.y, t: state.current.t, a: artistLine(state.current), cc: state.current.cc,
-        lines: $$('#reveal .verdict, #reveal .fact').map((n) => n.textContent),
+        // linie odkrycia z kolorem jak u gospodarza (werdykt, ciekawostka, uwagi)
+        lines: [...$('#reveal').children].slice(2).filter((n) => !n.classList.contains('listen') && n.textContent.trim())
+          .map((n) => ({ text: n.textContent, cls: n.className })),
+        // „Posłuchaj całości” – ikonki serwisów jak u gospodarza
+        listen: state.preview ? ['youtube', 'spotify', 'apple'].map((p) => ({ p, url: streamUrl(state.current, state.preview, p) })) : [],
       } : null,
       // ▶/⏸ dla telefonu gracza, który teraz odpowiada
       play: state.current && !$('#btn-play').classList.contains('hidden') ? { disabled: $('#btn-play').disabled, playing: !audio.paused, who: controlNames() } : null,

@@ -648,7 +648,7 @@ function renderTimer() {
     : `⏳ ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')} · ${T('ułożone: {0}', placed)}`;
   $('#turn-title').classList.toggle('hurry', sec <= 10);
   if (sec !== renderTimer.last) { renderTimer.last = sec; tvSync(); }
-  $('#turn-info').textContent = T('Żetony: {0}', '🪙'.repeat(p.tokens) || T('brak'));
+  $('#turn-info').textContent = T('Żetony: {0}', tokensLabel(p.tokens));
 }
 
 /* --- Starsza czy nowsza? --- */

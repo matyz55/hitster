@@ -455,6 +455,79 @@
     .ly-dot.shown { background: rgba(255, 201, 60, .25); }
     body.player .ly-phone-form { display: flex; flex-direction: column; gap: 10px; }
     body.player .ly-phone-form button { padding: 12px; font-size: 1.05em; border-radius: 12px; }
+    /* spójnie z gospodarzem: kolory linii odkrycia, karta specjalna, kupione podpowiedzi, „Posłuchaj całości” */
+    .lines .verdict.ok, .lines .ok { color: var(--ok); font-weight: 700; }
+    .lines .verdict.bad, .lines .bad { color: var(--bad); font-weight: 700; }
+    .lines .small-verdict { font-size: .92em; font-weight: 600; }
+    .lines .fact, .reveal .lines .fact, .ht-reveal .lines .fact { color: var(--accent-2); font-weight: 400; font-size: .92em; }
+    .lines .muted { color: var(--muted); font-weight: 400; font-size: .9em; }
+    .special-badge { margin: 0; padding: .45em .7em; border-radius: .6em; font-weight: 700; flex-shrink: 0;
+      background: linear-gradient(90deg, rgba(255, 201, 60, .18), rgba(255, 61, 127, .12)); border: 1px solid var(--gold); }
+    .letter-hint { margin: 0; color: var(--gold); font-weight: 600; }
+    .guess-solved { margin: 0; color: var(--ok); font-weight: 600; }
+    .decade-hint { color: var(--gold); font-weight: 600; }
+    .listen { display: flex; align-items: center; gap: 10px; margin-top: 8px; color: var(--muted); flex-wrap: wrap; }
+    .listen-label { font-size: .9em; }
+    .listen-icon { display: inline-flex; width: 30px; height: 30px; border-radius: 8px; }
+    .listen-icon svg { width: 100%; height: 100%; display: block; }
+    body.player .listen { gap: 8px; }
+    @media (max-width: 420px) { body.player .listen-label { flex: 1 1 100%; } }
+    body.player .listen-icon { width: 28px; height: 28px; }
+    .country-form input { flex: 1 1 100%; }
+    .country-form button.ghost { background: transparent; border: 1px solid #3d3755; color: var(--text); }
+    .ly-tags { display: flex; flex-wrap: wrap; gap: .4em; justify-content: center; margin: .2em 0 .4em; }
+    .ly-tag { background: rgba(255, 255, 255, .08); border-radius: 99px; padding: .15em .7em; font-weight: 700; font-size: .85em; }
+    .ly-words-tag { background: rgba(255, 201, 60, .18); color: var(--gold); }
+    .ly-songname small { color: var(--muted); font-weight: 400; }
+    .ly-rank li.now { color: var(--accent-2); font-weight: 800; }
+    /* telefon gracza – karta tury jak na telefonie gospodarza (style.css): lista graczy w jednej linii, płyta z odkrytą kartą obok */
+    body.player .ht-scores { flex-wrap: nowrap; overflow-x: auto; gap: 8px; scrollbar-width: none; margin: 0 -14px; padding: 0 14px; }
+    body.player .ht-scores::-webkit-scrollbar { display: none; }
+    body.player .ht-scores span { flex: 0 0 auto; white-space: nowrap; padding: 8px 12px; font-size: 15px; }
+    body.player .ht-mystery { align-items: center; gap: 12px; }
+    body.player .ht-vinyl { width: 64px; height: 64px; }
+    body.player .ht-vinyl .lbl { width: 26px; height: 26px; }
+    body.player .ht-body { display: flex; flex-direction: column; gap: 8px; }
+    body.player .ht-controls { margin: 0; }
+    body.player .ht-status { font-size: 15px; }
+    body.player .ht-reveal { padding: 10px 12px; border-radius: 10px; }
+    body.player .ht-reveal .y { font-size: 29px; font-weight: 800; line-height: 1.2; }
+    body.player .ht-reveal .t { font-size: 16px; }
+    body.player .ht-reveal .lines div { font-size: 15px; }
+    body.player .ht-reveal .lines .fact { font-size: 14.5px; }
+    body.player .special-badge { padding: 8px 12px; border-radius: 10px; font-size: 16px; }
+    body.player .letter-hint, body.player .guess-solved { font-size: 16px; }
+    /* oś czasu jak u gospodarza na telefonie: „＋” to niska przerywana ramka między kartami */
+    body.player .vtl { gap: 0; }
+    body.player .vtl > .vrow { margin: 4px 0; }
+    body.player .vrow.vcard { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; column-gap: 10px; padding: 10px 12px; min-height: 0; }
+    body.player .vrow .y { font-size: 24px; font-weight: 800; min-width: 0; }
+    body.player .vrow .ta b { font-size: 14px; font-weight: 600; }
+    body.player .vrow .ta small { font-size: 13px; }
+    body.player .vrow .vstart-lbl { color: var(--gold); text-transform: uppercase; font-size: 11px; letter-spacing: .5px; }
+    body.player .vrow .flag { margin-left: 0; }
+    .vslot { display: grid; place-items: center; width: 100%; height: 30px; min-height: 30px; margin: 4px 0; padding: 0; border-radius: 10px;
+      border: 2px dashed #4a4266; background: transparent; color: var(--muted); font: inherit; font-size: 16px; font-weight: 400; }
+    .vslot.labeled { font-size: 14px; }
+    .vslot:active, .vslot.chosen { border-color: var(--accent-2); color: var(--accent-2); background: transparent; }
+    body.player .vrow.vmys { justify-content: center; height: 44px; min-height: 0; padding: 0 12px; border: 2px solid var(--accent); background: rgba(255, 61, 127, .15);
+      color: var(--text); font-size: 14px; font-weight: 400; animation: pulse 1.6s ease-in-out infinite; }
+    body.player .vrow.vmys.ch { border-color: var(--gold); background: rgba(255, 201, 60, .15); color: var(--text); }
+    body.player .vrow.vmark { min-height: 40px; padding: 4px; border-radius: 10px; font-size: 14px; font-weight: 700; }
+    body.player .vrow.vmark.bad { border: 2px solid var(--bad); background: rgba(255, 80, 80, .15); color: var(--text); }
+    body.player .vrow.vmark.challenge { border: 2px dashed var(--gold); background: rgba(255, 201, 60, .12); color: var(--text); }
+    body.player .vrow.vmark.ok { border: 2px dashed var(--ok); background: rgba(60, 220, 140, .12); color: var(--ok); }
+    /* odpowiedzi do wyboru i odpowiedzi pojedynku: pionowa lista dużych przycisków równej wysokości (jak .big-choice u gospodarza) */
+    .ht-actions.p-choices { position: static; display: grid; grid-template-columns: 1fr; grid-auto-rows: 64px; gap: 10px; margin: 0; padding: 0;
+      background: none; border: 0; border-radius: 0; }
+    .ht-card.with-actions .p-choices { margin-bottom: 4px; }
+    .ht-card:not(.with-actions) .p-choices { margin-bottom: 0; }
+    body.player .p-choices button, body.player .live-opts .big-choice { min-height: 0; height: 100%; font: inherit; font-size: 20px; font-weight: 800; padding: 6px 12px;
+      border-radius: 10px; color: var(--text); background: linear-gradient(160deg, #3a2d63, #2a2244); border: 2px solid var(--accent-2); overflow-wrap: anywhere; }
+    body.player .p-choices button:disabled, body.player .live-opts .big-choice:disabled { opacity: .45; }
+    body.player .live-opts { grid-template-columns: 1fr; grid-auto-rows: 64px; gap: 10px; }
+    body.player .live-box { gap: 10px; }
+    body.player .live-line { grid-template-columns: 5.5em 1fr auto; font-size: 15px; }
   </style>
   <script>try { var u = new URLSearchParams(location.search).get('ui'); if (u) localStorage.setItem('songster.ui6', u === '6' ? '1' : '0'); if (localStorage.getItem('songster.ui6') === '1') document.documentElement.classList.add('ui6'); } catch (e) { /* tryb prywatny */ }</script>
   <link rel="stylesheet" href="ui6/tv.css">

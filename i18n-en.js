@@ -1292,5 +1292,6 @@ window.I18N_EN = {
  "🔗 Śpiewana na tym samym festiwalu w Opolu co poprzednia piosenka ({0} KFPP)": "🔗 Performed at the same Opole festival as the previous song ({0} KFPP)",
  "🔗 Zabrzmiała w tym samym filmie, serialu albo grze co poprzednia piosenka: {0}": "🔗 Featured in the same film, series or game as the previous song: {0}",
  "Nowy łańcuch – poprzednia piosenka: „{0}” ({1}).": "New chain – previous song: “{0}” ({1}).",
- "Poprzednia piosenka: „{0}” ({1}).": "Previous song: “{0}” ({1})."
+ "Poprzednia piosenka: „{0}” ({1}).": "Previous song: “{0}” ({1}).",
+ "🌍 Z jakiego kraju jest wykonawca?": "🌍 Which country is the artist from?"
 };

@@ -523,3 +523,15 @@ test('Turniej: pominięty mecz (remis 0:0) bez dogrywki – awans losowy, turnie
   await expect(page.locator('#end-party')).toBeVisible();
   await expect(page.locator('.tour-box')).toContainText('Finał');
 });
+
+test('żetony: ikonka i liczba („🪙 3”) w tytule tury, tablicy wyników i osiach innych graczy', async ({ page }) => {
+  await lobby(page, 2);
+  await page.click('.mode[data-mode=multi]');
+  await page.click('#btn-start');
+  await ready(page);
+  await page.evaluate(() => { state.players.forEach((p, i) => { p.tokens = i + 3; }); state.showAll = true; render(); });
+  const t = await page.evaluate(() => state.players[state.turn].tokens);
+  await expect(page.locator('#turn-info')).toHaveText(`Żetony: 🪙 ${t}`);
+  await expect(page.locator('#scoreboard .score .tokens')).toHaveText(['🪙 3', '🪙 4']);
+  await expect(page.locator('#others .other-head .tokens')).toHaveText([`🪙 ${7 - t}`]);
+});

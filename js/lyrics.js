@@ -982,6 +982,8 @@ function lyrSnapshot() {
     phase: state.phase, turn: me.name, stage: me.stage, ladder: LY_LADDER, points: !!ly.mini, money: state.players.map((p) => ({ name: p.name, v: p.score, out: p.out })),
     lifes: me.lifes, cat: cur ? cur.cat : null, song: cur ? { t: cur.it.song.t, a: artistLine(cur.it.song), y: cur.it.song.y } : null,
     lines: $$('#ly-lines p').map((p) => ({ cls: p.className, text: p.textContent })),
+    // ile słów do uzupełnienia w bieżącej przerwie – jak znacznik „✏️ 5 słów” u gospodarza (widoczny od startu piosenki)
+    words: cur && cur.gap ? cur.gap.blanks.length : null, wordsLabel: cur && cur.gap ? lyWordsLabel(cur.gap.blanks.length) : '',
     blanks: cur && cur.gap && ['answer', 'result'].includes(state.phase) ? { prefix: '', n: cur.gap.blanks.length,
       given: result ? cur.given.map((w) => w || '—') : cur.gap.blanks.map((b, i) => (cur.revealed.has(i) ? b.want : '')), marks: result ? cur.marks : null } : null,
     helper: cur && cur.helper != null ? state.players[cur.helper].name : null,
