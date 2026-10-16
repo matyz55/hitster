@@ -818,6 +818,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Każdy film w katalogu może mieć własny tekst dopasowany do swojej długości – zapasowy film nie musi już mieć tej samej długości co pierwszy.
 - Narzędzie katalogu: wszystkie polskie piosenki z bazy (zamiast ok. 1140), wyszukiwanie filmów po wykonawcy (jedno zapytanie na wiele piosenek), tylko filmy, które YouTube pozwala odtwarzać poza swoją stroną, bez filmów z ograniczeniem wiekowym.
 
-## 5.44.0 – 16.10.2026 (`HASH`)
+## 5.44.0 – 16.10.2026 (`bc5557a`)
 
 - „Tak to leciało!”: 13 nowych kategorii – „Samotność i tęsknota”, „Szczęście i uśmiech”, „Łzy i smutek”, „Wspomnienia”, „Zaczyna się od «Nie»”, „Ja i moje”, „Jazz i blues”, „Soul, funk i disco”, „Numer 1 w Polsce”, „Numer 1 Listy Trójki”, „Polski Top Wszech Czasów”, „Czasy PRL-u” i „XXI wiek”. Kategoria pojawia się na planszy, gdy ma co najmniej 2 piosenki w katalogu; narzędzie katalogu najpierw szuka filmów do kategorii z małą liczbą piosenek.
