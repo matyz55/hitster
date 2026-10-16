@@ -839,3 +839,10 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.45.1 – 16.10.2026 (`ff95934`)
 
 - Bez zmian w grze: testy mogą działać na innym porcie (zmienna TEST_PORT).
+
+## 5.46.0 – 16.10.2026 (`HASH`)
+
+- Impreza i Turniej: w każdej minigrze przycisk „⏭ Pomiń tę minigrę” (także w „Tak to leciało!” i Sztafecie karaoke) – minigra kończy się z dotychczasowymi wynikami i gra przechodzi do przerwy. W Sztafecie karaoke (także jako osobnym trybie) – „⏭ Pomiń tę piosenkę”.
+- Pojedynek dekad: przy „Losowo” nowa para dekad co piosenkę; dekady wybrane w ustawieniach zostają stałe.
+- Odpowiedzi do wyboru (Kto to śpiewa?, Kto za tym stoi?, Z jakiego to ekranu?, Łańcuch skojarzeń, Licytacja i ich minigry) – w pionowej liście przycisków równej wysokości.
+- Skąd jest wykonawca: domyślnie wpisujesz kraj, bez podpowiedzi (po polsku albo angielsku, bez polskich znaków; działają też USA, UK, Anglia, Holandia…). W ustawieniach można wrócić do czterech odpowiedzi. Gracz grający na swoim telefonie na razie dostaje cztery odpowiedzi.
