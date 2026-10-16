@@ -767,6 +767,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - „Tak to leciało!”: kafelki z poprawnymi słowami odsłaniają się z animacją tylko raz – po przewinięciu piosenki albo odświeżeniu ekranu stoją już bez ruchu (tak samo napis z wynikiem).
 
-## 5.41.2 – 16.10.2026 (`HASH`)
+## 5.41.2 – 16.10.2026 (`d006617`)
 
 - „Tak to leciało!”: słowo odsłonięte kołem ratunkowym od razu pojawia się w polu odpowiedzi, na swoim miejscu w wersie. Wpisanie całego prawidłowego wersu (razem z odsłoniętym słowem) jest zaliczane – wcześniej słowa się przesuwały i dawało to błąd.
