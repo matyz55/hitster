@@ -753,3 +753,12 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - Bez zmian w obecnym wyglądzie gry: przygotowana podstawa nowego wyglądu 6.0 (każdy ekran w całości w oknie, bez przewijania). Na razie nie jest włączony – trwa przegląd projektu.
 - Narzędzie zrzutów ekranów pokazuje obok obecnego wyglądu propozycję 6.0 i sprawdza, czy ekran mieści się bez przewijania.
+
+## 5.41.0 – 16.10.2026 (`HASH`)
+
+- „Tak to leciało!”: po odpowiedzi piosenka gra do końca, a pod filmem pojawia się pasek przewijania z przyciskiem pauzy – tekst karaoke przesuwa się razem z filmem.
+- Po wybraniu piosenki, jeszcze przed jej startem, w wierszu z kategorią i rokiem widać, ile słów trzeba będzie uzupełnić.
+- Z gry można zrezygnować i odejść z wygraną także przy przerwie w piosence, gdy trzeba uzupełnić słowa (poza finałem).
+- Napisy YouTube są wyłączane przy każdym starcie i przewinięciu filmu, także po odpowiedzi.
+- Film, który sam nie ruszył, jest zapisywany w tej przeglądarce (widać go w ustawieniach wśród zgłoszonych) i nie wraca w kolejnych grach. Gdy kilka filmów z rzędu nie rusza, gra uznaje, że przeglądarka blokuje autoodtwarzanie, i pokazuje przycisk „Odtwórz piosenkę”.
+- Przerwy wypadają tylko w polskich wersach. Usunięta kategoria „Tytuł po angielsku”; nowe kategorie: „Być albo nie być”, „Mowa i słowa”, „Krok po kroku”; „Pytania” obejmują też tytuły ze słowami „czy”, „gdzie”, „dlaczego”.

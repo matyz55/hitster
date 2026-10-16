@@ -19,7 +19,7 @@ async function startLyrics(page, players = 1) {
   await expect.poll(() => screen(page)).toBe('lyrics');
 }
 async function playToGap(page) {
-  await page.locator('.ly-cat').first().click();
+  await page.locator('.ly-cat:not(.done)').first().click();
   // po wyborze kategorii: zamiast kafelków dwie piosenki z rokiem wydania, bez powrotu do innej kategorii
   await expect(page.locator('.ly-cat')).toHaveCount(0);
   await expect(page.locator('.ly-song .ly-year')).toHaveCount(2);
@@ -48,6 +48,8 @@ test('Tak to leciało!: plansza 9 kategorii, przerwa przed wersem, dobra odpowie
     return { n: c.gap.blanks.length, words: c.lines[c.gap.line].text.split(/\s+/).length, before: c.lines.slice(0, c.gap.line).some((l) => k(l.text) === k(c.lines[c.gap.line].text)) };
   });
   await expect(page.locator('.ly-dot')).toHaveCount(gap.n);
+  // liczba słów do uzupełnienia – znacznik w wierszu z kategorią i rokiem (znany od startu piosenki)
+  await expect(page.locator('#ly-song .ly-words-tag')).toContainText(String(gap.n));
   // układ: „Tak to leciało!” na całą szerokość, pod nim trzy koła ratunkowe, na samym dole źródła
   const order = await page.evaluate(() => [...document.querySelectorAll('#ly-answer > *')].map((e) => e.className));
   expect(order.indexOf('primary ly-submit')).toBeLessThan(order.indexOf('ly-lifebtns'));
@@ -224,3 +226,66 @@ test('Sztafeta karaoke: kilka przerw w jednej piosence, przy każdej odpowiada k
   await expect.poll(() => screen(page)).toBe('end');
   expect(await page.evaluate(() => state.players.reduce((n, p) => n + p.score, 0))).toBe(turns.length);
 });
+
+test('Tak to leciało!: po odpowiedzi piosenka gra do końca, pasek przewijania przesuwa film i tekst karaoke', async ({ page }) => {
+  await startLyrics(page);
+  await playToGap(page);
+  await expect(page.locator('#ly-seek')).toBeHidden();
+  await fillCorrect(page);
+  await page.getByRole('button', { name: 'Tak to leciało!' }).click();
+  await expect(page.locator('#ly-seek')).toBeVisible();
+  // dawniej muzyka stawała kilka sekund po wersie – teraz gra dalej
+  await expect.poll(() => page.evaluate(() => lyYT.getCurrentTime() > state.lyrics.cur.resumeUntil + 5), { timeout: 15000 }).toBe(true);
+  expect(await page.evaluate(() => lyYT.getPlayerState())).toBe(1);
+  // przewinięcie na 50 s: film i podświetlony wers idą za paskiem
+  await page.evaluate(() => { const b = $('#ly-seek-bar'); b.value = '50'; b.dispatchEvent(new Event('input')); b.dispatchEvent(new Event('change')); });
+  await page.evaluate(() => { window.__ytSpeed = 0.001; });
+  const at = await page.evaluate(() => {
+    const cur = state.lyrics.cur; const t = lyYT.getCurrentTime();
+    let k = -1; cur.lines.forEach((l, i) => { if (l.t <= t + 0.05) k = i; });
+    return { t, want: cur.lines[k].text, now: $('#ly-lines p.now') && $('#ly-lines p.now').textContent };
+  });
+  expect(at.t).toBeGreaterThanOrEqual(50);
+  expect(at.t).toBeLessThan(52);
+  expect(at.now).toBe(at.want);
+});
+
+test('Tak to leciało!: rezygnacja z wygraną także przy przerwie w piosence', async ({ page }) => {
+  await startLyrics(page);
+  await playToGap(page);
+  // przy pierwszej piosence nie ma jeszcze czego zabrać
+  await expect(page.locator('#ly-answer .ly-quit')).toHaveCount(0);
+  await fillCorrect(page);
+  await page.getByRole('button', { name: 'Tak to leciało!' }).click();
+  await page.getByRole('button', { name: 'Dalej' }).click();
+  await playToGap(page);
+  await page.locator('#ly-answer .ly-quit').click();
+  await expect.poll(() => screen(page)).toBe('end');
+  await expect(page.locator('#winner-title')).toContainText('500 zł');
+});
+
+test('Tak to leciało!: film, który sam nie ruszył, jest zapisany i pomijany w kolejnych grach', async ({ page }) => {
+  await startLyrics(page);
+  const vid = await page.evaluate(() => {
+    const it = state.players[0].board[0].songs[0];
+    window.__lyAutoplayMs = 400; window.__ytNoPlay = [it.yts[0]];
+    return it.yts[0];
+  });
+  await page.locator('.ly-cat').first().click();
+  await page.locator('.ly-song').first().click();
+  await expect(page.locator('#ly-answer .ly-flash')).toContainText('nie odtworzył się automatycznie');
+  const saved = await page.evaluate(() => [store.get('lyBadVideos', []), store.get('lyReports', [])]);
+  expect(saved[0]).toContain(vid);
+  expect(saved[1].some((r) => r.v === vid && r.why === 'autoplay')).toBe(true);
+  expect(await page.evaluate((v) => lyCatalog().some((it) => it.yts.includes(v)), vid)).toBe(false);
+});
+
+test('Tak to leciało!: przerwa tylko w polskim wersie', async ({ page }) => {
+  await page.goto('/');
+  const picked = await page.evaluate(() => {
+    const lines = Array.from({ length: 30 }, (_, i) => ({ t: 12 + i * 4, text: i % 3 ? 'oh yeah baby I love you tonight' : `idę sobie drogą numer ${i} przez miasto` }));
+    return Array.from({ length: 30 }, () => { const g = lyPickGap(lines, 3, 140); return g.lines.map((i) => lyLineLang(lines[i].text)); }).flat();
+  });
+  expect(picked).not.toContain('en');
+});
+

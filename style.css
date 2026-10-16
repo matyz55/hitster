@@ -769,6 +769,14 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 #ly-song { display: flex; flex-direction: column; gap: 2px; }
 .ly-songtags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 4px; }
 .ly-tag { font-size: .8rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: rgba(45, 226, 230, .15); color: var(--accent-2); }
+/* liczba słów do uzupełnienia – po prawej w wierszu z kategorią i rokiem */
+.ly-tag.ly-words-tag { margin-left: auto; background: #07060c; color: var(--text); border: 1px solid #3d3755; }
+/* pasek przewijania pod filmem (po odpowiedzi) */
+.ly-seek { display: flex; align-items: center; gap: 10px; max-width: 640px; margin: -4px auto 10px; }
+.ly-seek input[type=range] { flex: 1; min-width: 0; accent-color: var(--accent); }
+.ly-seek button { min-height: 0; padding: 4px 12px; }
+.ly-seek .muted { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ly-manual { width: 100%; margin-bottom: 10px; }
 .ly-songtitle { font-size: 1.2rem; }
 .ly-songartist { color: var(--muted); }
 .ly-reports { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }

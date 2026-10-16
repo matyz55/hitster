@@ -57,6 +57,8 @@
     constructor(elId, opts) { this.opts = opts; this.base = 0; this.t0 = null; this.vid = null; setTimeout(() => opts.events.onReady({ target: this }), 0); }
     loadVideoById(o) {
       this.vid = o.videoId; this.base = o.startSeconds || 0; this.t0 = performance.now();
+      // __ytNoPlay: film wczytany, ale sam nie rusza (np. wymaga kliknięcia)
+      if (window.__ytNoPlay && window.__ytNoPlay.includes(o.videoId)) { this.t0 = null; return; }
       setTimeout(() => this.opts.events.onStateChange({ data: 1 }), 10);
       if (window.__ytFail && window.__ytFail.includes(o.videoId)) setTimeout(() => this.opts.events.onError({ data: 150 }), 20);
     }
@@ -65,6 +67,8 @@
     playVideo() { if (this.t0 == null) this.t0 = performance.now(); }
     seekTo(t) { this.base = t; if (this.t0 != null) this.t0 = performance.now(); }
     unloadModule() {}
+    setOption() {}
+    getPlayerState() { return this.t0 == null ? 2 : 1; }
     getDuration() { return 180; }
   } };
 })();

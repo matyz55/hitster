@@ -15,7 +15,10 @@ window.LY_THEMES = [
   { name: () => T('Woda i morze'), re: /morz|wod[ay]|rzek|ocean|plaż|statek|statki|parostat|\bfal[aei]|jezior|wisł|bałtyk|łódk|żagl/i },
   { name: () => T('Czas'), re: /\bczas|wczoraj|jutro|dzisiaj|\bdziś|zawsze|nigdy|chwil|\bwiek|minut|godzin|sekund|lat[ao]?\b|rok\b/i },
   { name: () => T('Ty i ja'), re: /\bty\b|\bja\b|ciebie|tobą|\bmnie\b|\bmną\b|\bnas\b|\bmy\b/i },
-  { name: () => T('Pytania'), re: /\?/ },
+  { name: () => T('Pytania'), re: /\?|^czy\b|\bgdzie\b|\bdlaczego\b|\bczemu\b|\bczy\s/i },
+  { name: () => T('Być albo nie być'), re: /\bby(ć|c)\b/i },
+  { name: () => T('Mowa i słowa'), re: /m(ó|o)w|pyta|powie|s(ł|l)(ó|o)w|g(ł|l)os|opowiad|s(ł|l)ucha|krzycz/i },
+  { name: () => T('Krok po kroku'), re: /\bkrok|\bstron(ę|e|ie)\b|prawy|do lewego/i },
   { name: () => T('Świat i niebo'), re: /\bniebo|nieba|gwiazd|księżyc|kosmos|planet|ziemi|świat|anioł|raj\b/i },
   { name: () => T('Dom i rodzina'), re: /\bdom|mam[aąoy]\b|\btata\b|tato\b|ojc|matk|brat|siostr|dziadk|babci|dzieci|dziewczyn|chłopak|chłopc/i },
   { name: () => T('Jedzenie i picie'), re: /win[ao]\b|kaw[aęy]|herbat|chleb|cukier|cukierk|słodk|czekolad|miód|miod|piw[ao]|wódk|wóda|szampan|marcepan|gelato|bubble|tea|lody|ciast|jabłk|pomidor|truskaw|malin|bigos/i },
@@ -61,9 +64,27 @@ window.LY_SETS = [
   { name: () => T('Lata 2010.'), test: (s) => s.y >= 2010 && s.y < 2020 },
   { name: () => T('Najnowsze przeboje'), test: (s) => s.y >= 2020 },
   { name: () => T('Złote przeboje'), test: (s) => s.y < 1995 && (s.p || 0) >= 40 },
-  { name: () => T('Tytuł po angielsku'), test: (s) => /^[A-Za-z0-9 '’,.!?&-]+$/.test(s.t)
-    && /\b(the|you|your|love|baby|me|of|is|it's|i'm|don't|can't|be|are|what|why|when|this|that|with|for|feel|night|dance|girl|boy|heart|world|life|never|forever|tonight|again|like|just|yeah|oh)\b/i.test(s.t)
-    && !/\b(i|w|z|na|się|nie|jak|co|ty|ja|mi|wam|sobie|jest|już|tak)\b/i.test(s.t) },
   { name: () => T('Panie przy mikrofonie'), test: (s) => /^(Maryla|Anna|Ania|Kasia|Katarzyna|Edyta|Doda|Sylwia|Natalia|Beata|Kayah|Margaret|Krystyna|Urszula|Irena|Halina|Ewa|Maria|Justyna|Monika|Agnieszka|Basia|Sanah|sanah|Daria|Brodka|Viki|Roxie|Bovska|Mela|Julia|Kaśka|Zalia)/.test(s.a) },
 ];
 
+// Tylko piosenki z polskim tekstem: wers jest polski, gdy ma polskie litery albo więcej polskich niż angielskich słów
+// popularnych (bez słów wspólnych dla obu języków, np. „i”, „a”, „to”, „no”). Gra pomija przerwy w niepolskich wersach,
+// a narzędzie katalogu – piosenki, w których polskich wersów jest za mało (LY_PL_MIN).
+window.LY_PL_MIN = 0.7;
+window.lyLineLang = (() => {
+  const PL = new Set('w z na nie się sie że ze jak co mi ja ty jest tak po mnie ci bo już juz o mój moj moja czy tylko jeszcze gdy kiedy tu tam ten ta być byc mam masz był byl była nas was ich go jej jego dla od za przez bez we ty mną mna tobą toba ciebie siebie znowu teraz dziś dzis może moze chcę chce wiem nic nikt gdzie są sa będzie bedzie'.split(' '));
+  const EN = new Set("the you me my and is it in of your we don't that this be all so oh yeah love baby on for with what can i'm it's are know just like i'll you're never ever now got feel go night girl boy want need heart".split(' '));
+  return (text) => {
+    const words = String(text).toLowerCase().match(/[a-ząćęłńóśźż']+/g) || [];
+    let pl = /[ąćęłńśźż]/i.test(text) ? 2 : 0;
+    let en = 0;
+    for (const w of words) { if (PL.has(w)) pl += 1; if (EN.has(w)) en += 1; }
+    return pl > en ? 'pl' : en > pl ? 'en' : '?';
+  };
+})();
+// udział polskich wersów wśród wersów z rozpoznanym językiem (1 – cały tekst po polsku)
+window.lyPolishShare = (texts) => {
+  let pl = 0; let en = 0;
+  for (const t of texts) { const l = window.lyLineLang(t); if (l === 'pl') pl += 1; else if (l === 'en') en += 1; }
+  return pl + en ? pl / (pl + en) : 0;
+};

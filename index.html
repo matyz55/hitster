@@ -598,6 +598,11 @@
         <div id="ly-stage" class="hidden">
           <p id="ly-song" class="ly-songname"></p>
           <div class="ly-video"><div id="ly-player"></div></div>
+          <div id="ly-seek" class="ly-seek hidden">
+            <button type="button" id="ly-seek-play" class="ghost" aria-label="Odtwarzanie i pauza">⏸</button>
+            <input type="range" id="ly-seek-bar" min="0" max="180" step="1" value="0" aria-label="Przewijanie piosenki">
+            <span id="ly-seek-time" class="muted small"></span>
+          </div>
           <p id="ly-status" class="muted small"></p>
           <div id="ly-lines" class="ly-lines" aria-live="polite"></div>
           <div id="ly-answer"></div>

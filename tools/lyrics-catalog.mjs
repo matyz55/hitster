@@ -6,7 +6,8 @@
 //                                              potem wyszukiwarka YouTube – limit 100 wyszukiwań dziennie)
 //   node tools/lyrics-catalog.mjs wikidata   – bez klucza: tylko teledyski z Wikidata (niesprawdzone – gra sama
 //                                              porównuje długość filmu w trakcie odtwarzania)
-//   node tools/lyrics-catalog.mjs build      – zapisuje lyrics-catalog.js
+//   node tools/lyrics-catalog.mjs lang       – sprawdza język tekstów już znalezionych (pole pl: udział polskich wersów)
+//   node tools/lyrics-catalog.mjs build      – zapisuje lyrics-catalog.js (tylko piosenki z polskim tekstem)
 // Film jest przyjmowany, gdy można go osadzić, nie jest zablokowany w Polsce, a jego długość różni się od długości
 // nagrania z tekstem o najwyżej 3 s (wtedy czasy wersów pasują do filmu), a kanał jest oficjalny (OFFICIAL_LABELS niżej).
 // Kolejność: najpopularniejsze piosenki.
@@ -80,6 +81,37 @@ function catalogCounts(lr, yt) {
   return have;
 }
 
+// wersy tekstu LRC (bez znaczników czasu) i udział polskich wersów (lyrics-cats.js: lyPolishShare)
+const lrcTexts = (lrc) => lrc.split('\n').filter((l) => /^\[\d+:\d+/.test(l)).map((l) => l.replace(/^(\[[^\]]*\])+/, '').trim()).filter(Boolean);
+const plShare = (texts) => Math.round(catCtx.window.lyPolishShare(texts) * 100) / 100;
+const PL_MIN = catCtx.window.LY_PL_MIN;
+async function lrclibGet(id) {
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const res = await fetch(`https://lrclib.net/api/get/${id}`, { headers: { 'User-Agent': UA } }).catch(() => null);
+    if (res && res.status === 429) { await sleep(1000 * Number(res.headers.get('retry-after') || 30)); continue; }
+    if (res && res.status === 404) return null;
+    if (!res || !res.ok) { await sleep(3000 * (attempt + 1)); continue; }
+    return res.json();
+  }
+  return undefined;
+}
+// język tekstów zapisanych wcześniej bez pola pl – najpierw piosenki, które mają już film (trafiają do katalogu)
+async function stepLang() {
+  const cache = load('lrclib-pl.json', {});
+  const yt = load('youtube-pl.json', {});
+  const todo = Object.keys(cache).filter((k) => cache[k] && cache[k].pl === undefined).sort((a, b) => hasVideo(yt[b]) - hasVideo(yt[a]));
+  let n = 0;
+  for (const k of todo) {
+    const r = await lrclibGet(cache[k].id);
+    if (r && r.syncedLyrics) cache[k].pl = plShare(lrcTexts(r.syncedLyrics));
+    await sleep(600);
+    if (++n % 25 === 0) { save('lrclib-pl.json', cache); process.stdout.write(`\rjęzyk: ${n}/${todo.length}`); }
+  }
+  save('lrclib-pl.json', cache);
+  const notPl = Object.entries(cache).filter(([, v]) => v && v.pl !== undefined && v.pl < PL_MIN);
+  console.log(`\njęzyk sprawdzony: ${n}; teksty nie po polsku (poniżej ${PL_MIN}): ${notPl.length}`);
+  for (const [k, v] of notPl) if (hasVideo(yt[k])) console.log(`  ${k} – polskich wersów ${Math.round(v.pl * 100)}%`);
+}
 async function lrclibSearch(s) {
   const artist = SongMatch.mainArtist(s);
   const url = `https://lrclib.net/api/search?track_name=${encodeURIComponent(clean(s.t))}&artist_name=${encodeURIComponent(artist)}`;
@@ -96,8 +128,8 @@ async function lrclibSearch(s) {
     ok.sort((a, b) => ok.filter((x) => Math.abs(x.duration - b.duration) < 2).length - ok.filter((x) => Math.abs(x.duration - a.duration) < 2).length
       || b.syncedLyrics.length - a.syncedLyrics.length);
     const r = ok[0];
-    const lines = r.syncedLyrics.split('\n').filter((l) => /^\[\d+:\d+/.test(l) && l.replace(/^(\[[^\]]*\])+/, '').trim()).length;
-    return lines >= 8 ? { id: r.id, d: Math.round(r.duration), lines } : null;
+    const texts = lrcTexts(r.syncedLyrics);
+    return texts.length >= 8 ? { id: r.id, d: Math.round(r.duration), lines: texts.length, pl: plShare(texts) } : null;
   }
   return undefined; // nie udało się zapytać – spróbujemy następnym razem
 }
@@ -268,7 +300,8 @@ function stepBuild() {
     const l = lr[key(s)]; const v = yt[key(s)];
     // zapisany tytuł filmu nie pasuje do piosenki albo to wersja z tekstem na ekranie – pomijamy (bez zapytań do API)
     if (hasVideo(v) && v.title && !usableVideo(v, s)) continue;
-    if (l && hasVideo(v)) out[key(s)] = [v.alts && v.alts.length > 1 ? v.alts : v.id, l.id, l.d];
+    // tylko piosenki z polskim tekstem (język sprawdzony krokiem lrclib albo lang)
+    if (l && hasVideo(v) && l.pl !== undefined && l.pl >= PL_MIN) out[key(s)] = [v.alts && v.alts.length > 1 ? v.alts : v.id, l.id, l.d];
   }
   const js = '// Tryb „Tak to leciało!”: piosenka → [film YouTube albo lista filmów (gra próbuje kolejnych), tekst w LRCLIB, długość w s]\n'
     + '// – generuje tools/lyrics-catalog.mjs.\n'
@@ -285,5 +318,6 @@ const step = process.argv[2];
 if (step === 'lrclib') await stepLrclib();
 else if (step === 'youtube') await stepYoutube();
 else if (step === 'wikidata') await stepWikidata();
+else if (step === 'lang') await stepLang();
 else if (step === 'build') stepBuild();
-else console.log('Użycie: node tools/lyrics-catalog.mjs lrclib | youtube | build');
+else console.log('Użycie: node tools/lyrics-catalog.mjs lrclib | youtube | lang | build');

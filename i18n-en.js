@@ -1172,5 +1172,16 @@ window.I18N_EN = {
  "Strony": "Pages",
  "Poprzednia strona": "Previous page",
  "Następna strona": "Next page",
- "Strona {0}": "Page {0}"
+ "Strona {0}": "Page {0}",
+ "Być albo nie być": "To be or not to be",
+ "Mowa i słowa": "Speech and words",
+ "Krok po kroku": "Step by step",
+ "Film nie odtworzył się automatycznie.": "The video didn't start playing on its own.",
+ "▶ Odtwórz piosenkę": "▶ Play the song",
+ "rezygnacja": "walked away",
+ "✏️ {0} słowo": "✏️ {0} word",
+ "✏️ {0} słowa": "✏️ {0} words",
+ "✏️ {0} słów": "✏️ {0} words",
+ "Odtwarzanie i pauza": "Play and pause",
+ "Przewijanie piosenki": "Seek through the song"
 };
