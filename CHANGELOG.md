@@ -806,3 +806,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.42.2 – 16.10.2026 (`aa0e9fb`)
 
 - Wygląd 6.0 (wersja próbna): w kreatorze ustawień na wąskim telefonie przycisk „← Wstecz” jest samą strzałką, gdy obok jest przełącznik stron – napis nie jest już ucięty.
+
+## 5.42.3 – 16.10.2026 (`HASH`)
+
+- Wygląd 6.0 (wersja próbna): na wąskim telefonie przycisk „← Wstecz” w kreatorze ustawień jest zawsze samą strzałką (poprzednia poprawka nie obejmowała wszystkich kroków).
