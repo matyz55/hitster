@@ -687,6 +687,19 @@
       <h2>Wygląd</h2>
       <label class="check"><input type="checkbox" id="ui6-toggle"> Nowy wygląd 6.0 (wersja próbna) – każdy ekran mieści się w oknie bez przewijania</label>
     </section>
+    <section class="card" id="lyc-card">
+      <h2>Tak to leciało! – sprawdź filmy</h2>
+      <p class="muted small">Część filmów z YouTube nie odtwarza się poza YouTube (decyzja wytwórni) i nie da się tego sprawdzić z góry. Tutaj gra po kolei włączy bez dźwięku wszystkie filmy z katalogu – te, które nie działają, przestaną się pojawiać na tym urządzeniu, a raport możesz przekazać twórcy gry.</p>
+      <p class="muted" id="lyc-summary"></p>
+      <div id="lyc-box" class="lyc-box hidden"><div id="lyc-player"></div></div>
+      <p class="muted" id="lyc-status"></p>
+      <div class="actions">
+        <button type="button" id="lyc-run" class="ghost">▶ Sprawdź filmy</button>
+        <button type="button" id="lyc-stop" class="ghost hidden">⏹ Zatrzymaj</button>
+        <button type="button" id="lyc-copy" class="ghost hidden">📋 Kopiuj raport</button>
+      </div>
+      <textarea id="lyc-report" class="hidden" rows="3" readonly aria-label="Raport"></textarea>
+    </section>
     <section class="card" id="ly-reports-card">
       <h2>Tak to leciało! – zgłoszone piosenki</h2>
       <p class="muted small">Zgłoszone filmy są pomijane w grze na tym urządzeniu. Jeśli zgłoszenie było przez pomyłkę – przywróć piosenkę.</p>
@@ -946,6 +959,7 @@
   <script src="lyrics-catalog.js"></script>
   <script src="lyrics-cats.js"></script>
   <script src="js/lyrics.js"></script>
+  <script src="js/lycheck.js"></script>
   <script src="js/ui6.js"></script>
   <script src="js/ui6-menu.js"></script>
   <script src="js/ui6-modes.js"></script>

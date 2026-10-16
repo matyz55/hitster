@@ -59,8 +59,9 @@
       this.vid = o.videoId; this.base = o.startSeconds || 0; this.t0 = performance.now();
       // __ytNoPlay: film wczytany, ale sam nie rusza (np. wymaga kliknięcia)
       if (window.__ytNoPlay && window.__ytNoPlay.includes(o.videoId)) { this.t0 = null; return; }
+      // __ytFail: film nie odtwarza się w osadzonym odtwarzaczu (błąd 150, bez startu)
+      if (window.__ytFail && window.__ytFail.includes(o.videoId)) { this.t0 = null; setTimeout(() => this.opts.events.onError({ data: 150 }), 20); return; }
       setTimeout(() => this.opts.events.onStateChange({ data: 1 }), 10);
-      if (window.__ytFail && window.__ytFail.includes(o.videoId)) setTimeout(() => this.opts.events.onError({ data: 150 }), 20);
     }
     getCurrentTime() { return this.t0 == null ? this.base : this.base + ((performance.now() - this.t0) / 1000) * window.__ytSpeed; }
     pauseVideo() { this.base = this.getCurrentTime(); this.t0 = null; }
@@ -68,6 +69,8 @@
     seekTo(t) { this.base = t; if (this.t0 != null) this.t0 = performance.now(); }
     unloadModule() {}
     setOption() {}
+    mute() {}
+    stopVideo() { this.pauseVideo(); }
     getPlayerState() { return this.t0 == null ? 2 : 1; }
     getDuration() { return 180; }
   } };

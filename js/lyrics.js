@@ -29,13 +29,18 @@ function lyMarkBad(id) {
   const list = store.get('lyBadVideos', []);
   if (!list.includes(id)) store.set('lyBadVideos', [...list, id].slice(-800));
 }
-// piosenki z katalogu (polskie, z tekstem i filmem) – obiekty z bazy; wpis: [film albo lista filmów, tekst, długość]
+// piosenki z katalogu (polskie, z tekstem i filmem) – obiekty z bazy; wpis: [[film, tekst, długość], …] – każdy film
+// ma tekst dopasowany do swojej długości (dawny zapis: [film albo lista filmów, tekst, długość])
+const LY_MAX_DIFF = 3; // tyle sekund może się różnić film od nagrania z tekstem (tak samo w tools/lyrics-catalog.mjs)
 function lyCatalog() {
   const cat = window.LYRICS_SONGS || {};
   const bad = lyBad();
   return window.SONGS.filter((s) => cat[songKey(s)]).map((s) => {
-    const [v, lr, d] = cat[songKey(s)];
-    return { song: s, yts: (Array.isArray(v) ? v : [v]).filter((id) => !bad.has(id)), lr, d };
+    const raw = cat[songKey(s)];
+    const all = typeof raw[1] === 'number' ? (Array.isArray(raw[0]) ? raw[0] : [raw[0]]).map((id) => ({ id, lr: raw[1], d: raw[2] }))
+      : raw.map(([id, lr, d]) => ({ id, lr, d }));
+    const vids = all.filter((v) => !bad.has(v.id));
+    return { song: s, vids, yts: vids.map((v) => v.id), lr: vids.length ? vids[0].lr : 0, d: vids.length ? vids[0].d : 0 };
   }).filter((it) => it.yts.length);
 }
 function lyCategoryList(items) {
@@ -270,7 +275,7 @@ function lyNoAutoplay() {
     lyRender();
     return;
   }
-  store.set('lyReports', [...store.get('lyReports', []), { k: songKey(cur.it.song), v: cur.videoId, l: cur.it.lr, d: new Date().toISOString().slice(0, 10), why: 'autoplay' }].slice(-200));
+  store.set('lyReports', [...store.get('lyReports', []), { k: songKey(cur.it.song), v: cur.videoId, l: cur.lrId, d: new Date().toISOString().slice(0, 10), why: 'autoplay' }].slice(-200));
   lyVideoFailed(T('Film nie odtworzył się automatycznie.'));
 }
 function lyStop() {
@@ -354,18 +359,22 @@ async function lyStartSong() {
   try {
     // najpierw tekst (zwykle już pobrany w tle) i miejsce przerwy – gracz widzi liczbę słów do uzupełnienia,
     // zanim piosenka ruszy; potem film od początku
-    const lyricsP = lyFetchLyrics(cur.it.lr);
+    // tekst dopasowany do bieżącego filmu (zapasowy film może mieć inną długość – i inny tekst)
+    const alt = cur.it.vids[cur.vi] || cur.it.vids[0];
+    cur.lrId = alt.lr;
+    cur.dur = alt.d;
+    const lyricsP = lyFetchLyrics(alt.lr);
     const player = await lyPlayer();
     const lines = await lyricsP;
     if (ly.cur !== cur) return;
     cur.lines = lines;
     if (ly.mini && ly.mini.relay) {
       // sztafeta: przerwa dla każdego gracza po kolei (3–4 w piosence)
-      cur.gaps = lyRelayGaps(lines, cur.it.d, Math.min(4, Math.max(3, state.players.length)));
+      cur.gaps = lyRelayGaps(lines, cur.dur, Math.min(4, Math.max(3, state.players.length)));
       if (cur.gaps.length < 2) throw new Error('za mało miejsc na przerwy');
       cur.gi = 0;
       cur.gap = cur.gaps[0];
-    } else cur.gap = lyPickGap(lines, ly.mini ? 2 : lyMe().stage + 1, cur.it.d);
+    } else cur.gap = lyPickGap(lines, ly.mini ? 2 : lyMe().stage + 1, cur.dur);
     if (!cur.gap) throw new Error('brak miejsca na przerwę');
     cur.given = cur.gap.blanks.map(() => '');
     // minigra: od początku zwrotki albo refrenu z przerwą (kilka wersów wcześniej), a nie od początku piosenki
@@ -392,7 +401,13 @@ function lyVideoFailed(msg) {
   const cur = ly && ly.cur;
   if (!cur || !['loading', 'play'].includes(state.phase)) return;
   if (cur.videoId) lyMarkBad(cur.videoId);
-  if (cur.vi + 1 < cur.it.yts.length) { cur.vi += 1; lyLoadVideo(lyYT); return; }
+  if (cur.vi + 1 < cur.it.yts.length) {
+    cur.vi += 1;
+    // zapasowy film z innym tekstem (inna długość nagrania) – wczytujemy jego tekst i wyznaczamy przerwę od nowa
+    if (cur.it.vids[cur.vi].lr !== cur.lrId) { clearInterval(lyTick); lyTick = null; state.phase = 'loading'; lyRender(); lyStartSong(); return; }
+    lyLoadVideo(lyYT);
+    return;
+  }
   lySongFailed(msg);
 }
 // komunikat (np. że piosenka się nie wczytała) – znika sam po kilku sekundach
@@ -435,7 +450,7 @@ function lyOnState(s) {
     cur.started = true;
     state.lyrics.noAuto = [];
     const d = lyYT.getDuration();
-    if (cur.it.d && d && Math.abs(d - cur.it.d) > 2.5) { lyVideoFailed(T('Film ma inną długość niż nagranie z tekstem.')); return; }
+    if (cur.dur && d && Math.abs(d - cur.dur) > LY_MAX_DIFF + 0.5) { lyVideoFailed(T('Film ma inną długość niż nagranie z tekstem.')); return; }
     state.lyrics.fails = 0;
   }
   if (state.phase === 'play' || state.phase === 'result') lyRender();
@@ -612,7 +627,7 @@ function lyReport() {
   if (cur.reported) { lyUnreport(cur.videoId); cur.reported = false; lyRender(); return; }
   cur.reported = true;
   if (cur.videoId) lyMarkBad(cur.videoId);
-  store.set('lyReports', [...store.get('lyReports', []), { k: songKey(cur.it.song), v: cur.videoId, l: cur.it.lr, d: new Date().toISOString().slice(0, 10) }].slice(-200));
+  store.set('lyReports', [...store.get('lyReports', []), { k: songKey(cur.it.song), v: cur.videoId, l: cur.lrId, d: new Date().toISOString().slice(0, 10) }].slice(-200));
   lyRender();
 }
 function lyUnreport(videoId) {
@@ -651,7 +666,7 @@ const lyClock = (sec) => `${Math.floor(sec / 60)}:${String(Math.floor(sec % 60))
 function lySeekPaint(t) {
   const bar = $('#ly-seek-bar');
   if (!bar || bar.dataset.drag) return;
-  const d = (lyYT && lyYT.getDuration && lyYT.getDuration()) || (state.lyrics.cur && state.lyrics.cur.it.d) || 0;
+  const d = (lyYT && lyYT.getDuration && lyYT.getDuration()) || (state.lyrics.cur && state.lyrics.cur.dur) || 0;
   bar.max = String(Math.max(1, Math.round(d)));
   bar.value = String(Math.min(d, t));
   $('#ly-seek-time').textContent = `${lyClock(t)} / ${lyClock(d)}`;

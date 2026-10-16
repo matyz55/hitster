@@ -1225,5 +1225,18 @@ window.I18N_EN = {
  "Rozwiń karty: {0}": "Expand cards: {0}",
  "{0} ▾": "{0} ▾",
  "📍 Edyta Górniak – rok i miejsce urodzenia: ok. 4000 lat p.n.e., Wszechświat": "📍 Edyta Górniak – year and place of birth: c. 4000 BC, the Universe",
- "📍 Maryla Rodowicz – rok i miejsce urodzenia: A co, już sylwester?": "📍 Maryla Rodowicz – year and place of birth: What, is it New Year's Eve already?"
+ "📍 Maryla Rodowicz – rok i miejsce urodzenia: A co, już sylwester?": "📍 Maryla Rodowicz – year and place of birth: What, is it New Year's Eve already?",
+ "Tak to leciało! – sprawdź filmy": "Tak to leciało! – check videos",
+ "Część filmów z YouTube nie odtwarza się poza YouTube (decyzja wytwórni) i nie da się tego sprawdzić z góry. Tutaj gra po kolei włączy bez dźwięku wszystkie filmy z katalogu – te, które nie działają, przestaną się pojawiać na tym urządzeniu, a raport możesz przekazać twórcy gry.": "Some YouTube videos can't be played outside YouTube (the label's decision) and this can't be checked in advance. Here the game plays every catalogue video in turn, muted – the ones that don't work stop appearing on this device, and you can pass the report on to the game's author.",
+ "▶ Sprawdź filmy": "▶ Check videos",
+ "⏹ Zatrzymaj": "⏹ Stop",
+ "📋 Kopiuj raport": "📋 Copy report",
+ "Raport": "Report",
+ "Nie udało się wczytać odtwarzacza YouTube.": "Couldn't load the YouTube player.",
+ "Sprawdzanie {0} z {1} · nie działa: {2}": "Checking {0} of {1} · not working: {2}",
+ "Zatrzymano.": "Stopped.",
+ "Gotowe.": "Done.",
+ "Sprawdzone filmy: {0} z {1}, nie odtwarza się: {2} (pomijane na tym urządzeniu).": "Videos checked: {0} of {1}, not playing: {2} (skipped on this device).",
+ "Filmów w katalogu: {0}. Sprawdzanie trwa kilka minut – filmy grają bez dźwięku.": "Videos in the catalogue: {0}. Checking takes a few minutes – videos play muted.",
+ "Raport skopiowany – wklej go w wiadomości.": "Report copied – paste it into a message."
 };

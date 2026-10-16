@@ -319,3 +319,35 @@ test('Tak to leciało!: odsłonięte słowo jest wpisane w pole – cały prawid
   await page.getByRole('button', { name: 'Tak to leciało!' }).click();
   await expect(page.locator('#ly-answer .verdict')).toContainText('500 zł');
 });
+
+test('Tak to leciało!: sprawdzarka filmów w ustawieniach pomija filmy, które się nie odtwarzają, i daje raport', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    window.LYRICS_SONGS = { 'A|a': [['ok1', 1, 180], ['zly1', 2, 180]], 'B|b': ['ok2', 3, 180], 'C|c': [['dl1', 4, 100]] };
+    window.__ytFail = ['zly1'];
+    lycRender();
+  });
+  await page.click('#btn-settings');
+  await expect(page.locator('#lyc-summary')).toContainText('Filmów w katalogu: 4');
+  await page.click('#lyc-run');
+  await expect(page.locator('#lyc-status')).toHaveText('Gotowe.', { timeout: 20000 });
+  const r = await page.evaluate(() => ({ checked: store.get('lyChecked', {}), bad: store.get('lyBadVideos', []), rep: lycReport() }));
+  expect(r.checked.ok1.ok).toBe(true);
+  expect(r.checked.zly1.err).toBe('150');
+  expect(r.checked.dl1.err).toBe('dl80'); // film 180 s, nagranie z tekstem 100 s
+  expect(r.bad.sort()).toEqual(['dl1', 'zly1']);
+  expect(r.rep).toContain('zly1:150');
+  await expect(page.locator('#lyc-copy')).toBeVisible();
+});
+
+test('Tak to leciało!: zapasowy film ma własny tekst dopasowany do swojej długości', async ({ page }) => {
+  await page.goto('/');
+  const r = await page.evaluate(() => {
+    const s = window.SONGS.find((x) => x.c === 'PL');
+    window.LYRICS_SONGS = { [songKey(s)]: [['v1', 11, 200], ['v2', 22, 180]] };
+    const it = lyCatalog()[0];
+    return { vids: it.vids, lr: it.lr, d: it.d };
+  });
+  expect(r.vids).toEqual([{ id: 'v1', lr: 11, d: 200 }, { id: 'v2', lr: 22, d: 180 }]);
+  expect([r.lr, r.d]).toEqual([11, 200]);
+});

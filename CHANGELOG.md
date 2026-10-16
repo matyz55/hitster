@@ -810,3 +810,10 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.42.3 – 16.10.2026 (`7ab3d59`)
 
 - Wygląd 6.0 (wersja próbna): na wąskim telefonie przycisk „← Wstecz” w kreatorze ustawień jest zawsze samą strzałką (poprzednia poprawka nie obejmowała wszystkich kroków).
+
+## 5.43.0 – 16.10.2026 (`HASH`)
+
+- „Tak to leciało!”: nowa sprawdzarka filmów w Ustawieniach – gra po kolei włącza bez dźwięku wszystkie filmy z katalogu na Twoim urządzeniu; te, które się nie odtwarzają albo mają inną długość niż nagranie z tekstem, przestają się pojawiać, a raport można skopiować i przekazać, żeby usunąć je z katalogu dla wszystkich.
+- Gra przyjmuje film różniący się od nagrania z tekstem o 3 s (tak jak narzędzie katalogu) – wcześniej 2,5 s, przez co część filmów z katalogu była zawsze odrzucana, a 11 piosenek nie miało żadnego działającego filmu.
+- Każdy film w katalogu może mieć własny tekst dopasowany do swojej długości – zapasowy film nie musi już mieć tej samej długości co pierwszy.
+- Narzędzie katalogu: wszystkie polskie piosenki z bazy (zamiast ok. 1140), wyszukiwanie filmów po wykonawcy (jedno zapytanie na wiele piosenek), tylko filmy, które YouTube pozwala odtwarzać poza swoją stroną, bez filmów z ograniczeniem wiekowym.
