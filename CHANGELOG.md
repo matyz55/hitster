@@ -802,3 +802,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.42.1 – 16.10.2026 (`a1a3507`)
 
 - Bez zmian w grze: narzędzie zrzutów łączy obecny wygląd i propozycję 6.0 każdego ekranu w jeden obrazek do porównania.
+
+## 5.42.2 – 16.10.2026 (`HASH`)
+
+- Wygląd 6.0 (wersja próbna): w kreatorze ustawień na wąskim telefonie przycisk „← Wstecz” jest samą strzałką, gdy obok jest przełącznik stron – napis nie jest już ucięty.

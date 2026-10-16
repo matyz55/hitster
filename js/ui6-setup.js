@@ -32,7 +32,7 @@ if (UI6 && $('#screen-setup')) {
   const opt = STEPS[2];
   const back = $('#btn-back');
   const start = $('#btn-start');
-  const prevB = el('button', { type: 'button', class: 'ghost ui6-sprev', onclick: () => step(cur - 1) }, T('← Wstecz'));
+  const prevB = el('button', { type: 'button', class: 'ghost ui6-sprev', 'aria-label': T('← Wstecz'), onclick: () => step(cur - 1) }, T('← Wstecz'));
   const nextB = el('button', { type: 'button', class: 'ghost ui6-snext', onclick: () => step(cur + 1) }, T('Dalej →'));
   back.after(prevB);
   start.before(nextB);

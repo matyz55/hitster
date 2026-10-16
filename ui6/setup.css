@@ -114,3 +114,8 @@ html.ui6 #screen-setup.ui6-one .ui6-shead { display: none; }
 html.ui6 :is(#screen-setup, #screen-lobby, #screen-modes) .small { font-size: max(12px, .8rem); }
 html.ui6 :is(#screen-setup, #screen-lobby, #screen-modes) .muted { font-size: max(12px, .88rem); }
 html.ui6 #screen-setup .card.ui6-empty { display: none; }
+/* wąski telefon: „← Wstecz” jako sama strzałka, gdy obok jest pasek stron kroku (inaczej napis byłby ucięty) */
+@media (max-width: 480px) {
+  html.ui6 #screen-setup > .actions:has(.ui6-nav.ui6-cur:not(.hidden)) > .ui6-sprev { flex: 0 0 var(--tap); font-size: 0; padding: 0; }
+  html.ui6 #screen-setup > .actions:has(.ui6-nav.ui6-cur:not(.hidden)) > .ui6-sprev::before { content: "←"; font-size: 1.2rem; }
+}
