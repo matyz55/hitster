@@ -61,10 +61,13 @@ function officialVideo(v, s) {
 }
 const MAX_DIFF = 3;
 
-// kandydaci: wszystkie polskie piosenki z bazy – najpierw najpopularniejsze (Spotify) i z zestawów Trójki, Opola i Memów
+// kandydaci: kilkaset najpopularniejszych polskich piosenek – popularność w Spotify (p), dodatkowo nowsze piosenki (od 2015)
+// i klasyki z plebiscytu Trójki „Polski Top Wszech Czasów” (tp) oraz Opola; TOP=0 – wszystkie polskie piosenki z bazy
 const tagged = (s) => (s.tg || []).some((t) => ['trojka', 'opole', 'memy'].includes(t));
-const candidates = SONGS.filter((s) => s.c === 'PL')
-  .sort((a, b) => (b.p || 0) + (tagged(b) ? 40 : 0) - (a.p || 0) - (tagged(a) ? 40 : 0));
+const TOP = process.env.TOP === undefined ? 600 : Number(process.env.TOP);
+const score0 = (s) => (s.p || 0) + (s.y >= 2015 ? 10 : 0) + ((s.f || []).some((f) => f === 'tp' || f.startsWith('tp:')) ? 15 : 0)
+  + ((s.tg || []).includes('opole') ? 5 : 0);
+const candidates = SONGS.filter((s) => s.c === 'PL').sort((a, b) => score0(b) - score0(a)).slice(0, TOP || Infinity);
 // kategorie gry (lyrics-cats.js) – piosenki z kategorii, które w katalogu mają mało piosenek, wyszukujemy najpierw,
 // żeby plansze były różnorodne (kategoria potrzebuje co najmniej 2 piosenek, a lepiej kilku na kolejne gry)
 const catCtx = { window: {}, T: (x) => x };
