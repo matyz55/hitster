@@ -722,7 +722,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Przenoszenie postępów na inne urządzenie: w statystykach można zapisać plik z postępami (statystyki, rekordy, osiągnięcia, własne playlisty, ustawienia) i wczytać go na innym urządzeniu – statystyki z obu urządzeń się łączą.
 - Gry zapisują w statystykach, czy zakończyły się wygraną.
 
-## 5.37.0 – 16.10.2026 (`HASH`)
+## 5.37.0 – 16.10.2026 (`ec878a9`)
 
 - Nowy tryb „Sztafeta karaoke” (dla kilku graczy): piosenka z tekstem jak w „Tak to leciało!”, ale z 3–4 przerwami w różnych miejscach – przy każdej odpowiada kolejny gracz. Dobrze dokończony wers to punkt; liczbę piosenek wybierasz w ustawieniach. Także jako minigra w Imprezie.
 - Duży ekran i telefony w minigrze „Tak to leciało!” pokazują punkty zamiast złotówek.
