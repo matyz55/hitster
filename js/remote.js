@@ -276,6 +276,8 @@ function tvSync() {
       // Okładka z mgły: rozmyta okładka przed odkryciem (stopień rozmycia z kroku)
       cover: state.mode === 'cover' && state.current && state.phase === 'listen' && state.preview && state.preview.art
         ? { art: state.preview.art, blur: COVER_STEPS[state.step].blur } : null,
+      // Pierwsze słowa: początek tekstu widoczny w tym kroku
+      words: state.mode === 'words' && state.current && state.phase === 'listen' && state.words ? wordsShown() : null,
       // przyciski graczy (Kto pierwszy?)
       buzzers: state.mode === 'buzz' && state.buzz ? {
         open: !!state.current && state.phase === 'listen' && state.buzz.answering == null,

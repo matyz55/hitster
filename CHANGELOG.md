@@ -711,3 +711,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.34.0 – 16.10.2026 (`7086252`)
 
 - Nowy tryb „Dekadowa wspinaczka”: zaczynasz od najstarszych piosenek (do 1969) i dostajesz piosenkę z dekady, na której stoisz. Rok z dokładnością do 2 lat – wchodzisz o dekadę wyżej, większa pomyłka – schodzisz niżej. Wygrywa, kto pierwszy dotrze do lat 20.; grając samemu, liczysz piosenki potrzebne na wejście na szczyt.
+
+## 5.35.0 – 16.10.2026 (`HASH`)
+
+- Nowy tryb „Pierwsze słowa”: najpierw tylko trzy pierwsze słowa piosenki (bez dźwięku), potem pierwszy wers, dwa wersy i na końcu 10 s fragmentu – 4, 3, 2 albo 1 pkt. Teksty z lrclib.net pobierane w trakcie gry; piosenki bez tekstu są pomijane. Działa też na dużym ekranie i jako minigra w Imprezie.

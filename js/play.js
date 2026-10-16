@@ -396,6 +396,7 @@ function setAudioSource(preview) {
 function prefetchNext() {
   const song = state.deck.draw(nearYearsFor(nextPlayerIndex()));
   prefetched = song ? { song, deck: state.deck, promise: findPreview(song, { quiet: true }).then(withAudio).catch(() => null) } : null;
+  if (song && state.mode === 'words') firstWords(song);
 }
 
 async function drawSong() {
@@ -423,6 +424,13 @@ async function drawSong() {
     if (preview && preview.ex && filterState.noExplicit) continue;
     // „Okładka z mgły” – tylko piosenki z okładką w iTunes
     if (preview && state.mode === 'cover' && !preview.art) continue;
+    // „Pierwsze słowa” – tylko piosenki, których tekst udało się znaleźć
+    if (preview && state.mode === 'words') {
+      $('#mystery-status').textContent = T('Szukam tekstu piosenki…');
+      state.words = await firstWords(song);
+      if (myDraw !== state.drawId) return;
+      if (!state.words) continue;
+    }
     if (preview) {
       markPlayed(song);
       state.current = song;
@@ -450,6 +458,7 @@ async function drawSong() {
       const status = isQuiz() ? QUIZ[state.mode].status() : {
         steps: T('Posłuchaj {0} sekundy i zgaduj – albo wydłuż fragment.', stepsList()[0].len),
         cover: T('Przyjrzyj się rozmytej okładce i zgaduj – na razie bez dźwięku.'),
+        words: T('Przeczytaj pierwsze słowa piosenki i zgaduj – na razie bez dźwięku.'),
         mirror: T('Krzywe zwierciadło: {0} {1}. Posłuchaj i zgaduj – z każdym krokiem mniej zniekształceń.', MIRROR_FX[state.mirror || 'wall'].icon, MIRROR_FX[state.mirror || 'wall'].name),
         melody: T('Posłuchaj i wpisz odpowiedź.'),
         buzz: T('Włącz fragment – kto pierwszy naciśnie swój przycisk, ten odpowiada.'),

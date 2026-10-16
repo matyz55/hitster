@@ -448,7 +448,7 @@ function render(s) {
   const keep = app.querySelector('.guess-form');
   const bingo = s.bingo ? h('div', 'bingo-boards', s.bingo.boards.map((b) => h('div', 'bingo-board' + (b.won ? ' won' : ''),
     h('div', 'bingo-name', b.name, b.pick != null ? ' ✔' : ''), bingoGrid(b, false, false)))) : null;
-  const card = h('section', 'turn-card', head, coverFog(s), main, steps, buzzers, bingo, hint, guess, actions);
+  const card = h('section', 'turn-card', head, coverFog(s), wordsBox(s), main, steps, buzzers, bingo, hint, guess, actions);
   app.replaceChildren(...[who, scoresRow, card, tls, others].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
   fit();
@@ -589,7 +589,7 @@ function renderPlayer(s) {
   const turnTl = (myView || shared) && active ? vTimeline(active, pick, null) : null;
   const card = h('section', 'ht-card' + (rest.length ? ' with-actions' : ''),
     h('div', 'ht-head', h('h2', '', s.title || ''), h('span', 'ht-info', s.info || '')),
-    coverFog(s), h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess, yearForm, bingoBoard(s),
+    coverFog(s), wordsBox(s), h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess, yearForm, bingoBoard(s),
     s.challenge ? h('p', 'ht-hint', s.challenge) : null, s.hint ? h('p', 'ht-hint', s.hint) : null,
     s.sort ? sortBox(s, myView) : null, turnTl, rest.length ? h('div', 'ht-actions', rest.map((b) => mk(b))) : null);
   const board = (s.scores || []).length ? h('div', 'ht-scores', s.scores.map((x) => h('span', x.active ? 'act' : '', x.text))) : null;
@@ -623,6 +623,8 @@ let lastMark = '';
 
 // Bingo: własna plansza gracza na telefonie (stuknięcie = zaznaczenie pola), na dużym ekranie – plansze wszystkich
 // Okładka z mgły: duża rozmyta okładka (rozmycie jako ułamek szerokości – liczone po wstawieniu na ekran)
+// Pierwsze słowa: początek tekstu piosenki (więcej z każdym krokiem)
+const wordsBox = (s) => (s.words ? h('p', 'words-box', s.words) : null);
 function coverFog(s) {
   if (!s.cover) return null;
   const img = h('div', '');

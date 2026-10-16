@@ -30,6 +30,7 @@ function render() {
   // Ułóż piątkę: każdy fragment ma własny przycisk ▶
   $('#btn-play').classList.toggle('hidden', state.mode === 'sort5');
   renderCoverFog();
+  renderWordsBox();
   applyMirror();
 
   // pola odpowiedzi: zawsze w „Jaka to melodia”; przy osi czasu – w trybie ekspert (wymagane)
@@ -409,6 +410,15 @@ function onConfirmPlacement() {
   revealTimeline();
 }
 
+// Pierwsze słowa: początek tekstu przed odkryciem; dźwięk dopiero w ostatnim kroku
+function renderWordsBox() {
+  const box = $('#words-box');
+  const on = state.mode === 'words' && state.phase === 'listen' && !!state.current && !!state.words;
+  box.classList.toggle('hidden', !on);
+  if (!on) return;
+  box.textContent = wordsShown();
+  $('#btn-play').disabled = state.clipLen === 0;
+}
 // Okładka z mgły: rozmyta okładka przed odkryciem; w pierwszym kroku bez dźwięku
 function renderCoverFog() {
   const box = $('#cover-fog');

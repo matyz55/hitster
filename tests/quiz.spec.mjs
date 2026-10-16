@@ -329,3 +329,24 @@ test('Dekadowa wspinaczka: rok do 2 lat różnicy – dekada wyżej, pomyłka �
   await expect.poll(() => screen(page)).toBe('end');
   await expect(page.locator('#winner-title')).toContainText('współczesności');
 });
+
+test('Pierwsze słowa: najpierw 3 słowa bez dźwięku, potem wers; odgadnięcie po 3 słowach = 4 pkt', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=words]');
+  await page.fill('#rounds', '2');
+  await page.click('#btn-start');
+  await expect.poll(() => page.evaluate(() => state.phase === 'listen' && !!state.words), { timeout: 30000 }).toBe(true);
+  // nagłówki tekstu („[Zwrotka 1]”, „Refren:”) pominięte, pierwsze 3 słowa, bez dźwięku
+  await expect(page.locator('#words-box')).toHaveText('pierwszy wers piosenki …');
+  expect(await page.evaluate(() => document.querySelector('#btn-play').disabled)).toBe(true);
+  await page.click('#actions button.gold');
+  await expect(page.locator('#words-box')).toContainText(await page.evaluate(() => `pierwszy wers piosenki ${state.current.t}`));
+  // nowa piosenka: odgadnięcie od razu
+  await page.click('#actions button.ghost >> text=Nie wiem');
+  await page.click('#actions button.primary');
+  await expect.poll(() => page.evaluate(() => state.phase === 'listen' && !!state.words && state.step === 0), { timeout: 30000 }).toBe(true);
+  await page.fill('#guess-song', await page.evaluate(() => state.current.t));
+  await page.press('#guess-song', 'Enter');
+  await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(4);
+});

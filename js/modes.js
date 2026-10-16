@@ -412,6 +412,47 @@ function quizHeader(p, title, info) {
   info.textContent = state.players.length > 1 ? T('Runda {0}/{1}', round, state.rounds) : T('Wynik: {0} pkt', p.score);
 }
 
+/* ---------- Pierwsze słowa ---------- */
+// początek tekstu piosenki z lrclib.net (pobierany w trakcie gry, nie przechowywany w grze); piosenki z katalogu
+// „Tak to leciało!” mają znany numer tekstu, pozostałe – wyszukiwanie po tytule i wykonawcy (oba muszą się zgadzać)
+const wordsCache = new Map();
+// wersy z samych wykrzyknień („Ooh, hey, yeah”, „Boom, boom”) niczego nie mówią – pomijamy je
+const FILLER_WORDS = new Set(['oh', 'ooh', 'oo', 'ah', 'aah', 'yeah', 'yea', 'hey', 'la', 'na', 'da', 'uh', 'huh', 'hah', 'ha', 'boom', 'woah', 'whoa', 'wow', 'mm', 'mmm', 'ej', 'hej', 'o', 'ach', 'och']);
+const isFillerLine = (l) => { const w = l.toLowerCase().split(/[^\p{L}]+/u).filter(Boolean); return !w.length || w.filter((x) => FILLER_WORDS.has(x)).length / w.length >= 0.6; };
+function lyricLines(hit) {
+  const text = hit.plainLyrics || (hit.syncedLyrics || '').replace(/\[[^\]]*\]/g, '');
+  return text.split('\n').map((l) => l.replace(/\[[^\]]*\]/g, '').trim())
+    // bez nagłówków („Refren:”, „(x2)”) i wersów z jednym słowem
+    .filter((l) => l.split(/\s+/).length >= 2 && !/^\(.*\)$/.test(l) && !/^(refren|zwrotka|chorus|verse|intro|outro|bridge)\b/i.test(l) && !isFillerLine(l));
+}
+function firstWords(song) {
+  const k = songKey(song);
+  if (!wordsCache.has(k)) {
+    const known = window.LYRICS_SONGS && window.LYRICS_SONGS[k];
+    const url = known ? `https://lrclib.net/api/get/${known[1]}`
+      : `https://lrclib.net/api/search?track_name=${encodeURIComponent(song.t)}&artist_name=${encodeURIComponent(mainArtist(song))}`;
+    const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = ctl && setTimeout(() => ctl.abort(), 8000);
+    const p = fetch(url, ctl ? { signal: ctl.signal } : {}).then((r) => (r.ok ? r.json() : null)).then((data) => {
+      const list = Array.isArray(data) ? data : (data ? [data] : []);
+      const hit = list.find((x) => !x.instrumental && (x.plainLyrics || x.syncedLyrics)
+        && (known || (checkTitle(x.trackName || '', song) && checkArtist(x.artistName || '', song))));
+      const lines = hit ? lyricLines(hit) : [];
+      return lines.length >= 2 ? lines.slice(0, 2) : null;
+    }).catch(() => null).finally(() => clearTimeout(timer));
+    wordsCache.set(k, p);
+  }
+  return wordsCache.get(k);
+}
+// tekst widoczny w danym kroku
+function wordsShown() {
+  const w = state.words;
+  if (!w) return '';
+  const show = WORDS_STEPS[state.step || 0].show;
+  if (show === 3) return `${w[0].split(/\s+/).slice(0, 3).join(' ')} …`;
+  return show === 'l1' ? `${w[0]} …` : `${w[0]}\n${w[1]} …`;
+}
+
 /* ---------- Wyzwanie dnia ---------- */
 // losowanie zależne tylko od daty: ten sam zestaw piosenek u wszystkich (z najbardziej znanych piosenek)
 const DAILY_SONGS = 10;

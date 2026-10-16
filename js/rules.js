@@ -487,10 +487,12 @@ function stepsExtend(msg) {
   state.clipLen = stepsList()[state.step].len;
   $('#mystery-status').textContent = state.mode === 'cover'
     ? T('{0}Okładka jest ostrzejsza – posłuchaj {1} s.', msg ? msg + ' ' : '', state.clipLen)
+    : state.mode === 'words' ? (state.clipLen ? T('{0}Teraz posłuchaj {1} s.', msg ? msg + ' ' : '', state.clipLen) : T('{0}Więcej tekstu – zgaduj dalej.', msg ? msg + ' ' : ''))
     : state.mode === 'mirror' ? T('{0}Mniej zniekształceń – posłuchaj jeszcze raz.', msg ? msg + ' ' : '')
     : T('{0}Teraz słuchasz {1} s.', msg ? msg + ' ' : '', state.clipLen);
   render();
-  // od razu odtwarzamy dłuższy fragment (kliknięcie gracza pozwala na start dźwięku)
+  // od razu odtwarzamy dłuższy fragment (kliknięcie gracza pozwala na start dźwięku); „Pierwsze słowa” – dopiero w ostatnim kroku
+  if (!state.clipLen) return;
   audio.currentTime = state.clipStart;
   playClip();
 }
@@ -513,7 +515,8 @@ function revealSteps(gaveUp) {
     const pts = state.solved[part];
     const at = pts != null ? stepsList().find((x) => x.pts === pts).len : null;
     return el('div', { class: 'verdict ' + (pts != null ? 'ok' : 'bad') }, pts != null
-      ? (at === 0 ? T('✔ {0} – odgadnięty po samej okładce (+{1} pkt)', PART_LABELS[part], pts)
+      ? (state.mode === 'words' ? T('✔ {0} – odgadnięty: {1} (+{2} pkt)', PART_LABELS[part], stepLabel(stepsList().find((x) => x.pts === pts)), pts)
+        : at === 0 ? T('✔ {0} – odgadnięty po samej okładce (+{1} pkt)', PART_LABELS[part], pts)
         : state.mode === 'mirror' ? T('✔ {0} – odgadnięty (+{1} pkt)', PART_LABELS[part], pts)
           : T('✔ {0} – odgadnięty przy {1} s (+{2} pkt)', PART_LABELS[part], at, pts))
       : `✘ ${PART_LABELS[part]}: ${!gaveUp && inputs[part].trim() ? `„${inputs[part].trim()}”` : '—'}`);
@@ -531,6 +534,7 @@ function stepsActions() {
     btns.push(el('button', { class: 'gold', onclick: () => stepsExtend('') }, state.mode === 'cover'
       ? T('⏩ Wyostrz okładkę i posłuchaj {0} s (za {1} pkt)', next.len, next.pts)
       : state.mode === 'mirror' ? T('⏩ Mniej zniekształceń (za {0} pkt)', next.pts)
+      : state.mode === 'words' ? (next.len ? T('⏩ Posłuchaj {0} s (za {1} pkt)', next.len, next.pts) : T('⏩ Pokaż więcej tekstu (za {0} pkt)', next.pts))
       : T('⏩ Wydłuż do {0} s (za {1} pkt)', next.len, next.pts)));
   }
   const needHint = stepParts().some((part) => state.solved[part] == null);
@@ -544,6 +548,7 @@ function stepsActions() {
 // pasek kroków: 1 s · 2 s · 4 s · 8 s (Okładka z mgły: 🖼 · 🖼 + 1 s · …)
 const stepLabel = (st) => {
   if (state.mode === 'cover') return st.len ? `🖼 + ${st.len} s` : '🖼';
+  if (state.mode === 'words') return st.len ? T('+{0} s', st.len) : st.show === 3 ? T('3 słowa') : st.show === 'l1' ? T('1 wers') : T('2 wersy');
   if (state.mode === 'mirror') {
     const fx = MIRROR_FX[state.mirror || 'wall'];
     const i = MIRROR_STEPS.indexOf(st);

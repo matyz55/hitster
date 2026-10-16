@@ -33,6 +33,12 @@
       return new Response(new Blob([tone()], { type: 'audio/wav' }), { headers: { 'content-type': 'audio/wav' } });
     }
     // „Tak to leciało”: tekst z czasami (LRC) – 40 wersów co 4 s, w refrenie (co 4. wers) powtarzany wers
+    // wyszukiwanie tekstu (Pierwsze słowa): tytuł i wykonawca jak w zapytaniu, tekst z nagłówkiem do pominięcia
+    if (url.startsWith('https://lrclib.net/api/search')) {
+      const q = new URL(url).searchParams;
+      const plain = `[Zwrotka 1]\nRefren:\npierwszy wers piosenki ${q.get('track_name')}\ndrugi wers tej piosenki\ntrzeci wers`;
+      return new Response(JSON.stringify([{ id: 1, trackName: q.get('track_name'), artistName: q.get('artist_name'), plainLyrics: plain }]), { headers: { 'content-type': 'application/json' } });
+    }
     if (url.startsWith('https://lrclib.net/api/get/')) {
       const id = url.split('/').pop();
       const pad = (n) => String(n).padStart(2, '0');

@@ -1,7 +1,7 @@
 'use strict';
 
 // aktualna wersja gry – ta sama co ostatni wpis w CHANGELOG.md (pokazywana na dole ekranu startowego)
-const GAME_VERSION = '5.34.0';
+const GAME_VERSION = '5.35.0';
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -457,6 +457,7 @@ const MODES = {
   melody: { title: 'Jaka to melodia', minPlayers: 1, maxPlayers: MAX_PLAYERS },
   steps: { title: 'Melodia krok po kroku', minPlayers: 1, maxPlayers: MAX_PLAYERS },
   cover: { title: T('Okładka z mgły'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  words: { title: T('Pierwsze słowa'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   mirror: { title: T('Krzywe zwierciadło'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   timed: { title: 'Na czas', minPlayers: 1, maxPlayers: 1 },
   hilo: { title: T('Starsza czy nowsza?'), minPlayers: 1, maxPlayers: 1 },
@@ -493,6 +494,7 @@ const PARTY_GAMES = {
   melody: { icon: '🎤', name: 'Jaka to melodia', mode: () => 'melody', opts: (n) => ({ rounds: n === 1 ? 3 : 1 }) },
   steps: { icon: '⏱️', name: 'Melodia krok po kroku', mode: () => 'steps', opts: (n) => ({ rounds: n === 1 ? 2 : 1 }) },
   cover: { icon: '🌫️', name: T('Okładka z mgły'), mode: () => 'cover', opts: (n) => ({ rounds: n === 1 ? 2 : 1 }) },
+  words: { icon: '📝', name: T('Pierwsze słowa'), mode: () => 'words', opts: (n) => ({ rounds: n === 1 ? 2 : 1 }) },
   mirror: { icon: '🪞', name: T('Krzywe zwierciadło'), mode: () => 'mirror', opts: (n) => ({ rounds: n === 1 ? 2 : 1 }) },
   duel: { icon: '🥊', name: T('Pojedynek dekad'), mode: () => 'duel', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
   year: { icon: '📅', name: T('Rok co do roku'), mode: () => 'year', opts: (n) => ({ rounds: n === 1 ? 4 : 1 }) },
@@ -548,6 +550,8 @@ const STEPS = [{ len: 1, pts: 4 }, { len: 2, pts: 3 }, { len: 4, pts: 2 }, { len
 // Okładka z mgły: najpierw sama rozmyta okładka (bez dźwięku), potem coraz ostrzejsza i coraz dłuższy fragment
 // blur – rozmycie jako ułamek szerokości obrazka (tak samo mocne na telefonie i na dużym ekranie)
 const COVER_STEPS = [{ len: 0, pts: 4, blur: 0.09 }, { len: 1, pts: 3, blur: 0.05 }, { len: 4, pts: 2, blur: 0.022 }, { len: 10, pts: 1, blur: 0 }];
+// Pierwsze słowa: najpierw 3 pierwsze słowa piosenki, potem pierwszy wers, dwa wersy i na końcu 10 s fragmentu
+const WORDS_STEPS = [{ len: 0, pts: 4, show: 3 }, { len: 0, pts: 3, show: 'l1' }, { len: 0, pts: 2, show: 'l2' }, { len: 10, pts: 1, show: 'l2' }];
 // tryby „krok po kroku” (wspólne zasady: odgadnięcie w kroku daje jego punkty, błąd albo „wydłuż” – następny krok)
 // Krzywe zwierciadło: ten sam 10-sekundowy fragment, z każdym krokiem mniej zniekształcony; efekt losowany dla piosenki:
 // za ścianą (filtr dolnoprzepustowy), hel (szybciej i wyżej), slowed (wolniej i niżej), wspak (od tyłu)
@@ -558,8 +562,8 @@ const MIRROR_FX = {
   slow: { icon: '🐢', name: T('Slowed'), rate: [0.6, 0.72, 0.86, 1] },
   reverse: { icon: '⏪', name: T('Wspak'), reverse: [true, true, false, false], lowpass: [0, 0, 1200, 0] },
 };
-const isSteps = () => ['steps', 'cover', 'mirror'].includes(state.mode);
-const stepsList = () => (state.mode === 'cover' ? COVER_STEPS : state.mode === 'mirror' ? MIRROR_STEPS : STEPS);
+const isSteps = () => ['steps', 'cover', 'mirror', 'words'].includes(state.mode);
+const stepsList = () => (state.mode === 'cover' ? COVER_STEPS : state.mode === 'mirror' ? MIRROR_STEPS : state.mode === 'words' ? WORDS_STEPS : STEPS);
 
 const state = {
   mode: null,
@@ -596,7 +600,7 @@ const isQuick = () => state.mode === 'hilo' || state.mode === 'duel';
 const isMultiMode = (m) => m === 'multi' || m === 'teams';
 const isMulti = () => isMultiMode(state.mode);
 const timeLabel = (sec) => (sec % 60 ? `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}` : T('{0} min', sec / 60));
-const isMelody = () => ['melody', 'steps', 'cover', 'mirror', 'buzz', 'seconds', 'mashup'].includes(state.mode);
+const isMelody = () => ['melody', 'steps', 'cover', 'mirror', 'words', 'buzz', 'seconds', 'mashup'].includes(state.mode);
 // kto teraz odpowiada: w drużynach członkowie zmieniają się co turę drużyny
 function answering(p) {
   return (state.mode === 'teams' || state.coop) && p.members && p.members.length ? p.members[p.member % p.members.length] : null;
