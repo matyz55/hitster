@@ -771,6 +771,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - „Tak to leciało!”: słowo odsłonięte kołem ratunkowym od razu pojawia się w polu odpowiedzi, na swoim miejscu w wersie. Wpisanie całego prawidłowego wersu (razem z odsłoniętym słowem) jest zaliczane – wcześniej słowa się przesuwały i dawało to błąd.
 
-## 5.41.3 – 16.10.2026 (`HASH`)
+## 5.41.3 – 16.10.2026 (`443949d`)
 
 - „Tak to leciało!”: po kliknięciu „Tak to leciało!” w kafelkach od razu pojawiają się Twoje wpisane słowa (zielone – dobrze, czerwone – źle, kreska – brak słowa), a prawidłowy wers widać w tekście karaoke razem z resztą piosenki, gdy do niego dojdzie. Tak samo na dużym ekranie.
