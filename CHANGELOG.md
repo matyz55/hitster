@@ -716,7 +716,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - Nowy tryb „Pierwsze słowa”: najpierw tylko trzy pierwsze słowa piosenki (bez dźwięku), potem pierwszy wers, dwa wersy i na końcu 10 s fragmentu – 4, 3, 2 albo 1 pkt. Teksty z lrclib.net pobierane w trakcie gry; piosenki bez tekstu są pomijane. Działa też na dużym ekranie i jako minigra w Imprezie.
 
-## 5.36.0 – 16.10.2026 (`HASH`)
+## 5.36.0 – 16.10.2026 (`a0afeba`)
 
 - Osiągnięcia w statystykach: 14 do zdobycia (m.in. „10 z rzędu”, „Wszystkie dekady”, „Główna nagroda” w „Tak to leciało!”, „Na szczycie” w Dekadowej wspinaczce) – z paskiem postępu; nowe osiągnięcie pokazuje się na chwilę na ekranie.
 - Przenoszenie postępów na inne urządzenie: w statystykach można zapisać plik z postępami (statystyki, rekordy, osiągnięcia, własne playlisty, ustawienia) i wczytać go na innym urządzeniu – statystyki z obu urządzeń się łączą.
