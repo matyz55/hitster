@@ -1,7 +1,7 @@
 // Katalog piosenek do trybu „Tak to leciało!” – polskie piosenki, które mają tekst z czasami wersów (LRCLIB)
 // i działający film na YouTube (odtwarzany od początku do przerwy). Teksty NIE trafiają do repozytorium – gra
 // pobiera je z LRCLIB w trakcie rozgrywki; katalog zawiera tylko identyfikatory i długości.
-//   node tools/lyrics-catalog.mjs lrclib     – szuka tekstów z czasami (pamięć w tools/.cache/lrclib-pl.json)
+//   node tools/lyrics-catalog.mjs lrclib [n] – szuka tekstów z czasami i ich wariantów długości (tools/lyrics-data/lrclib.json)
 //   node tools/lyrics-catalog.mjs youtube    – szuka filmów (wymaga YOUTUBE_API_KEY; najpierw identyfikatory z Wikidata,
 //                                              potem wyszukiwarka YouTube – limit 100 wyszukiwań dziennie)
 //   node tools/lyrics-catalog.mjs wikidata   – bez klucza: tylko teledyski z Wikidata (niesprawdzone – gra sama
@@ -119,7 +119,8 @@ async function lrclibSearch(s) {
   const url = `https://lrclib.net/api/search?track_name=${encodeURIComponent(clean(s.t))}&artist_name=${encodeURIComponent(artist)}`;
   for (let attempt = 0; attempt < 6; attempt++) {
     const res = await fetch(url, { headers: { 'User-Agent': UA } }).catch(() => null);
-    if (res && res.status === 429) { await sleep(1000 * Number(res.headers.get('retry-after') || 30)); continue; }
+    // 429 – limit zapytań, 503 – serwer chwilowo przeciążony: czekamy tyle, ile prosi (retry-after)
+    if (res && (res.status === 429 || res.status === 503)) { await sleep(1000 * Math.max(1, Number(res.headers.get('retry-after') || 5))); continue; }
     if (!res || !res.ok) { await sleep(3000 * (attempt + 1)); continue; }
     const rows = await res.json();
     const artists = SongMatch.artistsOf(s).map(norm);
@@ -148,8 +149,11 @@ async function stepLrclib() {
   let n = 0;
   // także ponownie piosenki zapisane bez wariantów długości (pole v) – najpierw te, które mają już film
   const yt = load('youtube-pl.json', {});
+  // opcjonalny limit zapytań: node tools/lyrics-catalog.mjs lrclib 400
+  let left = Number(process.argv[3]) || Infinity;
   for (const s of [...candidates].sort((a, b) => hasVideo(yt[key(b)]) - hasVideo(yt[key(a)]))) {
     if (key(s) in cache && (cache[key(s)] === null || cache[key(s)].v)) continue;
+    if (left-- <= 0) break;
     const r = await lrclibSearch(s);
     if (r !== undefined) cache[key(s)] = r;
     await sleep(1100);
