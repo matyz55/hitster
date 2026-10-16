@@ -779,6 +779,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - „Tak to leciało!”: w katalogu zostają tylko piosenki z polskim tekstem (co najmniej 70% polskich wersów) – usunięta piosenka z angielskim tekstem: KOSKA – „I Like the Way You Kiss Me”. Katalog: 127 piosenek.
 
-## 5.41.5 – 16.10.2026 (`HASH`)
+## 5.41.5 – 16.10.2026 (`a3f3c55`)
 
 - Duży ekran: kolejna piosenka przy autoodtwarzaniu startuje z głośników telewizora bez klikania pauzy i „odtwórz” – wyciszanie poprzedniej piosenki nie zatrzymuje już nowej, a telewizor dostaje dodatkowe „pchnięcie” do wczytania dźwięku i ponowną próbę po 2,5 s. Gdy i ta zawiedzie, muzyka gra na urządzeniu gospodarza.
