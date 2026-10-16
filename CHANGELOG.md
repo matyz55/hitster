@@ -853,3 +853,12 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Łańcuch skojarzeń: bez muzyki przed odpowiedzią (posłuchać można po odpowiedzi) – podpowiedź pokazuje poprzednią piosenkę i to, co ją łączy z szukaną. Bez pytań o to samo słowo w tytule; nowe powiązania: ten sam producent, ta sama Eurowizja, ten sam festiwal w Opolu, ten sam film, serial albo gra.
 - Dekadowa wspinaczka: drabinka dekad z pionkami graczy, które przesuwają się po każdej odpowiedzi (także na dużym ekranie).
 - Mikser: obie piosenki grają naraz także przy autoodtwarzaniu, na iPhonie i przy muzyce ustawionej na duży ekran (Mikser gra zawsze na urządzeniu gospodarza).
+
+## 5.48.0 – 16.10.2026 (`HASH`)
+
+- Żetony jako ikonka i liczba („🪙 3”) – w tytule tury, tablicy wyników, na osiach innych graczy, na dużym ekranie i na telefonie gracza.
+- Telefon gracza wygląda jak ekran gospodarza: odkryta karta z płytą po lewej, rokiem, tytułem, wykonawcą z flagą, werdyktem, ciekawostkami i ikonkami „Posłuchaj całości” (YouTube, Spotify, Apple Music); lista graczy w jednej przewijanej linii; miejsca „＋” na osi i karty specjalne jak u gospodarza; w pojedynku na żywo duże kafelki odpowiedzi; odpowiedzi do wyboru w pionowej liście.
+- Na telefonie gracza widać kupioną podpowiedź z pierwszą literą, podpowiedź z dekadą i już odgadnięte części odpowiedzi (także na dużym ekranie).
+- „Tak to leciało!” i Sztafeta karaoke: telefon i duży ekran pokazują kategorię, rok i liczbę słów do uzupełnienia od startu piosenki, a także wyniki graczy.
+- Licytacja sekund i Pierwsze słowa z muzyką na telefonie gracza: telefon nie gra już całego fragmentu w trakcie licytacji ani na krokach bez dźwięku – tylko wylicytowane sekundy albo fragment z ostatniego kroku.
+- Skąd jest wykonawca: kraj można wpisać także na telefonie gracza (przyciski „Sprawdź” i „Nie wiem”).
