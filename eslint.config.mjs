@@ -29,7 +29,7 @@ export default [
   },
   {
     // kod wykonywany w przeglądarce przez page.evaluate – odwołuje się do zmiennych gry
-    files: ['tests/**/*.spec.mjs', 'tests/fixtures.mjs'],
+    files: ['tests/**/*.spec.mjs', 'tests/fixtures.mjs', 'tools/screens*.mjs'],
     rules: { 'no-undef': 'off' },
   },
 ];
