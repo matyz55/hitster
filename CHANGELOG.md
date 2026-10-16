@@ -835,3 +835,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - „Tak to leciało!”: katalog urósł ze 127 do 182 piosenek (305 filmów) – m.in. Bajm, Maanam, Perfect, Mrozu, Vito Bambino; 32 piosenki mają zapasowe filmy z własnym tekstem dopasowanym do ich długości.
 - Kategorie z co najmniej 3 piosenkami: 60 z 73.
 - Narzędzie katalogu: przy skupieniu na 600 najpopularniejszych piosenkach nie usuwa już piosenek spoza tej listy, które są w katalogu.
+
+## 5.45.1 – 16.10.2026 (`HASH`)
+
+- Bez zmian w grze: testy mogą działać na innym porcie (zmienna TEST_PORT).
