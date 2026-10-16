@@ -736,6 +736,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Nowy tryb „Turniej” (dla 3–16 graczy): drabinka pojedynków 1 na 1, każdy mecz to krótka minigra wybrana w ustawieniach (np. Kto to śpiewa?, Rok co do roku). Zwycięzca przechodzi dalej aż do finału; przy remisie – dogrywka, przy liczbie graczy innej niż 4, 8, 16 – wolne losy.
 - Impreza na czas: zamiast liczby minigier można wybrać 15, 30 albo 45 minut – losowe minigry trwają, aż minie czas (ostatnia minigra kończy się normalnie).
 
-## 5.40.0 – 16.10.2026 (`HASH`)
+## 5.40.0 – 16.10.2026 (`6f4906a`)
 
 - Nowy tryb „Pojedynek na żywo” (dla dwóch graczy): ta sama piosenka, odpowiedzi naraz – najlepiej na telefonach, a bez nich każdy gracz ma na ekranie swoje przyciski. Kto szybciej rozpozna piosenkę spośród czterech, dostaje 2 pkt, drugi przy dobrej odpowiedzi – 1 pkt. Gra do 10 punktów; na dużym ekranie i telefonach widać paski punktów. Także jako minigra w Imprezie dla dwóch osób (do 5 pkt).
