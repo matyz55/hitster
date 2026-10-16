@@ -478,7 +478,11 @@ function lyRevealWord(i) {
   const cur = state.lyrics.cur;
   if (lyMe().lifes.words < 1 || cur.revealed.has(i) || state.phase !== 'answer') return;
   lyMe().lifes.words -= 1;
+  // odsłonięte słowo trafia też do pola odpowiedzi, na swoje miejsce w wersie
+  const g = lyGiven(cur);
   cur.revealed.add(i);
+  g[i] = cur.gap.blanks[i].want;
+  lySetText(cur, g);
   cur.picking = false;
   lyRender();
 }
@@ -507,15 +511,32 @@ function lyHint(text, from) {
   lyRender();
   tvSync();
 }
-// odpowiedź: jedno pole tekstowe – kolejne wpisane słowa trafiają na kolejne nieodsłonięte miejsca
-const lyOpen = (cur) => cur.gap.blanks.map((_, i) => i).filter((i) => !cur.revealed.has(i));
+// odpowiedź: jedno pole tekstowe z całym wersem – odsłonięte słowa są w nim wpisane (koło ratunkowe dopisuje je do pola);
+// odsłonięte słowo w tekście jest „kotwicą”: wpisane przed nim słowa trafiają na wcześniejsze miejsca, po nim – na dalsze.
+// Działa też, gdy gracz pominie odsłonięte słowo (np. odpowiedź z telefonu albo usunięte z pola).
 function lyGiven(cur) {
   const typed = lyWords(cur.text || '');
-  const out = cur.gap.blanks.map((b, i) => (cur.revealed.has(i) ? b.want : ''));
-  lyOpen(cur).forEach((i, k) => { out[i] = typed[k] || ''; });
+  const blanks = cur.gap.blanks;
+  const out = blanks.map((b, i) => (cur.revealed.has(i) ? b.want : ''));
+  let k = 0; // następne wpisane słowo
+  let from = 0; // pierwsze miejsce bieżącego odcinka
+  const fill = (to, words) => {
+    let w = 0;
+    for (let i = from; i < to; i++) if (!cur.revealed.has(i)) out[i] = words[w++] || '';
+  };
+  for (let r = 0; r < blanks.length; r++) {
+    if (!cur.revealed.has(r)) continue;
+    const j = typed.findIndex((w, idx) => idx >= k && lyWordOk(w, blanks[r].want));
+    if (j < 0) continue;
+    fill(r, typed.slice(k, j));
+    k = j + 1;
+    from = r + 1;
+  }
+  fill(blanks.length, typed.slice(k));
   return out;
 }
-const lySetText = (cur, words) => { cur.text = lyOpen(cur).map((i) => words[i] || '').join(' ').trim(); };
+// tekst pola z całego wersu (puste miejsca na końcu pomijamy)
+const lySetText = (cur, words) => { cur.text = words.map((w) => w || '').join(' ').replace(/\s+/g, ' ').trim(); };
 // śpiewanie: rozpoznawanie mowy przeglądarki (Chrome, Edge, Safari) – rozpoznane słowa trafiają do pola odpowiedzi
 const LySpeech = window.SpeechRecognition || window.webkitSpeechRecognition;
 function lySing() {

@@ -295,3 +295,20 @@ test('Tak to leciało!: przerwa tylko w polskim wersie', async ({ page }) => {
   expect(picked).not.toContain('en');
 });
 
+
+test('Tak to leciało!: odsłonięte słowo jest wpisane w pole – cały prawidłowy wers jest zaliczony', async ({ page }) => {
+  await startLyrics(page);
+  await playToGap(page);
+  const want = await page.evaluate(() => state.lyrics.cur.gap.blanks.map((b) => b.want));
+  await page.getByRole('button', { name: /Odsłoń słowo \(3\)/ }).click();
+  await page.locator('.ly-dot').nth(1).click();
+  // słowo w polu na swoim miejscu (przed nim puste miejsce – pole ma samo to słowo)
+  await expect(page.locator('#ly-input')).toHaveValue(want[1]);
+  // gracz wpisuje cały wers razem z odsłoniętym słowem
+  await page.locator('#ly-input').fill(want.join(' '));
+  expect(await page.evaluate(() => lyGiven(state.lyrics.cur))).toEqual(want);
+  // także bez odsłoniętego słowa (np. z telefonu)
+  expect(await page.evaluate((w) => { const c = state.lyrics.cur; const t = c.text; c.text = w.filter((_, i) => i !== 1).join(' '); const g = lyGiven(c); c.text = t; return g; }, want)).toEqual(want);
+  await page.getByRole('button', { name: 'Tak to leciało!' }).click();
+  await expect(page.locator('#ly-answer .verdict')).toContainText('500 zł');
+});
