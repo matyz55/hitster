@@ -37,7 +37,11 @@ const fillCorrect = (page) => page.evaluate(() => {
 test('Tak to leciało!: plansza 9 kategorii, przerwa przed wersem, dobra odpowiedź – 500 zł', async ({ page }) => {
   await startLyrics(page);
   await expect(page.locator('.ly-cat')).toHaveCount(9);
+  // zapis wszystkich wersów pokazanych przed przerwą (numery wersów w kluczu okna karaoke)
+  await page.evaluate(() => { window.__maxRow = -1; setInterval(() => { if (state.phase !== 'play') return; const k = $('#ly-lines').dataset.key || ''; k.split('|').filter(Boolean).forEach((x) => { window.__maxRow = Math.max(window.__maxRow, parseInt(x, 10)); }); }, 20); });
   await playToGap(page);
+  // tekst nie przewija się za przerwę: przed odpowiedzią widać tylko wersy sprzed zagadki
+  expect(await page.evaluate(() => window.__maxRow < Math.min(...state.lyrics.cur.gap.lines))).toBe(true);
   // puste pola: cały wers, który wcześniej w piosence nie padł
   const gap = await page.evaluate(() => {
     const c = state.lyrics.cur; const k = (t) => lyKey(t);
@@ -131,7 +135,12 @@ test('Tak to leciało!: film niedostępny – gra sama bierze drugą piosenkę z
   await page.evaluate(() => { window.__ytFail = [state.players[0].board[0].songs[0].yts[0]]; window.__ytSpeed = 2; });
   await page.locator('.ly-cat').first().click();
   await page.locator('.ly-song').first().click();
-  await expect(page.locator('#ly-msg')).toContainText('Gramy inną piosenkę');
+  // komunikat między kołami ratunkowymi a źródłami; po chwili znika
+  await expect(page.locator('#ly-answer .ly-flash')).toContainText('Gramy inną piosenkę');
+  const order = await page.evaluate(() => [...document.querySelectorAll('#ly-answer > *')].map((e) => e.className));
+  expect(order.indexOf('muted ly-flash')).toBe(order.length - 2);
+  await expect(page.locator('#ly-msg')).toBeHidden();
+  await expect(page.locator('#ly-answer .ly-flash')).toHaveCount(0, { timeout: 9000 });
   expect(await page.evaluate(() => state.players[0].lifes.swap)).toBe(true);
 });
 

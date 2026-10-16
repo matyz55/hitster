@@ -743,3 +743,8 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.40.1 – 16.10.2026 (`4ba54b3`)
 
 - Bez zmian w samej grze: dodane narzędzie, które robi zrzuty wszystkich ekranów gry (każdy tryb, różne sytuacje, telefon, PC, szeroki monitor, duży ekran) do przeglądu wyglądu przed wersją 6.0.0.
+
+## 5.40.2 – 16.10.2026 (`HASH`)
+
+- „Tak to leciało!”: gdy kolejny wers byłby zagadką, tekst przestaje się przewijać – podświetlenie schodzi niżej po widocznych wersach, a dalsze wersy pojawiają się dopiero po odpowiedzi, razem z rozwiązaniem.
+- Komunikat, że piosenka się nie wczytała (albo o wymianie piosenki), pokazuje się pod kołami ratunkowymi, nad źródłami, i po kilku sekundach znika.

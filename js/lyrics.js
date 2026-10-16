@@ -373,20 +373,34 @@ function lyVideoFailed(msg) {
   if (cur.vi + 1 < cur.it.yts.length) { cur.vi += 1; lyLoadVideo(lyYT); return; }
   lySongFailed(msg);
 }
+// komunikat (np. że piosenka się nie wczytała) – znika sam po kilku sekundach
+let lyMsgTimer = null;
+const LY_MSG_MS = 5000;
+function lyFlash(msg) {
+  const ly = state.lyrics;
+  ly.msg = msg;
+  clearTimeout(lyMsgTimer);
+  lyMsgTimer = setTimeout(() => {
+    if (state.lyrics !== ly || ly.msg !== msg) return;
+    ly.msg = '';
+    $('#ly-msg').classList.add('hidden');
+    $$('#ly-answer .ly-flash').forEach((e) => e.remove());
+  }, LY_MSG_MS);
+}
 // piosenka nie działa – druga piosenka z kategorii (bez zużycia koła), a gdy jej nie ma – inna z katalogu
 function lySongFailed(msg) {
   const ly = state.lyrics;
   const cur = ly.cur;
   lyStop();
   ly.fails += 1;
-  ly.msg = T('⚠️ {0} Gramy inną piosenkę.', msg);
+  lyFlash(T('⚠️ {0} Gramy inną piosenkę.', msg));
   const next = cur.other && !ly.played.has(songKey(cur.other.song)) ? cur.other : (ly.fails <= 8 ? lyAnySong() : null);
   if (next) { lyPlay(next, null, cur.cat); return; }
   if (ly.mini) { lyNextTurn(); return; }
   const back = lyMe().board.find((c) => c.name === cur.cat);
   if (back) back.done = false;
   ly.cur = null;
-  ly.msg = T('⚠️ Nie udało się odtworzyć piosenek z tej kategorii – wybierz inną.');
+  lyFlash(T('⚠️ Nie udało się odtworzyć piosenek z tej kategorii – wybierz inną.'));
   state.phase = 'board';
   lyRender();
 }
@@ -431,7 +445,7 @@ function lySwap() {
   if (!me.lifes.swap || !ly.cur || !ly.cur.other || ly.played.has(songKey(ly.cur.other.song))) return;
   me.lifes.swap = false;
   lyStop();
-  ly.msg = T('🔁 Wymiana piosenki');
+  lyFlash(T('🔁 Wymiana piosenki'));
   lyPlay(ly.cur.other, null, ly.cur.cat);
 }
 // trzy słowa: odsłonięcie wybranych słów (łącznie 3 na całą grę)
@@ -661,8 +675,9 @@ function lyRender() {
   // przy planszy: drabinka i stan kół ratunkowych; w trakcie piosenki koła są przyciskami pod tekstem
   $('#ly-ladder').classList.toggle('hidden', !!ly.mini);
   $('#ly-ladder').replaceChildren(...(ly.mini ? [] : [lyLadderEl(me), state.phase === 'board' ? lyLifesEl(me) || '' : '']));
+  // na planszy komunikat nad kategoriami, w trakcie piosenki – nad źródłami (lyRenderAnswer)
   $('#ly-msg').textContent = ly.msg || '';
-  $('#ly-msg').classList.toggle('hidden', !ly.msg);
+  $('#ly-msg').classList.toggle('hidden', !ly.msg || state.phase !== 'board');
   const board = $('#ly-board');
   const stageBox = $('#ly-stage');
   board.classList.toggle('hidden', state.phase !== 'board');
@@ -710,16 +725,18 @@ function lyRender() {
   tvSync();
 }
 // karaoke: jeden wers poprzedni, bieżący i kolejne (razem LY_ROWS); na początku – pierwsze wersy, na końcu – ostatnie;
-// wersów z przerwą nie widać aż do odpowiedzi (podgląd je pomija, żeby przerwa była zaskoczeniem)
+// przed odpowiedzią widać tylko wersy przed przerwą: gdy następny do pokazania byłby zagadką, tekst się już nie przewija,
+// a podświetlenie schodzi niżej; dalsze wersy pojawiają się dopiero po odpowiedzi, razem z rozwiązaniem
 const LY_ROWS = 5;
 function lyRenderLyrics(t) {
   const cur = state.lyrics && state.lyrics.cur;
   const box = $('#ly-lines');
   if (!cur || !cur.lines || !cur.gap) { box.replaceChildren(); box.dataset.key = ''; return; }
   const hidden = state.phase === 'result' ? new Set() : new Set(cur.gap.lines);
-  const seq = cur.lines.map((_, i) => i).filter((i) => !hidden.has(i));
+  const until = state.phase === 'result' ? cur.lines.length : Math.min(...cur.gap.lines);
+  const seq = cur.lines.map((_, i) => i).filter((i) => i < until && !hidden.has(i));
   let now = -1;
-  cur.lines.forEach((l, i) => { if (l.t <= t + 0.05 && !hidden.has(i)) now = i; });
+  cur.lines.forEach((l, i) => { if (l.t <= t + 0.05 && i < until && !hidden.has(i)) now = i; });
   const p = seq.indexOf(now);
   let rows;
   if (state.phase === 'answer') rows = seq.slice(Math.max(0, p - 1), p + 1); // przerwa: wers wcześniej i bieżący, dalej pola
@@ -747,9 +764,10 @@ function lyRenderAnswer() {
   const final = !ly.mini && me.stage >= 9;
   // na samym dole – źródła tekstu i filmu
   const credit = el('p', { class: 'muted small ly-credit' }, T('Tekst: lrclib.net · Film: YouTube'));
+  const flash = ly.msg ? el('p', { class: 'muted ly-flash' }, ly.msg) : '';
   if (state.phase === 'play') {
     // w trakcie śpiewania koła ratunkowe jako przyciski; odsłonięcie słowa i trzy wersje działają dopiero przy przerwie
-    box.replaceChildren(ly.mini || final ? '' : lyLifeBtns(me, cur, true), credit);
+    box.replaceChildren(ly.mini || final ? '' : lyLifeBtns(me, cur, true), flash, credit);
     return;
   }
   if (state.phase === 'result') {
@@ -767,7 +785,7 @@ function lyRenderAnswer() {
     box.replaceChildren(words, verdict, mine || '', el('div', { class: 'actions' },
       el('button', { class: 'primary', onclick: lyNextTurn }, last ? T('Koniec gry') : lyRelayLeft() ? T('Dalej – śpiewa {0}', state.players[(state.turn + 1) % state.players.length].name) : T('Dalej')),
       el('button', { class: 'ghost small', onclick: lyReport }, cur.reported ? T('↩ Cofnij zgłoszenie') : T('⚠️ Zła wersja piosenki / błędy w tekście'))),
-      cur.reported ? el('p', { class: 'muted small' }, T('Zgłoszono – ten film nie wróci w kolejnych grach na tym urządzeniu.')) : '', credit);
+      cur.reported ? el('p', { class: 'muted small' }, T('Zgłoszono – ten film nie wróci w kolejnych grach na tym urządzeniu.')) : '', flash, credit);
     return;
   }
   // liczba słów: kropki, które zapełniają się przy pisaniu; odsłonięte słowa widać w ich miejscu
@@ -801,7 +819,7 @@ function lyRenderAnswer() {
       : el('button', { class: 'ghost small', onclick: () => lyAskHelper(i) }, p.name)))));
   }
   if (extra.children.length) parts.push(extra);
-  parts.push(credit);
+  parts.push(flash, credit);
   const focused = document.activeElement && document.activeElement.id === 'ly-input';
   box.replaceChildren(...parts);
   if (focused) { const i = $('#ly-input'); i.focus(); i.setSelectionRange(i.value.length, i.value.length); }

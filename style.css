@@ -712,6 +712,7 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .ly-help { display: inline-flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .ly-helper { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 8px 0; }
 .ly-credit { text-align: center; margin: 14px 0 0; }
+.ly-flash { text-align: center; margin: 12px 0 0; color: var(--gold); }
 .ly-wrap:has(#ly-ladder.hidden) { grid-template-columns: 1fr; }
 .ly-submit { display: block; width: 100%; margin: 10px 0 8px; padding: 14px; font-size: 1.15rem; }
 .ly-lifebtns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0; }
