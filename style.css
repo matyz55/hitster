@@ -638,6 +638,46 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .bingo-cell.marked { background: var(--ok); color: #0b1d12; border-color: var(--ok); font-weight: 700; opacity: 1; }
 .bingo-cell .flag-img { width: 16px; height: 12px; vertical-align: -1px; }
 
+/* --- Dekadowa wspinaczka: drabinka dekad z pionkami graczy --- */
+.climb-ladder {
+  --rung: 30px; --label: 92px; --tok: 96px;
+  position: relative; margin: 10px 0; padding: 4px 0;
+  background: var(--panel-2); border-radius: 12px; overflow: hidden;
+}
+.cl-rungs { display: flex; flex-direction: column; }
+.cl-rung { height: var(--rung); display: flex; align-items: center; position: relative; }
+.cl-rung::after {
+  content: ''; position: absolute; left: var(--label); right: 10px; top: 50%; height: 3px; border-radius: 2px;
+  background: rgba(255, 255, 255, .1);
+}
+.cl-rung.cur::after { background: rgba(45, 226, 230, .35); }
+.cl-rung.cur .cl-label { color: var(--accent-2); font-weight: 700; }
+.cl-top .cl-label { color: var(--gold); font-weight: 700; }
+.cl-top::after { background: rgba(255, 201, 60, .3); }
+.cl-label { width: var(--label); padding-left: 10px; font-size: .78rem; color: var(--muted); white-space: nowrap; }
+/* dwie pionowe belki drabinki */
+.cl-track {
+  position: absolute; left: var(--label); right: 10px; top: 4px; bottom: 4px;
+  border-left: 3px solid rgba(255, 255, 255, .14); border-right: 3px solid rgba(255, 255, 255, .14);
+}
+.cl-token {
+  position: absolute; left: calc(6px + var(--slot, 0) * (var(--tok) + 4px));
+  bottom: calc(var(--lvl, 0) * var(--rung) + 3px); width: var(--tok); height: calc(var(--rung) - 6px);
+  display: flex; align-items: center; justify-content: center; gap: 3px; padding: 0 6px;
+  background: var(--panel); border: 2px solid #3d3755; border-radius: 99px; font-size: .75rem;
+  transition: bottom .7s cubic-bezier(.3, 1.4, .5, 1), left .4s ease, border-color .3s;
+}
+.cl-token.active { border-color: var(--accent); }
+.cl-token.won { border-color: var(--gold); }
+.cl-token.up { border-color: var(--ok); }
+.cl-token.down { border-color: var(--bad); }
+.cl-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cl-move { font-size: .7rem; }
+.cl-token.up .cl-move { color: var(--ok); }
+.cl-token.down .cl-move { color: var(--bad); }
+.no-anim .cl-token { transition: none; }
+@media (max-width: 480px) { .climb-ladder { --label: 74px; --tok: 78px; } .cl-label { font-size: .7rem; } }
+
 /* --- najciekawsze momenty --- */
 .moments-box { margin-top: 10px; text-align: left; }
 .moments { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }

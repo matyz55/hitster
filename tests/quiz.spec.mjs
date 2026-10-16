@@ -254,7 +254,9 @@ test('Mikser: dwie piosenki naraz, oba tytuły – 2 pkt', async ({ page }) => {
   await page.click('#btn-start');
   await page.waitForFunction(() => state.mashup && state.phase === 'listen' && !$('#btn-play').disabled, null, { timeout: 30000 });
   await page.click('#btn-play');
-  await expect.poll(() => page.evaluate(() => !audio.paused && !audio2.paused)).toBe(true);
+  // obie piosenki naprawdę grają: pierwsza (element audio) i druga (Web Audio – słychać sygnał na wyjściu)
+  await expect.poll(() => page.evaluate(() => !audio.paused && !audio.muted && mashupSecondPlaying())).toBe(true);
+  await expect.poll(() => page.evaluate(() => mashupLevel()), { timeout: 5000 }).toBeGreaterThan(0.02);
   const [a, b] = await page.evaluate(() => [state.current.t, state.mashup.b.song.t]);
   await page.fill('#guess-song', b);
   await page.press('#guess-song', 'Enter');
@@ -264,6 +266,27 @@ test('Mikser: dwie piosenki naraz, oba tytuły – 2 pkt', async ({ page }) => {
   await expect.poll(() => page.evaluate(() => state.phase)).toBe('revealed');
   expect(await page.evaluate(() => state.players[0].score)).toBe(2);
   await expect(page.locator('#reveal .verdict.ok')).toHaveCount(2);
+});
+
+test('Mikser: druga piosenka dołącza, gdy pierwsza ruszyła wcześniej (autoodtwarzanie), i gra też przy muzyce na dużym ekranie', async ({ page }) => {
+  await page.goto('/');
+  // autoodtwarzanie i muzyka „na dużym ekranie” (podłączone okno TV) – w Mikserze obie i tak grają tutaj
+  await page.evaluate(() => { store.set('autoplay', true); store.set('audioOut', 'tv'); });
+  await page.reload();
+  await page.evaluate(() => { tvWindowSeen = true; tvChannel = { postMessage() {}, close() {} }; });
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=mashup]');
+  await page.fill('#rounds', '2');
+  await page.click('#btn-start');
+  await page.waitForFunction(() => state.mashup && state.phase === 'listen', null, { timeout: 30000 });
+  await expect.poll(() => page.evaluate(() => !audio.paused && !audio.muted && mashupSecondPlaying() && audioTargets() === null)).toBe(true);
+  await expect.poll(() => page.evaluate(() => mashupLevel()), { timeout: 5000 }).toBeGreaterThan(0.02);
+  // po 10 s (koniec fragmentu) milkną obie
+  await page.evaluate(() => { audio.currentTime = state.clipStart + state.clipLen - 0.3; });
+  await expect.poll(() => page.evaluate(() => audio.paused && !mashupSecondPlaying()), { timeout: 5000 }).toBe(true);
+  // ponowne ▶ – znów obie
+  await page.click('#btn-play');
+  await expect.poll(() => page.evaluate(() => !audio.paused && mashupSecondPlaying())).toBe(true);
 });
 
 test('Z jakiego to ekranu?: 4 różne tytuły, właściwy to dzieło, w którym zabrzmiała piosenka', async ({ page }) => {
@@ -281,28 +304,40 @@ test('Z jakiego to ekranu?: 4 różne tytuły, właściwy to dzieło, w którym 
   await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(1);
 });
 
-test('Łańcuch skojarzeń: kolejna piosenka łączy się z poprzednią, tylko jedna odpowiedź pasuje do podpowiedzi', async ({ page }) => {
+test('Łańcuch skojarzeń: bez muzyki, każda piosenka łączy się z poprzednią, tylko jedna odpowiedź pasuje do podpowiedzi', async ({ page }) => {
   await start(page, 'chain', '3');
-  const first = await page.evaluate(() => ({ q: state.quiz.q, opts: state.quiz.options.map((o) => o.label), ok: state.quiz.options.findIndex((o) => o.ok) }));
-  expect(first.opts).toHaveLength(4);
-  expect(new Set(first.opts).size).toBe(4);
-  await page.click(`#actions button.big-choice >> nth=${first.ok}`);
+  const info = () => page.evaluate(() => {
+    const i = state.deck.links.get(state.current);
+    const right = state.quiz.options.find((o) => o.ok).label;
+    const wrong = state.quiz.options.filter((o) => !o.ok).map((o) => window.SONGS.find((s) => `${s.t} — ${artistLine(s)}` === o.label));
+    return { kind: i.link.kind, links: chainLinks(i.from, state.current).map((l) => l.kind), q: state.quiz.q, right, start: i.start,
+      cur: `${state.current.t} — ${artistLine(state.current)}`, from: songKey(i.from), fromT: i.from.t, n: state.quiz.options.length,
+      // błędne odpowiedzi nie mają powiązania tego samego rodzaju z poprzednią piosenką
+      wrongLinked: wrong.filter(Boolean).filter((s) => chainLinks(i.from, s).some((l) => l.kind === i.link.kind)).length,
+      playHidden: $('#btn-play').classList.contains('hidden'), paused: audio.paused, word: /słowo w tytule/.test(state.quiz.q) };
+  });
+  const r1 = await info();
+  // już pierwsza piosenka ma podpowiedź (początek łańcucha pokazany, nie zgadywany)
+  expect(r1).toMatchObject({ start: true, n: 4, playHidden: true, paused: true, wrongLinked: 0, word: false });
+  expect(r1.right).toBe(r1.cur);
+  expect(r1.links).toContain(r1.kind);
+  expect(['year', 'country', 'people', 'producer', 'euro', 'opole', 'screen']).toContain(r1.kind);
+  expect(r1.q).toContain(r1.fromT);
+  // muzyka nie gra, nawet po ▶ z innego miejsca
+  await page.evaluate(() => playClip());
+  expect(await page.evaluate(() => audio.paused)).toBe(true);
+  const ok = await page.evaluate(() => state.quiz.options.findIndex((o) => o.ok));
+  await page.click(`#actions button.big-choice >> nth=${ok}`);
   await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(1);
+  // po odpowiedzi można posłuchać
+  await expect(page.locator('#btn-play')).toBeVisible();
   await page.click('#actions button.primary');
   await ready(page);
-  const r = await page.evaluate(() => {
-    const info = state.deck.links.get(state.current);
-    const right = state.quiz.options.find((o) => o.ok).label;
-    return { linked: !!info.link, links: info.link ? chainLinks(info.from, state.current).map((l) => l.kind) : [], kind: info.link && info.link.kind, q: state.quiz.q, right,
-      cur: `${state.current.t} — ${artistLine(state.current)}`, prev: info.from && songKey(info.from), prevPlayed: songKey(state.history[0].song) };
-  });
-  expect(r.right).toBe(r.cur);
-  // druga piosenka zwykle jest powiązana z pierwszą (gdy w puli jest jakakolwiek pasująca)
-  if (r.linked) {
-    expect(r.prev).toBe(r.prevPlayed);
-    expect(r.links).toContain(r.kind);
-    expect(r.q).toContain('🔗');
-  }
+  const r2 = await info();
+  expect(r2).toMatchObject({ n: 4, playHidden: true, wrongLinked: 0, word: false });
+  expect(r2.links).toContain(r2.kind);
+  // druga piosenka łączy się z pierwszą (albo zaczyna nowy łańcuch od podanej piosenki)
+  if (!r2.start) expect(r2.from).toBe(await page.evaluate(() => songKey(state.history[0].song)));
 });
 
 test('Dekadowa wspinaczka: rok do 2 lat różnicy – dekada wyżej, pomyłka – niżej, szczyt kończy grę', async ({ page }) => {
@@ -313,14 +348,25 @@ test('Dekadowa wspinaczka: rok do 2 lat różnicy – dekada wyżej, pomyłka �
   await page.click('#btn-start');
   await ready(page);
   expect(await page.evaluate(() => decadeOf(state.current))).toBe(1960);
+  // drabinka: 7 dekad i szczyt, pionek gracza na najniższym szczeblu
+  await expect(page.locator('#climb-ladder')).toBeVisible();
+  await expect(page.locator('#climb-ladder .cl-rung')).toHaveCount(8);
+  const lvl = () => page.evaluate(() => $('#climb-ladder .cl-token').style.getPropertyValue('--lvl'));
+  expect(await lvl()).toBe('0');
+  await expect(page.locator('#climb-ladder .cl-rung.cur')).toContainText('1969');
   await page.evaluate(() => answerQuiz(state.current.y + 2));
   expect(await page.evaluate(() => state.players[0].climb)).toBe(1);
+  // ruch w górę widać na drabince
+  expect(await lvl()).toBe('1');
+  await expect(page.locator('#climb-ladder .cl-token.up')).toContainText('▲');
   await page.click('#actions button.primary');
   await ready(page);
   // następna piosenka z kolejnej dekady
   expect(await page.evaluate(() => decadeOf(state.current))).toBe(1970);
   await page.evaluate(() => answerQuiz(state.current.y > 1990 ? state.current.y - 10 : state.current.y + 10));
   expect(await page.evaluate(() => state.players[0].climb)).toBe(0);
+  expect(await lvl()).toBe('0');
+  await expect(page.locator('#climb-ladder .cl-token.down')).toContainText('▼');
   await page.click('#actions button.primary');
   await ready(page);
   // ostatnia dekada – dobra odpowiedź kończy grę

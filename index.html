@@ -208,7 +208,7 @@
       <button class="mode" data-mode="bomb" data-ctx="multi">
         <span class="mode-icon">💣</span>
         <b>Gorąca bomba</b>
-        <span class="muted">Gra muzyka i tyka bomba. Kto ją trzyma, odpowiada na szybkie pytanie o piosenkę – dobrze: bomba idzie dalej, źle: 3 s blokady. U kogo wybuchnie, traci serce.</span>
+        <span class="muted">Razem z muzyką zaczyna tykać bomba. Kto ją trzyma, odpowiada na szybkie pytanie o piosenkę – dobrze: bomba idzie dalej, źle: 3 s blokady. U kogo wybuchnie, traci serce.</span>
       </button>
       <button class="mode" data-mode="royale" data-ctx="multi">
         <span class="mode-icon">🏁</span>
@@ -228,7 +228,7 @@
       <button class="mode" data-mode="chain" data-ctx="single multi">
         <span class="mode-icon">🔗</span>
         <b>Łańcuch skojarzeń</b>
-        <span class="muted">Każda kolejna piosenka łączy się z poprzednią: ten sam rok, kraj, autor albo słowo w tytule. Podpowiedź mówi, co je łączy – wybierz graną piosenkę z czterech.</span>
+        <span class="muted">Bez muzyki – na wiedzę. Każda kolejna piosenka łączy się z poprzednią: ten sam rok, kraj, autor, producent, festiwal albo film. Podpowiedź mówi, co je łączy – wybierz właściwą z czterech.</span>
       </button>
       <button class="mode" data-mode="climb" data-ctx="single multi">
         <span class="mode-icon">🏔️</span>
@@ -349,7 +349,7 @@
       <button type="button" id="btn-playlist" class="ghost">📋 Wklej własną listę piosenek</button>
     </section>
 
-    <section class="card" data-hide-for="lyrics relay">
+    <section class="card" data-hide-for="lyrics relay chain">
       <h2>Odtwarzanie</h2>
       <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist who screen chain climb country bid coop bingo royale live">Długość fragmentu
         <select id="clip-length">
@@ -561,6 +561,7 @@
       <p id="special-badge" class="special-badge hidden"></p>
       <div id="buzzers" class="buzzers hidden"></div>
       <div id="bingo-boards" class="bingo-boards hidden"></div>
+      <div id="climb-ladder" class="climb-ladder hidden" role="group" aria-label="Drabinka dekad"></div>
       <p id="buzz-who" class="buzz-who hidden"></p>
       <form id="guess-form" class="guess hidden" autocomplete="off">
         <div class="suggest-wrap">
@@ -801,9 +802,9 @@
     </ol>
     <h3>Łańcuch skojarzeń</h3>
     <ol>
-      <li>Każda kolejna piosenka łączy się z poprzednią jedną cechą: tym samym rokiem wydania, krajem wykonawcy (spoza Polski, USA i Wielkiej Brytanii), autorem muzyki lub tekstu (dane z Wikidata) albo słowem w tytule.</li>
-      <li>Podpowiedź na ekranie mówi, co łączy graną piosenkę z poprzednią. Z czterech piosenek do wyboru pasuje do niej tylko jedna – można ją rozpoznać po melodii albo wydedukować. Dobra odpowiedź – 1 pkt.</li>
-      <li>Gdy żadna piosenka nie łączy się z poprzednią, zaczyna się nowy łańcuch.</li>
+      <li>Każda kolejna piosenka łączy się z poprzednią jedną cechą: tym samym rokiem wydania, krajem wykonawcy (spoza Polski, USA i Wielkiej Brytanii), autorem muzyki lub tekstu albo producentem nagrania (dane z Wikidata), tą samą Eurowizją, tym samym festiwalem w Opolu albo tym samym filmem, serialem lub grą.</li>
+      <li>Muzyka nie gra – liczy się wiedza. Podpowiedź na ekranie mówi, co łączy szukaną piosenkę z poprzednią. Z czterech piosenek do wyboru pasuje do niej tylko jedna. Dobra odpowiedź – 1 pkt; po odpowiedzi można posłuchać piosenki.</li>
+      <li>Gdy żadna piosenka nie łączy się z poprzednią, zaczyna się nowy łańcuch – od podanej piosenki początkowej.</li>
     </ol>
     <h3>Dekadowa wspinaczka</h3>
     <ol>
@@ -836,7 +837,8 @@
     </ol>
     <h3>Gorąca bomba (multiplayer)</h3>
     <ol>
-      <li>Gra muzyka i tyka bomba. Kto ją trzyma, odpowiada na szybkie pytanie o piosenkę (przed/po roku, polska/zagraniczna, dekada, wykonawca). Dobrze – bomba idzie do następnego gracza, źle – 3 sekundy blokady.</li>
+      <li>Razem z muzyką zaczyna tykać bomba. Kto ją trzyma, odpowiada na szybkie pytanie o piosenkę (np. rok, dekada, kraj, gatunek, wykonawca, liczba słów w tytule, autor tekstu, Eurowizja, Opole – zawsze dwie odpowiedzi). Dobrze – bomba idzie do następnego gracza, źle – 3 sekundy blokady.</li>
+      <li>Gdy fragment się skończy, a bomba jeszcze tyka, od razu gra następna piosenka z nowym pytaniem.</li>
       <li>Bomba wybucha w losowej chwili (25–50 s) – trzymający traci serce. Bez serc się odpada; wygrywa ostatni.</li>
     </ol>
     <h3>Ostatni na placu boju (multiplayer)</h3>

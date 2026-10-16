@@ -449,7 +449,7 @@ function render(s) {
   const keep = app.querySelector('.guess-form');
   const bingo = s.bingo ? h('div', 'bingo-boards', s.bingo.boards.map((b) => h('div', 'bingo-board' + (b.won ? ' won' : ''),
     h('div', 'bingo-name', b.name, b.pick != null ? ' ✔' : ''), bingoGrid(b, false, false)))) : null;
-  const card = h('section', 'turn-card', head, coverFog(s), wordsBox(s), main, steps, buzzers, bingo, liveBox(s), hint, guess, actions);
+  const card = h('section', 'turn-card', head, coverFog(s), wordsBox(s), main, steps, buzzers, bingo, liveBox(s), climbBox(s), hint, guess, actions);
   app.replaceChildren(...[who, scoresRow, card, tls, others].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
   fit();
@@ -662,6 +662,15 @@ function liveBox(s) {
     return b;
   })) : null;
   return h('div', 'live-box', bars, opts);
+}
+// Dekadowa wspinaczka: drabinka dekad (od szczytu w dół) z imionami graczy na ich szczeblach
+function climbBox(s) {
+  const c = s.climb;
+  if (!c) return null;
+  return h('div', 'climb-box', c.rows.map((r) => h('div', 'climb-row' + (r.lvl === c.rows[0].lvl ? ' top' : ''),
+    h('span', 'climb-label', r.label),
+    h('span', 'climb-names', c.players.filter((p) => p.lvl === r.lvl).map((p) => h('span', 'climb-tok' + (p.active ? ' active' : '') + (p.move ? ` ${p.move}` : ''),
+      p.name, p.move === 'up' ? ' ▲' : p.move === 'down' ? ' ▼' : ''))))));
 }
 function bingoBoard(s) {
   if (!s.bingo) return null;

@@ -28,7 +28,8 @@ function render() {
   $('#btn-skip').disabled = !canSkip || (timeline && p.tokens < SKIP_COST);
   $('#btn-skip').classList.toggle('hidden', (isSteps() || ['buzz', 'hilo', 'duel', 'sort5', 'bingo', 'royale', 'seconds', 'bomb', 'mashup', 'live'].includes(state.mode)) || isQuiz());
   // Ułóż piątkę: każdy fragment ma własny przycisk ▶
-  $('#btn-play').classList.toggle('hidden', state.mode === 'sort5');
+  // Łańcuch skojarzeń: bez muzyki do chwili odpowiedzi
+  $('#btn-play').classList.toggle('hidden', state.mode === 'sort5' || (state.mode === 'chain' && state.phase !== 'revealed'));
   renderCoverFog();
   renderWordsBox();
   applyMirror();
@@ -58,6 +59,7 @@ function render() {
   renderStepsBar();
   renderBuzzers();
   renderBingoBoards();
+  renderClimbLadder();
   renderSpecialBadge();
 
   const hints = {
