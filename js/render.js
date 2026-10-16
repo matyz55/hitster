@@ -109,7 +109,8 @@ function renderHeader(p, timeline) {
   $('#party-bar').classList.toggle('hidden', !pt);
   if (pt) {
     const g = PARTY_GAMES[pt.plan[pt.idx]];
-    $('#party-bar').textContent = T('🥳 Minigra {0} z {1}: {2} {3}', pt.idx + 1, pt.plan.length, g.icon, T(g.name));
+    $('#party-bar').textContent = pt.until ? T('🥳 Minigra {0}: {1} {2} · ⏳ ok. {3} min do końca', pt.idx + 1, g.icon, T(g.name), Math.max(0, Math.ceil((pt.until - Date.now()) / 60000)))
+      : T('🥳 Minigra {0} z {1}: {2} {3}', pt.idx + 1, pt.plan.length, g.icon, T(g.name));
   }
   sb.replaceChildren(...state.players.map((pl, i) => el('div', {
     class: 'score' + (i === state.turn && state.mode !== 'buzz' && state.mode !== 'bingo' ? ' active' : ''),

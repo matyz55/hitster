@@ -500,6 +500,12 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .table-view table { border-collapse: collapse; margin-top: 6px; }
 .table-view td, .table-view th { padding: 3px 10px; border-bottom: 1px solid #2f2a44; text-align: left; }
 .confused li, .record-log li { margin-bottom: 6px; }
+.tour-box { margin-top: 12px; }
+.tour-round { margin: 8px 0; }
+.tour-round ul { margin: 4px 0 0; padding-left: 18px; }
+.tour-round li.done { opacity: .75; }
+.tour-round li.next { font-weight: 700; color: var(--accent-2); }
+.tour-round .win { font-weight: 800; color: var(--gold); }
 .career-total { font-weight: 700; color: var(--gold); }
 .career-list { display: grid; gap: 8px; margin-bottom: 16px; }
 .career-stage { display: flex; align-items: center; gap: 12px; text-align: left; padding: 12px 14px; }

@@ -1064,6 +1064,7 @@ function endGame() {
   const moments = momentsBox();
   if (moments) $('#ranking').append(moments);
   if (state.party) partyAfterGame();
+  else if (state.tour) tourAfterGame();
   else if (!state.coop) leagueAfterGame(state.players.map((p) => ({ name: p.name, v: metric(p) })));
   updateEndButtons();
   // koniec gry – zapis niepotrzebny; w trakcie imprezy (między minigrami) zapisujemy, żeby dało się wznowić

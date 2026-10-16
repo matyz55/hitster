@@ -402,3 +402,32 @@ test('Gorąca bomba: dobra odpowiedź podaje bombę dalej, zła blokuje, wybuch 
   await expect(page.locator('#reveal')).toContainText('Bomba wybuchła');
   await expect(page.locator('#scoreboard')).toContainText('❤️❤️');
 });
+
+test('Turniej: 3 graczy – wolny los, mecz, finał i zwycięzca', async ({ page }) => {
+  await lobby(page, 3);
+  await page.click('.mode[data-mode=tour]');
+  await page.selectOption('#tour-game', 'artist');
+  await page.click('#btn-start');
+  await ready(page);
+  const first = await page.evaluate(() => ({ round: state.tour.rounds[0].map((m) => [m.a, m.b]), players: state.players.map((p) => p.name) }));
+  // drabinka na 4 miejsca: jedna para z wolnym losem, w meczu gra dwóch graczy
+  expect(first.round.filter(([, b]) => b == null)).toHaveLength(1);
+  expect(first.players).toHaveLength(2);
+  const play = async () => {
+    // wygrywa zawsze pierwszy gracz meczu
+    while ((await screen(page)) === 'game') {
+      await page.evaluate(() => { const m = state.tour.rounds.at(-1).find((x) => !x.w); const ok = activePlayer().name === m.a; answerQuiz(state.quiz.options.findIndex((o) => o.ok === ok)); });
+      await page.click('#actions button.primary');
+      await page.waitForTimeout(200);
+    }
+  };
+  await play();
+  await expect(page.locator('#winner-title')).toContainText('przechodzi dalej');
+  await expect(page.locator('.tour-box')).toContainText('Finał');
+  await page.click('#btn-party-next');
+  await ready(page);
+  await play();
+  const champ = await page.evaluate(() => state.tour.champion);
+  await expect(page.locator('#winner-title')).toContainText(`Turniej wygrywa ${champ}`);
+  await expect(page.locator('#end-party')).toBeHidden();
+});

@@ -352,3 +352,26 @@ test('Pierwsze słowa: najpierw 3 słowa bez dźwięku, potem wers; odgadnięcie
   await page.press('#guess-song', 'Enter');
   await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(4);
 });
+
+test('Impreza na czas: losowe minigry, po upływie czasu bieżąca minigra jest ostatnia', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => store.set('partyGames', ['year', 'artist']));
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=party]');
+  await page.check('input[name=party-time][value="15"]');
+  await expect(page.locator('#party-games')).toBeHidden();
+  await page.click('#btn-start');
+  await ready(page);
+  expect(await page.evaluate(() => state.party.until - Date.now())).toBeGreaterThan(14 * 60000);
+  await expect(page.locator('#party-bar')).toContainText('min do końca');
+  // czas mija w trakcie minigry – po niej koniec imprezy
+  await page.evaluate(() => { state.party.until = Date.now() - 1; });
+  for (let i = 0; i < 6 && (await screen(page)) === 'game'; i++) {
+    await page.evaluate(() => (isYearQuiz() ? answerQuiz(state.current.y) : answerQuiz(0)));
+    await page.click('#actions button.primary');
+    await page.waitForTimeout(300);
+  }
+  await expect.poll(() => screen(page)).toBe('end');
+  await expect(page.locator('.party-kicker')).toContainText('Koniec imprezy');
+  expect(await page.evaluate(() => [state.party.done, state.party.plan.length])).toEqual([true, 1]);
+});

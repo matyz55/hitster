@@ -1,7 +1,7 @@
 'use strict';
 
 // aktualna wersja gry – ta sama co ostatni wpis w CHANGELOG.md (pokazywana na dole ekranu startowego)
-const GAME_VERSION = '5.38.0';
+const GAME_VERSION = '5.39.0';
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -486,6 +486,7 @@ const MODES = {
   lyrics: { title: T('Tak to leciało!'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   relay: { title: T('Sztafeta karaoke'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
   career: { title: T('Kariera'), minPlayers: 1, maxPlayers: 1 },
+  tour: { title: T('Turniej'), minPlayers: 3, maxPlayers: MAX_PLAYERS },
 };
 // jeden gracz albo multiplayer (lobby z listą graczy, telefonami i głosowaniem na tryb)
 let playCtx = 'single';

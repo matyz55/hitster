@@ -35,7 +35,7 @@ function goBack() {
     case 'settings': $('#btn-settings-back').click(); break;
     case 'stats': $('#btn-stats-back').click(); break;
     case 'career': $('#btn-career-back').click(); break;
-    case 'end': if (state.party && !state.party.done) $('#btn-party-stop').click(); else showModes(); break;
+    case 'end': if ((state.party && !state.party.done) || (state.tour && !state.tour.done)) $('#btn-party-stop').click(); else showModes(); break;
     case 'game':
       if (confirm(T('Przerwać grę i wrócić do wyboru trybu?'))) { state.drawId++; showModes(); }
       break;

@@ -22,6 +22,7 @@ function openSetup(mode) {
   $('#rounds-label').textContent = mode === 'buzz' ? T('Liczba piosenek') : (cfg.teams ? T('Piosenek na drużynę') : T('Piosenek na gracza'));
   if (mode === 'duel') renderDuelPick();
   if (mode === 'party') renderPartyPick();
+  if (mode === 'tour') renderTourPick();
   updatePlaybackOptions();
   updatePoolInfo();
   showScreen('setup');

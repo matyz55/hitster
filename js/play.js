@@ -5,12 +5,15 @@
 // over – ustawienia minigry w trybie „Impreza” (party: rodzaj minigry, rounds, winTarget, timeLimit)
 function startGame(over = {}) {
   const party = over.party || null;
+  // Turniej: mecz (over.tour) to krótka minigra dwóch graczy
+  if (!over.tour) state.tour = null;
   if (!party) {
-    state.baseMode = state.mode;
+    state.baseMode = over.tour ? 'tour' : state.mode;
     state.party = null;
     // głosy dotyczyły tej gry – przy następnym wyborze trybu głosujemy od nowa
     lobby.votes.clear();
     if (state.mode === 'party') { startParty(); return; }
+    if (state.mode === 'tour') { startTournament(); return; }
   }
   // współpraca = oś jednego gracza dla wspólnej drużyny, w której wszyscy odpowiadają po kolei
   state.coop = !party && state.mode === 'coop';
@@ -30,7 +33,7 @@ function startGame(over = {}) {
   }
   const rows = setupRows.map((r, i) => ({ name: r.name.trim() || `${teams ? T('Drużyna') : T('Gracz')} ${i + 1}`, members: r.members }));
   const names = rows.map((r) => r.name);
-  if (!party && !state.coop) {
+  if (!party && !state.coop && !over.rows) {
     if (teams) store.set('teams', rows); else store.set('players', names);
     // gracze ustawieni w grze wieloosobowej wracają do lobby (zmienione imiona, dopisani gracze)
     if (playCtx === 'multi' && !teams) {
@@ -151,6 +154,17 @@ $$('input[name=party-len]').forEach((r) => {
   r.checked = Number(r.value) === store.get('partyLen', 1);
   r.addEventListener('change', () => { store.set('partyLen', Number(r.value)); renderPartyPick(); });
 });
+// impreza na czas: losowe minigry, aż minie 15 / 30 / 45 minut (0 – zwykła liczba minigier)
+const partyTimeSync = () => {
+  const t = store.get('partyTime', 0);
+  $('#party-games-row').classList.toggle('hidden', t > 0);
+  $('#party-time-info').classList.toggle('hidden', !t);
+};
+$$('input[name=party-time]').forEach((r) => {
+  r.checked = Number(r.value) === store.get('partyTime', 0);
+  r.addEventListener('change', () => { store.set('partyTime', Number(r.value)); partyTimeSync(); });
+});
+partyTimeSync();
 $$('input[name=party-score]').forEach((r) => {
   r.checked = r.value === store.get('partyScore', 'places');
   r.addEventListener('change', () => { store.set('partyScore', r.value); renderPartyPick(); });
@@ -189,7 +203,9 @@ function partyChoice(n) {
 function startParty() {
   const rows = readSetupRows().map((r, i) => ({ ...r, name: r.name.trim() || `${T('Gracz')} ${i + 1}` }));
   if (!rows.length) return;
-  const count = clampInt($('#party-games').value, 2, 12, 5);
+  const minutes = store.get('partyTime', 0);
+  // na czas: plan z zapasem, impreza kończy się po minigrze, w której minął czas
+  const count = minutes ? 60 : clampInt($('#party-games').value, 2, 12, 5);
   const games = partyChoice(rows.length);
   // kolejność: losowo, każda minigra przed powtórką, bez dwóch takich samych pod rząd
   const plan = [];
@@ -198,7 +214,7 @@ function startParty() {
     if (plan.length && round.length > 1 && round[0] === plan[plan.length - 1]) round.push(round.shift());
     plan.push(...round);
   }
-  state.party = { rows, plan: plan.slice(0, count), idx: 0, points: rows.map(() => 0), last: [], done: false,
+  state.party = { rows, plan: plan.slice(0, count), idx: 0, points: rows.map(() => 0), last: [], done: false, until: minutes ? Date.now() + minutes * 60000 : 0,
     len: store.get('partyLen', 1), scoring: playCtx === 'multi' ? store.get('partyScore', 'places') : 'sum' };
   store.set('players', rows.map((r) => r.name));
   window.track && window.track('start-gry', { tryb: 'party', gra: playCtx, graczy: rows.length, minigier: count, jezyk: LANG });
@@ -243,6 +259,8 @@ function partyAfterGame() {
   gained.forEach((g, i) => { pt.points[i] += g; });
   pt.last = gained;
   pt.idx += 1;
+  // impreza na czas: po upływie czasu ta minigra była ostatnia
+  if (pt.until && Date.now() >= pt.until) pt.plan = pt.plan.slice(0, pt.idx);
   partyStandings(pt.idx >= pt.plan.length);
 }
 function partyStandings(final) {
@@ -251,7 +269,8 @@ function partyStandings(final) {
   const g = PARTY_GAMES[pt.plan[Math.max(0, pt.idx - 1)]];
   const order = pt.rows.map((r, i) => ({ name: r.name, pts: pt.points[i], last: pt.last[i] || 0 })).sort((a, b) => b.pts - a.pts);
   const title = $('#winner-title');
-  const kicker = el('p', { class: 'party-kicker' }, final ? T('🥳 Koniec imprezy!') : T('🥳 Minigra {0} z {1}: {2} {3}', pt.idx, pt.plan.length, g.icon, T(g.name)));
+  const kicker = el('p', { class: 'party-kicker' }, final ? T('🥳 Koniec imprezy!') : pt.until ? T('🥳 Minigra {0}: {1} {2}', pt.idx, g.icon, T(g.name))
+    : T('🥳 Minigra {0} z {1}: {2} {3}', pt.idx, pt.plan.length, g.icon, T(g.name)));
   if (final) {
     if (pt.rows.length === 1) {
       const prev = saveRecord(`party${state.difficulty}`, order[0].pts, T('Impreza, {0}', (LEVELS[state.difficulty] || LEVELS[1]).name));
@@ -270,14 +289,26 @@ function partyStandings(final) {
   $('#ranking').append(el('div', { class: 'party-box' },
     el('h3', {}, final ? T('Klasyfikacja końcowa') : T('Klasyfikacja imprezy')),
     el('ol', { class: 'ranking party-standings' }, order.map((o) => el('li', {}, `${o.name} – ${o.pts} ${T('pkt')}`, o.last ? el('span', { class: 'plus' }, ` (+${o.last})`) : null))),
-    next ? el('p', { class: 'muted' }, T('Następna minigra: {0} {1}', next.icon, T(next.name))) : null));
+    next ? el('p', { class: 'muted' }, T('Następna minigra: {0} {1}', next.icon, T(next.name))) : null,
+    next && pt.until ? el('p', { class: 'muted' }, T('⏳ Do końca imprezy: ok. {0} min', Math.max(1, Math.ceil((pt.until - Date.now()) / 60000)))) : null));
   if (final) {
     $('#winner-timeline').classList.add('hidden');
     leagueAfterGame(pt.rows.map((r, i) => ({ name: r.name, v: pt.points[i] })));
   }
 }
-$('#btn-party-next').addEventListener('click', () => playPartyGame());
+$('#btn-party-next').addEventListener('click', () => (state.tour ? playTourMatch() : playPartyGame()));
 $('#btn-party-stop').addEventListener('click', () => {
+  if (state.tour) {
+    // przerwany turniej – bez zwycięzcy
+    state.tour.done = true;
+    state.mode = 'tour';
+    $('#ranking').replaceChildren();
+    tourStandings(null);
+    $('#winner-title').textContent = T('Turniej przerwany.');
+    updateEndButtons();
+    tvSync();
+    return;
+  }
   state.party.plan = state.party.plan.slice(0, state.party.idx);
   state.mode = 'party';
   $('#ranking').replaceChildren();
@@ -303,7 +334,9 @@ function leagueAfterGame(results) {
 }
 // przyciski pod podsumowaniem: impreza w toku / multiplayer / jeden gracz
 function updateEndButtons() {
-  const between = !!(state.party && !state.party.done);
+  const between = !!(state.party && !state.party.done) || !!(state.tour && !state.tour.done);
+  $('#btn-party-next').textContent = state.tour ? T('▶ Następny mecz') : T('▶ Następna minigra');
+  $('#btn-party-stop').textContent = state.tour ? T('Zakończ turniej') : T('Zakończ imprezę');
   $('#end-party').classList.toggle('hidden', !between);
   $('#end-multi').classList.toggle('hidden', between || playCtx !== 'multi');
   $('#end-actions').classList.toggle('hidden', between || playCtx === 'multi');

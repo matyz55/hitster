@@ -222,7 +222,9 @@ function tvSync() {
   if (state.party && (screen === 'game' || screen === 'end')) {
     const pt = state.party;
     const g = PARTY_GAMES[pt.plan[Math.min(pt.plan.length - 1, screen === 'game' ? pt.idx : Math.max(0, pt.idx - 1))]];
-    snap.party = { label: pt.done ? T('🥳 Koniec imprezy!') : T('🥳 Minigra {0} z {1}: {2} {3}', screen === 'game' ? pt.idx + 1 : pt.idx, pt.plan.length, g.icon, T(g.name)) };
+    snap.party = { label: pt.done ? T('🥳 Koniec imprezy!') : pt.until
+      ? T('🥳 Minigra {0}: {1} {2}', screen === 'game' ? pt.idx + 1 : pt.idx, g.icon, T(g.name))
+      : T('🥳 Minigra {0} z {1}: {2} {3}', screen === 'game' ? pt.idx + 1 : pt.idx, pt.plan.length, g.icon, T(g.name)) };
   }
   if (screen === 'lyrics') snap.lyrics = lyrSnapshot();
   if (screen === 'end') {

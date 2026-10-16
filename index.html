@@ -130,6 +130,11 @@
     </div>
     <h3 class="mode-group">Impreza</h3>
     <div class="modes">
+      <button class="mode party-tile" data-mode="tour" data-ctx="multi">
+        <span class="mode-icon">⚔️</span>
+        <b>Turniej</b>
+        <span class="muted">Drabinka pojedynków 1 na 1 dla 3–16 graczy: każdy mecz to krótka minigra wybrana w ustawieniach, zwycięzca przechodzi dalej aż do finału.</span>
+      </button>
       <button class="mode party-tile" data-mode="party" data-ctx="single multi">
         <span class="mode-icon">🥳</span>
         <b>Impreza – minigry</b>
@@ -444,10 +449,24 @@
         <label class="check"><input type="checkbox" id="endless"> Gra bez końca – bez celu kart, grasz do wyczerpania pomyłek i bijesz swój rekord</label>
         <p class="muted small" id="record-info"></p>
       </div>
+      <div data-for="tour">
+        <label class="row">Minigra w meczach
+          <select id="tour-game" aria-label="Minigra w meczach"></select>
+        </label>
+        <p class="muted small">Pary są losowane. Przy nieparzystej liczbie graczy (albo innej niż 4, 8, 16) część osób ma wolny los i od razu przechodzi dalej. Remis – dogrywka (jedna piosenka).</p>
+      </div>
       <div data-for="party">
-        <label class="row">Liczba minigier
+        <p class="label">Czas imprezy</p>
+        <div class="seg">
+          <label><input type="radio" name="party-time" value="0" checked> Liczba minigier</label>
+          <label><input type="radio" name="party-time" value="15"> 15 min</label>
+          <label><input type="radio" name="party-time" value="30"> 30 min</label>
+          <label><input type="radio" name="party-time" value="45"> 45 min</label>
+        </div>
+        <label class="row" id="party-games-row">Liczba minigier
           <input type="number" id="party-games" min="2" max="12" value="5">
         </label>
+        <p class="muted small hidden" id="party-time-info">Losowe minigry, aż minie wybrany czas – ostatnia minigra kończy się normalnie.</p>
         <p class="label" style="margin-top:12px">Długość minigier</p>
         <div class="seg">
           <label><input type="radio" name="party-len" value="1" checked> Krótkie</label>
@@ -893,6 +912,7 @@
   <script src="js/stats.js"></script>
   <script src="js/achievements.js"></script>
   <script src="js/career.js"></script>
+  <script src="js/tournament.js"></script>
   <script src="js/resume.js"></script>
   <script src="lyrics-catalog.js"></script>
   <script src="lyrics-cats.js"></script>

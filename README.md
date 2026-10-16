@@ -72,6 +72,9 @@ Na ekranie startowym wybiera się **Jeden gracz** albo **Multiplayer**:
   odpowiada kolejny gracz; 1 pkt za dobrze dokończony wers.
 - **Kariera** – 18 etapów (różne tryby i zestawy piosenek, js/career.js), do 3 gwiazdek za wynik; gwiazdka odblokowuje
   następny etap. Ustawienia piosenek gracza są na czas etapu zastępowane i potem przywracane.
+- **Turniej** – drabinka pojedynków 1 na 1 (3–16 graczy, wolne losy), mecz to minigra z Imprezy dla dwóch graczy
+  (js/tournament.js); remis – dogrywka.
+- **Impreza na czas** – zamiast liczby minigier 15 / 30 / 45 minut: losowe minigry, aż minie czas.
 - **Okładka z mgły** – najpierw sama rozmyta okładka (bez dźwięku, 4 pkt), potem ostrzejsza i 1/4/10 s fragmentu (3/2/1 pkt).
 - **Krzywe zwierciadło** – fragment zza ściany (filtr dolnoprzepustowy Web Audio), na helu / zwolniony
   (`playbackRate` bez zachowania wysokości) albo od tyłu (odwrócony bufor PCM zapisany jako WAV); z każdym krokiem słabiej.
