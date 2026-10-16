@@ -457,7 +457,7 @@ function lyOnTick() {
   // po odpowiedzi: od dwóch wersów wcześniej, prawidłowy wers pojawia się słowo po słowie, a piosenka gra do końca
   // (pod filmem pasek przewijania); w sztafecie muzyka staje chwilę po wersie – za nim czeka przerwa kolejnego gracza
   if (state.phase === 'result') {
-    if (!cur.revealing && t >= cur.gap.pauseAt + 0.4) { cur.revealing = true; lyRenderAnswer(); }
+    if (!cur.revealing && t >= cur.gap.pauseAt + 0.4) { cur.revealing = true; cur.revealAt = Date.now(); lyRenderAnswer(); }
     if (lyRelayLeft() && t >= cur.resumeUntil) { lyYT.pauseVideo(); clearInterval(lyTick); lyTick = null; }
     lySeekPaint(t);
   }
@@ -656,7 +656,7 @@ function lyRelayNext() {
   const cur = state.lyrics.cur;
   cur.gi += 1;
   cur.gap = cur.gaps[cur.gi];
-  Object.assign(cur, { given: cur.gap.blanks.map(() => ''), text: '', revealed: new Set(), variants: null, hint: null, helper: null, marks: null,
+  Object.assign(cur, { given: cur.gap.blanks.map(() => ''), text: '', revealed: new Set(), variants: null, hint: null, helper: null, marks: null, verdictAt: 0,
     ok: null, revealing: false, picking: false, reported: false });
   state.turn = (state.turn + 1) % state.players.length;
   state.phase = 'play';
@@ -846,12 +846,17 @@ function lyRenderAnswer() {
   }
   if (state.phase === 'result') {
     // prawidłowa odpowiedź pojawia się słowo po słowie, gdy piosenka dochodzi do tego miejsca
-    const words = el('div', { class: `ly-reveal${cur.revealing ? ' go' : ''}` }, cur.gap.blanks.map((b, i) => el('span', {
+    // animacja odsłaniania słów tylko raz: odświeżenie widoku w jej trakcie (np. przewinięcie piosenki) ją kontynuuje,
+    // a po jej końcu słowa po prostu stoją
+    const since = cur.revealing ? Date.now() - cur.revealAt : 0;
+    const done = cur.revealing && since > cur.gap.blanks.length * 280 + 400;
+    const words = el('div', { class: `ly-reveal${done ? ' shown' : cur.revealing ? ' go' : ''}`, style: `--t0:-${since}ms` }, cur.gap.blanks.map((b, i) => el('span', {
       class: `ly-word ${cur.marks[i] ? 'ok' : 'bad'}`, style: `--i:${i}`,
     }, b.want)));
     const mine = cur.ok ? null : el('p', { class: 'muted small' }, T('Twoja odpowiedź: {0}', (cur.text || '').trim() || '—'));
     const p = lyMe();
-    const verdict = el('p', { class: `verdict ${cur.ok ? 'ok' : 'bad'}` }, ly.mini ? (cur.ok ? T('✅ Tak to leciało! +1 pkt') : T('❌ Niestety, nie tak to leciało.')) : cur.ok
+    if (!cur.verdictAt) cur.verdictAt = Date.now();
+    const verdict = el('p', { class: `verdict ${cur.ok ? 'ok' : 'bad'}${Date.now() - cur.verdictAt > 500 ? ' still' : ''}` }, ly.mini ? (cur.ok ? T('✅ Tak to leciało! +1 pkt') : T('❌ Niestety, nie tak to leciało.')) : cur.ok
       ? (p.stage === 10 ? T('🏆 Brawo! Główna nagroda: {0}!', lyMoney(p.score)) : T('✅ Tak to leciało! Masz {0}.', lyMoney(p.score)))
       : T('❌ Niestety. Wygrana: {0}.', lyMoney(p.score)));
     const last = ly.mini && ly.mini.relay ? !lyRelayLeft() && (ly.mini.songs || 0) + 1 >= ly.mini.rounds

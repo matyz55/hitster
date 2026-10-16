@@ -237,6 +237,12 @@ test('Tak to leciało!: po odpowiedzi piosenka gra do końca, pasek przewijania 
   // dawniej muzyka stawała kilka sekund po wersie – teraz gra dalej
   await expect.poll(() => page.evaluate(() => lyYT.getCurrentTime() > state.lyrics.cur.resumeUntil + 5), { timeout: 15000 }).toBe(true);
   expect(await page.evaluate(() => lyYT.getPlayerState())).toBe(1);
+  // animacja odsłaniania słów była tylko raz – po przewinięciu słowa stoją bez animacji
+  await expect(page.locator('.ly-reveal.go, .ly-reveal.shown')).toHaveCount(1);
+  await page.waitForTimeout(3500);
+  await page.evaluate(() => lyRender());
+  await expect(page.locator('.ly-reveal.shown')).toHaveCount(1);
+  await expect(page.locator('.verdict.still')).toHaveCount(1);
   // przewinięcie na 50 s: film i podświetlony wers idą za paskiem
   await page.evaluate(() => { const b = $('#ly-seek-bar'); b.value = '50'; b.dispatchEvent(new Event('input')); b.dispatchEvent(new Event('change')); });
   await page.evaluate(() => { window.__ytSpeed = 0.001; });
