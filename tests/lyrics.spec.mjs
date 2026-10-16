@@ -64,7 +64,9 @@ test('Tak to leciało!: plansza 9 kategorii, przerwa przed wersem, dobra odpowie
   await page.getByRole('button', { name: 'Tak to leciało!' }).click();
   await expect(page.locator('#ly-answer .verdict')).toContainText('500 zł');
   // piosenka wraca o dwa wersy, a prawidłowy wers pojawia się, gdy jest śpiewany
-  await expect(page.locator('.ly-reveal.go')).toHaveCount(1, { timeout: 15000 });
+  await expect(page.locator('.ly-reveal.go, .ly-reveal.shown')).toHaveCount(1);
+  // prawidłowy wers pojawia się w tekście karaoke, gdy piosenka do niego dojdzie
+  await expect(page.locator('#ly-lines p.gapline.ok')).toHaveCount(1, { timeout: 15000 });
   await page.getByRole('button', { name: 'Dalej' }).click();
   await expect(page.locator('.ly-ladder li.now')).toContainText('1000 zł');
   // zagrana kategoria zostaje na planszy – wyszarzona i niedostępna; hit za 100 000 zł – dopiero na końcu
@@ -115,6 +117,11 @@ test('Tak to leciało!: koła ratunkowe – trzy słowa, trzy wersje, wymiana pi
   await page.locator('#ly-input').fill('zupełnie');
   await page.getByRole('button', { name: 'Tak to leciało!' }).click();
   await expect(page.locator('#ly-answer .verdict')).toContainText('0 zł');
+  // w kafelkach wpisane słowa (puste miejsca – kreska), prawidłowy wers – w tekście karaoke
+  await expect(page.locator('.ly-reveal .ly-word').first()).toHaveText('zupełnie');
+  await expect(page.locator('.ly-reveal .ly-word.bad').first()).toBeVisible();
+  const line = await page.evaluate(() => state.lyrics.cur.gap.lines.map((i) => state.lyrics.cur.lines[i].text)[0]);
+  await expect(page.locator('#ly-lines p.gapline.bad')).toHaveText(line, { timeout: 15000 });
   // zgłoszenie złej wersji – i jego cofnięcie
   await page.getByRole('button', { name: /Zła wersja piosenki/ }).click();
   expect(await page.evaluate(() => store.get('lyBadVideos', []).length)).toBe(1);

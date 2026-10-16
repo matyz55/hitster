@@ -593,9 +593,11 @@ function lySubmit() {
   cur.ok = ok;
   state.history.push({ song: cur.it.song, ok, note: ly.mini ? (ok ? '+1' : T('pomyłka')) : (ok ? lyMoney(me.score) : T('pomyłka')), preview: null });
   state.phase = 'result';
-  // piosenka wraca o dwa wersy i gra dalej – prawidłowy wers pojawia się w chwili, gdy jest śpiewany
+  // w kafelkach od razu wpisane słowa (zielone – dobrze, czerwone – źle); prawidłowy wers pojawia się w tekście karaoke,
+  // gdy piosenka (cofnięta o dwa wersy) do niego dojdzie
   const back = cur.lines[Math.max(0, cur.gap.line - 2)];
-  cur.revealing = false;
+  cur.revealing = true;
+  cur.revealAt = Date.now();
   cur.resumeUntil = cur.gap.end + 3;
   try { lyYT.seekTo(Math.max(0, back.t - 0.5), true); lyYT.playVideo(); lyNoCaptions(); } catch (e) { /* odtwarzacz niedostępny */ }
   clearInterval(lyTick);
@@ -873,8 +875,7 @@ function lyRenderAnswer() {
     const done = cur.revealing && since > cur.gap.blanks.length * 280 + 400;
     const words = el('div', { class: `ly-reveal${done ? ' shown' : cur.revealing ? ' go' : ''}`, style: `--t0:-${since}ms` }, cur.gap.blanks.map((b, i) => el('span', {
       class: `ly-word ${cur.marks[i] ? 'ok' : 'bad'}`, style: `--i:${i}`,
-    }, b.want)));
-    const mine = cur.ok ? null : el('p', { class: 'muted small' }, T('Twoja odpowiedź: {0}', (cur.text || '').trim() || '—'));
+    }, cur.given[i] || '—')));
     const p = lyMe();
     if (!cur.verdictAt) cur.verdictAt = Date.now();
     const verdict = el('p', { class: `verdict ${cur.ok ? 'ok' : 'bad'}${Date.now() - cur.verdictAt > 500 ? ' still' : ''}` }, ly.mini ? (cur.ok ? T('✅ Tak to leciało! +1 pkt') : T('❌ Niestety, nie tak to leciało.')) : cur.ok
@@ -882,7 +883,7 @@ function lyRenderAnswer() {
       : T('❌ Niestety. Wygrana: {0}.', lyMoney(p.score)));
     const last = ly.mini && ly.mini.relay ? !lyRelayLeft() && (ly.mini.songs || 0) + 1 >= ly.mini.rounds
       : ly.mini ? state.players.every((pl) => pl.played + (pl === p ? 1 : 0) >= ly.mini.rounds) : !lyActive().length;
-    box.replaceChildren(words, verdict, mine || '', el('div', { class: 'actions' },
+    box.replaceChildren(words, verdict, el('div', { class: 'actions' },
       el('button', { class: 'primary', onclick: lyNextTurn }, last ? T('Koniec gry') : lyRelayLeft() ? T('Dalej – śpiewa {0}', state.players[(state.turn + 1) % state.players.length].name) : T('Dalej')),
       el('button', { class: 'ghost small', onclick: lyReport }, cur.reported ? T('↩ Cofnij zgłoszenie') : T('⚠️ Zła wersja piosenki / błędy w tekście'))),
       cur.reported ? el('p', { class: 'muted small' }, T('Zgłoszono – ten film nie wróci w kolejnych grach na tym urządzeniu.')) : '', flash, credit);
@@ -951,7 +952,7 @@ function lyrSnapshot() {
     lifes: me.lifes, cat: cur ? cur.cat : null, song: cur ? { t: cur.it.song.t, a: artistLine(cur.it.song), y: cur.it.song.y } : null,
     lines: $$('#ly-lines p').map((p) => ({ cls: p.className, text: p.textContent })),
     blanks: cur && cur.gap && ['answer', 'result'].includes(state.phase) ? { prefix: '', n: cur.gap.blanks.length,
-      given: result ? cur.gap.blanks.map((b) => b.want) : cur.gap.blanks.map((b, i) => (cur.revealed.has(i) ? b.want : '')), marks: result ? cur.marks : null } : null,
+      given: result ? cur.given.map((w) => w || '—') : cur.gap.blanks.map((b, i) => (cur.revealed.has(i) ? b.want : '')), marks: result ? cur.marks : null } : null,
     helper: cur && cur.helper != null ? state.players[cur.helper].name : null,
     hint: cur ? cur.hint : null, verdict: $('#ly-answer .verdict') ? $('#ly-answer .verdict').textContent : '',
     board: state.phase === 'board' ? { cats: me.board.map((c) => ({ name: c.name, done: c.done })), hit: me.stage === 9,
