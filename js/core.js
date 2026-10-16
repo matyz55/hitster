@@ -1,7 +1,7 @@
 'use strict';
 
 // aktualna wersja gry – ta sama co ostatni wpis w CHANGELOG.md (pokazywana na dole ekranu startowego)
-const GAME_VERSION = '5.36.0';
+const GAME_VERSION = '5.37.0';
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -484,6 +484,7 @@ const MODES = {
   coop: { title: T('Współpraca'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
   // Tak to leciało!: dokończ wers piosenki z YouTube (lyrics.js)
   lyrics: { title: T('Tak to leciało!'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  relay: { title: T('Sztafeta karaoke'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
 };
 // jeden gracz albo multiplayer (lobby z listą graczy, telefonami i głosowaniem na tryb)
 let playCtx = 'single';
@@ -506,6 +507,7 @@ const PARTY_GAMES = {
   hilo: { icon: '↕️', name: T('Starsza czy nowsza?'), mode: () => 'hilo', opts: (n) => ({ rounds: n === 1 ? 0 : 2 }) },
   buzz: { icon: '🔔', name: 'Kto pierwszy?', min: 2, mode: () => 'buzz', opts: (n) => ({ rounds: Math.min(8, Math.max(4, n + 2)) }) },
   lyrics: { icon: '🎤', name: T('Tak to leciało!'), mode: () => 'lyrics', opts: (n) => ({ rounds: n === 1 ? 3 : 1 }) },
+  relay: { icon: '🏃', name: T('Sztafeta karaoke'), min: 2, mode: () => 'relay', opts: () => ({ rounds: 1 }) },
   mashup: { icon: '🎛️', name: T('Mikser'), mode: () => 'mashup', opts: (n) => ({ rounds: n === 1 ? 3 : 1 }) },
   sort5: { icon: '🔢', name: T('Ułóż piątkę'), mode: () => 'sort5', opts: () => ({ rounds: 1 }) },
   seconds: { icon: '⏱', name: T('Licytacja sekund'), min: 2, mode: () => 'seconds', opts: () => ({ rounds: 1 }) },

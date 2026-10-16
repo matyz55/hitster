@@ -68,6 +68,8 @@ Na ekranie startowym wybiera się **Jeden gracz** albo **Multiplayer**:
   pomyłka – w dół; wygrywa, kto pierwszy dotrze do lat 20.
 - **Pierwsze słowa** – trzy pierwsze słowa tekstu (lrclib.net, pobierany w trakcie gry), potem pierwszy wers, dwa
   wersy i 10 s fragmentu: 4/3/2/1 pkt.
+- **Sztafeta karaoke** – wariant „Tak to leciało!” dla kilku graczy: w jednej piosence 3–4 przerwy, przy każdej
+  odpowiada kolejny gracz; 1 pkt za dobrze dokończony wers.
 - **Okładka z mgły** – najpierw sama rozmyta okładka (bez dźwięku, 4 pkt), potem ostrzejsza i 1/4/10 s fragmentu (3/2/1 pkt).
 - **Krzywe zwierciadło** – fragment zza ściany (filtr dolnoprzepustowy Web Audio), na helu / zwolniony
   (`playbackRate` bez zachowania wysokości) albo od tyłu (odwrócony bufor PCM zapisany jako WAV); z każdym krokiem słabiej.

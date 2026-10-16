@@ -147,6 +147,7 @@ function voteView(s) {
   })));
 }
 /* ---------- Tak to leciało!: duży ekran (karaoke, drabinka) i telefon gracza (puste pola, sufler) ---------- */
+const lyValTv = (l, v) => (l.points ? T('{0} pkt', v) : lyMoneyTv(v));
 const lyMoneyTv = (v) => T('{0} zł', Number(v).toLocaleString(document.documentElement.lang === 'en' ? 'en-US' : 'pl-PL'));
 function lyLinesEl(l) {
   return h('div', 'ly-lines', (l.lines || []).map((x) => h('p', x.cls, x.text)));
@@ -172,7 +173,7 @@ function lyricsBoard(l) {
       l.helper ? h('p', 'muted', T('🙋 {0} wpisuje podpowiedź…', l.helper)) : null,
       l.verdict ? h('p', 'verdict', l.verdict) : null);
   return h('div', 'ly-tv', h('aside', 'ly-tv-side', h('h3', '', `🎤 ${l.turn}`), ladder,
-    l.money.length > 1 ? h('ul', 'ly-tv-money', l.money.map((m) => h('li', m.out ? 'out' : '', `${m.name}: ${lyMoneyTv(m.v)}`))) : null), main);
+    l.money.length > 1 ? h('ul', 'ly-tv-money', l.money.map((m) => h('li', m.out ? 'out' : '', `${m.name}: ${lyValTv(l, m.v)}`))) : null), main);
 }
 let lyDraft = { key: '', words: [], hint: '' };
 function lyricsPhone(s) {
@@ -180,7 +181,7 @@ function lyricsPhone(s) {
   const mine = l.turn === me;
   const key = `${l.turn}|${l.stage}|${l.song ? l.song.t : ''}`;
   if (lyDraft.key !== key) lyDraft = { key, words: [], hint: '' };
-  const top = h('div', 'p-top', h('div', 'p-me', h('b', '', me), h('small', '', mine ? T('Twoja kolej – {0}', lyMoneyTv(l.ladder[Math.min(9, l.stage)])) : T('Gra: {0}', l.turn))));
+  const top = h('div', 'p-top', h('div', 'p-me', h('b', '', me), h('small', '', mine ? (l.points ? T('Twoja kolej') : T('Twoja kolej – {0}', lyMoneyTv(l.ladder[Math.min(9, l.stage)]))) : T('Gra: {0}', l.turn))));
   // sufler: podpowiedź dla gracza z turą
   if (l.helper === me) {
     const inp = h('input', '');
@@ -204,7 +205,7 @@ function lyricsPhone(s) {
   }
   return h('div', 'picker', top, l.song ? h('h3', '', `${l.cat} · ${l.song.t}`) : h('p', 'muted', T('{0} wybiera kategorię…', l.turn)),
     lyLinesEl(l), lyBlanksView(l), l.verdict ? h('p', 'verdict', l.verdict) : null,
-    h('ul', 'p-rank', l.money.map((m) => h('li', m.out ? 'muted' : '', `${m.name}: ${lyMoneyTv(m.v)}`))));
+    h('ul', 'p-rank', l.money.map((m) => h('li', m.out ? 'muted' : '', `${m.name}: ${lyValTv(l, m.v)}`))));
 }
 
 function renderPhone(s) {

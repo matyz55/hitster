@@ -178,3 +178,40 @@ test('Impreza: minigra „Tak to leciało!” – piosenka od zwrotki z przerwą
   await expect(page.locator('#ly-answer .verdict')).toContainText('+1');
   expect(await page.evaluate(() => state.players[0].score)).toBe(1);
 });
+
+test('Sztafeta karaoke: kilka przerw w jednej piosence, przy każdej odpowiada kolejny gracz', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    const pl = window.SONGS.filter((s) => s.c === 'PL').slice(0, 400);
+    window.LYRICS_SONGS = Object.fromEntries(pl.map((s, i) => [songKey(s), [`vid${i}`, 1000 + i, 180]]));
+  });
+  await page.click('#btn-multi');
+  await page.click('#btn-lobby-add');
+  await page.click('#btn-lobby-next');
+  await page.click('.mode[data-mode=relay]');
+  await page.fill('#rounds', '1');
+  await page.click('#btn-start');
+  await expect.poll(() => screen(page)).toBe('lyrics');
+  const turns = [];
+  const lines = [];
+  for (let k = 0; k < 3; k++) {
+    await expect.poll(() => page.evaluate(() => state.phase), { timeout: 20000 }).toBe('answer');
+    const info = await page.evaluate(() => ({ turn: state.turn, gi: state.lyrics.cur.gi, n: state.lyrics.cur.gaps.length, line: state.lyrics.cur.gap.line }));
+    if (k === 0) expect(info.n).toBeGreaterThanOrEqual(2);
+    if (k >= info.n) break;
+    turns.push(info.turn);
+    lines.push(info.line);
+    await expect(page.locator('#ly-title')).toContainText('Sztafeta karaoke');
+    await fillCorrect(page);
+    await page.getByRole('button', { name: 'Tak to leciało!' }).click();
+    await expect(page.locator('#ly-answer .verdict')).toContainText('+1');
+    const last = k === info.n - 1;
+    await page.locator('#ly-answer .actions button.primary').click();
+    if (last) break;
+  }
+  // gracze na zmianę, kolejne przerwy coraz dalej w tej samej piosence
+  expect(turns[1]).not.toBe(turns[0]);
+  expect(lines[1]).toBeGreaterThan(lines[0]);
+  await expect.poll(() => screen(page)).toBe('end');
+  expect(await page.evaluate(() => state.players.reduce((n, p) => n + p.score, 0))).toBe(turns.length);
+});

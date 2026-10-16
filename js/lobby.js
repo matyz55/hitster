@@ -104,7 +104,7 @@ function showModes() {
 }
 // tryb dostępny w tym kontekście (jeden gracz / multiplayer); „Tak to leciało!” – gdy katalog piosenek jest gotowy
 const modeAvailable = (b) => b.dataset.ctx.split(' ').includes(playCtx)
-  && (b.dataset.mode !== 'lyrics' || Object.keys(window.LYRICS_SONGS || {}).length >= 40);
+  && (!['lyrics', 'relay'].includes(b.dataset.mode) || Object.keys(window.LYRICS_SONGS || {}).length >= 40);
 function modeTiles() {
   return $$('#screen-modes .mode').filter(modeAvailable);
 }

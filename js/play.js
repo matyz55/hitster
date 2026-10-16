@@ -40,6 +40,8 @@ function startGame(over = {}) {
   }
   // Tak to leciało! – osobny przebieg gry (lyrics.js)
   if (state.mode === 'lyrics') return startLyrics(rows, party ? { rounds: over.rounds || 1 } : null);
+  // Sztafeta karaoke – ta sama gra z tekstem, kilka przerw w piosence, gracze śpiewają na zmianę
+  if (state.mode === 'relay') return startLyrics(rows, { rounds: over.rounds || clampInt($('#rounds').value, 1, 30, 3), relay: true });
   // klawisze „Kto pierwszy?” – bez powtórzeń (w imprezie gracze nie wybierali ich w ustawieniach)
   const usedKeys = [];
   state.buzzKeys = setupRows.map((r) => {

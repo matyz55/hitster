@@ -140,6 +140,11 @@
         <b>Tak to leciało!</b>
         <span class="muted">Piosenka gra z YouTube, tekst leci jak w karaoke, a w pewnym momencie muzyka milknie – dokończ wers. Drabinka od 500 zł do 100 000 zł, koła ratunkowe, polskie przeboje.</span>
       </button>
+      <button class="mode party-tile lyrics-tile" data-mode="relay" data-ctx="multi">
+        <span class="mode-icon">🏃</span>
+        <b>Sztafeta karaoke</b>
+        <span class="muted">Jedna piosenka, kilka przerw w różnych miejscach – przy każdej odpowiada kolejny gracz. Dobrze dokończony wers to punkt.</span>
+      </button>
     </div>
     <h3 class="mode-group">Szybkie gry</h3>
     <div class="modes">
@@ -285,7 +290,7 @@
       <p id="players-min" class="muted small"></p>
     </section>
 
-    <section class="card" data-hide-for="lyrics">
+    <section class="card" data-hide-for="lyrics relay">
       <h2>Piosenki</h2>
       <p class="label">Zestaw</p>
       <div class="chips presets" id="presets"></div>
@@ -320,7 +325,7 @@
       <button type="button" id="btn-playlist" class="ghost">📋 Wklej własną listę piosenek</button>
     </section>
 
-    <section class="card" data-hide-for="lyrics">
+    <section class="card" data-hide-for="lyrics relay">
       <h2>Odtwarzanie</h2>
       <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist who screen chain climb country bid coop bingo royale">Długość fragmentu
         <select id="clip-length">
@@ -348,7 +353,7 @@
       <p class="muted small" data-for="mirror">Ten sam 10-sekundowy fragment, z każdym krokiem mniej zniekształcony – 4, 3, 2 albo 1 pkt. Efekt losowany dla każdej piosenki: 🧱 za ścianą (stłumiony dźwięk), 🎈 hel (szybciej i wyżej), 🐢 slowed (wolniej i niżej) albo ⏪ wspak. Muzyka gra na tym urządzeniu.</p>
     </section>
 
-    <section class="card" data-hide-for="lyrics">
+    <section class="card" data-hide-for="lyrics relay">
       <h2>Poziom trudności</h2>
       <div class="seg">
         <label><input type="radio" name="level" value="3"> Bardzo łatwy</label>
@@ -473,7 +478,7 @@
       <div data-for="lyrics">
         <p class="muted small">Każdy gracz ma planszę 3×3: wybierasz kategorię i jedną z dwóch piosenek, a po 9 piosenkach czeka hit za 100 000 zł. Piosenka gra z YouTube od początku, a w pewnym momencie muzyka milknie – wpisz (albo zaśpiewaj) cały brakujący wers. Drabinka: 500 zł → 100 000 zł, gwarantowane 10 000 zł po 5. piosence; przed finałem można zrezygnować z 75 000 zł, w finale bez kół ratunkowych (pomyłka – 50 000 zł). Teksty: lrclib.net, filmy: YouTube.</p>
       </div>
-      <div data-for="melody steps cover words mirror mashup buzz duel year artist who screen chain country bid sort5 seconds">
+      <div data-for="relay melody steps cover words mirror mashup buzz duel year artist who screen chain country bid sort5 seconds">
         <label class="row" style="margin-top:12px"><span id="rounds-label">Piosenek na gracza</span>
           <input type="number" id="rounds" min="1" max="30" value="5">
         </label>
@@ -775,6 +780,12 @@
       <li>Drabinka: 500, 1000, 2000, 5000, 10 000, 15 000, 25 000, 50 000, 75 000 zł i w finale 100 000 zł. Z każdym etapem więcej słów i dalsza część piosenki. Po 5. piosence 10 000 zł jest gwarantowane – pomyłka później kończy grę z tą kwotą, wcześniej – bez wygranej. Przed każdą piosenką można zrezygnować i zabrać wygraną; przed finałem rezygnacja daje 75 000 zł, a w finale nie ma kół ratunkowych – pomyłka w finale daje 50 000 zł.</li>
       <li>Koła ratunkowe (na całą grę): 🔤 trzy słowa – odsłaniasz łącznie 3 słowa, w jednej piosence albo w kilku; 🔁 wymiana piosenki na drugą z kategorii; 🎯 trzy wersje wersu – jedna jest prawdziwa; w multiplayerze także 🙋 pomoc suflera – wybrany gracz podpowiada (na swoim telefonie).</li>
       <li>W multiplayerze gracze grają po kolei, każdy na swojej drabince; wygrywa najwyższa wygrana.</li>
+    </ol>
+    <h3>Sztafeta karaoke</h3>
+    <ol>
+      <li>Piosenka gra z YouTube, a muzyka milknie w 3–4 miejscach (np. zwrotka, refren, druga zwrotka, końcówka).</li>
+      <li>Przy każdej przerwie odpowiada kolejny gracz – w tej samej piosence śpiewacie na zmianę. Dobrze dokończony wers – 1 pkt.</li>
+      <li>W ustawieniach wybierasz liczbę piosenek; wygrywa gracz z największą liczbą punktów.</li>
     </ol>
     <h3>Liga wieczoru</h3>
     <ul>

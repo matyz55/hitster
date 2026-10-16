@@ -183,6 +183,19 @@ function lyPickGap(lines, stage, duration, minT = 0) {
   return { line: span[0], lines: span, prefix: '', blanks, pauseAt: Math.max(0, lines[span[0]].t - 0.6),
     end: lines[span[span.length - 1] + 1] ? lines[span[span.length - 1] + 1].t : lines[span[span.length - 1]].t + 4 };
 }
+// Sztafeta karaoke: kilka przerw w jednej piosence (każda w innej części), co najmniej kilka sekund muzyki między nimi
+function lyRelayGaps(lines, duration, n) {
+  const dur = duration || lines[lines.length - 1].t + 5;
+  const out = [];
+  for (let k = 0; k < n; k++) {
+    const from = Math.max(15, out.length ? out[out.length - 1].end + 8 : 0, (dur * k) / n);
+    const seg = lines.filter((l) => l.t >= from && l.t < Math.max(from + 10, (dur * (k + 1)) / n));
+    if (!seg.length) continue;
+    const gap = lyPickGap(lines.filter((l) => l.t < seg[seg.length - 1].t + 0.01), 3, dur, from);
+    if (gap && gap.pauseAt >= from) out.push(gap);
+  }
+  return out;
+}
 // „trzy wersje wersu”: dwie błędne wersje z podmienionymi słowami (z tej samej piosenki) – wielkość liter jak w oryginale
 const lyCaseLike = (w, like) => (/^\p{Lu}/u.test(like) ? w.charAt(0).toUpperCase() + w.slice(1).toLowerCase() : w.toLowerCase());
 function lyVariants(lines, gap) {
@@ -254,7 +267,7 @@ function startLyrics(rows, mini = null) {
     state.startedAt = Date.now();
     state.turn = 0;
     state.phase = 'loading';
-    state.lyrics = { used, played: new Set(), cur: null, pickCat: null, hitAsk: false, msg: '', fails: 0, mini: { rounds: mini.rounds || 1 } };
+    state.lyrics = { used, played: new Set(), cur: null, pickCat: null, hitAsk: false, msg: '', fails: 0, mini: { rounds: mini.rounds || 1, relay: !!mini.relay } };
     showScreen('lyrics');
     lyMiniNext();
     return true;
@@ -325,7 +338,13 @@ async function lyStartSong() {
     cur.lines = lines;
     // film mógł już ruszyć – przerwa najwcześniej kilka sekund od bieżącego miejsca
     const now = !ly.mini && lyYT && lyYT.getCurrentTime ? lyYT.getCurrentTime() || 0 : 0;
-    cur.gap = lyPickGap(lines, ly.mini ? 2 : lyMe().stage + 1, cur.it.d, now ? now + 4 : 0);
+    if (ly.mini && ly.mini.relay) {
+      // sztafeta: przerwa dla każdego gracza po kolei (3–4 w piosence)
+      cur.gaps = lyRelayGaps(lines, cur.it.d, Math.min(4, Math.max(3, state.players.length)));
+      if (cur.gaps.length < 2) throw new Error('za mało miejsc na przerwy');
+      cur.gi = 0;
+      cur.gap = cur.gaps[0];
+    } else cur.gap = lyPickGap(lines, ly.mini ? 2 : lyMe().stage + 1, cur.it.d, now ? now + 4 : 0);
     if (!cur.gap) throw new Error('brak miejsca na przerwę');
     cur.given = cur.gap.blanks.map(() => '');
     // minigra: od początku zwrotki albo refrenu z przerwą (kilka wersów wcześniej), a nie od początku piosenki
@@ -557,13 +576,38 @@ function lyQuit() {
   me.quit = true;
   lyNextTurn();
 }
+// sztafeta: następna przerwa w tej samej piosence – odpowiada kolejny gracz, muzyka gra dalej
+function lyRelayNext() {
+  const cur = state.lyrics.cur;
+  cur.gi += 1;
+  cur.gap = cur.gaps[cur.gi];
+  Object.assign(cur, { given: cur.gap.blanks.map(() => ''), text: '', revealed: new Set(), variants: null, hint: null, helper: null, marks: null,
+    ok: null, revealing: false, picking: false, reported: false });
+  state.turn = (state.turn + 1) % state.players.length;
+  state.phase = 'play';
+  $('#ly-lines').dataset.key = '';
+  try { lyYT.playVideo(); } catch (e) { /* odtwarzacz niedostępny */ }
+  clearInterval(lyTick);
+  lyTick = setInterval(lyOnTick, 50);
+  lyRender();
+}
+const lyRelayLeft = () => { const ly = state.lyrics; return !!(ly && ly.mini && ly.mini.relay && ly.cur && ly.cur.gaps && ly.cur.gi < ly.cur.gaps.length - 1); };
 function lyNextTurn() {
+  if (lyRelayLeft()) { lyRelayNext(); return; }
   lyStop();
   const ly = state.lyrics;
   ly.cur = null;
   ly.msg = '';
   ly.pickCat = null;
   ly.hitAsk = false;
+  if (ly.mini && ly.mini.relay) {
+    // sztafeta: `rounds` piosenek, kolejka graczy idzie dalej
+    ly.mini.songs = (ly.mini.songs || 0) + 1;
+    if (ly.mini.songs >= ly.mini.rounds) { lyEnd(); return; }
+    state.turn = (state.turn + 1) % state.players.length;
+    lyMiniNext();
+    return;
+  }
   if (ly.mini) {
     lyMe().played += 1;
     if (state.players.every((p) => p.played >= ly.mini.rounds)) { lyEnd(); return; }
@@ -583,7 +627,7 @@ function lyNextTurn() {
 }
 function lyEnd() {
   lyStop();
-  state.mode = 'lyrics';
+  if (state.mode !== 'relay') state.mode = 'lyrics';
   endGame();
 }
 
@@ -610,7 +654,8 @@ function lyRender() {
   if (!ly) return;
   const me = lyMe();
   const multi = state.players.length > 1;
-  $('#ly-title').textContent = multi ? T('🎤 Tak to leciało! – gra {0}', me.name) : T('🎤 Tak to leciało!');
+  $('#ly-title').textContent = ly.mini && ly.mini.relay ? T('🎤 Sztafeta karaoke – śpiewa {0}', me.name)
+    : multi ? T('🎤 Tak to leciało! – gra {0}', me.name) : T('🎤 Tak to leciało!');
   $('#ly-scores').replaceChildren(...(multi ? state.players.map((p, i) => el('span', { class: `score${i === state.turn ? ' active' : ''}${p.out ? ' out' : ''}` },
     ly.mini ? `${p.name}: ${pointsLabel(p.score)}` : `${p.name}: ${lyMoney(p.score)}${p.out ? (p.quit ? ' ✋' : ' ✖') : ''}`)) : []));
   // przy planszy: drabinka i stan kół ratunkowych; w trakcie piosenki koła są przyciskami pod tekstem
@@ -717,9 +762,10 @@ function lyRenderAnswer() {
     const verdict = el('p', { class: `verdict ${cur.ok ? 'ok' : 'bad'}` }, ly.mini ? (cur.ok ? T('✅ Tak to leciało! +1 pkt') : T('❌ Niestety, nie tak to leciało.')) : cur.ok
       ? (p.stage === 10 ? T('🏆 Brawo! Główna nagroda: {0}!', lyMoney(p.score)) : T('✅ Tak to leciało! Masz {0}.', lyMoney(p.score)))
       : T('❌ Niestety. Wygrana: {0}.', lyMoney(p.score)));
-    const last = ly.mini ? state.players.every((pl) => pl.played + (pl === p ? 1 : 0) >= ly.mini.rounds) : !lyActive().length;
+    const last = ly.mini && ly.mini.relay ? !lyRelayLeft() && (ly.mini.songs || 0) + 1 >= ly.mini.rounds
+      : ly.mini ? state.players.every((pl) => pl.played + (pl === p ? 1 : 0) >= ly.mini.rounds) : !lyActive().length;
     box.replaceChildren(words, verdict, mine || '', el('div', { class: 'actions' },
-      el('button', { class: 'primary', onclick: lyNextTurn }, last ? T('Koniec gry') : T('Dalej')),
+      el('button', { class: 'primary', onclick: lyNextTurn }, last ? T('Koniec gry') : lyRelayLeft() ? T('Dalej – śpiewa {0}', state.players[(state.turn + 1) % state.players.length].name) : T('Dalej')),
       el('button', { class: 'ghost small', onclick: lyReport }, cur.reported ? T('↩ Cofnij zgłoszenie') : T('⚠️ Zła wersja piosenki / błędy w tekście'))),
       cur.reported ? el('p', { class: 'muted small' }, T('Zgłoszono – ten film nie wróci w kolejnych grach na tym urządzeniu.')) : '', credit);
     return;
@@ -782,7 +828,7 @@ function lyrSnapshot() {
   const cur = ly.cur;
   const result = state.phase === 'result';
   return {
-    phase: state.phase, turn: me.name, stage: me.stage, ladder: LY_LADDER, money: state.players.map((p) => ({ name: p.name, v: p.score, out: p.out })),
+    phase: state.phase, turn: me.name, stage: me.stage, ladder: LY_LADDER, points: !!ly.mini, money: state.players.map((p) => ({ name: p.name, v: p.score, out: p.out })),
     lifes: me.lifes, cat: cur ? cur.cat : null, song: cur ? { t: cur.it.song.t, a: artistLine(cur.it.song), y: cur.it.song.y } : null,
     lines: $$('#ly-lines p').map((p) => ({ cls: p.className, text: p.textContent })),
     blanks: cur && cur.gap && ['answer', 'result'].includes(state.phase) ? { prefix: '', n: cur.gap.blanks.length,
