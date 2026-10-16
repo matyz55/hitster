@@ -285,6 +285,52 @@ function whoOptions(song) {
   if (labels.length < 4) return null;
   return { q: WHO_QUESTIONS[q.kind](), options: shuffle(labels).map((l) => ({ label: l, ok: l === q.answer })) };
 }
+/* --- Skąd jest wykonawca?: kraj wpisany przez gracza (domyślnie) albo cztery do wyboru (ustawienie gry) --- */
+$$('input[name=country-answer]').forEach((r) => {
+  r.checked = r.value === store.get('countryAnswer', 'type');
+  r.addEventListener('change', () => store.set('countryAnswer', r.value));
+});
+const countryTyped = () => store.get('countryAnswer', 'type') !== 'choice';
+// inne nazwy, pod którymi gracze znają kraj (oprócz nazw po polsku i po angielsku z przeglądarki)
+const COUNTRY_ALIASES = {
+  US: ['USA', 'US', 'Ameryka', 'America', 'Stany', 'Stany Zjednoczone Ameryki', 'United States of America'],
+  GB: ['UK', 'Anglia', 'England', 'Szkocja', 'Scotland', 'Walia', 'Wales', 'Britain', 'Great Britain', 'Brytania', 'Zjednoczone Królestwo', 'Irlandia Północna', 'Northern Ireland'],
+  YU: ['Jugosławia', 'Yugoslavia'],
+  CZ: ['Czechy', 'Czech Republic', 'Republika Czeska', 'Czechia'],
+  NL: ['Holandia', 'Holland', 'Niderlandy', 'Netherlands', 'The Netherlands'],
+  KR: ['Korea', 'Korea Południowa', 'South Korea'],
+  RU: ['Rosja', 'Russia'],
+  IE: ['Irlandia', 'Ireland', 'Eire'],
+};
+const countryFold = (s) => SongMatch.norm(String(s || ''));
+const countryNamesOf = (() => {
+  const cache = new Map();
+  const dn = ['pl', 'en'].map((l) => { try { return new Intl.DisplayNames([l], { type: 'region' }); } catch (e) { return null; } });
+  return (cc) => {
+    const C = String(cc || '').toUpperCase();
+    if (!cache.has(C)) {
+      const names = [countryName({ cc: C }), ...(COUNTRY_ALIASES[C] || [])];
+      // YU to dawna Jugosławia – przeglądarki pokazują ją jako Serbię
+      if (C !== 'YU') for (const d of dn) { try { if (d) names.push(d.of(C)); } catch (e) { /* nieznany kod */ } }
+      cache.set(C, new Set(names.map(countryFold).filter(Boolean)));
+    }
+    return cache.get(C);
+  };
+})();
+// czy wpisany kraj to kraj wykonawcy: bez wielkości liter i polskich znaków; jedna literówka w dłuższej nazwie
+// też się liczy, chyba że gracz wpisał dokładnie nazwę innego kraju
+function countryMatches(text, cc) {
+  const g = countryFold(text);
+  if (!g) return false;
+  const mine = countryNamesOf(cc);
+  if (mine.has(g)) return true;
+  const others = (window.FLAG_CODES || []).filter((c) => c.toUpperCase() !== String(cc).toUpperCase());
+  if (others.some((c) => countryNamesOf(c).has(g))) return false;
+  return g.length >= 6 && [...mine].some((n) => n.length >= 6 && SongMatch.levenshtein(g, n) <= 1);
+}
+// pionowa lista odpowiedzi do wyboru – przyciski równej wysokości na całą szerokość
+const quizList = (btns) => el('div', { class: 'quiz-list' }, btns);
+
 // nowa piosenka w trybie quizowym
 function prepareQuiz(song) {
   if (state.mode === 'who') {
@@ -302,7 +348,7 @@ function prepareQuiz(song) {
     state.quiz = { options: screenOptions(song) || quizOptions(song, 'artist'), bet: 0, year: null };
     return;
   }
-  state.quiz = { options: quizOptions(song), bet: 0, year: null };
+  state.quiz = { options: quizOptions(song), bet: 0, year: null, typed: state.mode === 'country' && countryTyped() };
 }
 
 function answerQuiz(choice) {
@@ -342,6 +388,14 @@ function answerQuiz(choice) {
     verdict = diff === 0 ? T('🎯 Dokładnie {0}! +3 pkt', song.y)
       : (diff <= 2 ? T('✔ Blisko – {0} (podano {1}). +1 pkt', song.y, y) : T('✘ To {0} (podano {1}).', song.y, y));
     state.quiz.year = y;
+  } else if (state.quiz.typed) {
+    // wpisany kraj (pusty – „Nie wiem”)
+    const given = String(choice || '').trim();
+    ok = !!given && countryMatches(given, song.cc);
+    pts = ok ? 1 : 0;
+    state.quiz.given = given;
+    verdict = ok ? T('✔ Tak – to {0}! +1 pkt', countryName(song))
+      : (given ? T('✘ Nie – to {0} (podano: {1}).', countryName(song), given) : T('✘ To {0}.', countryName(song)));
   } else {
     const opt = state.quiz.options[choice];
     if (!opt) return;
@@ -359,7 +413,7 @@ function answerQuiz(choice) {
   p.score += pts;
   state.turnsPlayed += 1;
   state.history.push({ song, preview: state.preview, player: p.name, ok,
-    note: `${p.name}: ${isYearQuiz() ? choice : (state.quiz.options[choice] || {}).label}${pts ? ` (${pts > 0 ? '+' : ''}${pts})` : ''}` });
+    note: `${p.name}: ${isYearQuiz() ? choice : state.quiz.typed ? (state.quiz.given || T('nie wiem')) : (state.quiz.options[choice] || {}).label}${pts ? ` (${pts > 0 ? '+' : ''}${pts})` : ''}` });
   recordAnswer(song, ok);
   fx(ok ? 'good' : 'bad');
   showReveal(el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') }, verdict));
@@ -384,9 +438,23 @@ function quizActions() {
         btns.push(el('button', { class: 'big-choice', disabled: b > Math.max(1, p.score), onclick: () => { state.quiz.bet = b; render(); } },
           T('Stawiam {0} pkt', b)));
       }
+    } else if (state.quiz.typed) {
+      // Skąd jest wykonawca?: nazwa kraju wpisana bez podpowiedzi
+      // odświeżenie ekranu w trakcie wpisywania nie gubi tekstu ani kursora
+      const prev = $('#quiz-country');
+      const typed = prev ? prev.value : '';
+      if (prev && document.activeElement === prev) queueMicrotask(() => { const i = $('#quiz-country'); if (i) i.focus({ preventScroll: true }); });
+      const go = el('button', { class: 'primary', disabled: !typed.trim(), onclick: () => answerQuiz($('#quiz-country').value) }, T('✔ Sprawdź'));
+      const input = el('input', {
+        type: 'text', id: 'quiz-country', value: typed, autocomplete: 'off', autocapitalize: 'words', spellcheck: 'false',
+        placeholder: T('Kraj, np. Polska'), 'aria-label': T('Kraj wykonawcy'),
+        oninput: (e) => { go.disabled = !e.target.value.trim(); },
+        onkeydown: (e) => { if (e.key === 'Enter' && e.target.value.trim()) answerQuiz(e.target.value); },
+      });
+      btns.push(input, go, el('button', { class: 'ghost', onclick: () => answerQuiz('') }, T('Nie wiem')));
     } else {
-      state.quiz.options.forEach((o, i) => btns.push(el('button', { class: 'big-choice', onclick: () => answerQuiz(i) },
-        o.cc ? flagEl({ cc: o.cc }) : null, o.cc ? ' ' : null, o.label)));
+      btns.push(quizList(state.quiz.options.map((o, i) => el('button', { class: 'big-choice quiz-opt', onclick: () => answerQuiz(i) },
+        o.cc ? flagEl({ cc: o.cc }) : null, o.cc ? ' ' : null, o.label))));
     }
   }
   if (state.phase === 'revealed') {

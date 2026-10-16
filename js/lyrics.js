@@ -738,6 +738,16 @@ function lyNextTurn() {
   state.phase = 'board';
   lyRender();
 }
+// sztafeta: pominięcie bieżącej piosenki (np. gdy nie działa) – następna piosenka, kolejny gracz
+function lySkipSong() {
+  const ly = state.lyrics;
+  if (!ly || !ly.mini || !ly.mini.relay || !ly.cur || state.phase === 'ended') return;
+  if (!confirm(T('Pominąć tę piosenkę?'))) return;
+  state.history.push({ song: ly.cur.it.song, ok: false, note: T('pominięta'), preview: null });
+  ly.cur.gaps = null;
+  lyNextTurn();
+}
+$('#btn-ly-skip-song').addEventListener('click', lySkipSong);
 function lyEnd() {
   lyStop();
   if (state.mode !== 'relay') state.mode = 'lyrics';
@@ -769,6 +779,12 @@ function lyRender() {
   const multi = state.players.length > 1;
   $('#ly-title').textContent = ly.mini && ly.mini.relay ? T('🎤 Sztafeta karaoke – śpiewa {0}', me.name)
     : multi ? T('🎤 Tak to leciało! – gra {0}', me.name) : T('🎤 Tak to leciało!');
+  // pominięcie minigry (impreza, turniej) i piosenki w sztafecie
+  const skipSong = !!(ly.mini && ly.mini.relay && ly.cur && ['loading', 'play', 'answer'].includes(state.phase));
+  const skipMini = !!(state.party || state.tour);
+  $('#btn-ly-skip-song').classList.toggle('hidden', !skipSong);
+  $('#btn-ly-mini-skip').classList.toggle('hidden', !skipMini);
+  $('#ly-skip').classList.toggle('hidden', !skipSong && !skipMini);
   $('#ly-scores').replaceChildren(...(multi ? state.players.map((p, i) => el('span', { class: `score${i === state.turn ? ' active' : ''}${p.out ? ' out' : ''}` },
     ly.mini ? `${p.name}: ${pointsLabel(p.score)}` : `${p.name}: ${lyMoney(p.score)}${p.out ? (p.quit ? ' ✋' : ' ✖') : ''}`)) : []));
   // przy planszy: drabinka i stan kół ratunkowych; w trakcie piosenki koła są przyciskami pod tekstem

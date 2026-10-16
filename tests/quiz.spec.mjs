@@ -38,7 +38,9 @@ test('Kto to śpiewa?: 4 różnych wykonawców, jeden właściwy', async ({ page
   await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(1);
 });
 
-test('Skąd jest wykonawca?: 4 kraje z flagami, zła odpowiedź bez punktu', async ({ page }) => {
+test('Skąd jest wykonawca?: ustawienie „Cztery odpowiedzi” – 4 kraje z flagami, zła odpowiedź bez punktu', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => store.set('countryAnswer', 'choice'));
   await start(page, 'country');
   const opts = await page.evaluate(() => state.quiz.options);
   expect(new Set(opts.map((o) => o.cc)).size).toBe(4);
@@ -374,4 +376,39 @@ test('Impreza na czas: losowe minigry, po upływie czasu bieżąca minigra jest 
   await expect.poll(() => screen(page)).toBe('end');
   await expect(page.locator('.party-kicker')).toContainText('Koniec imprezy');
   expect(await page.evaluate(() => [state.party.done, state.party.plan.length])).toEqual([true, 1]);
+});
+
+test('Skąd jest wykonawca?: domyślnie wpisywany kraj – po polsku, po angielsku, bez polskich znaków', async ({ page }) => {
+  await start(page, 'country', '4');
+  await expect(page.locator('#quiz-country')).toBeVisible();
+  await expect(page.locator('#actions button.big-choice')).toHaveCount(0);
+  expect(await page.evaluate(() => [
+    countryMatches('polska', 'PL'), countryMatches('POLAND', 'pl'), countryMatches('Wielka Brytania', 'GB'), countryMatches('wielka brytania', 'GB'),
+    countryMatches('USA', 'US'), countryMatches('Stany Zjednoczone', 'US'), countryMatches('Niemcy', 'DE'), countryMatches('germany', 'DE'),
+    countryMatches('Szwecja', 'SE'), countryMatches('szwecja', 'SE'), countryMatches('Hiszpania', 'ES'), countryMatches('Wlochy', 'IT'),
+  ])).toEqual(Array(12).fill(true));
+  // inny kraj (także podobna nazwa innego kraju) – źle
+  expect(await page.evaluate(() => [countryMatches('Austria', 'AU'), countryMatches('Niemcy', 'PL'), countryMatches('Słowacja', 'SI'), countryMatches('', 'PL')]))
+    .toEqual([false, false, false, false]);
+  const right = await page.evaluate(() => new Intl.DisplayNames(['en'], { type: 'region' }).of(state.current.cc.toUpperCase()));
+  await page.fill('#quiz-country', right.toLowerCase());
+  await page.press('#quiz-country', 'Enter');
+  await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(1);
+  await page.click('#actions button.primary');
+  await ready(page);
+  // „Nie wiem” – bez punktu, właściwy kraj w odpowiedzi
+  await page.getByRole('button', { name: 'Nie wiem' }).click();
+  await expect(page.locator('#reveal .verdict')).toContainText(await page.evaluate(() => countryName(state.current)));
+  expect(await page.evaluate(() => state.players[0].score)).toBe(1);
+});
+
+test('odpowiedzi do wyboru w pionowej liście, przyciski równej wysokości', async ({ page }) => {
+  await start(page, 'artist');
+  const boxes = await page.$$eval('#actions .quiz-list button.big-choice', (b) => b.map((x) => x.getBoundingClientRect()).map((r) => ({ x: r.x, y: r.y, w: r.width, h: r.height })));
+  expect(boxes).toHaveLength(4);
+  for (let i = 1; i < 4; i++) {
+    expect(boxes[i].y).toBeGreaterThan(boxes[i - 1].y);
+    expect(Math.abs(boxes[i].h - boxes[0].h)).toBeLessThan(1);
+    expect(Math.abs(boxes[i].x - boxes[0].x)).toBeLessThan(1);
+  }
 });

@@ -351,3 +351,58 @@ test('Tak to leciało!: zapasowy film ma własny tekst dopasowany do swojej dłu
   expect(r.vids).toEqual([{ id: 'v1', lr: 11, d: 200 }, { id: 'v2', lr: 22, d: 180 }]);
   expect([r.lr, r.d]).toEqual([11, 200]);
 });
+
+test('Impreza: minigrę „Tak to leciało!” można pominąć – impreza idzie dalej do następnej minigry', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    const pl = window.SONGS.filter((s) => s.c === 'PL').slice(0, 400);
+    window.LYRICS_SONGS = Object.fromEntries(pl.map((s, i) => [songKey(s), [`vid${i}`, 1000 + i, 180]]));
+    store.set('partyGames', ['lyrics', 'hilo']);
+  });
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=party]');
+  await page.fill('#party-games', '2');
+  await page.click('#btn-start');
+  // pierwsza minigra: ustawiamy kolejność (najpierw „Tak to leciało!”)
+  await expect.poll(() => page.evaluate(() => state.party && state.party.plan.length)).toBe(2);
+  if (await page.evaluate(() => state.party.plan[0] !== 'lyrics')) {
+    await page.evaluate(() => { state.party.plan = ['lyrics', 'hilo']; playPartyGame(); });
+  }
+  await expect.poll(() => screen(page)).toBe('lyrics');
+  await expect(page.locator('#btn-ly-mini-skip')).toBeVisible();
+  // w zwykłej minigrze nie ma pominięcia piosenki (to tylko sztafeta)
+  await expect(page.locator('#btn-ly-skip-song')).toBeHidden();
+  await page.click('#btn-ly-mini-skip');
+  await expect.poll(() => screen(page)).toBe('end');
+  await expect(page.locator('#end-party')).toBeVisible();
+  expect(await page.evaluate(() => [state.party.idx, state.party.done, state.lyrics.cur])).toEqual([1, false, null]);
+  await page.click('#btn-party-next');
+  await expect.poll(() => screen(page)).toBe('game');
+  expect(await page.evaluate(() => state.mode)).toBe('hilo');
+  await expect(page.locator('#mini-skip')).toBeVisible();
+});
+
+test('Sztafeta karaoke: bieżącą piosenkę można pominąć – gra bierze następną', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    const pl = window.SONGS.filter((s) => s.c === 'PL').slice(0, 400);
+    window.LYRICS_SONGS = Object.fromEntries(pl.map((s, i) => [songKey(s), [`vid${i}`, 1000 + i, 180]]));
+  });
+  await page.click('#btn-multi');
+  await page.click('#btn-lobby-add');
+  await page.click('#btn-lobby-next');
+  await page.click('.mode[data-mode=relay]');
+  await page.fill('#rounds', '2');
+  await page.click('#btn-start');
+  await expect.poll(() => page.evaluate(() => state.phase), { timeout: 20000 }).toBe('answer');
+  // osobny tryb (nie impreza) – bez pominięcia minigry
+  await expect(page.locator('#btn-ly-mini-skip')).toBeHidden();
+  const first = await page.evaluate(() => songKey(state.lyrics.cur.it.song));
+  await page.click('#btn-ly-skip-song');
+  await expect.poll(() => page.evaluate(() => state.lyrics.cur && songKey(state.lyrics.cur.it.song)), { timeout: 20000 }).not.toBe(first);
+  expect(await page.evaluate(() => [state.lyrics.mini.songs, state.history[0].note])).toEqual([1, 'pominięta']);
+  await expect.poll(() => page.evaluate(() => state.phase), { timeout: 20000 }).toBe('answer');
+  // druga (ostatnia) piosenka pominięta – koniec gry
+  await page.click('#btn-ly-skip-song');
+  await expect.poll(() => screen(page)).toBe('end');
+});

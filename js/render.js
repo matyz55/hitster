@@ -150,7 +150,7 @@ function renderHeader(p, timeline) {
   } else if (state.mode === 'duel') {
     const round = Math.min(state.rounds, Math.floor(state.turnsPlayed / state.players.length) + 1);
     title.textContent = state.players.length > 1 ? T('Tura: {0}', p.name) : T('Piosenka {0} z {1}', songNo, state.rounds);
-    info.textContent = `🥊 ${decadeLabelLong(state.duel[0])} ${T('kontra')} ${decadeLabelLong(state.duel[1])}`
+    info.textContent = (state.duel ? `🥊 ${decadeLabelLong(state.duel[0])} ${T('kontra')} ${decadeLabelLong(state.duel[1])}` : '🥊')
       + (state.players.length > 1 ? ` · ${T('Runda {0}/{1}', round, state.rounds)}` : ` · ${T('Wynik: {0} pkt', p.score)}`);
   } else if (isMelody()) {
     const round = Math.min(state.rounds, Math.floor(state.turnsPlayed / state.players.length) + 1);

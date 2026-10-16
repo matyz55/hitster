@@ -96,10 +96,19 @@ function startGame(over = {}) {
     base = base.filter((s) => songWorks(s).length);
   }
   state.quizPool = base;
+  state.duelPool = null;
   if (state.mode === 'duel') {
-    state.duel = pickDuelDecades(base, needed, !!party);
-    if (!state.duel) { alert(T('Za mało piosenek w wybranej puli dla tych ustawień.')); return; }
-    base = base.filter((s) => state.duel.includes(decadeOf(s)));
+    // „Losowo” (albo impreza): nowa para dekad przy każdej piosence; wybrane w ustawieniach – te same przez całą grę
+    const random = !!party || (filterState.duelA == null && filterState.duelB == null);
+    const decades = [...new Set(base.map(decadeOf))].sort((x, y) => x - y);
+    if (random && decades.length >= 2) {
+      state.duelPool = decades;
+      state.duel = null;
+    } else {
+      state.duel = pickDuelDecades(base, needed, random);
+      if (!state.duel) { alert(T('Za mało piosenek w wybranej puli dla tych ustawień.')); return; }
+      base = base.filter((s) => state.duel.includes(decadeOf(s)));
+    }
   }
   const pool = freshPool(base, needed);
   state.deck = state.mode === 'chain' ? new ChainDeck(pool) : state.mode === 'climb' ? new ClimbDeck(pool)
@@ -316,6 +325,21 @@ $('#btn-party-stop').addEventListener('click', () => {
   updateEndButtons();
   tvSync();
 });
+// pominięcie minigry (np. gdy coś nie działa): minigra kończy się z dotychczasowymi wynikami, impreza (turniej) idzie dalej
+function skipMinigame() {
+  if (!(state.party || state.tour) || state.phase === 'ended') return;
+  const lyrics = currentScreen() === 'lyrics';
+  if (!confirm(T('Pominąć tę minigrę? Zostają dotychczasowe wyniki, a gra przejdzie dalej.'))) return;
+  state.miniSkipped = true;
+  try {
+    if (lyrics) {
+      // przerwana piosenka (wczytywanie, odtwarzanie) już nie wraca na ekran
+      if (state.lyrics) state.lyrics.cur = null;
+      lyEnd();
+    } else endGame();
+  } finally { state.miniSkipped = false; }
+}
+$$('.btn-mini-skip').forEach((b) => b.addEventListener('click', skipMinigame));
 // Liga wieczoru: kolejne gry w tym samym lobby – za każdą grę 3/2/1 pkt za miejsca (remis – tyle samo, wynik 0 – bez punktów)
 function leagueAfterGame(results) {
   if (!lobby.active || results.length < 2) return;
@@ -355,6 +379,12 @@ function pickDuelDecades(pool, needed, random) {
   return [a, b].sort((x, y) => x - y);
 }
 
+function duelPairFor(song) {
+  const d = decadeOf(song);
+  const other = shuffle(state.duelPool.filter((x) => x !== d))[0];
+  return [d, other].sort((x, y) => x - y);
+}
+
 // Karta startowa to sam rok (bez piosenki). Każdy gracz dostaje rok z innej kategorii dekad
 // (jeśli to możliwe), a sam rok to rok losowej piosenki z puli – więc pasuje do zakresu gry.
 function dealStartYears(pool) {
@@ -380,10 +410,12 @@ async function startTurn() {
     current: null, preview: null, marks: null, special: null, swapOffer: false, hiloLost: false, skipped: false, heard: false,
     buzz: state.mode === 'buzz' ? { answering: null, locked: new Set() } : null,
   });
+  if (state.mode === 'duel' && state.duelPool) state.duel = null;
   $('#reveal').classList.add('hidden');
   $('#guess-form').reset();
   $('#guess-song').disabled = false;
   $('#letter-hint').classList.add('hidden');
+  $('#mini-skip').classList.toggle('hidden', !(state.party || state.tour));
   render();
   applyAudioRoute();
   await (state.mode === 'sort5' ? drawSort5() : drawSong());
@@ -472,6 +504,8 @@ async function drawSong() {
       markPlayed(song);
       state.current = song;
       state.preview = preview;
+      // Pojedynek dekad na „Losowo”: dekada tej piosenki kontra inna losowa dekada z puli (kolejność od najstarszej)
+      if (state.mode === 'duel' && state.duelPool) state.duel = duelPairFor(song);
       // Krzywe zwierciadło: efekt losowany dla piosenki
       state.mirror = state.mode === 'mirror' ? shuffle(Object.keys(MIRROR_FX))[0] : null;
       if (isSteps()) {

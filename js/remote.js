@@ -95,6 +95,8 @@ function handleRemote(msg, from) {
   if (msg.bingoPick != null && from && state.mode === 'bingo') { const i = playerIndexOf(from.name); if (i >= 0) bingoPick(i, msg.bingoPick); }
   // „Rok co do roku”: rok wpisany na telefonie gracza z turą
   if (msg.yearAnswer != null && from && controlNames().includes(from.name) && isYearQuiz()) answerQuiz(msg.yearAnswer);
+  // „Skąd jest wykonawca?” (wpisywany kraj): nazwa kraju z telefonu gracza z turą
+  if (msg.countryAnswer != null && from && controlNames().includes(from.name) && state.quiz && state.quiz.typed) answerQuiz(String(msg.countryAnswer));
   // Ostatni na placu boju: rok z telefonu gracza
   if (msg.royaleYear != null && from && from.name) royaleAnswer(playerIndexOf(from.name), msg.royaleYear);
   // Pojedynek na żywo: odpowiedź z telefonu gracza
@@ -268,6 +270,8 @@ function tvSync() {
       sort: state.mode === 'sort5' && state.sort && state.phase === 'listen'
         ? { rows: state.sort.order.map((k) => ({ letter: SORT_LETTERS[k], playing: state.sort.playing === k })) } : null,
       yearAsk: isYearQuiz() && state.phase === 'listen' && state.current ? { who: controlNames() } : null,
+      // „Skąd jest wykonawca?” (wpisywany kraj): pole tekstowe na telefonie gracza z turą (odpowiedź: { countryAnswer })
+      countryAsk: state.mode === 'country' && state.quiz && state.quiz.typed && state.phase === 'listen' && state.current ? { who: controlNames() } : null,
       phase: state.phase, turnName: activePlayer().name, turnWho: answering(activePlayer()), playing: !audio.paused, hasSong: !!state.current,
       // drużyny: do której drużyny należy gracz z telefonem
       teamOf: state.mode === 'teams' || state.coop ? Object.fromEntries(state.players.flatMap((pl) => (pl.members || []).map((m) => [m, pl.name]))) : null,

@@ -238,7 +238,7 @@
       <button class="mode" data-mode="country" data-ctx="single multi">
         <span class="mode-icon">🌍</span>
         <b>Skąd jest wykonawca?</b>
-        <span class="muted">Cztery kraje z flagami do wyboru.</span>
+        <span class="muted">Wpisz kraj wykonawcy – albo wybierz jeden z czterech z flagami.</span>
       </button>
       <button class="mode" data-mode="sort5" data-ctx="single multi">
         <span class="mode-icon">🔢</span>
@@ -392,6 +392,14 @@
 
     <section class="card">
       <h2>Zasady tej gry</h2>
+      <div data-for="country">
+        <p class="label">Odpowiedź</p>
+        <div class="seg">
+          <label><input type="radio" name="country-answer" value="type" checked> Wpisz kraj</label>
+          <label><input type="radio" name="country-answer" value="choice"> Cztery odpowiedzi</label>
+        </div>
+        <p class="muted small">„Wpisz kraj” – bez podpowiedzi, nazwa po polsku albo po angielsku. „Cztery odpowiedzi” – cztery kraje z flagami do wyboru.</p>
+      </div>
       <div data-for="timed">
         <p class="label">Limit czasu</p>
         <div class="seg">
@@ -414,7 +422,7 @@
           <span>kontra</span>
           <select id="duel-b" aria-label="Druga dekada"></select>
         </div>
-        <p class="muted small">„Losowo” – gra wybierze dekady sama. Piosenki są tylko z tych dwóch dekad.</p>
+        <p class="muted small">Wybrane dekady zostają takie same przez całą grę – piosenki są tylko z nich. „Losowo” (w obu polach) – przy każdej piosence nowa para: dekada tej piosenki i inna losowa.</p>
       </div>
       <div data-for="solo multi teams coop">
         <label class="row">Karty potrzebne do wygranej
@@ -532,6 +540,7 @@
   <!-- EKRAN GRY -->
   <main id="screen-game" class="screen hidden">
     <p id="party-bar" class="party-bar hidden"></p>
+    <p id="mini-skip" class="mini-skip hidden"><button type="button" class="ghost small btn-mini-skip">⏭ Pomiń tę minigrę</button></p>
     <p id="conn-strip" class="conn-strip hidden"></p>
     <section id="scoreboard"></section>
 
@@ -590,6 +599,10 @@
   <main id="screen-lyrics" class="screen hidden">
     <section id="ly-scores" class="scoreboard"></section>
     <h2 id="ly-title" class="screen-title"></h2>
+    <p id="ly-skip" class="mini-skip hidden">
+      <button type="button" id="btn-ly-skip-song" class="ghost small hidden">⏭ Pomiń tę piosenkę</button>
+      <button type="button" id="btn-ly-mini-skip" class="ghost small btn-mini-skip hidden">⏭ Pomiń tę minigrę</button>
+    </p>
     <p id="ly-msg" class="muted hidden"></p>
     <div class="ly-wrap">
       <aside id="ly-ladder" class="card ly-side"></aside>
@@ -741,7 +754,8 @@
     </ol>
     <h3>Pojedynek dekad</h3>
     <ol>
-      <li>Gra wybiera dwie dekady (albo Ty je wybierasz). Każda piosenka jest z jednej z nich – wskaż którą. Dobra odpowiedź = 1 punkt.</li>
+      <li>Przy każdej piosence widzisz dwie dekady – piosenka jest z jednej z nich, wskaż którą. Dobra odpowiedź = 1 punkt.</li>
+      <li>Przy ustawieniu „Losowo” para dekad zmienia się co piosenkę. Jeśli wybierzesz dekady w ustawieniach gry, zostają takie same przez całą grę.</li>
     </ol>
     <h3>Kto pierwszy?</h3>
     <ol>
@@ -773,7 +787,8 @@
     </ol>
     <h3>Kto to śpiewa? · Skąd jest wykonawca?</h3>
     <ol>
-      <li>Cztery odpowiedzi do wyboru: wykonawcy albo kraje (z flagami). Dobra odpowiedź – 1 pkt.</li>
+      <li>Kto to śpiewa?: cztery odpowiedzi do wyboru. Dobra odpowiedź – 1 pkt.</li>
+      <li>Skąd jest wykonawca?: wpisujesz nazwę kraju (po polsku albo po angielsku; wielkość liter i polskie znaki nie mają znaczenia). W ustawieniach gry można zamiast tego wybrać cztery kraje z flagami do wyboru. Dobra odpowiedź – 1 pkt.</li>
     </ol>
     <h3>Licytacja</h3>
     <ol>

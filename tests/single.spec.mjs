@@ -283,3 +283,53 @@ test('ciekawostki: żarty przy piosenkach Edyty Górniak i Maryli Rodowicz (co j
   expect(r.egg[1]).toContain('A co, już sylwester?');
   expect(r.plain).not.toContain('Wszechświat');
 });
+
+test('Impreza: pominięcie minigry kończy ją z dotychczasowym wynikiem i przechodzi do przerwy', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => store.set('partyGames', ['melody', 'duel']));
+  await start(page, 'party', (p) => p.fill('#party-games', '2'));
+  await expect(page.locator('#mini-skip')).toBeVisible();
+  await page.evaluate(() => { state.players[0].score = 2; });
+  await page.click('#mini-skip button');
+  await expect.poll(() => screen(page)).toBe('end');
+  await expect(page.locator('#end-party')).toBeVisible();
+  expect(await page.evaluate(() => [state.party.idx, state.party.points[0]])).toEqual([1, 2]);
+  await page.click('#btn-party-next');
+  await ready(page);
+  await page.click('#mini-skip button');
+  await expect(page.locator('#end-actions')).toBeVisible();
+  // poza imprezą przycisku nie ma
+  await start(page, 'melody');
+  await expect(page.locator('#mini-skip')).toBeHidden();
+});
+
+test('Pojedynek dekad: przy „Losowo” para dekad zmienia się co piosenkę, wybrane dekady zostają stałe', async ({ page }) => {
+  await start(page, 'duel', (p) => p.fill('#rounds', '8'));
+  const pairs = [];
+  for (let k = 0; k < 6; k++) {
+    const info = await page.evaluate(() => ({ duel: state.duel, d: decadeOf(state.current) }));
+    expect(info.duel).toHaveLength(2);
+    expect(info.duel).toContain(info.d);
+    expect(info.duel[0]).toBeLessThan(info.duel[1]);
+    pairs.push(info.duel.join('-'));
+    await page.evaluate(() => answerDuel(decadeOf(state.current)));
+    await page.click('#actions button.primary');
+    await ready(page);
+  }
+  expect(new Set(pairs).size).toBeGreaterThan(1);
+  // wybrane w ustawieniach: te same dwie dekady przez całą grę
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=duel]');
+  await page.selectOption('#duel-a', '1980');
+  await page.selectOption('#duel-b', '2000');
+  await page.fill('#rounds', '4');
+  await page.click('#btn-start');
+  await ready(page);
+  for (let k = 0; k < 3; k++) {
+    expect(await page.evaluate(() => [state.duel, [1980, 2000].includes(decadeOf(state.current))])).toEqual([[1980, 2000], true]);
+    await page.evaluate(() => answerDuel(decadeOf(state.current)));
+    await page.click('#actions button.primary');
+    await ready(page);
+  }
+});

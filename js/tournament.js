@@ -72,7 +72,8 @@ function tourAfterGame() {
   const va = pa ? metric(pa) : 0;
   const vb = pb ? metric(pb) : 0;
   m.score = `${va}:${vb}`;
-  if (va === vb && (m.again || 0) < 2) m.again = (m.again || 0) + 1;
+  // remis w pominiętym meczu – bez dogrywki (ta sama minigra mogłaby znów nie działać), o awansie decyduje los
+  if (va === vb && (m.again || 0) < 2 && !state.miniSkipped) m.again = (m.again || 0) + 1;
   else { m.w = va === vb ? (Math.random() < 0.5 ? m.a : m.b) : (va > vb ? m.a : m.b); m.again = 0; }
   if (m.w && !tourMatch()) {
     const winners = tourRound().map((x) => x.w);

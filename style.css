@@ -569,6 +569,8 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .p-fixed { flex: 1; min-width: 0; padding: 10px 12px; border-radius: 10px; background: var(--panel-2, rgba(255, 255, 255, .05)); font-weight: 600; }
 #lobby-room .room-qr { width: 200px; height: 200px; }
 .party-bar { text-align: center; font-weight: 700; color: var(--accent-2); margin: 0 0 8px; }
+.mini-skip { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 0 8px; }
+.mini-skip.hidden { display: none; }
 .party-kicker { color: var(--accent-2); font-weight: 700; margin: 0 0 4px; }
 .party-box { margin-top: 8px; }
 .party-box .plus { color: var(--ok, #3ddc84); font-weight: 700; }
@@ -603,6 +605,11 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .conn-strip { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: .85rem; margin: 0 0 8px; }
 /* --- tryby quizowe --- */
 #quiz-year, #challenge-year { flex: 1 1 9em; min-width: 9em; font-size: 1.1rem; }
+#quiz-country { flex: 1 1 100%; min-width: 0; font-size: 1.2rem; padding: 12px 14px; }
+/* odpowiedzi do wyboru: pionowa lista, przyciski równej wysokości na całą szerokość */
+.quiz-list { flex: 1 1 100%; display: grid; grid-auto-rows: 1fr; gap: 10px; width: 100%; }
+.quiz-list .big-choice { width: 100%; min-height: clamp(60px, 11vh, 120px); padding: 10px 16px; line-height: 1.25; overflow-wrap: anywhere; }
+.quiz-list .big-choice .flag-img { width: 1.6em; height: auto; vertical-align: -0.2em; }
 .daily-squares { font-size: 1.6rem; letter-spacing: 2px; margin: 8px 0; }
 .daily-tile { background: linear-gradient(135deg, rgba(255, 201, 60, .14), rgba(45, 226, 230, .1)), var(--panel); }
 /* „Ułóż piątkę”: lista fragmentów do przeciągania (gra i telefon gracza) */

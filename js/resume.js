@@ -7,7 +7,7 @@ const SAVE_KEY = 'songster.savedGame';
 const SAVE_MAX_AGE = 12 * 3600e3;
 // pola stanu gry zapisywane wprost (liczby, teksty, tablice, proste obiekty)
 const SAVE_FIELDS = ['mode', 'baseMode', 'turn', 'turnsPlayed', 'rounds', 'winTarget', 'guessType', 'difficulty', 'showAll', 'endless',
-  'challengeMode', 'recordLevel', 'expert', 'letterHint', 'specials', 'timeLimit', 'timeLeft', 'duel', 'streak', 'hiloMulti',
+  'challengeMode', 'recordLevel', 'expert', 'letterHint', 'specials', 'timeLimit', 'timeLeft', 'duel', 'duelPool', 'streak', 'hiloMulti',
   'buzzKeys', 'startedAt', 'party', 'coop'];
 const SETUP_INPUTS = ['#rounds', '#win-target', '#start-tokens', '#lives', '#party-games'];
 const songByKey = (() => {

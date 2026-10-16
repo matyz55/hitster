@@ -454,3 +454,19 @@ test('Pojedynek na żywo: szybsza dobra odpowiedź – 2 pkt, wolniejsza – 1 p
   await expect.poll(() => screen(page)).toBe('end');
   await expect(page.locator('#winner-title')).toContainText('Gracz 1');
 });
+
+test('Turniej: pominięty mecz (remis 0:0) bez dogrywki – awans losowy, turniej idzie dalej', async ({ page }) => {
+  await lobby(page, 3);
+  await page.click('.mode[data-mode=tour]');
+  await page.selectOption('#tour-game', 'artist');
+  await page.click('#btn-start');
+  await ready(page);
+  await expect(page.locator('#mini-skip')).toBeVisible();
+  await page.click('#mini-skip button');
+  await expect.poll(() => screen(page)).toBe('end');
+  const m = await page.evaluate(() => state.tour.rounds[0].find((x) => x.b != null));
+  expect(m.score).toBe('0:0');
+  expect([m.a, m.b]).toContain(m.w);
+  await expect(page.locator('#end-party')).toBeVisible();
+  await expect(page.locator('.tour-box')).toContainText('Finał');
+});
