@@ -332,8 +332,9 @@ test('Ostatni na placu boju: największa pomyłka traci serce, wygrywa ostatni',
   await expect(page.locator('#actions .royale-row')).toHaveCount(3);
   const y = await page.evaluate(() => state.current.y);
   const rows = page.locator('#actions .royale-row');
-  // gracz 1 – dokładnie, gracz 2 – o 2 lata, gracz 3 – o 10 lat
-  for (const [i, v] of [[0, y], [1, y - 2], [2, y + 10]]) {
+  // gracz 1 – dokładnie, gracz 2 – o 2 lata, gracz 3 – o 10 lat (w przeszłość, gdy rok +10 byłby w przyszłości)
+  const far = y + 10 > new Date().getFullYear() ? y - 10 : y + 10;
+  for (const [i, v] of [[0, y], [1, y - 2], [2, far]]) {
     await rows.nth(0).locator('input').fill(String(v));
     await rows.nth(0).locator('button').click();
     if (i < 2) await expect(page.locator('#actions .royale-row')).toHaveCount(2 - i);

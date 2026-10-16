@@ -60,6 +60,8 @@ Na ekranie startowym wybiera się **Jeden gracz** albo **Multiplayer**:
 - **Liga wieczoru** – kolejne gry w tym samym lobby: 3/2/1 pkt za miejsca w każdej grze, tabela pod wynikami.
 - **Kto za tym stoi?** – pytanie z danych Wikidata o graną piosenkę (autor tekstu, kompozytor, producent, album,
   miejscowość wykonawcy, prawdziwe nazwisko), cztery odpowiedzi.
+- **Z jakiego to ekranu?** – piosenka z filmu, serialu, musicalu albo gry (pole `w:` w songs.js i dane z Wikidata),
+  cztery tytuły do wyboru.
 - **Okładka z mgły** – najpierw sama rozmyta okładka (bez dźwięku, 4 pkt), potem ostrzejsza i 1/4/10 s fragmentu (3/2/1 pkt).
 - **Krzywe zwierciadło** – fragment zza ściany (filtr dolnoprzepustowy Web Audio), na helu / zwolniony
   (`playbackRate` bez zachowania wysokości) albo od tyłu (odwrócony bufor PCM zapisany jako WAV); z każdym krokiem słabiej.

@@ -697,3 +697,9 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - 156 nowych ciekawostek „z jakiego memu” (razem 260), każda ze źródłem (najczęściej Know Your Meme albo Wikipedia).
 - 17 piosenek dołączyło do zestawu „Przeboje Trójki”, a „Naj Story” Papa Dance – do zestawu „Opole” (według polskiej Wikipedii).
 - Eurowizja: preselekcje innych krajów z angielskiej Wikipedii (m.in. Melodifestivalen, Sanremo, Melodi Grand Prix, Vidbir) – nowe ciekawostki, np. KEiiNO „MONUMENT” (2. miejsce w MGP 2021), MARUV „Siren Song” (wygrana w Vidbir 2019) i The Kolors „Un ragazzo una ragazza” (16. miejsce w Sanremo 2024).
+
+## 5.32.0 – 16.10.2026 (`HASH`)
+
+- Nowy tryb „Z jakiego to ekranu?”: leci piosenka z filmu, serialu, musicalu albo gry – wskaż, skąd ją znasz (cztery tytuły do wyboru). Także jako minigra w Imprezie.
+- Ostatni na placu boju: wpisany rok nie znika, gdy w tym czasie odpowie inny gracz.
+- Uzupełnione brakujące tłumaczenia angielskie; nowy test pilnuje, żeby każdy napis miał wersję angielską.

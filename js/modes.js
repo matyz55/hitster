@@ -3,6 +3,7 @@
 // • year    – Rok co do roku: wpisujesz rok; dokładnie – 3 pkt, do 2 lat różnicy – 1 pkt
 // • artist  – Kto to śpiewa?: 4 wykonawców do wyboru
 // • country – Skąd jest wykonawca?: 4 kraje (z flagami) do wyboru
+// • screen  – Z jakiego to ekranu?: 4 filmy / seriale / gry do wyboru – w którym zabrzmiała piosenka
 // • bid     – Licytacja: najpierw stawiasz 1–3 pkt na swoją pewność, potem wybierasz dekadę; dobrze – zyskujesz stawkę, źle – tracisz
 const QUIZ = {
   year: {
@@ -28,6 +29,11 @@ const QUIZ = {
   who: {
     status: () => T('Posłuchaj i odpowiedz na pytanie o piosenkę.'),
     hint: () => (state.quiz && state.quiz.q ? state.quiz.q : ''),
+    max: () => 1,
+  },
+  screen: {
+    status: () => T('Posłuchaj i wskaż, skąd znasz tę piosenkę.'),
+    hint: () => T('W jakim filmie, serialu albo grze zabrzmiała ta piosenka?'),
     max: () => 1,
   },
   country: {
@@ -82,6 +88,32 @@ function quizOptions(song, mode = state.mode) {
   }
   return [];
 }
+// Z jakiego to ekranu? – filmy, seriale, musicale i gry, w których zabrzmiała piosenka (songs.js: w:…, Wikidata: w)
+function songWorks(song) {
+  const out = (song.f || []).filter((f) => f.startsWith('w:')).map((f) => f.slice(2).replace(/꞉/g, ':'));
+  for (const [k, a] of (window.SONG_FACTS && window.SONG_FACTS[songKey(song)]) || []) if (k === 'w' && a) out.push(a);
+  // dzieło o tej samej nazwie co piosenka (np. „Kiler” w „Kilerze”) zdradzałoby odpowiedź
+  const title = norm(song.t);
+  return [...new Set(out)].filter((w) => !norm(w).includes(title) && !title.includes(norm(w)));
+}
+function screenOptions(song) {
+  const works = songWorks(song);
+  if (!works.length) return null;
+  const want = works[Math.floor(Math.random() * works.length)];
+  const own = new Set(works.map(norm));
+  // błędne odpowiedzi – dzieła innych piosenek, najchętniej z podobnych lat
+  const near = shuffle(window.SONGS.filter((s) => s !== song && Math.abs(s.y - song.y) <= 15));
+  const far = shuffle(window.SONGS.filter((s) => s !== song));
+  const labels = [want];
+  for (const s of [...near, ...far]) {
+    if (labels.length >= 4) break;
+    for (const w of songWorks(s)) {
+      if (!own.has(norm(w)) && !labels.some((l) => norm(l) === norm(w))) { labels.push(w); break; }
+    }
+  }
+  if (labels.length < 4) return null;
+  return shuffle(labels).map((l) => ({ label: l, ok: l === want }));
+}
 // Kto za tym stoi? – pytania, na które dane o tej piosence znają odpowiedź
 function whoQuestions(song) {
   const out = [];
@@ -133,6 +165,10 @@ function prepareQuiz(song) {
     // brak 3 błędnych odpowiedzi tego rodzaju – pytanie o wykonawcę
     const w = whoOptions(song) || { q: T('Kto to śpiewa?'), options: quizOptions(song, 'artist') };
     state.quiz = { options: w.options, q: w.q, bet: 0, year: null };
+    return;
+  }
+  if (state.mode === 'screen') {
+    state.quiz = { options: screenOptions(song) || quizOptions(song, 'artist'), bet: 0, year: null };
     return;
   }
   state.quiz = { options: quizOptions(song), bet: 0, year: null };
@@ -615,7 +651,10 @@ function royaleActions() {
       if (phones.has(p.name) || r.answers[i] != null) continue;
       const input = el('input', { type: 'number', min: '1900', max: String(new Date().getFullYear()), inputmode: 'numeric', class: 'royale-year',
         placeholder: T('Rok – {0}', p.name), 'aria-label': T('Rok – {0}', p.name),
+        // wpisany rok przetrwa odświeżenie przycisków (np. gdy odpowie gracz z telefonem)
+        oninput: (e) => { (r.drafts || (r.drafts = {}))[i] = e.target.value; },
         onkeydown: (e) => { if (e.key === 'Enter') royaleAnswer(i, e.target.value); } });
+      if (r.drafts && r.drafts[i]) input.value = r.drafts[i];
       btns.push(el('div', { class: 'royale-row' }, el('b', {}, p.name), input,
         el('button', { class: 'royale-ok', onclick: () => royaleAnswer(i, input.value) }, T('✔ OK'))));
     }

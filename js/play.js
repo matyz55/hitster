@@ -79,6 +79,11 @@ function startGame(over = {}) {
     if (!window.SONG_FACTS) { loadFacts().then(() => (window.SONG_FACTS ? startGame(over) : alert(T('Nie udało się wczytać danych o piosenkach – spróbuj ponownie.')))); return; }
     base = base.filter((s) => whoQuestions(s).length);
   }
+  // „Z jakiego to ekranu?” – piosenki z filmów, seriali i gier (część danych pochodzi z Wikidata)
+  if (state.mode === 'screen') {
+    if (!window.SONG_FACTS) { loadFacts().then(() => (window.SONG_FACTS ? startGame(over) : alert(T('Nie udało się wczytać danych o piosenkach – spróbuj ponownie.')))); return; }
+    base = base.filter((s) => songWorks(s).length);
+  }
   state.quizPool = base;
   if (state.mode === 'duel') {
     state.duel = pickDuelDecades(base, needed, !!party);

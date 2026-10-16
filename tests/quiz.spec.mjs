@@ -265,3 +265,18 @@ test('Mikser: dwie piosenki naraz, oba tytuły – 2 pkt', async ({ page }) => {
   expect(await page.evaluate(() => state.players[0].score)).toBe(2);
   await expect(page.locator('#reveal .verdict.ok')).toHaveCount(2);
 });
+
+test('Z jakiego to ekranu?: 4 różne tytuły, właściwy to dzieło, w którym zabrzmiała piosenka', async ({ page }) => {
+  await start(page, 'screen', '2');
+  const q = await page.evaluate(() => ({ works: songWorks(state.current), opts: state.quiz.options.map((o) => ({ label: o.label, ok: o.ok })) }));
+  expect(q.works.length).toBeGreaterThan(0);
+  expect(q.opts).toHaveLength(4);
+  expect(new Set(q.opts.map((o) => o.label)).size).toBe(4);
+  const right = q.opts.filter((o) => o.ok);
+  expect(right).toHaveLength(1);
+  expect(q.works).toContain(right[0].label);
+  // błędne odpowiedzi nie są dziełami tej piosenki
+  expect(q.opts.filter((o) => !o.ok).some((o) => q.works.includes(o.label))).toBe(false);
+  await page.click(`#actions button.big-choice >> nth=${q.opts.findIndex((o) => o.ok)}`);
+  await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(1);
+});
