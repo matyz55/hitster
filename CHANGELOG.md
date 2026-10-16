@@ -704,6 +704,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Ostatni na placu boju: wpisany rok nie znika, gdy w tym czasie odpowie inny gracz.
 - Uzupełnione brakujące tłumaczenia angielskie; nowy test pilnuje, żeby każdy napis miał wersję angielską.
 
-## 5.33.0 – 16.10.2026 (`HASH`)
+## 5.33.0 – 16.10.2026 (`10a6136`)
 
 - Nowy tryb „Łańcuch skojarzeń”: każda kolejna piosenka łączy się z poprzednią – tym samym rokiem wydania, krajem wykonawcy, autorem muzyki lub tekstu albo słowem w tytule. Podpowiedź mówi, co je łączy, a z czterech piosenek do wyboru pasuje do niej tylko jedna. Także jako minigra w Imprezie.
