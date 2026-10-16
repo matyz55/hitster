@@ -775,6 +775,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - „Tak to leciało!”: po kliknięciu „Tak to leciało!” w kafelkach od razu pojawiają się Twoje wpisane słowa (zielone – dobrze, czerwone – źle, kreska – brak słowa), a prawidłowy wers widać w tekście karaoke razem z resztą piosenki, gdy do niego dojdzie. Tak samo na dużym ekranie.
 
-## 5.41.4 – 16.10.2026 (`HASH`)
+## 5.41.4 – 16.10.2026 (`29d787d`)
 
 - „Tak to leciało!”: w katalogu zostają tylko piosenki z polskim tekstem (co najmniej 70% polskich wersów) – usunięta piosenka z angielskim tekstem: KOSKA – „I Like the Way You Kiss Me”. Katalog: 127 piosenek.
