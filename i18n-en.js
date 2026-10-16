@@ -1238,5 +1238,18 @@ window.I18N_EN = {
  "Gotowe.": "Done.",
  "Sprawdzone filmy: {0} z {1}, nie odtwarza się: {2} (pomijane na tym urządzeniu).": "Videos checked: {0} of {1}, not playing: {2} (skipped on this device).",
  "Filmów w katalogu: {0}. Sprawdzanie trwa kilka minut – filmy grają bez dźwięku.": "Videos in the catalogue: {0}. Checking takes a few minutes – videos play muted.",
- "Raport skopiowany – wklej go w wiadomości.": "Report copied – paste it into a message."
+ "Raport skopiowany – wklej go w wiadomości.": "Report copied – paste it into a message.",
+ "Samotność i tęsknota": "Loneliness and longing",
+ "Szczęście i uśmiech": "Happiness and smiles",
+ "Łzy i smutek": "Tears and sadness",
+ "Wspomnienia": "Memories",
+ "Zaczyna się od „Nie”": "Starts with “Nie” (No)",
+ "Ja i moje": "Me and mine",
+ "Jazz i blues": "Jazz and blues",
+ "Soul, funk i disco": "Soul, funk and disco",
+ "Numer 1 w Polsce": "Number 1 in Poland",
+ "Numer 1 Listy Trójki": "Number 1 on the Trójka chart",
+ "Polski Top Wszech Czasów": "Polish All-Time Top (Trójka)",
+ "Czasy PRL-u": "Communist-era Poland",
+ "XXI wiek": "21st century"
 };
