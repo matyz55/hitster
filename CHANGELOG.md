@@ -799,6 +799,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
   - duży ekran i telefon gracza w tym samym stylu.
 - Narzędzie zrzutów ekranów robi zrzut każdego kroku kreatora ustawień.
 
-## 5.42.1 – 16.10.2026 (`HASH`)
+## 5.42.1 – 16.10.2026 (`a1a3507`)
 
 - Bez zmian w grze: narzędzie zrzutów łączy obecny wygląd i propozycję 6.0 każdego ekranu w jeden obrazek do porównania.
