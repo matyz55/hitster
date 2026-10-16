@@ -832,27 +832,52 @@ function onGesture() {
   }
 }
 for (const ev of ['keydown', 'pointerdown', 'pointerup', 'mousedown', 'touchend']) window.addEventListener(ev, onGesture, true);
+// numer ostatniego polecenia odtwarzania – starsze (np. ponowienie) nie ruszają już muzyki
+let playToken = 0;
+let startedToken = 0; // polecenie, przy którym muzyka faktycznie ruszyła
 function musicCmd(m) {
   if (m.audioCmd === 'load') { loadTrack(m.url); return; }
   if (m.audioCmd === 'play') {
+    // następna piosenka (autoodtwarzanie) przychodzi zaraz po „stop” poprzedniej – wyciszanie poprzedniej nie może
+    // na koniec zatrzymać nowej (wcześniej trzeba było dać pauzę i znowu „odtwórz”)
+    clearInterval(fadeTimer);
+    const token = ++playToken;
     const src = blobs.get(m.url) || m.url;
     if (music.dataset.url !== m.url) { music.src = src; music.dataset.url = m.url; }
     musicUntil = m.until;
+    let retried = false;
     const start = () => {
+      if (token !== playToken) return;
+      clearInterval(fadeTimer);
       try { music.currentTime = m.t; } catch (e) { /* jeszcze nie gotowe */ }
       music.volume = 0;
-      music.play().then(() => { soundHint(false); fadeTo(1, 150); }).catch((e) => {
+      music.play().then(() => { startedToken = token; if (token === playToken) { soundHint(false); fadeTo(1, 150); } }).catch((e) => {
         if (e.name === 'NotAllowedError') { soundBlocked = true; soundHint(true); send({ audioBlocked: true }); }
+        // odtwarzanie przerwane (np. zmiana źródła) – jedna ponowna próba, jeśli to nadal aktualne polecenie
+        else if (e.name === 'AbortError') { if (!retried && token === playToken) { retried = true; setTimeout(start, 120); } }
         // inny błąd (np. nieobsługiwany format) – muzyka gra u gospodarza
-        else if (e.name !== 'AbortError') send({ audioBlocked: true });
+        else send({ audioBlocked: true });
       });
     };
-    if (music.readyState >= 1) start(); else music.addEventListener('loadedmetadata', start, { once: true });
+    if (music.readyState >= 1) start();
+    else {
+      music.addEventListener('loadedmetadata', start, { once: true });
+      // część przeglądarek (telewizory, Safari) nie wczytuje dźwięku, dopóki nie dostanie play() – ciche „pchnięcie”
+      music.volume = 0;
+      music.play().catch(() => {});
+    }
+    // zabezpieczenie: po 2,5 s muzyka nadal stoi – jeszcze jedna próba, a gdy i ta nie ruszy, gra gospodarz
+    setTimeout(() => {
+      if (token !== playToken || startedToken === token || soundBlocked) return;
+      start();
+      setTimeout(() => { if (token === playToken && startedToken !== token && !soundBlocked) send({ audioBlocked: true }); }, 2500);
+    }, 2500);
     return;
   }
   // po odkryciu karty – ta sama piosenka gra dalej, tylko dłużej (bez przewijania i wyciszania)
   if (m.audioCmd === 'until') { if (!music.paused) musicUntil = m.until; return; }
   if (m.audioCmd === 'pause' || m.audioCmd === 'stop') {
+    playToken += 1;
     musicUntil = null;
     if (!music.paused) fadeTo(0, 150, () => music.pause());
   }

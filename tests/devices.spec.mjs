@@ -276,3 +276,25 @@ test('@net Pojedynek na żywo: odpowiedź z telefonu gracza, paski punktów na t
   expect(await host.evaluate(() => state.players.find((p) => p.name === 'Ania').score)).toBe(2);
   noErrors(host, ania);
 });
+
+// bez sieci: polecenia muzyki podane wprost stronie dużego ekranu
+test('duży ekran: następna piosenka gra od razu po zatrzymaniu poprzedniej (autoodtwarzanie)', async ({ browser }) => {
+  const tv = await newPage(browser);
+  await tv.goto('/tv.html');
+  await tv.click('body'); // interakcja ze stroną – przeglądarka pozwala grać z dźwiękiem
+  const ok = await tv.evaluate(async () => {
+    const a = 'https://audio.test/a.wav'; const b = 'https://audio.test/b.wav';
+    musicCmd({ audioCmd: 'load', url: a }); musicCmd({ audioCmd: 'load', url: b });
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    for (let i = 0; i < 50 && !(blobs.get(a) && blobs.get(b)); i++) await wait(50);
+    musicCmd({ audioCmd: 'play', url: a, t: 0, until: 20 });
+    await wait(400);
+    // koniec tury: stop (wyciszanie 150 ms), a zaraz potem następna piosenka
+    musicCmd({ audioCmd: 'stop' });
+    await wait(20);
+    musicCmd({ audioCmd: 'play', url: b, t: 0, until: 20 });
+    await wait(700);
+    return { paused: music.paused, url: music.dataset.url };
+  });
+  expect(ok).toEqual({ paused: false, url: 'https://audio.test/b.wav' });
+});
