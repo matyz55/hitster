@@ -829,3 +829,9 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.44.2 – 16.10.2026 (`cebac9d`)
 
 - Bez zmian w grze: narzędzie katalogu „Tak to leciało!” skupia się na 600 najpopularniejszych polskich piosenkach (popularność w Spotify, z premią dla nowszych piosenek od 2015 r. i klasyków z „Polskiego Topu Wszech Czasów” Trójki oraz Opola).
+
+## 5.45.0 – 16.10.2026 (`HASH`)
+
+- „Tak to leciało!”: katalog urósł ze 127 do 182 piosenek (305 filmów) – m.in. Bajm, Maanam, Perfect, Mrozu, Vito Bambino; 32 piosenki mają zapasowe filmy z własnym tekstem dopasowanym do ich długości.
+- Kategorie z co najmniej 3 piosenkami: 60 z 73.
+- Narzędzie katalogu: przy skupieniu na 600 najpopularniejszych piosenkach nie usuwa już piosenek spoza tej listy, które są w katalogu.

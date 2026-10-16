@@ -228,7 +228,9 @@ const MAX_ALTS = 5;
 // zapis: film główny, zapasowe (alts) i długości wszystkich filmów (dur) – build dobiera do nich warianty tekstu
 const entry = (v, src, alts, infos) => ({ id: v.id, src, channel: v.channel, title: v.title, ...(alts && alts.length > 1 ? { alts } : {}),
   dur: Object.fromEntries((infos || [v]).filter((x) => (alts || [v.id]).includes(x.id)).map((x) => [x.id, x.d])) });
-const songByKey = new Map(candidates.map((s) => [key(s), s]));
+// wszystkie polskie piosenki (także spoza listy kandydatów – piosenki już w katalogu zostają)
+const ALL_PL = SONGS.filter((s) => s.c === 'PL');
+const songByKey = new Map(ALL_PL.map((s) => [key(s), s]));
 
 const WD_YT = `SELECT ?songLabel ?perfLabel ?yt WHERE { ?song wdt:P1651 ?yt ; wdt:P175 ?perf .
     ?perf wdt:P27|wdt:P495 wd:Q36 . SERVICE wikibase:label { bd:serviceParam wikibase:language "pl,en". } }`;
@@ -379,7 +381,7 @@ function stepBuild() {
   const lr = load('lrclib-pl.json', {});
   const yt = load('youtube-pl.json', {});
   const out = {};
-  for (const s of candidates) {
+  for (const s of ALL_PL) {
     const l = lr[key(s)]; const v = yt[key(s)];
     // zapisany tytuł filmu nie pasuje do piosenki albo to wersja z tekstem na ekranie – pomijamy (bez zapytań do API)
     if (hasVideo(v) && v.title && !usableVideo(v, s)) continue;
