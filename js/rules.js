@@ -919,6 +919,12 @@ function nextTurn() {
     if (state.bingo && state.bingo.winners.length) return endGame();
     return startTurn();
   }
+  // Dekadowa wspinaczka: do pierwszego gracza na szczycie
+  if (state.mode === 'climb') {
+    if (climbTop()) return endGame();
+    state.turn = (state.turn + 1) % state.players.length;
+    return startTurn();
+  }
   if (state.mode === 'buzz') {
     if (state.turnsPlayed >= state.rounds) return endGame();
     return startTurn();
@@ -1013,6 +1019,10 @@ function endGame() {
     won = state.streak > prev;
     title.textContent = won ? T('🏆 Nowy rekord! Seria: {0} (poprzedni: {1}).', state.streak, prev)
       : T('Koniec serii: {0}. Rekord: {1}.', state.streak, prev);
+  } else if (state.mode === 'climb' && state.players.length === 1) {
+    won = !!climbTop();
+    title.textContent = won ? T('🏔️ Dotarłeś do współczesności w {0} piosenkach!', state.turnsPlayed)
+      : T('Koniec wspinaczki – dekada {0} z {1}.', Math.min(best.climb + 1, CLIMB.length), CLIMB.length);
   } else if ((isMelody() || state.mode === 'duel' || isQuiz() || state.mode === 'sort5') && state.players.length === 1) {
     const max = state.mode === 'duel' ? state.rounds : state.mode === 'sort5' || state.mode === 'mashup' ? state.rounds * (state.mode === 'sort5' ? 5 : 2)
       : (isQuiz() ? state.rounds * QUIZ[state.mode].max() + (state.mode === 'bid' ? BID_START : 0)

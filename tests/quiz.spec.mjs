@@ -304,3 +304,28 @@ test('Łańcuch skojarzeń: kolejna piosenka łączy się z poprzednią, tylko j
     expect(r.q).toContain('🔗');
   }
 });
+
+test('Dekadowa wspinaczka: rok do 2 lat różnicy – dekada wyżej, pomyłka – niżej, szczyt kończy grę', async ({ page }) => {
+  await page.goto('/');
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=climb]');
+  await expect(page.locator('#rounds')).toBeHidden();
+  await page.click('#btn-start');
+  await ready(page);
+  expect(await page.evaluate(() => decadeOf(state.current))).toBe(1960);
+  await page.evaluate(() => answerQuiz(state.current.y + 2));
+  expect(await page.evaluate(() => state.players[0].climb)).toBe(1);
+  await page.click('#actions button.primary');
+  await ready(page);
+  // następna piosenka z kolejnej dekady
+  expect(await page.evaluate(() => decadeOf(state.current))).toBe(1970);
+  await page.evaluate(() => answerQuiz(state.current.y > 1990 ? state.current.y - 10 : state.current.y + 10));
+  expect(await page.evaluate(() => state.players[0].climb)).toBe(0);
+  await page.click('#actions button.primary');
+  await ready(page);
+  // ostatnia dekada – dobra odpowiedź kończy grę
+  await page.evaluate(() => { state.players[0].climb = CLIMB.length - 1; answerQuiz(state.current.y); });
+  await page.click('#actions button.primary');
+  await expect.poll(() => screen(page)).toBe('end');
+  await expect(page.locator('#winner-title')).toContainText('współczesności');
+});

@@ -1,7 +1,7 @@
 'use strict';
 
 // aktualna wersja gry – ta sama co ostatni wpis w CHANGELOG.md (pokazywana na dole ekranu startowego)
-const GAME_VERSION = '5.33.0';
+const GAME_VERSION = '5.34.0';
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -470,6 +470,7 @@ const MODES = {
   who: { title: T('Kto za tym stoi?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   screen: { title: T('Z jakiego to ekranu?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   chain: { title: T('Łańcuch skojarzeń'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  climb: { title: T('Dekadowa wspinaczka'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   royale: { title: T('Ostatni na placu boju'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
   seconds: { title: T('Licytacja sekund'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
   bomb: { title: T('Gorąca bomba'), minPlayers: 2, maxPlayers: MAX_PLAYERS },

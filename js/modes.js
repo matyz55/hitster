@@ -6,6 +6,8 @@
 // • screen  – Z jakiego to ekranu?: 4 filmy / seriale / gry do wyboru – w którym zabrzmiała piosenka
 // • chain   – Łańcuch skojarzeń: każda kolejna piosenka łączy się z poprzednią jedną cechą (podpowiedź na ekranie);
 //             z 4 piosenek wybierasz tę, która gra – pasuje do podpowiedzi tylko jedna
+// • climb   – Dekadowa wspinaczka: piosenka z dekady, na której stoisz; rok z dokładnością do 2 lat – dekada w górę,
+//             pomyłka – w dół; wygrywa, kto pierwszy dotrze do współczesności (lata 20.)
 // • bid     – Licytacja: najpierw stawiasz 1–3 pkt na swoją pewność, potem wybierasz dekadę; dobrze – zyskujesz stawkę, źle – tracisz
 const QUIZ = {
   year: {
@@ -36,6 +38,12 @@ const QUIZ = {
   screen: {
     status: () => T('Posłuchaj i wskaż, skąd znasz tę piosenkę.'),
     hint: () => T('W jakim filmie, serialu albo grze zabrzmiała ta piosenka?'),
+    max: () => 1,
+  },
+  climb: {
+    kind: 'year',
+    status: () => T('Posłuchaj i wpisz rok wydania.'),
+    hint: () => T('Ta piosenka jest z dekady: {0}. Podaj rok – do 2 lat różnicy wspinasz się wyżej, pomyłka cofa o dekadę.', decadeLabelLong(CLIMB[activePlayer().climb || 0])),
     max: () => 1,
   },
   chain: {
@@ -120,6 +128,27 @@ function screenOptions(song) {
   }
   if (labels.length < 4) return null;
   return shuffle(labels).map((l) => ({ label: l, ok: l === want }));
+}
+// Dekadowa wspinaczka: kolejne dekady do pokonania (najstarsza obejmuje też wcześniejsze piosenki)
+const CLIMB = [1960, 1970, 1980, 1990, 2000, 2010, 2020];
+const CLIMB_TOL = 2;
+const climbLabel = (p) => { const d = CLIMB[Math.min(p.climb || 0, CLIMB.length - 1)]; return d === OLDEST_DECADE ? '≤1969' : `${d}s`; };
+const climbTop = () => state.players.find((p) => (p.climb || 0) >= CLIMB.length);
+// talia z piosenkami podzielonymi na dekady – losuje z dekady gracza, który ma turę
+class ClimbDeck {
+  constructor(songs) {
+    this.by = new Map(CLIMB.map((d) => [d, shuffle(songs.filter((s) => decadeOf(s) === d))]));
+    this.level = 0; this.plShare = 0.5; this.used = new Map(); this.drawn = { PL: 0, INT: 0 }; this.usedArtists = new Set();
+  }
+  get size() { return [...this.by.values()].reduce((n, l) => n + l.length, 0); }
+  * allLists() { yield* this.by.values(); }
+  draw(near) {
+    const want = near && near.length ? near[0] : CLIMB[0];
+    // pusta dekada (np. przy zawężonej puli) – najbliższa z piosenkami
+    const order = CLIMB.filter((d) => this.by.get(d).length).sort((a, b) => Math.abs(a - want) - Math.abs(b - want));
+    return order.length ? this.by.get(order[0]).pop() : null;
+  }
+  release(song, putBack) { if (putBack) this.by.get(decadeOf(song)).unshift(song); }
 }
 // Łańcuch skojarzeń: co łączy dwie piosenki (rok, kraj spoza PL/US/GB, autor muzyki lub tekstu, słowo w tytule)
 const CHAIN_SKIP_WORDS = new Set(['the', 'and', 'you', 'your', 'that', 'this', 'with', 'from', 'have', 'what', 'when', 'will', 'dont', 'just', 'like',
@@ -289,6 +318,25 @@ function answerQuiz(choice) {
     const diff = Math.abs(y - song.y);
     pts = diff === 0 ? 3 : (diff <= 2 ? 1 : 0);
     ok = pts > 0;
+    if (state.mode === 'climb') {
+      // dekada w górę (wynik = liczba zdobytych dekad) albo w dół
+      ok = diff <= CLIMB_TOL;
+      const from = p.climb || 0;
+      p.climb = ok ? from + 1 : Math.max(0, from - 1);
+      p.score = p.climb;
+      state.quiz.year = y;
+      state.turnsPlayed += 1;
+      const top = p.climb >= CLIMB.length;
+      if (top) addMoment('🏔️', T('{0} dociera do współczesności („{1}”, {2})', p.name, song.t, song.y), 3);
+      const v = top ? T('🏔️ {0}! Rok {1} – {2} dociera do współczesności!', diff === 0 ? T('Dokładnie') : T('Blisko'), song.y, p.name)
+        : ok ? T('✔ {0} (podano {1}) – w górę: {2}', song.y, y, decadeLabelLong(CLIMB[p.climb]))
+          : T('✘ To {0} (podano {1}) – {2}', song.y, y, from ? T('w dół: {0}', decadeLabelLong(CLIMB[p.climb])) : T('zostajesz na dole'));
+      state.history.push({ song, preview: state.preview, player: p.name, ok, note: `${p.name}: ${y}` });
+      recordAnswer(song, ok);
+      fx(ok ? 'good' : 'bad');
+      showReveal(el('div', { class: 'verdict ' + (ok ? 'ok' : 'bad') }, v));
+      return;
+    }
     if (diff === 0) addMoment('🎯', T('{0} podał(a) dokładny rok {1} („{2}”)', p.name, song.y, song.t), 2);
     if (diff >= 15 && (!state.bigMiss || diff > state.bigMiss)) { state.bigMiss = diff; addMoment('😅', T('Największa pomyłka: {0} – {1} zamiast {2} („{3}”)', p.name, y, song.y, song.t), 1); }
     verdict = diff === 0 ? T('🎯 Dokładnie {0}! +3 pkt', song.y)
@@ -342,7 +390,7 @@ function quizActions() {
     }
   }
   if (state.phase === 'revealed') {
-    const last = state.turnsPlayed >= state.rounds * state.players.length;
+    const last = state.mode === 'climb' ? !!climbTop() : state.turnsPlayed >= state.rounds * state.players.length;
     btns.push(el('button', { class: 'primary', onclick: nextTurn }, last ? T('Zobacz wyniki →')
       : (state.players.length > 1 ? T('Następny gracz →') : T('Następna piosenka →'))));
   }
@@ -351,6 +399,12 @@ function quizActions() {
 
 // nagłówek tury
 function quizHeader(p, title, info) {
+  if (state.mode === 'climb') {
+    const d = CLIMB[Math.min(p.climb || 0, CLIMB.length - 1)];
+    title.textContent = state.players.length > 1 ? T('Tura: {0} · {1}', p.name, decadeLabelLong(d)) : T('Wspinaczka: {0}', decadeLabelLong(d));
+    info.textContent = T('Dekada {0} z {1} · piosenka {2}', Math.min((p.climb || 0) + 1, CLIMB.length), CLIMB.length, state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1));
+    return;
+  }
   const round = Math.min(state.rounds, Math.floor(state.turnsPlayed / state.players.length) + 1);
   const songNo = state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1);
   title.textContent = state.players.length > 1 ? T('Tura: {0}', p.name)

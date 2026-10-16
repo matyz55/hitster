@@ -69,7 +69,7 @@ function startGame(over = {}) {
   state.expert = isTimeline() && !party ? expertParts() : [];
   state.letterHint = filterState.letterHint;
   const plShare = poolValue() === 'ALL' ? filterState.plShare / 100 : (poolValue() === 'PL' ? 1 : 0);
-  const needed = state.mode === 'royale' || state.mode === 'bomb' ? 30 : state.mode === 'buzz' ? state.rounds : state.mode === 'bingo' ? 20 : state.mode === 'sort5' ? names.length * state.rounds * 5
+  const needed = state.mode === 'royale' || state.mode === 'bomb' ? 30 : state.mode === 'buzz' ? state.rounds : state.mode === 'bingo' || state.mode === 'climb' ? 20 : state.mode === 'sort5' ? names.length * state.rounds * 5
     : (state.hiloMulti ? names.length * state.rounds + 2 : (isTimeline() || state.mode === 'hilo' ? names.length * 3 : names.length * state.rounds));
   let base = songPool();
   // tryby quizowe: podpowiedzi z tej samej puli; „Skąd jest wykonawca?” – tylko piosenki z flagą kraju
@@ -95,7 +95,8 @@ function startGame(over = {}) {
     base = base.filter((s) => state.duel.includes(decadeOf(s)));
   }
   const pool = freshPool(base, needed);
-  state.deck = state.mode === 'chain' ? new ChainDeck(pool) : new Deck(pool, { level: state.difficulty, plShare });
+  state.deck = state.mode === 'chain' ? new ChainDeck(pool) : state.mode === 'climb' ? new ClimbDeck(pool)
+    : new Deck(pool, { level: state.difficulty, plShare });
   warmPreviews(pool);
   prefetched = null;
   const artists = new Set(pool.map((s) => artistKeys(s)[0])).size;
@@ -357,11 +358,12 @@ let prefetched = null;
 // rok kart gracza, który dostanie następną piosenkę (dla trudniejszych poziomów)
 function nearYearsFor(playerIndex) {
   if (state.mode === 'hilo') return state.ref ? [state.ref.y] : null;
+  if (state.mode === 'climb') return [CLIMB[Math.min(state.players[playerIndex].climb || 0, CLIMB.length - 1)]];
   return isTimeline() ? state.players[playerIndex].timeline.map((s) => s.y) : null;
 }
 const nextPlayerIndex = () => (isMulti() ? (state.turn + 1) % state.players.length : state.turn);
 // na trudnych poziomach oś następnego gracza zmienia się do chwili odkrycia karty – wtedy szukamy dopiero po odkryciu
-const prefetchAfterReveal = () => (isTimeline() || state.mode === 'hilo') && state.difficulty === 2;
+const prefetchAfterReveal = () => state.mode === 'climb' || ((isTimeline() || state.mode === 'hilo') && state.difficulty === 2);
 
 // Cały 30-sekundowy fragment (~1 MB) pobieramy z góry. Bez tego telefony zaczynały grać przy małym
 // buforze i po chwili zatrzymywały się na doładowanie. Serwer iTunes zezwala na to (CORS: *).

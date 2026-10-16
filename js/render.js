@@ -117,6 +117,7 @@ function renderHeader(p, timeline) {
     ? [el('b', {}, String(pl.timeline.length)), T('/{0} kart · ', state.winTarget), el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || '–'),
       pl.shield ? ' 🛡️' : '', pl.fogUntil > state.turnsPlayed ? ' 🌫️' : '']
     : state.mode === 'royale' || state.mode === 'bomb' ? ['❤️'.repeat(Math.max(0, pl.hearts)) || '💀', state.mode === 'bomb' && i === state.turn && state.bomb && state.bomb.phase !== 'boom' ? ' 💣' : '']
+    : state.mode === 'climb' ? [el('b', {}, climbLabel(pl)), (pl.climb || 0) >= CLIMB.length ? ' 🏔️' : '']
     : [el('b', {}, String(pl.score)), T(' pkt')])));
   const title = $('#turn-title');
   const info = $('#turn-info');

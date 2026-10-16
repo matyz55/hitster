@@ -707,3 +707,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.33.0 – 16.10.2026 (`10a6136`)
 
 - Nowy tryb „Łańcuch skojarzeń”: każda kolejna piosenka łączy się z poprzednią – tym samym rokiem wydania, krajem wykonawcy, autorem muzyki lub tekstu albo słowem w tytule. Podpowiedź mówi, co je łączy, a z czterech piosenek do wyboru pasuje do niej tylko jedna. Także jako minigra w Imprezie.
+
+## 5.34.0 – 16.10.2026 (`HASH`)
+
+- Nowy tryb „Dekadowa wspinaczka”: zaczynasz od najstarszych piosenek (do 1969) i dostajesz piosenkę z dekady, na której stoisz. Rok z dokładnością do 2 lat – wchodzisz o dekadę wyżej, większa pomyłka – schodzisz niżej. Wygrywa, kto pierwszy dotrze do lat 20.; grając samemu, liczysz piosenki potrzebne na wejście na szczyt.

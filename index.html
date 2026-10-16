@@ -201,6 +201,11 @@
         <b>Łańcuch skojarzeń</b>
         <span class="muted">Każda kolejna piosenka łączy się z poprzednią: ten sam rok, kraj, autor albo słowo w tytule. Podpowiedź mówi, co je łączy – wybierz graną piosenkę z czterech.</span>
       </button>
+      <button class="mode" data-mode="climb" data-ctx="single multi">
+        <span class="mode-icon">🏔️</span>
+        <b>Dekadowa wspinaczka</b>
+        <span class="muted">Od lat 60. do dziś: podaj rok piosenki z Twojej dekady (do 2 lat różnicy), a wejdziesz o dekadę wyżej. Pomyłka cofa. Kto pierwszy dotrze do współczesności?</span>
+      </button>
       <button class="mode" data-mode="country" data-ctx="single multi">
         <span class="mode-icon">🌍</span>
         <b>Skąd jest wykonawca?</b>
@@ -312,7 +317,7 @@
 
     <section class="card" data-hide-for="lyrics">
       <h2>Odtwarzanie</h2>
-      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist who screen chain country bid coop bingo royale">Długość fragmentu
+      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist who screen chain climb country bid coop bingo royale">Długość fragmentu
         <select id="clip-length">
           <option value="30">30 s (cały)</option>
           <option value="15">15 s</option>
@@ -326,7 +331,7 @@
       <div class="seg" id="audio-out">
         <label><input type="radio" name="audio-out" value="host" checked> Tym urządzeniu</label>
         <label id="audio-out-tv"><input type="radio" name="audio-out" value="tv"> Dużym ekranie (TV)</label>
-        <label data-for="multi teams melody steps cover duel party year artist who screen chain country bid coop sort5" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
+        <label data-for="multi teams melody steps cover duel party year artist who screen chain climb country bid coop sort5" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
       </div>
       <p class="muted small" id="audio-out-desc">Duży ekran i telefony graczy łączy się w oknie 📺. Gdy wybranego urządzenia nie ma, muzyka gra na tym urządzeniu.</p>
       </div>
@@ -717,6 +722,12 @@
       <li>Każda kolejna piosenka łączy się z poprzednią jedną cechą: tym samym rokiem wydania, krajem wykonawcy (spoza Polski, USA i Wielkiej Brytanii), autorem muzyki lub tekstu (dane z Wikidata) albo słowem w tytule.</li>
       <li>Podpowiedź na ekranie mówi, co łączy graną piosenkę z poprzednią. Z czterech piosenek do wyboru pasuje do niej tylko jedna – można ją rozpoznać po melodii albo wydedukować. Dobra odpowiedź – 1 pkt.</li>
       <li>Gdy żadna piosenka nie łączy się z poprzednią, zaczyna się nowy łańcuch.</li>
+    </ol>
+    <h3>Dekadowa wspinaczka</h3>
+    <ol>
+      <li>Każdy gracz zaczyna od najstarszej dekady (do 1969) i dostaje piosenkę z dekady, na której stoi.</li>
+      <li>Podaj rok wydania: do 2 lat różnicy – wchodzisz o dekadę wyżej; większa pomyłka – schodzisz o dekadę niżej.</li>
+      <li>Wygrywa, kto pierwszy trafi rok piosenki z lat 20. – czyli dotrze do współczesności. Grając samemu, liczysz piosenki potrzebne na wejście na szczyt.</li>
     </ol>
     <h3>Okładka z mgły</h3>
     <ol>
