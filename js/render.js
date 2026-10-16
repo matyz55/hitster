@@ -23,10 +23,10 @@ function render() {
 
   renderHeader(p, timeline);
 
-  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !(isSteps() || ['buzz', 'hilo', 'duel', 'sort5', 'bingo', 'royale', 'seconds', 'bomb', 'mashup'].includes(state.mode)) && !isQuiz();
+  const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !(isSteps() || ['buzz', 'hilo', 'duel', 'sort5', 'bingo', 'royale', 'seconds', 'bomb', 'mashup', 'live'].includes(state.mode)) && !isQuiz();
   $('#btn-skip').textContent = timeline ? T('⏭ Pomiń ({0} żeton)', SKIP_COST) : T('⏭ Inna piosenka');
   $('#btn-skip').disabled = !canSkip || (timeline && p.tokens < SKIP_COST);
-  $('#btn-skip').classList.toggle('hidden', (isSteps() || ['buzz', 'hilo', 'duel', 'sort5', 'bingo', 'royale', 'seconds', 'bomb', 'mashup'].includes(state.mode)) || isQuiz());
+  $('#btn-skip').classList.toggle('hidden', (isSteps() || ['buzz', 'hilo', 'duel', 'sort5', 'bingo', 'royale', 'seconds', 'bomb', 'mashup', 'live'].includes(state.mode)) || isQuiz());
   // Ułóż piątkę: każdy fragment ma własny przycisk ▶
   $('#btn-play').classList.toggle('hidden', state.mode === 'sort5');
   renderCoverFog();
@@ -80,12 +80,13 @@ function render() {
   if (state.mode === 'duel') hints.listen = T('Z której dekady jest ta piosenka?');
   if (isQuiz()) hints.listen = QUIZ[state.mode].hint();
   if (state.mode === 'royale') hints.listen = royaleStatus();
+  if (state.mode === 'live') hints.listen = T('Co to za piosenka? Kto pierwszy dobrze odpowie – 2 pkt, drugi dobrze – 1 pkt. Gra do {0} pkt.', liveTarget());
   if (state.mode === 'seconds') hints.listen = secsStatus();
   if (state.mode === 'bomb') hints.listen = bombStatus();
   if (state.mode === 'mashup') hints.listen = mashupStatus();
   if (state.mode === 'sort5') hints.listen = sortHint();
   if (state.mode === 'bingo') hints.listen = T('Każdy zaznacza na swojej planszy jedno pole, które pasuje do tej piosenki. Trzy skreślone w linii – BINGO!');
-  if (state.mode === 'hilo' || state.mode === 'duel' || isQuiz() || state.mode === 'sort5' || state.mode === 'bingo' || state.mode === 'royale' || state.mode === 'seconds' || state.mode === 'bomb' || state.mode === 'mashup') $('#hint').textContent = state.current && state.phase === 'listen' ? hints.listen : '';
+  if (state.mode === 'hilo' || state.mode === 'duel' || isQuiz() || state.mode === 'sort5' || state.mode === 'bingo' || state.mode === 'royale' || state.mode === 'live' || state.mode === 'seconds' || state.mode === 'bomb' || state.mode === 'mashup') $('#hint').textContent = state.current && state.phase === 'listen' ? hints.listen : '';
 
   const tl = $('#timeline');
   tl.classList.toggle('hidden', !timeline && state.mode !== 'hilo');
@@ -125,7 +126,10 @@ function renderHeader(p, timeline) {
   const info = $('#turn-info');
   info.classList.toggle('tokens', timeline);
   const songNo = state.turnsPlayed + (state.phase === 'revealed' ? 0 : 1);
-  if (state.mode === 'royale' || state.mode === 'bomb') {
+  if (state.mode === 'live') {
+    title.textContent = T('Runda {0}', songNo);
+    info.textContent = T('⚡ Pojedynek na żywo – do {0} pkt', liveTarget());
+  } else if (state.mode === 'royale' || state.mode === 'bomb') {
     title.textContent = T('Runda {0}', songNo);
     info.textContent = T('W grze: {0} z {1}', royaleAlive().length, state.players.length);
   } else if (state.mode === 'bingo') {
@@ -307,6 +311,8 @@ function renderActions() {
     btns.push(...secsActions());
   } else if (state.mode === 'royale') {
     btns.push(...royaleActions());
+  } else if (state.mode === 'live') {
+    btns.push(...liveActions());
   } else if (state.mode === 'bingo') {
     btns.push(...bingoActions());
   } else if (state.mode === 'sort5') {

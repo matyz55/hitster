@@ -159,6 +159,7 @@ $('#btn-play').addEventListener('click', () => {
 audio.addEventListener('play', () => {
   if (audio.dataset.prime) return; // cisza odblokowująca odtwarzacz – to nie piosenka
   state.heard = true;
+  if (state.live && !state.live.t0 && state.phase === 'listen') state.live.t0 = Date.now();
   // muzyka na innym urządzeniu: start od tego samego miejsca, koniec wycinka (until) liczy tamto urządzenie
   if (applyAudioRoute() && state.preview) {
     sendAudioCmd({ audioCmd: 'play', url: state.preview.url, t: audio.currentTime, until: clipEnd() });

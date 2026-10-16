@@ -75,6 +75,8 @@ Na ekranie startowym wybiera się **Jeden gracz** albo **Multiplayer**:
 - **Turniej** – drabinka pojedynków 1 na 1 (3–16 graczy, wolne losy), mecz to minigra z Imprezy dla dwóch graczy
   (js/tournament.js); remis – dogrywka.
 - **Impreza na czas** – zamiast liczby minigier 15 / 30 / 45 minut: losowe minigry, aż minie czas.
+- **Pojedynek na żywo** – dwóch graczy naraz wybiera graną piosenkę z czterech (telefony albo osobne przyciski):
+  szybciej i dobrze 2 pkt, dobrze 1 pkt; gra do 10 pkt, na dużym ekranie paski punktów.
 - **Okładka z mgły** – najpierw sama rozmyta okładka (bez dźwięku, 4 pkt), potem ostrzejsza i 1/4/10 s fragmentu (3/2/1 pkt).
 - **Krzywe zwierciadło** – fragment zza ściany (filtr dolnoprzepustowy Web Audio), na helu / zwolniony
   (`playbackRate` bez zachowania wysokości) albo od tyłu (odwrócony bufor PCM zapisany jako WAV); z każdym krokiem słabiej.

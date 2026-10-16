@@ -76,7 +76,7 @@ function startGame(over = {}) {
   state.expert = isTimeline() && !party ? expertParts() : [];
   state.letterHint = filterState.letterHint;
   const plShare = poolValue() === 'ALL' ? filterState.plShare / 100 : (poolValue() === 'PL' ? 1 : 0);
-  const needed = state.mode === 'royale' || state.mode === 'bomb' ? 30 : state.mode === 'buzz' ? state.rounds : state.mode === 'bingo' || state.mode === 'climb' ? 20 : state.mode === 'sort5' ? names.length * state.rounds * 5
+  const needed = state.mode === 'royale' || state.mode === 'bomb' || state.mode === 'live' ? 30 : state.mode === 'buzz' ? state.rounds : state.mode === 'bingo' || state.mode === 'climb' ? 20 : state.mode === 'sort5' ? names.length * state.rounds * 5
     : (state.hiloMulti ? names.length * state.rounds + 2 : (isTimeline() || state.mode === 'hilo' ? names.length * 3 : names.length * state.rounds));
   let base = songPool();
   // tryby quizowe: podpowiedzi z tej samej puli; „Skąd jest wykonawca?” – tylko piosenki z flagą kraju
@@ -489,6 +489,7 @@ async function drawSong() {
       setAudioSource(preview);
       if (isQuiz()) prepareQuiz(song);
       if (state.mode === 'royale') state.royale = { answers: {} };
+      if (state.mode === 'live') liveStartRound(song);
       if (state.mode === 'seconds') startSecsRound();
       if (state.mode === 'bomb') bombRound();
       if (state.mode === 'mashup') { state.mashup = null; state.clipLen = 10; $('#btn-play').disabled = true; mashupPrepare(myDraw).then(() => { $('#btn-play').disabled = !state.mashup; if (!state.mashup) $('#mystery-status').textContent = T('Nie udało się znaleźć drugiej piosenki – spróbuj następnej.'); }); }

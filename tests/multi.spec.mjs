@@ -431,3 +431,26 @@ test('Turniej: 3 graczy – wolny los, mecz, finał i zwycięzca', async ({ page
   await expect(page.locator('#winner-title')).toContainText(`Turniej wygrywa ${champ}`);
   await expect(page.locator('#end-party')).toBeHidden();
 });
+
+test('Pojedynek na żywo: szybsza dobra odpowiedź – 2 pkt, wolniejsza – 1 pkt, gra do 10', async ({ page }) => {
+  await lobby(page, 2);
+  await page.click('.mode[data-mode=live]');
+  await page.click('#btn-start');
+  await ready(page);
+  await expect(page.locator('#actions .live-row')).toHaveCount(2);
+  const right = await page.evaluate(() => state.live.options.findIndex((o) => o.ok));
+  // gracz 2 odpowiada pierwszy (dobrze), gracz 1 – później (dobrze)
+  await page.locator('#actions .live-row').nth(1).locator('button').nth(right).click();
+  await page.waitForTimeout(150);
+  await page.locator('#actions .live-row').nth(0).locator('button').nth(right).click();
+  await expect.poll(() => page.evaluate(() => state.phase)).toBe('revealed');
+  expect(await page.evaluate(() => state.players.map((p) => p.score))).toEqual([1, 2]);
+  // zła odpowiedź – 0, do 10 pkt koniec gry
+  await page.click('#actions button.primary');
+  await ready(page);
+  await page.evaluate(() => { state.players[0].score = 9; const r = state.live.options.findIndex((o) => o.ok); liveAnswer(0, r); liveAnswer(1, (r + 1) % 4); });
+  expect(await page.evaluate(() => state.players.map((p) => p.score))).toEqual([11, 2]);
+  await page.click('#actions button.primary');
+  await expect.poll(() => screen(page)).toBe('end');
+  await expect(page.locator('#winner-title')).toContainText('Gracz 1');
+});

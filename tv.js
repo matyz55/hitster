@@ -449,7 +449,7 @@ function render(s) {
   const keep = app.querySelector('.guess-form');
   const bingo = s.bingo ? h('div', 'bingo-boards', s.bingo.boards.map((b) => h('div', 'bingo-board' + (b.won ? ' won' : ''),
     h('div', 'bingo-name', b.name, b.pick != null ? ' ✔' : ''), bingoGrid(b, false, false)))) : null;
-  const card = h('section', 'turn-card', head, coverFog(s), wordsBox(s), main, steps, buzzers, bingo, hint, guess, actions);
+  const card = h('section', 'turn-card', head, coverFog(s), wordsBox(s), main, steps, buzzers, bingo, liveBox(s), hint, guess, actions);
   app.replaceChildren(...[who, scoresRow, card, tls, others].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
   fit();
@@ -569,7 +569,7 @@ function renderPlayer(s) {
   const yearForm = s.challengeInput && ids.includes(s.challengeInput.who) ? challengeYearForm(T('⚔ Twoje wyzwanie: podaj dokładny rok wydania'), 'challengeYear')
     : (s.yearAsk && s.yearAsk.who.includes(me) ? challengeYearForm(T('📅 W którym roku wydano tę piosenkę?'), 'yearAnswer')
       : (s.royale && s.royale.pending.includes(me) ? challengeYearForm(T('🏁 W którym roku wydano tę piosenkę? (kto pomyli się najbardziej, traci serce)'), 'royaleYear') : null));
-  const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text) && !(yearForm && b.cls.includes('primary')) && !(s.sort && SORT_BTN.test(b.cls)) && !/\broyale-ok\b/.test(b.cls));
+  const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text) && !(yearForm && b.cls.includes('primary')) && !(s.sort && SORT_BTN.test(b.cls)) && !/\broyale-ok\b/.test(b.cls) && !/\blive-opt\b/.test(b.cls));
   const myChallenge = ids.includes(s.challenger) || (s.challengers || []).some((n) => ids.includes(n));
   const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || myChallenge));
   // karta tury – jak na urządzeniu gospodarza
@@ -590,7 +590,7 @@ function renderPlayer(s) {
   const turnTl = (myView || shared) && active ? vTimeline(active, pick, null) : null;
   const card = h('section', 'ht-card' + (rest.length ? ' with-actions' : ''),
     h('div', 'ht-head', h('h2', '', s.title || ''), h('span', 'ht-info', s.info || '')),
-    coverFog(s), wordsBox(s), h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess, yearForm, bingoBoard(s),
+    coverFog(s), wordsBox(s), h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess, yearForm, bingoBoard(s), liveBox(s),
     s.challenge ? h('p', 'ht-hint', s.challenge) : null, s.hint ? h('p', 'ht-hint', s.hint) : null,
     s.sort ? sortBox(s, myView) : null, turnTl, rest.length ? h('div', 'ht-actions', rest.map((b) => mk(b))) : null);
   const board = (s.scores || []).length ? h('div', 'ht-scores', s.scores.map((x) => h('span', x.active ? 'act' : '', x.text))) : null;
@@ -645,6 +645,23 @@ function bingoGrid(b, mine, open) {
   }));
   grid.style.setProperty('--n', n);
   return grid;
+}
+// Pojedynek na żywo: paski punktów obu graczy (do celu) i – na telefonie gracza – jego cztery odpowiedzi
+function liveBox(s) {
+  const lv = s.live;
+  if (!lv) return null;
+  const bars = h('div', 'live-bars', lv.bars.map((b) => {
+    const bar = h('div', 'live-bar', h('span', 'live-fill'));
+    bar.firstChild.style.width = `${Math.min(100, Math.round((b.v / lv.target) * 100))}%`;
+    return h('div', 'live-line', h('b', '', b.name), bar, h('span', '', `${b.v}/${lv.target}${lv.open && !lv.pending.includes(b.name) ? ' ✔' : ''}`));
+  }));
+  const mine = PLAYER && lv.open && lv.pending.includes(me);
+  const opts = mine ? h('div', 'live-opts', lv.options.map((label, k) => {
+    const b = h('button', 'big-choice', label);
+    b.addEventListener('click', () => { send({ liveAnswer: k }); b.parentElement.querySelectorAll('button').forEach((x) => { x.disabled = true; }); });
+    return b;
+  })) : null;
+  return h('div', 'live-box', bars, opts);
 }
 function bingoBoard(s) {
   if (!s.bingo) return null;

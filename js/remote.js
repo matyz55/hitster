@@ -97,6 +97,8 @@ function handleRemote(msg, from) {
   if (msg.yearAnswer != null && from && controlNames().includes(from.name) && isYearQuiz()) answerQuiz(msg.yearAnswer);
   // Ostatni na placu boju: rok z telefonu gracza
   if (msg.royaleYear != null && from && from.name) royaleAnswer(playerIndexOf(from.name), msg.royaleYear);
+  // Pojedynek na żywo: odpowiedź z telefonu gracza
+  if (msg.liveAnswer != null && from && from.name) liveAnswer(playerIndexOf(from.name), Number(msg.liveAnswer));
   // rok podany przez wyzywającego na jego telefonie (wariant wyzwania „dokładny rok”)
   if (msg.challengeYear != null && from && state.phase === 'challenge' && state.challengeMode === 'year'
     && state.challenger != null && playerIndexOf(from.name) === state.challenger) {
@@ -258,6 +260,7 @@ function tvSync() {
         ? { who: state.players[state.challenger].name } : null,
       // „Rok co do roku”: pole roku na telefonie gracza z turą
       bingo: bingoSnapshot(),
+      live: liveSnapshot(),
       // Ostatni na placu boju: kto jeszcze nie podał roku (pole roku na jego telefonie)
       royale: state.mode === 'royale' && state.royale && state.phase === 'listen' && state.current
         ? { pending: royaleAlive().filter((i) => state.royale.answers[i] == null).map((i) => state.players[i].name) } : null,

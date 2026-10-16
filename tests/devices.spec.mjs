@@ -256,3 +256,23 @@ test('@net Ostatni na placu boju: rok z telefonu gracza trafia do gospodarza', a
   expect(await host.evaluate(() => state.players.find((p) => p.name === 'Ania').hearts)).toBe(2);
   noErrors(host, ania);
 });
+
+test('@net Pojedynek na żywo: odpowiedź z telefonu gracza, paski punktów na telefonie', async ({ browser }) => {
+  const { host, code } = await hostLobby(browser);
+  const ania = await join(browser, code, 'Ania');
+  await host.click('#btn-lobby-next');
+  await host.click('.mode[data-mode=live]');
+  await host.click('#btn-start');
+  await ready(host);
+  // gracz bez telefonu odpowiada tutaj, Ania – na telefonie
+  await expect(host.locator('#actions .live-row')).toHaveCount(1);
+  const right = await host.evaluate(() => state.live.options.findIndex((o) => o.ok));
+  await ania.waitForSelector('.live-opts button');
+  await expect(ania.locator('.live-bars .live-line')).toHaveCount(2);
+  await ania.locator('.live-opts button').nth(right).click();
+  await expect.poll(() => host.evaluate(() => Object.keys(state.live.answers).length)).toBe(1);
+  await host.locator('#actions .live-row button').nth((right + 1) % 4).click();
+  await expect.poll(() => host.evaluate(() => state.phase)).toBe('revealed');
+  expect(await host.evaluate(() => state.players.find((p) => p.name === 'Ania').score)).toBe(2);
+  noErrors(host, ania);
+});

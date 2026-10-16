@@ -1190,3 +1190,79 @@ function mashupStatus() {
   const n = (m.solved.a ? 1 : 0) + (m.solved.b ? 1 : 0);
   return T('Dwie piosenki naraz – {0}. Odgadnięte: {1}/2', state.guessType === 'artist' ? T('wpisz obu wykonawców') : T('wpisz oba tytuły'), n);
 }
+
+/* ---------- Pojedynek na żywo (1 na 1) ---------- */
+// dwóch graczy naraz odpowiada na tę samą piosenkę (4 piosenki do wyboru, najlepiej na telefonach):
+// dobrze i szybciej – 2 pkt, dobrze, ale wolniej – 1 pkt, źle – 0; wygrywa, kto pierwszy zbierze LIVE_TARGET pkt
+const LIVE_TARGET = 10;
+// w Imprezie krótszy pojedynek
+const liveTarget = () => (state.party ? 5 : LIVE_TARGET);
+function liveOptions(song) {
+  const pool = state.quizPool || window.SONGS;
+  const ok = (s) => s !== song && !artistKeys(s).some((k) => artistKeys(song).includes(k));
+  const near = shuffle(pool.filter((s) => s.c === song.c && Math.abs(s.y - song.y) <= 10 && ok(s)));
+  const picks = [song];
+  for (const s of [...near, ...shuffle(pool.filter(ok))]) {
+    if (picks.length >= 4) break;
+    if (!picks.some((p) => artistKeys(p).some((k) => artistKeys(s).includes(k)))) picks.push(s);
+  }
+  return shuffle(picks).map((s) => ({ label: `${s.t} — ${artistLine(s)}`, ok: s === song }));
+}
+function liveStartRound(song) {
+  state.live = { options: liveOptions(song), answers: {}, shown: Date.now(), t0: null };
+}
+function liveAnswer(i, choice) {
+  const lv = state.live;
+  if (state.mode !== 'live' || !lv || state.phase !== 'listen' || !state.current || !state.players[i] || lv.answers[i] != null || !lv.options[choice]) return;
+  // czas od pierwszego dźwięku (albo od pokazania odpowiedzi, gdy muzyka jeszcze nie ruszyła)
+  lv.answers[i] = { choice, ms: Date.now() - (lv.t0 || lv.shown) };
+  if (state.players.every((p, j) => lv.answers[j] != null)) liveReveal();
+  else render();
+}
+function liveReveal() {
+  const lv = state.live;
+  if (!lv || state.phase !== 'listen' || !state.current) return;
+  const song = state.current;
+  const right = lv.options.findIndex((o) => o.ok);
+  const good = state.players.map((p, i) => i).filter((i) => lv.answers[i] && lv.answers[i].choice === right);
+  const fastest = good.slice().sort((a, b) => lv.answers[a].ms - lv.answers[b].ms)[0];
+  const lines = state.players.map((p, i) => {
+    const a = lv.answers[i];
+    const pts = good.includes(i) ? (i === fastest ? 2 : 1) : 0;
+    p.score += pts;
+    return el('div', { class: 'verdict small-verdict ' + (pts ? 'ok' : 'bad') }, a
+      ? `${pts ? '✔' : '✘'} ${p.name}: ${(a.ms / 1000).toFixed(1).replace('.', LANG === 'en' ? '.' : ',')} s · +${pts}${i === fastest && good.length ? ' ⚡' : ''}`
+      : T('✘ {0}: bez odpowiedzi', p.name));
+  });
+  state.turnsPlayed += 1;
+  state.history.push({ song, preview: state.preview, player: '', ok: good.length > 0, note: state.players.map((p) => `${p.name} ${p.score}`).join(' : ') });
+  recordAnswer(song, good.length > 0);
+  if (fastest != null && lv.answers[fastest].ms < 3000) addMoment('⚡', T('{0} rozpoznaje „{1}” w {2} s', state.players[fastest].name, song.t, (lv.answers[fastest].ms / 1000).toFixed(1)), 2);
+  fx(good.length ? 'good' : 'bad');
+  showReveal(...lines);
+}
+const liveWinner = () => state.players.find((p) => p.score >= liveTarget());
+function liveActions() {
+  const btns = [];
+  const lv = state.live;
+  if (state.phase === 'listen' && state.current && lv) {
+    const phones = remoteNames();
+    // gracze bez telefonu odpowiadają tutaj – każdy swoimi przyciskami
+    state.players.forEach((p, i) => {
+      if (phones.has(p.name) || lv.answers[i] != null) return;
+      btns.push(el('div', { class: 'live-row' }, el('b', {}, p.name),
+        ...lv.options.map((o, k) => el('button', { class: 'big-choice live-opt', onclick: () => liveAnswer(i, k) }, o.label))));
+    });
+    btns.push(el('button', { class: 'ghost live-opt', onclick: liveReveal }, T('⏩ Odkryj teraz')));
+  }
+  if (state.phase === 'revealed') {
+    const last = !!liveWinner();
+    btns.push(el('button', { class: 'primary', onclick: () => (last ? endGame() : startTurn()) }, last ? T('Zobacz wyniki →') : T('Następna piosenka →')));
+  }
+  return btns;
+}
+const liveSnapshot = () => (state.mode === 'live' && state.live ? {
+  options: state.live.options.map((o) => o.label), target: liveTarget(), open: state.phase === 'listen' && !!state.current,
+  pending: state.players.filter((p, i) => state.live.answers[i] == null).map((p) => p.name),
+  bars: state.players.map((p) => ({ name: p.name, v: p.score })),
+} : null);

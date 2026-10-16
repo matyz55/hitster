@@ -1,7 +1,7 @@
 'use strict';
 
 // aktualna wersja gry – ta sama co ostatni wpis w CHANGELOG.md (pokazywana na dole ekranu startowego)
-const GAME_VERSION = '5.39.0';
+const GAME_VERSION = '5.40.0';
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -487,6 +487,7 @@ const MODES = {
   relay: { title: T('Sztafeta karaoke'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
   career: { title: T('Kariera'), minPlayers: 1, maxPlayers: 1 },
   tour: { title: T('Turniej'), minPlayers: 3, maxPlayers: MAX_PLAYERS },
+  live: { title: T('Pojedynek na żywo'), minPlayers: 2, maxPlayers: 2 },
 };
 // jeden gracz albo multiplayer (lobby z listą graczy, telefonami i głosowaniem na tryb)
 let playCtx = 'single';
@@ -515,6 +516,7 @@ const PARTY_GAMES = {
   seconds: { icon: '⏱', name: T('Licytacja sekund'), min: 2, mode: () => 'seconds', opts: () => ({ rounds: 1 }) },
   bomb: { icon: '💣', name: T('Gorąca bomba'), min: 2, mode: () => 'bomb', opts: () => ({}) },
   royale: { icon: '🏁', name: T('Ostatni na placu boju'), min: 2, mode: () => 'royale', opts: () => ({}) },
+  live: { icon: '⚡', name: T('Pojedynek na żywo'), min: 2, max: 2, mode: () => 'live', opts: () => ({}) },
   // oś czasu: dla jednej osoby – minuta na czas, dla kilku – wyścig do 4 kart (przy wielu graczach trwałoby to za długo)
   timeline: { icon: '🎧', name: T('Oś czasu'), max: 8, mode: (n) => (n === 1 ? 'timed' : 'multi'), opts: () => ({ winTarget: 4, timeLimit: 60 }) },
 };
