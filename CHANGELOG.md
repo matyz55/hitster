@@ -787,3 +787,14 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - Ciekawostki z przymrużeniem oka: co jakiś czas przy piosenkach Edyty Górniak – „rok i miejsce urodzenia: ok. 4000 lat p.n.e., Wszechświat”, a przy piosenkach Maryli Rodowicz – „A co, już sylwester?” (poza zestawami tematycznymi, np. Eurowizją).
 - Poprawki danych: „Stefania” jest teraz raz – jako Kalush Orchestra (zamiast dwóch wpisów KALUSH i Kalush Orchestra); flaga Ukrainy przy Ruslanie („Wild Dances”, zamiast Hiszpanii), Danii przy Olsen Brothers (zamiast Norwegii) i Chorwacji przy zespole Riva („Rock Me”, zamiast Holandii).
+
+## 5.42.0 – 16.10.2026 (`HASH`)
+
+- Wersja próbna nowego wyglądu 6.0 – do włączenia w Ustawieniach („Nowy wygląd 6.0 (wersja próbna)”); domyślnie gra wygląda jak dotąd. Każdy ekran mieści się w oknie bez przewijania, na telefonie (pionowo i poziomo), komputerze, szerokim monitorze i dużym ekranie:
+  - ekran startowy z dużym wyborem „Gram sam / Gramy razem / Duży ekran” i przyciskiem „Zagraj znowu”,
+  - wybór trybu w zakładkach grup, lobby z dużym kodem QR, ustawienia gry jako kreator Gracze → Piosenki → Opcje z przyciskiem „Graj od razu”,
+  - ekran gry w stałych strefach (na komputerze oś po lewej), długa oś zwija dalekie karty do pasków z latami, tryb pisania przy klawiaturze telefonu,
+  - „Tak to leciało!” z drabinką z boku (na telefonie – pasek u góry), podsumowanie w zakładkach Wyniki / Liga / Piosenki,
+  - ustawienia, statystyki i zasady (osobno dla każdego trybu) w zakładkach i na stronach,
+  - duży ekran i telefon gracza w tym samym stylu.
+- Narzędzie zrzutów ekranów robi zrzut każdego kroku kreatora ustawień.

@@ -1,1 +1,286 @@
-/* Songster 6.0 – menu (wersja próbna); reguły tylko przy html.ui6 */
+/* Songster 6.0 – menu (wersja próbna); reguły tylko przy html.ui6
+   Ekran startowy, ustawienia, statystyki, kariera, okna: zasady, duży ekran, własna lista piosenek; górny pasek. */
+
+/* ---------- górny pasek ---------- */
+html.ui6 .topbar { position: relative; }
+html.ui6 .topbar::after {
+  content: ""; position: absolute; left: var(--gut); right: var(--gut); bottom: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,61,127,.45), rgba(45,226,230,.45), transparent);
+}
+html.ui6 .topbar h1 { letter-spacing: .02em; text-shadow: 0 0 18px rgba(255,61,127,.45); }
+html.ui6 .topbar-actions button { border-radius: 999px; }
+html.ui6 .nav-back { border-radius: 999px; width: var(--tap); padding: 0; font-size: 1.2rem; }
+
+/* ---------- ekran startowy ---------- */
+html.ui6 #screen-home { padding-top: calc(var(--gap) * .8); align-items: stretch; }
+html.ui6 #screen-home .lead {
+  flex: none; margin: 0; font-size: clamp(1.2rem, .9rem + 2.2vmin, 2.6rem); font-weight: 800; letter-spacing: .01em;
+  background: linear-gradient(90deg, var(--accent), var(--gold) 55%, var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+html.ui6 #screen-home .ctx-pick.ui6-pick {
+  flex: 1 1 auto; min-height: 0; margin: 0; display: grid; gap: var(--gap);
+  grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr);
+  width: 100%; max-width: 2200px; align-self: center;
+}
+html.ui6 #screen-home .ui6-pick .mode.ctx {
+  --c: var(--accent);
+  position: relative; min-height: 0; height: 100%; margin: 0; padding: clamp(12px, 2.4vmin, 40px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: clamp(4px, 1vmin, 14px);
+  border-radius: calc(var(--radius) * 1.3); border: 2px solid color-mix(in srgb, var(--c) 55%, transparent);
+  background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--c) 26%, transparent), transparent 70%), var(--panel);
+  box-shadow: 0 14px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+}
+html.ui6 #screen-home .ui6-pick #btn-multi { --c: var(--accent-2); }
+html.ui6 #screen-home .ui6-pick #btn-tv-home { --c: var(--gold); }
+html.ui6 #screen-home .ui6-pick .mode.ctx:hover, html.ui6 #screen-home .ui6-pick .mode.ctx:focus-visible {
+  border-color: var(--c); box-shadow: 0 0 0 1px var(--c), 0 18px 50px color-mix(in srgb, var(--c) 30%, transparent);
+}
+html.ui6 #screen-home .ui6-pick .mode-icon { font-size: clamp(2rem, 1rem + 6vmin, 6.5rem); line-height: 1; filter: drop-shadow(0 6px 16px color-mix(in srgb, var(--c) 45%, transparent)); }
+html.ui6 #screen-home .ui6-pick .mode.ctx b { font-size: clamp(1.15rem, .8rem + 2.4vmin, 3rem); color: var(--text); }
+html.ui6 #screen-home .ui6-pick .mode.ctx .muted { font-size: clamp(.8rem, .7rem + .6vmin, 1.25rem); max-width: 32ch; line-height: 1.35; }
+/* telefon pionowo i wąskie okna: kafelki jeden pod drugim, ikona z lewej */
+@media (max-aspect-ratio: 4/5) {
+  html.ui6 #screen-home .ctx-pick.ui6-pick { grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(3, minmax(0, 1fr)); }
+  html.ui6 #screen-home .ui6-pick .mode.ctx {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; column-gap: clamp(10px, 3vw, 24px); row-gap: 2px;
+    align-content: center; justify-content: stretch; text-align: left;
+  }
+  html.ui6 #screen-home .ui6-pick .mode-icon { grid-row: 1 / 3; font-size: clamp(2.2rem, 11vw, 4.5rem); }
+  html.ui6 #screen-home .ui6-pick .mode.ctx b { align-self: end; }
+  html.ui6 #screen-home .ui6-pick .mode.ctx .muted { align-self: start; max-width: none; }
+}
+/* bardzo niskie okno (telefon poziomo): bez opisów i nagłówka */
+@media (max-height: 420px) {
+  html.ui6 #screen-home .lead { display: none; }
+  html.ui6 #screen-home .ui6-pick .mode.ctx .muted { display: none; }
+}
+
+/* ostatnio grany tryb – jedno stuknięcie */
+html.ui6 #screen-home .ui6-last {
+  flex: none; align-self: center; width: min(100%, 34rem); min-height: calc(var(--tap) * 1.15);
+  display: flex; align-items: center; gap: .8em; text-align: left; padding: .35em 1.1em .35em .45em;
+  border-radius: 999px; border: 1px solid rgba(255,61,127,.5); background: linear-gradient(90deg, rgba(255,61,127,.22), rgba(255,61,127,.06));
+}
+html.ui6 #screen-home .ui6-last.hidden { display: none; }
+html.ui6 #screen-home .ui6-last[data-ctx=multi] { border-color: rgba(45,226,230,.5); background: linear-gradient(90deg, rgba(45,226,230,.2), rgba(45,226,230,.05)); }
+html.ui6 .ui6-last-play {
+  flex: none; display: grid; place-items: center; width: calc(var(--tap) * .9); height: calc(var(--tap) * .9); border-radius: 50%;
+  background: var(--accent); color: #fff; font-size: 1rem; box-shadow: 0 4px 14px rgba(255,61,127,.45);
+}
+html.ui6 .ui6-last[data-ctx=multi] .ui6-last-play { background: var(--accent-2); color: #062a2b; box-shadow: 0 4px 14px rgba(45,226,230,.4); }
+html.ui6 .ui6-last-txt { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+html.ui6 .ui6-last-txt small { color: var(--muted); font-size: .78rem; }
+html.ui6 .ui6-last-txt b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1rem; }
+
+/* stopka: statystyki, instalacja, liczba piosenek, wersja */
+html.ui6 #screen-home .ui6-home-foot {
+  flex: none; margin: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px calc(var(--gap) * 1.2);
+}
+html.ui6 #screen-home .ui6-home-foot button { border-radius: 999px; font-size: .88rem; min-height: var(--tap); padding: 0 1em; }
+html.ui6 #screen-home .ui6-home-foot #home-info, html.ui6 #screen-home .ui6-home-foot .app-version { margin: 0; font-size: .75rem; }
+html.ui6 #screen-home .ui6-home-foot .app-version { opacity: .6; }
+html.ui6 #screen-home .install-box { flex: none; margin: 0; }
+html.ui6 #screen-home .install-box #ios-install { margin: 0 auto; max-width: 60ch; }
+@media (max-width: 600px) {
+  html.ui6 #screen-home #home-info { display: none; }
+}
+
+/* przerwana gra */
+html.ui6 #screen-home #resume-box {
+  flex: none; display: flex; align-items: center; gap: var(--gap); flex-wrap: nowrap; padding: calc(var(--gap) * .8) var(--gap);
+  border: 1px solid rgba(255,201,60,.6); background: linear-gradient(90deg, rgba(255,201,60,.16), var(--panel) 60%);
+  width: min(100%, 60rem); align-self: center;
+}
+html.ui6 #screen-home #resume-box.hidden { display: none; }
+html.ui6 #screen-home #resume-box > div:first-child { flex: 1 1 auto; min-width: 0; }
+html.ui6 #screen-home #resume-box b { color: var(--gold); }
+html.ui6 #screen-home #resume-box p { margin: 2px 0 0; overflow-wrap: anywhere; }
+html.ui6 #screen-home .resume-btns { flex: none; gap: calc(var(--gap) * .6); }
+html.ui6 #screen-home #btn-resume-drop { width: var(--tap); padding: 0; }
+
+/* ---------- strony z zakładkami (ustawienia, statystyki, okno dużego ekranu) ---------- */
+html.ui6 .ui6-menu-pages { --colw: 24rem; }
+html.ui6 :is(#screen-settings, #screen-stats) > .ui6-nav { flex: none; }
+/* wąski ekran: nazwa tylko aktywnej zakładki, pozostałe jako kropki */
+@media (max-width: 760px) {
+  html.ui6 :is(#screen-settings, #screen-stats, #dlg-connect) .ui6-tab:not(.on) {
+    font-size: 0; width: 20px; min-width: 20px; height: 28px; min-height: 0; padding: 9px 5px; border: 0; border-radius: 50%;
+    background: var(--line); background-clip: content-box; flex: none;
+  }
+  html.ui6 :is(#screen-settings, #screen-stats, #dlg-connect) .ui6-tab.on { flex: 0 1 auto; min-width: 0; padding: 0 .6em; }
+  html.ui6 :is(#screen-settings, #screen-stats, #dlg-connect) .ui6-tabs { gap: 0; }
+}
+
+/* ---------- ustawienia ---------- */
+html.ui6 #screen-settings .card h2 { color: var(--accent-2); }
+html.ui6 #screen-settings .check { margin-top: .7em; }
+html.ui6 #screen-settings .seg label { min-height: var(--tap); display: flex; align-items: center; gap: .4em; }
+html.ui6 #screen-settings #song-search { width: 100%; box-sizing: border-box; }
+html.ui6 #screen-settings .song-editor { max-height: none; overflow: visible; margin-bottom: var(--gap); }
+html.ui6 #screen-settings .song-row { flex-wrap: wrap; break-inside: avoid; -webkit-column-break-inside: avoid; padding: .45em 2px; }
+html.ui6 #screen-settings .song-edit { width: 100%; }
+html.ui6 #screen-settings .song-edit select { flex: 1; max-width: none; min-width: 0; }
+html.ui6 #screen-settings #btn-reset-years { width: 100%; }
+html.ui6 #screen-settings .ly-reports li { break-inside: avoid; }
+html.ui6 #screen-settings > .actions #btn-settings-back { padding: 0 1em; font-size: 1rem; }
+
+/* ---------- statystyki ---------- */
+html.ui6 #screen-stats > p.muted { flex: none; margin: 0; }
+@media (max-height: 520px) { html.ui6 #screen-stats > p.muted { display: none; } }
+html.ui6 #stats-body .card h2 { color: var(--accent-2); }
+html.ui6 #stats-body .stat-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+html.ui6 #stats-body .stat-tiles .tile { background: var(--panel-2); border-radius: calc(var(--radius) * .8); padding: .5em .7em; }
+html.ui6 #stats-body .stat-tiles .tile b { font-size: clamp(1.3rem, 1rem + 1.4vmin, 2.2rem); color: var(--gold); }
+html.ui6 #stats-body .achievements { grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: calc(var(--gap) * .6); }
+html.ui6 #stats-body .ach { padding: .5em; gap: .5em; break-inside: avoid; }
+html.ui6 #stats-body .ach-icon { font-size: 1.4rem; }
+html.ui6 #stats-body .ach .small { font-size: .74rem; }
+html.ui6 #stats-body .line-chart { max-height: 34dvh; width: 100%; }
+html.ui6 #stats-body .bar-row { break-inside: avoid; }
+html.ui6 #stats-body .confused li, html.ui6 #stats-body .record-log li { break-inside: avoid; margin-bottom: .25em; }
+html.ui6 #stats-body .actions { flex-wrap: wrap; }
+
+/* ---------- kariera: 18 etapów w siatce na cały ekran ---------- */
+html.ui6 #screen-career {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto minmax(0, 1fr) auto; align-items: center;
+}
+html.ui6 #screen-career > .screen-title { grid-column: 1; grid-row: 1; }
+html.ui6 #screen-career .career-total { grid-column: 2; grid-row: 1; margin: 0; font-size: 1.05rem; }
+html.ui6 #screen-career > p.muted { grid-column: 1 / -1; grid-row: 2; margin: 0; max-width: 90ch; }
+html.ui6 #screen-career > .actions { grid-column: 1 / -1; grid-row: 4; }
+html.ui6 #screen-career .career-list {
+  --cols: 6; --rows: 3;
+  grid-column: 1 / -1; grid-row: 3; align-self: stretch; min-height: 0; height: 100%; margin: 0;
+  display: grid; gap: calc(var(--gap) * .7);
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
+}
+@media (max-aspect-ratio: 1/1) {
+  html.ui6 #screen-career .career-list { --cols: 3; --rows: 6; }
+}
+html.ui6 #screen-career .career-stage {
+  container-type: size; position: relative; min-height: 0; height: 100%; margin: 0; padding: 0; overflow: visible;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(255,61,127,.16), transparent 60%), var(--panel);
+}
+html.ui6 #screen-career .career-stage > * { position: absolute; }
+html.ui6 #screen-career .career-stage:not(.locked):hover { border-color: var(--accent); }
+html.ui6 #screen-career .career-stage.locked { opacity: .5; background: var(--panel); }
+html.ui6 #screen-career .career-no {
+  left: clamp(5px, 5cqmin, 18px); top: clamp(5px, 5cqmin, 18px);
+  width: auto; height: auto; min-width: 1.7em; padding: .1em .35em; border-radius: 999px; box-sizing: border-box;
+  font-size: clamp(11px, min(6cqw, 11cqh), 22px); line-height: 1.4; background: var(--panel-2);
+}
+html.ui6 #screen-career .career-stage:not(.locked) .career-no { background: var(--accent); color: #fff; }
+html.ui6 #screen-career .career-stars {
+  right: clamp(5px, 5cqmin, 18px); top: clamp(5px, 5cqmin, 18px); letter-spacing: 0;
+  font-size: clamp(11px, min(6.5cqw, 12cqh), 26px); line-height: 1.4;
+}
+html.ui6 #screen-career .career-name {
+  left: clamp(5px, 5cqmin, 18px); right: clamp(5px, 5cqmin, 18px); bottom: clamp(5px, 5cqmin, 18px); top: calc(clamp(5px, 5cqmin, 18px) + 1.6em);
+  display: flex; flex-direction: column; justify-content: center; gap: .25em; font-size: clamp(12px, min(8cqw, 15cqh), 28px);
+}
+html.ui6 #screen-career .career-name b { font-size: 1em; line-height: 1.17; overflow-wrap: anywhere; hyphens: auto; }
+html.ui6 #screen-career .career-name small { font-size: max(11px, .72em); line-height: 1.25; }
+/* małe kafelki: bez celu gwiazdek */
+@container (max-height: 110px) or (max-width: 150px) {
+  html.ui6 #screen-career .career-name small { display: none; }
+}
+@media (max-height: 560px) { html.ui6 #screen-career > p.muted { display: none; } }
+@media (max-aspect-ratio: 1/1) and (max-width: 500px) { html.ui6 #screen-career > p.muted { display: none; } }
+
+/* ---------- okno zasad: wybór trybu i treść jednego trybu ---------- */
+html.ui6 #dlg-rules .ui6-rules { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: var(--gap); }
+html.ui6 .ui6-rules-head { flex: none; display: flex; align-items: center; gap: var(--gap); flex-wrap: wrap; }
+html.ui6 .ui6-rules-head h2 { margin: 0; font-size: clamp(1.2rem, 1rem + 1vmin, 2rem); }
+html.ui6 .ui6-rules-select { flex: 1 1 12rem; min-width: 0; max-width: 28rem; font: inherit; font-weight: 600; color: var(--text); background: var(--panel-2); border-radius: calc(var(--radius) * .7); padding: 0 .8em; }
+html.ui6 .ui6-rules-main { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+html.ui6 .ui6-rules-list { display: none; }
+html.ui6 .ui6-rules-pane { min-height: 0; display: flex; flex-direction: column; gap: calc(var(--gap) * .6); }
+html.ui6 .ui6-rules-pages { --colw: 26rem; }
+html.ui6 .ui6-rule h3 { margin: 0 0 .5em; font-size: clamp(1.1rem, 1rem + .8vmin, 1.7rem); color: var(--gold); }
+html.ui6 .ui6-rule :is(ol, ul) { margin: 0; padding-left: 1.3em; }
+html.ui6 .ui6-rule li { margin-bottom: .55em; line-height: 1.45; orphans: 2; widows: 2; }
+html.ui6 .ui6-rule p { margin: .6em 0 0; }
+@media (min-width: 900px) and (min-height: 520px) {
+  html.ui6 .ui6-rules-select { display: none; }
+  html.ui6 .ui6-rules-main { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+  html.ui6 .ui6-rules-list {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); grid-auto-rows: min-content; align-content: start; gap: 4px;
+    padding-right: var(--gap); border-right: 1px solid var(--line);
+  }
+  html.ui6 .ui6-rules-list button {
+    min-height: 0; padding: .35em .6em; font-size: .8rem; text-align: left; line-height: 1.2; border-color: transparent; color: var(--muted);
+  }
+  html.ui6 .ui6-rules-list button:hover { color: var(--text); border-color: var(--line); }
+  html.ui6 .ui6-rules-list button.on { color: var(--text); background: rgba(255,61,127,.16); border-color: var(--accent); }
+}
+
+/* ---------- okno „Duży ekran i telefony” ---------- */
+html.ui6 #dlg-connect > h2 { flex: none; margin: 0; }
+html.ui6 .ui6-connect-pages { --colw: 22rem; }
+html.ui6 #dlg-connect .ui6-sec {
+  background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(10px, 1.6vmin, 22px);
+}
+html.ui6 #dlg-connect .ui6-sec { break-after: column; }
+html.ui6 #dlg-connect .ui6-sec h3 { margin: 0 0 .5em; color: var(--accent-2); }
+html.ui6 #dlg-connect .ui6-sec p { margin: 0 0 .6em; }
+html.ui6 #dlg-connect .ui6-sec > button { width: 100%; }
+html.ui6 #dlg-connect .connect-row { display: flex; gap: calc(var(--gap) * .6); }
+html.ui6 #dlg-connect .connect-row input { flex: 1; min-width: 0; }
+html.ui6 #dlg-connect .room-box { margin-top: .6em; }
+html.ui6 #dlg-connect.join-only .ui6-sec:not(.join-part) { display: none; }
+html.ui6 #dlg-connect.join-only .ui6-sec.join-part { display: block; }
+
+/* ---------- okno „Własna lista piosenek” ---------- */
+html.ui6 #dlg-playlist > h2 { flex: none; margin: 0; }
+html.ui6 .ui6-pl { flex: 1 1 auto; min-height: 0; display: grid; gap: var(--gap); grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1.5fr) minmax(0, 1fr); }
+html.ui6 .ui6-pl:has(#pl-result:empty) { grid-template-rows: minmax(0, 1fr); }
+html.ui6 .ui6-pl:has(#pl-result:empty) .ui6-pl-out { display: none; }
+html.ui6 .ui6-pl-in { min-height: 0; display: flex; flex-direction: column; gap: calc(var(--gap) * .7); }
+html.ui6 .ui6-pl-in p { margin: 0; flex: none; }
+html.ui6 .ui6-pl-in textarea { flex: 1 1 auto; min-height: 7em; resize: none; box-sizing: border-box; width: 100%; }
+html.ui6 .ui6-pl-in input { flex: none; }
+html.ui6 .ui6-pl-in .actions { flex: none; display: flex; }
+html.ui6 .ui6-pl-out { min-height: 0; display: flex; flex-direction: column; gap: calc(var(--gap) * .6); }
+html.ui6 .ui6-pl-pages { --colw: 18rem; }
+html.ui6 #pl-result details[open] .pl-missing li { break-inside: avoid; }
+@media (min-aspect-ratio: 1/1) {
+  html.ui6 .ui6-pl, html.ui6 .ui6-pl:has(#pl-result:empty) { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+  html.ui6 .ui6-pl:has(#pl-result:empty) .ui6-pl-out { display: flex; }
+}
+@media (max-height: 500px) {
+  html.ui6 .ui6-pl-in p { display: none; }
+  html.ui6 .ui6-pl-in textarea { min-height: 4em; }
+}
+
+/* długie karty mogą przechodzić na kolejną kolumnę/stronę (krótkie zostają w całości) */
+html.ui6 #stats-body > .card:has(.achievements, .bars, .confused, .record-log),
+html.ui6 #screen-settings .ui6-flow > .card:has(#song-editor .song-row, #ly-reports li) { break-inside: auto; -webkit-column-break-inside: auto; }
+html.ui6 #stats-body .chart { break-inside: avoid; }
+html.ui6 :is(#stats-body, #screen-settings .ui6-flow) .card h2 { break-after: avoid; }
+/* niski ekran (telefon poziomo): węższe kolumny – dwie obok siebie zamiast jednej szerokiej */
+@media (max-height: 500px) {
+  html.ui6 .ui6-menu-pages { --colw: 17rem; }
+  html.ui6 #stats-body .stat-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 8px; }
+  html.ui6 #stats-body .stat-tiles .tile { flex-direction: row-reverse; justify-content: space-between; align-items: baseline; gap: .4em; padding: .15em .5em; }
+  html.ui6 #stats-body .stat-tiles .tile .muted { font-size: .75rem; white-space: nowrap; }
+  html.ui6 #stats-body .stat-tiles .tile b { font-size: 1.1rem; }
+}
+/* przycisk „Gotowe” i akcje: nie na całą szerokość ultrawide */
+html.ui6 :is(#screen-settings, #screen-stats, #screen-career) > .actions { justify-content: flex-end; }
+html.ui6 :is(#screen-settings, #screen-stats, #screen-career) > .actions button { flex: 0 1 22rem; }
+@media (max-width: 600px) {
+  html.ui6 :is(#screen-settings, #screen-stats, #screen-career) > .actions button { flex: 1 1 auto; }
+}
+
+/* okno dużego ekranu na PC: trzy części obok siebie, okno tylko tak wysokie, jak treść */
+@media (min-width: 900px) and (min-height: 520px) {
+  html.ui6 dialog#dlg-connect[open] { height: fit-content; max-height: min(100dvh - 2 * var(--gut), 900px); }
+  html.ui6 #dlg-connect .ui6-connect-pages { flex: 0 1 auto; }
+  html.ui6 #dlg-connect .ui6-connect-pages > .ui6-flow { height: auto; column-count: 3; column-width: auto; }
+  html.ui6 #dlg-connect.join-only .ui6-connect-pages > .ui6-flow { column-count: 1; }
+  html.ui6 #dlg-connect .ui6-sec { font-size: 1.05rem; }
+}
+@media (max-height: 500px) {
+  html.ui6 .ui6-connect-pages { --colw: 16rem; }
+}

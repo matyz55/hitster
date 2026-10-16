@@ -447,6 +447,8 @@
     body.player .ly-phone-form { display: flex; flex-direction: column; gap: 10px; }
     body.player .ly-phone-form button { padding: 12px; font-size: 1.05em; border-radius: 12px; }
   </style>
+  <script>try { var u = new URLSearchParams(location.search).get('ui'); if (u) localStorage.setItem('songster.ui6', u === '6' ? '1' : '0'); if (localStorage.getItem('songster.ui6') === '1') document.documentElement.classList.add('ui6'); } catch (e) { /* tryb prywatny */ }</script>
+  <link rel="stylesheet" href="ui6/tv.css">
 </head>
 <body>
   <div class="wrap" id="app">
@@ -457,5 +459,6 @@
   <script src="net.js"></script>
   <script src="dragsort.js"></script>
   <script src="tv.js"></script>
+  <script src="js/ui6-tv.js"></script>
 </body>
 </html>

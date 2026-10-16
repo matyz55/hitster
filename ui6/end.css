@@ -1,1 +1,155 @@
-/* Songster 6.0 – end (wersja próbna); reguły tylko przy html.ui6 */
+/* Songster 6.0 – podsumowanie gry (wersja próbna); reguły tylko przy html.ui6.
+   U góry wynik, pod nim zakładki Wyniki / Liga / Piosenki (telefony) albo wszystko obok siebie (szeroki ekran);
+   treść płynie w kolumnach i stronach (js/ui6-end.js), przyciski na dole. */
+
+html.ui6 #screen-end { gap: calc(var(--gap) * .8); --endcol: 20rem; }
+
+/* ---------- wynik ---------- */
+html.ui6 #screen-end .end-hero { flex: none; text-align: center; padding-top: calc(var(--gap) * .4); }
+html.ui6 #screen-end .end-hero .party-kicker { margin: 0 0 .15em; font-size: clamp(.85rem, .75rem + .5vmin, 1.2rem); }
+html.ui6 #winner-title {
+  margin: 0; font-size: clamp(1.15rem, .9rem + 2vmin, 2.8rem); line-height: 1.15; font-weight: 800;
+  background: linear-gradient(90deg, var(--gold), #ffe9a8 45%, var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- zakładki i paski stron ---------- */
+html.ui6 #screen-end .end-bar { flex: none; display: flex; align-items: center; gap: var(--gap); min-width: 0; }
+html.ui6 #screen-end .end-tabs { flex: 1 1 auto; display: flex; gap: 6px; min-width: 0; }
+html.ui6 #screen-end .end-tab {
+  flex: 1 1 0; min-width: 0; min-height: var(--tap); padding: 0 .6em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  background: var(--panel); border: 1px solid var(--line); color: var(--muted); font-weight: 600;
+}
+html.ui6 #screen-end .end-tab.on { background: rgba(255, 61, 127, .16); border-color: var(--accent); color: var(--text); }
+html.ui6 #screen-end .end-bar .ui6-nav { flex: none; }
+html.ui6 #screen-end .end-bar .ui6-nav .ui6-tabs { display: none; }
+html.ui6 #screen-end .end-bar .ui6-nav .ui6-count { display: inline; }
+html.ui6 #screen-end[data-tab=songs] .end-bar .ui6-nav[data-panel=res],
+html.ui6 #screen-end:not([data-tab=songs]) .end-bar .ui6-nav[data-panel=songs] { display: none; }
+
+/* ---------- panele ---------- */
+html.ui6 #screen-end .end-body { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+html.ui6 #screen-end .end-panel { min-height: 0; min-width: 0; display: flex; flex-direction: column; }
+html.ui6 #screen-end .end-panel > .card { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: calc(var(--gap) * .6); }
+html.ui6 #screen-end .end-res-card { background: none; border: 0; box-shadow: none; padding: 0; text-align: left; }
+html.ui6 #screen-end .end-songs-card h2 { flex: none; margin: 0; }
+html.ui6 #screen-end .end-pages .ui6-flow { column-width: var(--endcol); }
+
+/* wyniki: każda część (ranking, liga, momenty, impreza, turniej, kariera, oś) to osobny kafelek w kolumnach */
+html.ui6 #screen-end #ranking { display: contents; }
+html.ui6 #screen-end #ranking > * { break-inside: avoid; margin: 0 0 var(--gap); }
+html.ui6 #screen-end #ranking > :is(ol.ranking, .league-box, .moments-box, .party-box, .tour-box, .career-result),
+html.ui6 #screen-end #winner-timeline {
+  display: block; width: 100%; padding: clamp(10px, 1.4vmin, 22px); border-radius: var(--radius); border: 1px solid var(--line);
+  background: var(--panel); box-shadow: 0 10px 30px rgba(0, 0, 0, .25); text-align: left;
+}
+html.ui6 #screen-end #ranking h3 { margin: 0 0 .5em; font-size: 1.02rem; color: var(--accent-2); }
+html.ui6 #screen-end #ranking > h3 { padding: 0 .3em; }
+html.ui6 #screen-end ol.ranking { list-style: none; counter-reset: r; display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; }
+html.ui6 #screen-end #ranking > ol.ranking { padding: clamp(10px, 1.4vmin, 22px); }
+html.ui6 #screen-end ol.ranking li {
+  counter-increment: r; display: flex; align-items: center; gap: .6em; padding: .45em .7em; border-radius: 10px; background: var(--panel-2);
+  font-size: clamp(.95rem, .85rem + .5vmin, 1.3rem); font-variant-numeric: tabular-nums;
+}
+html.ui6 #screen-end ol.ranking li::before { content: counter(r) "."; min-width: 1.6em; text-align: center; color: var(--muted); font-weight: 700; }
+html.ui6 #screen-end ol.ranking li:nth-child(1)::before { content: "🥇"; }
+html.ui6 #screen-end ol.ranking li:nth-child(2)::before { content: "🥈"; }
+html.ui6 #screen-end ol.ranking li:nth-child(3)::before { content: "🥉"; }
+html.ui6 #screen-end ol.ranking li:first-child { background: linear-gradient(90deg, rgba(255, 201, 60, .22), rgba(255, 201, 60, .05)); font-weight: 700; }
+html.ui6 #screen-end ol.ranking li.me { box-shadow: inset 0 0 0 2px var(--gold); }
+html.ui6 #screen-end .league-box h3 { color: var(--gold); }
+html.ui6 #screen-end .moments li { font-size: .9rem; }
+html.ui6 #screen-end .party-box > p, html.ui6 #screen-end .tour-box > p { margin: .6em 0 0; }
+html.ui6 #screen-end .tour-round { margin: 0 0 .6em; }
+html.ui6 #screen-end .tour-round ul { list-style: none; padding: 0; margin: .3em 0 0; display: flex; flex-direction: column; gap: 4px; }
+html.ui6 #screen-end .tour-round li { padding: .35em .7em; border-radius: 8px; background: var(--panel-2); }
+html.ui6 #screen-end .tour-round li.next { box-shadow: inset 0 0 0 2px var(--accent-2); }
+html.ui6 #screen-end .career-result { text-align: center; }
+html.ui6 #screen-end .career-result p { margin: 0 0 .4em; }
+html.ui6 #screen-end .career-result .actions { margin: .4em 0 0; }
+html.ui6 #screen-end #ranking > .daily-squares { text-align: center; font-size: clamp(1.3rem, 1rem + 1.5vmin, 2.2rem); letter-spacing: 2px; overflow-wrap: anywhere; }
+html.ui6 #screen-end #ranking > p { text-align: center; }
+html.ui6 #screen-end #ranking > button { display: block; width: 100%; }
+
+/* oś zwycięzcy: zwarte wiersze rok – tytuł – wykonawca */
+html.ui6 #screen-end #winner-timeline { flex-direction: column; gap: 4px; overflow: visible; scroll-snap-type: none; }
+html.ui6 #screen-end #winner-timeline:not(.hidden) { display: flex; }
+html.ui6 #screen-end #winner-timeline .tcard {
+  width: 100%; min-height: 0; padding: 6px 10px; text-align: left; border-radius: 10px; animation: none;
+  display: grid; grid-template-columns: 3.4em minmax(0, 1fr) auto; grid-template-areas: "y t f" "y a f"; align-items: center; column-gap: 10px;
+}
+html.ui6 #screen-end #winner-timeline .tcard .y { grid-area: y; font-size: 1.25rem; }
+html.ui6 #screen-end #winner-timeline .tcard .t { grid-area: t; font-size: .88rem; overflow-wrap: anywhere; }
+html.ui6 #screen-end #winner-timeline .tcard .a { grid-area: a; font-size: .78rem; overflow-wrap: anywhere; }
+html.ui6 #screen-end #winner-timeline .tcard .flag { grid-area: f; }
+html.ui6 #screen-end #winner-timeline .tcard.start .t { display: none; }
+
+/* piosenki z gry */
+html.ui6 #played-list { margin: 0; }
+html.ui6 #played-list li {
+  break-inside: avoid; grid-template-columns: 3.2em minmax(0, 1fr) auto; gap: 2px 10px; padding: 8px 6px; border-bottom-color: var(--line);
+}
+html.ui6 #played-list li.muted { display: block; border: 0; }
+html.ui6 #played-list .py { grid-row: 1 / span 2; font-size: 1.15rem; }
+html.ui6 #played-list .pt { min-width: 0; overflow-wrap: anywhere; }
+html.ui6 #played-list .pn { grid-column: 2; }
+html.ui6 #played-list .listen { grid-column: 3; grid-row: 1 / span 2; }
+html.ui6 #screen-end .end-songs-pages .ui6-flow > #played-list { break-inside: auto; }
+
+/* ---------- przyciski ---------- */
+html.ui6 #screen-end > .actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--gap); }
+html.ui6 #screen-end > .actions.hidden { display: none; }
+html.ui6 #screen-end > .actions button { min-height: max(var(--tap), 6vmin); font-size: clamp(.95rem, .85rem + .5vmin, 1.35rem); line-height: 1.2; }
+html.ui6 #screen-end > #end-multi { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr); }
+
+/* ---------- telefony i wąskie okna: jedna zakładka naraz ---------- */
+@media not all and (min-width: 900px) and (min-height: 521px) {
+  html.ui6 #screen-end[data-tab=songs] .end-res, html.ui6 #screen-end:not([data-tab=songs]) .end-songs { display: none; }
+  html.ui6 #screen-end[data-tab=res] #ranking > :is(.league-box, .moments-box) { display: none; }
+  html.ui6 #screen-end[data-tab=league] #ranking > :not(.league-box):not(.moments-box),
+  html.ui6 #screen-end[data-tab=league] #winner-timeline { display: none !important; }
+  html.ui6 #screen-end .end-songs-card { padding: 8px 10px; }
+  html.ui6 #screen-end .end-songs-card h2 { display: none; } /* nazwa jest na zakładce */
+}
+/* telefon pionowo: dwa mniejsze przyciski obok siebie, główny pod nimi na całą szerokość */
+@media (max-width: 600px) {
+  html.ui6 #screen-end > #end-multi { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; }
+  html.ui6 #screen-end > #end-multi .primary { grid-column: 1 / -1; }
+  html.ui6 #screen-end > .actions button { font-size: .9rem; padding: .3em .6em; }
+  html.ui6 #screen-end .end-tab { font-size: .85rem; padding: 0 .3em; }
+  html.ui6 #screen-end .end-bar { gap: 6px; }
+  html.ui6 #screen-end .end-bar .ui6-nav { gap: 4px; }
+  html.ui6 #screen-end .end-bar .ui6-nav > button { width: 36px; }
+  html.ui6 #screen-end .end-bar .ui6-nav .ui6-count { font-size: .8rem; }
+}
+/* telefon poziomo: wynik i zakładki w jednym rzędzie, przyciski w jednym rzędzie */
+@media (orientation: landscape) and (max-height: 520px) {
+  html.ui6 #screen-end { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas: "hero bar" "body body" "act act"; gap: 6px 10px; --endcol: 15rem; }
+  html.ui6 #screen-end .end-hero { grid-area: hero; align-self: center; text-align: left; padding: 0; }
+  html.ui6 #screen-end .end-hero .party-kicker { font-size: .75rem; }
+  html.ui6 #winner-title { font-size: 1rem; }
+  html.ui6 #screen-end .end-bar { grid-area: bar; }
+  html.ui6 #screen-end .end-body { grid-area: body; }
+  html.ui6 #screen-end > .actions { grid-area: act; }
+  html.ui6 #screen-end > .actions button { min-height: var(--tap); font-size: .85rem; padding: .2em .6em; }
+  html.ui6 #screen-end > #end-multi { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.6fr); }
+  html.ui6 #screen-end ol.ranking li { font-size: .9rem; padding: .3em .6em; }
+}
+
+/* ---------- szeroki ekran: wyniki (w kolumnach) i piosenki obok siebie, bez zakładek ---------- */
+@media (min-width: 900px) and (min-height: 521px) {
+  html.ui6 #screen-end .end-bar { display: none; }
+  html.ui6 #screen-end .end-body { grid-template-columns: minmax(0, 1fr) clamp(22rem, 40%, 56rem); }
+  html.ui6 #screen-end .end-panel .ui6-nav { margin-top: calc(var(--gap) * .4); }
+  html.ui6 #screen-end .end-songs-pages .ui6-flow { column-width: 24rem; }
+  /* mało treści – kafelki rozkładają się na kolumny zamiast jednej wąskiej kolumny po lewej */
+  html.ui6 #screen-end .end-res .ui6-flow { column-fill: balance; }
+  html.ui6 #screen-end > .actions { max-width: 1400px; width: 100%; margin-left: auto; margin-right: auto; }
+}
+/* na pasku zakładek bez kropek – zawsze „1/2” */
+html.ui6 #screen-end .end-bar .ui6-nav .ui6-count.hidden { display: inline !important; }
+/* bez rankingu i osi – same piosenki (na szerokim ekranie na całą szerokość) */
+html.ui6 #screen-end.end-nores .end-res { display: none; }
+html.ui6 #screen-end.end-nores .end-body { grid-template-columns: minmax(0, 1fr); }
+html.ui6 #screen-end.end-nores .end-bar .ui6-nav[data-panel=songs] { display: flex; }

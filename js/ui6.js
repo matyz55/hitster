@@ -127,7 +127,7 @@ function ui6Check() {
   const d = document.documentElement;
   const out = { scrollY: d.scrollHeight > innerHeight + 1, scrollX: d.scrollWidth > innerWidth + 1, clipped: [] };
   const root = $$('.screen').find((s) => !s.classList.contains('hidden')) || document.body;
-  const scope = [...root.querySelectorAll('*'), ...$$('dialog[open] *')];
+  const scope = [root, ...root.querySelectorAll('*'), ...$$('dialog[open]'), ...$$('dialog[open] *')];
   for (const e of scope) {
     if (!e.offsetParent || e.closest('.ui6-pages')) continue;
     const cs = getComputedStyle(e);

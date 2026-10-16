@@ -1,0 +1,410 @@
+/* Songster 6.0 – duży ekran (telewizor) i telefon gracza (tv.html). Wszystkie reguły tylko przy html.ui6.
+   tv.html nie ładuje ui6/base.css (tam .card i button znaczą co innego) – potrzebne tokeny są powtórzone tutaj.
+   Duży ekran: czcionka liczona w tv.js (fit) – wszystko w em, więc całość skaluje się razem i mieści bez przewijania.
+   Telefon gracza: „kontroler” na całe okno – stałe strefy, duże przyciski, długie osie zwijane do grzbietów (js/ui6-tv.js). */
+html.ui6 {
+  --bg: #0f0d17;
+  --panel: #1b1828;
+  --panel-2: #262137;
+  --line: #352f4c;
+  --text: #f4f1ff;
+  --muted: #a69ec2;
+  --accent: #ff3d7f;
+  --accent-2: #2de2e6;
+  --ok: #3ddc84;
+  --bad: #ff5c5c;
+  --gold: #ffc93c;
+  --tap: 46px;
+  --glass: linear-gradient(160deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .015));
+}
+html.ui6, html.ui6 body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+html.ui6 body {
+  height: 100dvh;
+  background: radial-gradient(120vmax 80vmax at 12% -15%, #2b1745 0%, transparent 60%),
+    radial-gradient(90vmax 70vmax at 110% 115%, #0f2a3a 0%, transparent 55%),
+    radial-gradient(60vmax 40vmax at 50% 120%, rgba(255, 61, 127, .10) 0%, transparent 60%), var(--bg);
+}
+
+/* ===================================================================== duży ekran ===================================================================== */
+html.ui6 body:not(.player) .wrap { gap: 1.2vh; }
+html.ui6 body:not(.player) h1 { font-weight: 900; letter-spacing: -.01em; }
+html.ui6 .sb-kicker { color: var(--accent-2); letter-spacing: .16em; }
+/* panele jak u gospodarza: ciemne szkło, cienka ramka, miękki cień */
+html.ui6 body:not(.player) :is(.turn-card, .sb-left, .end-card, .end-songs, .mb-tile, .connected) {
+  background: var(--glass), var(--panel); border: 1px solid var(--line); border-radius: 1em; box-shadow: 0 .6em 2em rgba(0, 0, 0, .35);
+}
+
+/* ---------- ekran z kodem do połączenia: kod i QR na środku, duże i czytelne z kanapy ---------- */
+html.ui6 body:not(.player) .waiting { font-size: 1.2em; }
+html.ui6 body:not(.player) .waiting > b { font-size: 1.7em; font-weight: 900; }
+html.ui6 body:not(.player) .waiting.with-code {
+  margin: auto; width: 100%; max-width: 62em; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
+  column-gap: 2.4em; row-gap: .5em; text-align: left; color: var(--muted);
+  background: var(--glass), var(--panel); border: 1px solid var(--line); border-radius: 1.1em; padding: 1.6em 2em; box-shadow: 0 .8em 2.5em rgba(0, 0, 0, .4);
+}
+html.ui6 body:not(.player) .waiting.with-code > br { display: none; }
+html.ui6 body:not(.player) .waiting.with-code > b { grid-column: 1; margin: 0; font-size: 1.5em; color: var(--text); }
+html.ui6 body:not(.player) .waiting.with-code > #waiting-text { grid-column: 1; font-size: .95em; }
+html.ui6 body:not(.player) .waiting.with-code > button { grid-column: 1; justify-self: start; font-size: .7em; padding: .5em 1.1em; border-radius: 999px; border-color: var(--line); }
+html.ui6 body:not(.player) .waiting.with-code > .net-box { display: contents; }
+html.ui6 body:not(.player) .waiting.with-code .net-qr {
+  grid-column: 2; grid-row: 1 / span 8; width: min(56vh, 36vw); border-radius: .6em; padding: 1.2vmin;
+  box-shadow: 0 0 0 .3em rgba(255, 201, 60, .35), 0 1em 3em rgba(0, 0, 0, .5);
+}
+html.ui6 body:not(.player) .waiting.with-code .net-info { grid-column: 1; grid-row: 3; max-width: none; margin: .4em 0; }
+html.ui6 body:not(.player) .net-label { text-transform: uppercase; letter-spacing: .16em; font-size: .7em; color: var(--accent-2); font-weight: 700; }
+html.ui6 body:not(.player) .net-code { font-size: clamp(2.5rem, 15vmin, 12rem); text-shadow: 0 0 .35em rgba(255, 201, 60, .35); }
+html.ui6 body:not(.player) .net-info p { font-size: .75em; color: var(--muted); max-width: 26em; }
+html.ui6 body:not(.player) .waiting.with-code > .sound-tip { grid-column: 1; margin: 0; font-size: .65em; }
+/* ekran po połączeniu telefonu */
+html.ui6 body:not(.player) .connected { padding: 1.4em 2.6em; }
+html.ui6 body:not(.player) .connected .big { font-size: 2.6em; }
+
+/* ---------- lobby i ustawienia gry: gracze z lewej, duży QR z kodem z prawej ---------- */
+html.ui6 body:not(.player) .setup-board { grid-template-columns: minmax(0, 1fr) auto; gap: 2.2em; align-items: center; }
+html.ui6 body:not(.player) .setup-board.single { grid-template-columns: minmax(0, 1fr); align-items: center; }
+html.ui6 body:not(.player) .sb-left { padding: 1.4em 1.8em; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+html.ui6 .flag { aspect-ratio: 3 / 2; object-fit: cover; }
+html.ui6 body:not(.player) .sb-left h1 { font-size: 2.3em; margin: .1em 0 .4em; line-height: 1.05; }
+html.ui6 body:not(.player) .sb-sub { text-transform: uppercase; letter-spacing: .12em; font-size: .7em; color: var(--muted); font-weight: 700; margin-bottom: .5em; }
+html.ui6 body:not(.player) .sb-players .chips { gap: .5em; }
+html.ui6 body:not(.player) .pchip {
+  font-size: 1.05em; padding: .35em .95em; background: linear-gradient(160deg, #3a2d63, #2a2244); border: 1px solid rgba(255, 255, 255, .12);
+}
+html.ui6 body:not(.player) .sb-opts { font-size: .85em; gap: .25em 1.4em; padding: .7em 0 0; border-top: 1px solid var(--line); }
+html.ui6 body:not(.player) .sb-right {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .3em; padding: 1em 1.4em; border-radius: 1em;
+  background: radial-gradient(circle at 50% 30%, rgba(255, 201, 60, .10), transparent 65%);
+}
+html.ui6 body:not(.player) .sb-qr { width: min(60vh, 34vw); border-radius: .6em; box-shadow: 0 0 0 .3em rgba(255, 201, 60, .35), 0 1em 3em rgba(0, 0, 0, .5); }
+html.ui6 body:not(.player) .sb-code { text-shadow: 0 0 .35em rgba(255, 201, 60, .35); }
+html.ui6 body:not(.player) .sb-right p { font-size: .9em; color: var(--muted); }
+
+/* ---------- wybór trybu z głosami: kafelki na cały ekran ---------- */
+html.ui6 body:not(.player) .modes-board { gap: 1.4vh; }
+html.ui6 body:not(.player) .mb-head h1 { font-size: 1.9em; }
+html.ui6 body:not(.player) .mb-join {
+  background: rgba(255, 201, 60, .12); border: 1px solid rgba(255, 201, 60, .5); border-radius: 999px; padding: .3em 1em; font-size: 1em;
+}
+html.ui6 body:not(.player) .mb-grid { flex: 1 0 auto; grid-template-columns: repeat(var(--mbcols, 6), minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 1.1vh .7em; align-content: stretch; }
+html.ui6 body:not(.player) .mb-tile {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto 1fr auto; column-gap: .55em; row-gap: .1em; align-items: start;
+  padding: .55em .75em; border-width: 1px; border-radius: .8em;
+}
+html.ui6 body:not(.player) .mb-icon { grid-row: 1 / span 2; font-size: 1.5em; line-height: 1.1; }
+html.ui6 body:not(.player) .mb-title { font-size: .95em; line-height: 1.2; }
+html.ui6 body:not(.player) .mb-desc { grid-column: 2; font-size: .66em; }
+html.ui6 body:not(.player) .mb-votes { grid-column: 1 / -1; min-height: 0; font-size: .7em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html.ui6 body:not(.player) .mb-votes:empty { display: none; }
+html.ui6 body:not(.player) .mb-tile.voted { border-color: var(--gold); background: linear-gradient(160deg, rgba(255, 201, 60, .2), rgba(255, 201, 60, .05)), var(--panel);
+  box-shadow: 0 0 0 1px var(--gold), 0 .5em 1.6em rgba(255, 201, 60, .18); }
+html.ui6 body:not(.player) .mb-tile.off { opacity: .32; }
+html.ui6 body:not(.player) .mb-hint { font-size: .85em; }
+
+/* ---------- rozgrywka: karta tury (płyta, status, przyciski) i osie ---------- */
+html.ui6 body:not(.player) .scores { gap: .5em; }
+html.ui6 body:not(.player) .score { background: var(--glass), var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: .3em 1em; font-weight: 600; }
+html.ui6 body:not(.player) .score.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 1em rgba(255, 61, 127, .35); background: rgba(255, 61, 127, .14); }
+html.ui6 body:not(.player) .turn-card { padding: .8em 1.3em; gap: .5em; position: relative; overflow: hidden; }
+html.ui6 body:not(.player) .turn-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: .28em; background: linear-gradient(var(--accent), var(--accent-2)); }
+html.ui6 body:not(.player) .turn-head h1 { font-size: 1.6em; }
+html.ui6 body:not(.player) .turn-head .info {
+  background: rgba(255, 201, 60, .1); border: 1px solid rgba(255, 201, 60, .35); border-radius: 999px; padding: .2em .9em; font-size: .9em; white-space: nowrap;
+}
+html.ui6 body:not(.player) .vinyl { box-shadow: 0 0 0 .14em #000, 0 0 0 .3em rgba(255, 61, 127, .35), 0 .6em 1.6em rgba(0, 0, 0, .5); }
+html.ui6 body:not(.player) .status { font-size: 1.25em; font-weight: 600; }
+html.ui6 body:not(.player) .progress { height: .32em; }
+html.ui6 body:not(.player) .progress .bar { background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
+html.ui6 body:not(.player) .hint { font-size: 1.1em; font-weight: 600; }
+html.ui6 body:not(.player) .reveal .year { font-size: 3.2em; text-shadow: 0 0 .4em rgba(255, 201, 60, .4); }
+html.ui6 body:not(.player) .actions { gap: .5em; }
+html.ui6 body:not(.player) .actions button { border-radius: 999px; padding: .5em 1.2em; border: 1px solid var(--line); }
+html.ui6 body:not(.player) .actions button.primary { box-shadow: 0 .3em 1em rgba(255, 61, 127, .3); border-color: transparent; }
+html.ui6 body:not(.player) .actions button.big-choice { border-radius: .7em; }
+/* osie */
+html.ui6 body:not(.player) .timelines:empty { display: none; }
+html.ui6 body:not(.player) .tl-row { border-radius: .7em; }
+html.ui6 body:not(.player) .timelines.multi .tl-row.active {
+  background: linear-gradient(90deg, rgba(255, 61, 127, .12), rgba(255, 255, 255, .02) 40%); box-shadow: inset .22em 0 0 var(--accent);
+}
+html.ui6 body:not(.player) .timelines.multi .tl-row:not(.active) { background: rgba(255, 255, 255, .025); }
+html.ui6 body:not(.player) .tl-row .card:not(.start):not(.mystery) {
+  background: linear-gradient(165deg, #4a3b86 0%, #2c2552 100%); border: 1px solid rgba(255, 255, 255, .12);
+  box-shadow: 0 .35em 1em rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+html.ui6 body:not(.player) .tl-row .card .y { text-shadow: 0 0 .3em rgba(255, 201, 60, .3); }
+/* gra bez osi (quizy, Kto pierwszy?, Bingo…): karta tury na cały ekran, odpowiedzi jak w teleturnieju */
+html.ui6 body:not(.player) .wrap:has(.timelines:empty) > .turn-card { flex: 1 1 auto; min-height: 0; justify-content: center; padding: 1.2em 2em; gap: .9em; }
+html.ui6 body:not(.player) .wrap:has(.timelines:empty) .main { gap: 2em; }
+html.ui6 body:not(.player) .wrap:has(.timelines:empty) .vinyl { width: min(22vh, 8em); height: min(22vh, 8em); }
+html.ui6 body:not(.player) .wrap:has(.timelines:empty) .status { font-size: 1.5em; }
+html.ui6 body:not(.player) .wrap:has(.timelines:empty) .hint { font-size: 1.6em; font-weight: 800; text-align: center; color: var(--accent-2); }
+html.ui6 body:not(.player) .actions:has(> .big-choice) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .7em; }
+html.ui6 body:not(.player) .actions:has(> .big-choice) > :not(.big-choice) { grid-column: 1 / -1; justify-self: center; }
+html.ui6 body:not(.player) .actions .big-choice {
+  counter-increment: ui6opt; font-size: 1.35em; padding: .7em 1em .7em 2.6em; text-align: left; position: relative; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  background: var(--glass), var(--panel-2); border: .09em solid #4a3f6e; border-radius: .8em;
+}
+html.ui6 body:not(.player) .actions:has(> .big-choice) { counter-reset: ui6opt; }
+html.ui6 body:not(.player) .actions .big-choice::before {
+  content: counter(ui6opt, upper-alpha); position: absolute; left: .55em; top: 50%; transform: translateY(-50%); width: 1.5em; height: 1.5em; border-radius: 50%;
+  display: grid; place-items: center; font-size: .8em; font-weight: 900; background: var(--c6, var(--accent)); color: #12101a;
+}
+html.ui6 body:not(.player) .actions .big-choice:nth-of-type(4n+1) { --c6: var(--accent); }
+html.ui6 body:not(.player) .actions .big-choice:nth-of-type(4n+2) { --c6: var(--accent-2); }
+html.ui6 body:not(.player) .actions .big-choice:nth-of-type(4n+3) { --c6: var(--gold); }
+html.ui6 body:not(.player) .actions .big-choice:nth-of-type(4n+4) { --c6: var(--ok); }
+html.ui6 body:not(.player) .actions .big-choice.ok { background: var(--ok); color: #0b1d12; border-color: var(--ok); }
+/* Kto pierwszy?, Bingo, Pojedynek na żywo */
+html.ui6 body:not(.player) .buzzer { border-radius: .8em; padding: .5em 1em; }
+html.ui6 body:not(.player) .bingo-board { background: var(--glass), var(--panel-2); border: .12em solid var(--line); border-radius: .8em; }
+html.ui6 body:not(.player) .bingo-board.won { border-color: var(--gold); box-shadow: 0 0 1em rgba(255, 201, 60, .35); }
+html.ui6 body:not(.player) .live-box { gap: .8em; font-size: 1.15em; }
+html.ui6 body:not(.player) .live-line { grid-template-columns: 7em 1fr auto; }
+html.ui6 body:not(.player) .live-bar { height: .9em; }
+html.ui6 body:not(.player) .live-fill { background: linear-gradient(90deg, var(--accent-2), var(--accent)); }
+
+/* ---------- podsumowanie ---------- */
+html.ui6 body:not(.player) .end { max-width: min(100%, 44em); gap: 1.6em; align-content: center; }
+html.ui6 body:not(.player) .end.with-songs { max-width: none; }
+html.ui6 body:not(.player) .end-card { padding: 1.1em 1.6em; }
+html.ui6 body:not(.player) .end-card h2 { font-size: 2em; font-weight: 900; }
+html.ui6 body:not(.player) .end-rank li.top { background: var(--glass), var(--panel-2); border: 1px solid var(--line); font-size: 1.1em; }
+html.ui6 body:not(.player) .end-rank li.top:first-child { background: linear-gradient(90deg, rgba(255, 201, 60, .28), rgba(255, 201, 60, .05)); border-color: rgba(255, 201, 60, .6); font-size: 1.25em; }
+html.ui6 body:not(.player) .end-songs li { border-left-width: .2em; }
+
+/* ---------- Tak to leciało!: drabinka z lewej, tekst na środku ---------- */
+html.ui6 body:not(.player) .ly-tv { min-height: 0; overflow: hidden; align-items: stretch; }
+html.ui6 body:not(.player) .ly-tv-side { background: var(--glass), var(--panel); border: 1px solid var(--line); border-radius: 1em; padding: .8em; min-height: 0; overflow: hidden; display: flex; flex-direction: column; }
+html.ui6 body:not(.player) .ly-ladder { flex: 1 1 auto; min-height: 0; justify-content: space-between; }
+html.ui6 body:not(.player) .ly-ladder li { border-radius: 999px; padding: .3em .9em; }
+html.ui6 body:not(.player) .ly-ladder li.now { background: linear-gradient(90deg, var(--accent), #c42a64); box-shadow: 0 0 1em rgba(255, 61, 127, .45); }
+html.ui6 body:not(.player) .ly-ladder li.safe { border: 1px solid rgba(255, 201, 60, .5); }
+html.ui6 body:not(.player) :is(.ly-tv-song, .ly-tv-board) { background: var(--glass), var(--panel); border: 1px solid var(--line); border-radius: 1em; padding: 1em 1.6em;
+  min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: center; }
+html.ui6 body:not(.player) .ly-lines .now { text-shadow: 0 0 .4em rgba(45, 226, 230, .35); }
+
+/* ===================================================================== telefon gracza ===================================================================== */
+html.ui6 body.player { overflow: hidden; }
+html.ui6 body.player .wrap {
+  height: 100dvh; min-height: 0; overflow: hidden; padding: 10px 12px; gap: 8px; font-size: 16px; max-width: none; margin: 0;
+}
+html.ui6.kbd body.player .wrap { height: var(--vvh, 100dvh); }
+@media (min-width: 560px) and (min-height: 560px) { html.ui6 body.player .wrap { font-size: 17px; padding: 14px 18px; } }
+html.ui6 body.player button { min-height: var(--tap); font-size: 1em; border-radius: 12px; }
+html.ui6 body.player button.link { min-height: 32px; padding: 0 4px; font-size: .9em; }
+html.ui6 body.player input { min-height: var(--tap); }
+
+/* ---------- wspólna karta „kontrolera” (dołączanie, lobby, ustawienia, wyniki, czekanie) ---------- */
+html.ui6 body.player :is(.picker, .waiting) {
+  margin: auto; width: 100%; max-width: 30em; max-height: 100%; min-height: 0; display: flex; flex-direction: column; gap: 10px; text-align: center;
+  background: var(--glass), var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 16px; box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+}
+html.ui6 body.player .waiting { font-size: 1em; color: var(--muted); }
+html.ui6 body.player .waiting b { font-size: 1.3em; margin: 0; }
+html.ui6 body.player .waiting br { display: none; }
+html.ui6 body.player .waiting .picker { box-shadow: none; border: 0; padding: 0; background: none; }
+html.ui6 body.player .picker h2 { margin: 0; font-size: 1.3em; }
+html.ui6 body.player .picker h3 { margin: 0; font-size: 1.05em; color: var(--accent-2); }
+html.ui6 body.player .picker p { margin: 0; }
+html.ui6 body.player .join-form { flex-direction: column; gap: 10px; margin: 4px 0; }
+html.ui6 body.player .join-form input { width: 100%; min-width: 0; min-height: 54px; font-size: 1.2em; text-align: center; border-radius: 14px; border: 2px solid var(--line); background: var(--panel-2); }
+html.ui6 body.player .join-form input:focus { border-color: var(--accent); outline: none; }
+html.ui6 body.player .join-form button, html.ui6 body.player .picker > button.primary, html.ui6 body.player .waiting button.primary {
+  min-height: 56px; font-size: 1.15em; font-weight: 800; border-radius: 14px; border: 0; background: var(--accent); color: #fff; box-shadow: 0 6px 18px rgba(255, 61, 127, .3);
+}
+html.ui6 body.player .picker-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(8em, 1fr)); gap: 8px; }
+html.ui6 body.player .picker-list button { min-height: 52px; border-radius: 14px; }
+html.ui6 body.player .join-view::before { content: "Songster"; color: var(--accent-2); text-transform: uppercase; letter-spacing: .2em; font-size: .75em; font-weight: 800; }
+html.ui6 body.player .phone-info .p-scores { border: 0; padding: 0; }
+html.ui6 body.player .p-opts { margin: 0; text-align: left; background: var(--panel-2); border-radius: 12px; padding: 10px 12px; }
+html.ui6 body.player .p-rank { display: block; margin: 0; padding: 0; list-style: none; counter-reset: r; text-align: left; }
+html.ui6 body.player .p-rank li { padding: 6px 10px; border-radius: 10px; }
+html.ui6 body.player ol.p-rank li { counter-increment: r; }
+html.ui6 body.player ol.p-rank li::before { content: counter(r) ". "; color: var(--muted); font-weight: 700; }
+html.ui6 body.player ol.p-rank li:first-child { background: linear-gradient(90deg, rgba(255, 201, 60, .25), rgba(255, 201, 60, .05)); font-weight: 800; }
+html.ui6 body.player ol.p-rank li:first-child::before { content: "🏆 "; }
+/* strony (gdy treść karty się nie mieści): przesunięcie palcem albo ‹ › */
+html.ui6 body.player .u6-pages { flex: 1 1 auto; min-height: 0; overflow: hidden; position: relative; }
+html.ui6 body.player .u6-flow { height: 100%; column-gap: 24px; column-fill: auto; }
+html.ui6 body.player .u6-flow > * { break-inside: avoid; margin: 0 0 10px; }
+html.ui6 .u6-nav { flex: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
+html.ui6 .u6-nav.hidden { display: none; }
+html.ui6 .u6-nav > button { flex: none; width: var(--tap); min-height: 40px; height: 40px; padding: 0; font-size: 1.4em; line-height: 1; border-radius: 12px; border: 1px solid var(--line); background: var(--panel-2); color: var(--text); }
+html.ui6 .u6-nav > button:disabled { opacity: .35; }
+html.ui6 .u6-dots { display: flex; gap: 6px; }
+html.ui6 .u6-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+html.ui6 .u6-dot.on { background: var(--accent); }
+html.ui6 .u6-count { color: var(--muted); font-variant-numeric: tabular-nums; font-size: .9em; }
+
+/* ---------- głosowanie na tryb: kafelki na całą wysokość, strony zamiast przewijania ---------- */
+html.ui6 body.player .vote-view { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 6px; }
+html.ui6 body.player .vote-view > h2 { margin: 0; font-size: 1.2em; }
+html.ui6 body.player .vote-view > p { margin: 0; font-size: .85em; }
+html.ui6 body.player .vote-list { flex: 1 1 auto; min-height: 0; margin: 2px 0 0; display: grid; gap: 8px; grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); }
+html.ui6 body.player .vote {
+  min-height: 0; display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; align-items: center; column-gap: 8px;
+  padding: 6px 10px; border-radius: 14px; border: 2px solid var(--line); background: var(--glass), var(--panel); overflow: hidden;
+}
+html.ui6 body.player .vote .vi { grid-row: 1 / span 2; font-size: 1.5em; }
+html.ui6 body.player .vote .vt { font-size: .92em; line-height: 1.15; overflow: hidden; }
+html.ui6 body.player .vote .vt b { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+html.ui6 body.player .vote .vt small { display: none; }
+html.ui6 body.player .vote-list.roomy .vt small { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+html.ui6 body.player .vote .vn { font-size: .8em; }
+html.ui6 body.player .vote .vn:empty { display: none; }
+html.ui6 body.player .vote.mine { border-color: var(--gold); background: linear-gradient(160deg, rgba(255, 201, 60, .25), rgba(255, 201, 60, .06)), var(--panel); box-shadow: 0 0 0 1px var(--gold); }
+html.ui6 body.player .vote.u6-off { display: none; }
+html.ui6 body.player .p-top { flex: none; }
+html.ui6 body.player .p-me { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
+html.ui6 body.player .p-me small { display: inline; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- rozgrywka na telefonie: pasek wyników, karta tury, panel osi ---------- */
+html.ui6 body.player .wrap.u6-game { gap: 6px; }
+html.ui6 body.player .u6-bar { flex: none; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+html.ui6 body.player .u6-bar .p-top { gap: 8px; font-size: .85em; min-height: 28px; }
+html.ui6 body.player .u6-bar .p-top .muted { font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+html.ui6 body.player .u6-bar .ht-scores { gap: 4px; }
+@media (orientation: landscape) {
+  html.ui6 body.player .u6-bar { flex-direction: row; align-items: center; flex-wrap: wrap; }
+  html.ui6 body.player .u6-bar .p-top { flex: 0 1 auto; justify-content: flex-start; }
+  html.ui6 body.player .u6-bar .ht-scores { flex: 1 1 0; min-width: 0; justify-content: flex-end; }
+}
+html.ui6 body.player .ht-scores span { padding: 3px 8px; font-size: .78em; border-width: 1px; border-color: var(--line); white-space: nowrap; border-radius: 999px; }
+html.ui6 body.player .ht-scores span.act { border-color: var(--accent); background: rgba(255, 61, 127, .16); }
+html.ui6 body.player .p-party { flex: none; font-size: .85em; }
+html.ui6 body.player .u6-main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+html.ui6 body.player .u6-main > .ht-card { flex: 0 1 auto; min-height: 0; overflow: hidden; }
+html.ui6 body.player .u6-main.split > .ht-card { flex: none; }
+html.ui6 body.player .u6-main.split > .u6-panel { min-height: 0; }
+html.ui6 body.player .u6-main.solo > .ht-card { flex: 1 1 auto; }
+@media (orientation: landscape) {
+  html.ui6 body.player .u6-main.split { flex-direction: row; }
+  html.ui6 body.player .u6-main.split > .ht-card { flex: 1.25 1 0; min-width: 0; }
+  html.ui6 body.player .u6-main.split > .u6-panel { flex: 1 1 0; min-width: 0; }
+}
+html.ui6 body.player .ht-card {
+  background: var(--glass), var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; gap: 8px; box-shadow: 0 10px 30px rgba(0, 0, 0, .3);
+}
+html.ui6 body.player .ht-card.with-actions { padding-bottom: 10px; }
+html.ui6 body.player .ht-head h2 { font-size: 1.1em; }
+html.ui6 body.player .ht-info { font-size: .85em; }
+html.ui6 body.player .ht-vinyl { width: 56px; height: 56px; box-shadow: 0 0 0 2px #000, 0 0 0 4px rgba(255, 61, 127, .35); }
+html.ui6 body.player .ht-status { font-size: .88em; }
+html.ui6 body.player .ht-controls { margin: 6px 0 4px; }
+html.ui6 body.player .ht-controls button { min-height: 50px; border-radius: 12px; }
+html.ui6 body.player .ht-hint { font-size: .82em; line-height: 1.3; }
+html.ui6 body.player .ht-actions { position: static; margin: 0; padding: 0; background: none; border: 0; border-radius: 0; gap: 8px; }
+html.ui6 body.player .ht-actions button { min-height: 50px; border-radius: 12px; font-weight: 700; }
+html.ui6 body.player .ht-actions button.big-choice { min-height: 56px; padding: 8px 10px; font-size: 1.05em; flex: 1 1 calc(50% - 8px); }
+html.ui6 body.player .ht-reveal .y { font-size: 1.9em; text-shadow: 0 0 .3em rgba(255, 201, 60, .35); }
+html.ui6 body.player .ht-card .vtl { min-height: 0; }
+/* ciasno: mniejsza płyta, krótsze odstępy */
+html.ui6 body.player .u6-main.tight .ht-card { padding: 8px 10px; gap: 6px; }
+html.ui6 body.player .u6-main.tight .ht-vinyl { width: 42px; height: 42px; }
+html.ui6 body.player .u6-main.tight .ht-hint { font-size: .76em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* wybór miejsca na osi w pionie: karta tury w jednym-dwóch rzędach, reszta ekranu dla osi */
+html.ui6 body.player .u6-main.tight.pick .ht-hint { display: none; }
+html.ui6 body.player .u6-main.tight.pick .ht-actions { flex-wrap: nowrap; }
+html.ui6 body.player .u6-main.tight.pick .ht-actions button { flex: 1 1 0; min-width: 0; font-size: .85em; padding: 4px 6px; }
+html.ui6 body.player .u6-main.tight .ht-controls button, html.ui6 body.player .u6-main.tight .ht-actions button { min-height: 46px; padding: 6px 10px; }
+html.ui6 body.player .u6-main.tight .ht-actions button.big-choice { min-height: 48px; }
+
+/* panel osi: zakładki (twoja oś / gracz z turą / pozostali) i oś zwijana do grzbietów */
+html.ui6 body.player .u6-panel { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 6px;
+  background: var(--glass), var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 8px 10px; }
+html.ui6 body.player .u6-panel.hidden { display: none; }
+html.ui6 body.player .u6-tabs { flex: none; display: flex; gap: 6px; min-width: 0; }
+html.ui6 body.player .u6-tab {
+  flex: 1 1 auto; min-width: 0; min-height: 40px; padding: 0 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: .8em; font-weight: 700;
+  border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px;
+}
+html.ui6 body.player .u6-tab.on { background: rgba(255, 61, 127, .16); border-color: var(--accent); color: var(--text); }
+html.ui6 body.player .u6-tab.pick { border-color: var(--accent-2); color: var(--accent-2); }
+html.ui6 body.player .u6-tab.pick.on { background: rgba(45, 226, 230, .16); color: var(--text); }
+html.ui6 body.player .u6-who { flex: none; display: flex; gap: 6px; flex-wrap: wrap; }
+html.ui6 body.player .u6-who button { min-height: 36px; padding: 0 10px; font-size: .8em; border: 1px solid var(--line); background: var(--panel-2); color: var(--muted); border-radius: 999px; }
+html.ui6 body.player .u6-who button.on { color: var(--text); border-color: var(--accent-2); }
+html.ui6 body.player .u6-view { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+html.ui6 body.player .u6-view > section { display: contents; }
+html.ui6 body.player .u6-view .vtl, html.ui6 body.player .ht-card .vtl.u6-acc { flex: 1 1 auto; min-height: 0; gap: 4px; overflow: hidden; justify-content: center; }
+html.ui6 body.player .vtl.watch { border: 0; padding: 0; border-radius: 0; }
+html.ui6 body.player .u6-acc > .vtl-title { margin-bottom: auto; }
+html.ui6 body.player .u6-acc > :last-child { margin-bottom: auto; }
+html.ui6 body.player .vtl-title { flex: none; font-size: .8em; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html.ui6 body.player .vtl-hint { flex: none; font-size: .7em; line-height: 1.2; }
+html.ui6 body.player .vrow { flex: none; min-height: 44px; padding: 4px 12px; gap: 10px; border-radius: 12px; }
+html.ui6 body.player .vrow .y { font-size: 1.3em; min-width: 2.9em; }
+html.ui6 body.player .vrow.vmys { box-shadow: 0 0 0 2px #fff inset, 0 0 1em rgba(255, 61, 127, .45); }
+html.ui6 body.player .vslot { flex: none; min-height: 44px; padding: 6px 12px; border-radius: 12px; }
+/* grzbiety: karty i miejsca daleko od wybranego miejsca – sam rok (albo cienka kreska) */
+html.ui6 body.player .vtl .u6-sp {
+  min-height: 0; height: var(--sp, 24px); padding: 0 10px; border-radius: 6px; font-size: .8em; overflow: hidden; cursor: pointer;
+  box-shadow: none; outline: 0; border-width: 1px;
+}
+html.ui6 body.player .vtl .u6-sp .y { font-size: 1em; min-width: 3.2em; }
+html.ui6 body.player .vtl .u6-sp > :not(.y) { display: none; }
+html.ui6 body.player .vtl .vslot.u6-sp { height: var(--sps, 6px); padding: 0; border-radius: 3px; font-size: 0; border-width: 0; background: rgba(45, 226, 230, .45); }
+html.ui6 body.player .vtl .u6-hide { display: none; }
+html.ui6 body.player .vtl .u6-grp {
+  flex: none; min-height: 0; height: 28px; padding: 0 10px; border-radius: 8px; font-size: .78em; font-weight: 700; color: var(--gold);
+  background: repeating-linear-gradient(180deg, rgba(255, 255, 255, .07) 0 3px, transparent 3px 6px), var(--panel-2); border: 1px solid var(--line);
+}
+html.ui6 body.player .u6-gaps { display: none; }
+/* tryb pisania (klawiatura ekranowa): zostaje pole odpowiedzi i podpowiedzi */
+html.ui6.kbd body.player .u6-panel, html.ui6.kbd body.player .u6-bar, html.ui6.kbd body.player .ht-mystery, html.ui6.kbd body.player .cover-fog,
+html.ui6.kbd body.player .ht-hint, html.ui6.kbd body.player .ht-steps { display: none; }
+html.ui6.kbd body.player .u6-main > .ht-card { flex: 1 1 auto; justify-content: flex-end; }
+html.ui6 body.player .guess-form { gap: 8px; }
+html.ui6 body.player .guess-form input { min-height: 50px; border-radius: 12px; border: 2px solid var(--line); background: var(--panel-2); }
+html.ui6 body.player .guess-form input:focus { border-color: var(--accent); outline: none; }
+html.ui6 body.player .guess-form button { min-height: 50px; }
+html.ui6 body.player .suggest { max-height: min(40vh, 15em); }
+html.ui6 body.player .suggest li { min-height: 40px; display: flex; align-items: center; }
+html.ui6 body.player .year-form input, html.ui6 body.player .year-form button { min-height: 50px; }
+html.ui6 body.player .p-buzz { min-height: 0; flex: 1 1 auto; font-size: 2em; }
+html.ui6 body.player .u6-main:has(.p-buzz) > .ht-card { flex: 1 1 auto; }
+html.ui6 body.player .ht-card:has(.p-buzz) { display: flex; }
+html.ui6 body.player .bingo-cell { min-height: 0; font-size: 12px; padding: 4px 3px; }
+html.ui6 body.player .bingo-grid { grid-auto-rows: minmax(40px, 1fr); }
+html.ui6 body.player .live-opts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+html.ui6 body.player .live-opts button { min-height: 56px; font-weight: 800; border-radius: 12px; border: 2px solid var(--line); background: var(--panel-2); color: var(--text); }
+html.ui6 body.player .sort-row { padding: 2px 6px; }
+html.ui6 body.player .sort-row button { min-height: 44px; }
+html.ui6 body.player .u6-paged.u6-fill { flex: 1 1 auto; margin: 0 auto; }
+@media (orientation: landscape) { html.ui6 body.player .u6-paged { max-width: 44em; } }
+html.ui6 body.player .u6-paged > .u6-pages { text-align: center; }
+/* odkryta karta obok płyty (mniej miejsca w pionie) */
+html.ui6 body.player .ht-body > .ht-reveal { background: none; padding: 0; }
+html.ui6 body.player .ht-body > .ht-reveal .t { font-size: .95em; }
+html.ui6 body.player .ht-body > .ht-reveal .lines div { font-size: .82em; }
+/* gra bez osi (quizy): odpowiedzi duże, na dole karty – pod kciukiem */
+html.ui6 body.player .u6-main.solo > .ht-card { justify-content: flex-start; }
+html.ui6 body.player .ht-actions:has(> .big-choice) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(56px, auto); }
+html.ui6 body.player .u6-main.solo .ht-actions:has(> .big-choice) { flex: 1 1 auto; margin-top: auto; grid-auto-rows: minmax(56px, 110px); align-content: end; }
+html.ui6 body.player .ht-actions > .big-choice { font-size: 1.1em; }
+/* karta tury: kolumna informacji i kolumna sterowania – jedna pod drugą, a poziomo (karta na całą szerokość) obok siebie */
+html.ui6 body.player .u6-col { display: contents; }
+html.ui6 body.player .u6-main.wide > .ht-card.u6-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); column-gap: 14px; align-items: stretch; }
+html.ui6 body.player .u6-main.wide .u6-col { display: flex; flex-direction: column; gap: 8px; min-height: 0; min-width: 0; }
+html.ui6 body.player .u6-main.wide .u6-colB { justify-content: center; }
+html.ui6 body.player .u6-main.wide .u6-colB .ht-actions:has(> .big-choice) { flex: 1 1 auto; grid-auto-rows: minmax(48px, 1fr); margin: 0; }
+html.ui6 body.player .u6-main.wide .bingo-grid { grid-auto-rows: minmax(36px, 1fr); }
+html.ui6 body.player .u6-main.wide .bingo-board { flex: 1 1 auto; display: flex; flex-direction: column; }
+html.ui6 body.player .u6-main.wide .bingo-board .bingo-grid { flex: 1 1 auto; }
+html.ui6 body.player .u6-main.wide .p-buzz { min-height: 0; }
+/* pola i przyciski na telefonie gracza – jak u gospodarza */
+html.ui6 body.player input[type=text], html.ui6 body.player input[type=number] {
+  font: inherit; color: var(--text); background: var(--panel-2); border: 2px solid var(--line); border-radius: 12px; padding: 10px 12px;
+}
+html.ui6 body.player input[type=text]:focus, html.ui6 body.player input[type=number]:focus { border-color: var(--accent); outline: none; }
+html.ui6 body.player .picker button.primary, html.ui6 body.player .ly-phone-form button {
+  min-height: 52px; font-weight: 800; border-radius: 14px; border: 0; background: var(--accent); color: #fff; box-shadow: 0 6px 18px rgba(255, 61, 127, .3);
+}
+html.ui6 body.player .p-opts { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); }
+@media (orientation: landscape) and (min-width: 560px) {
+  html.ui6 body.player .p-opts { grid-template-columns: minmax(0, .8fr) minmax(0, 1fr) minmax(0, .8fr) minmax(0, 1fr); column-gap: 10px; font-size: .82em; }
+  html.ui6 body.player .phone-info { max-width: 44em; }
+}
+html.ui6 body.player .u6-main.solo .bingo-board { flex: 1 1 auto; display: flex; flex-direction: column; }
+html.ui6 body.player .u6-main.solo:not(.wide) .bingo-grid { flex: 1 1 auto; grid-auto-rows: minmax(40px, 76px); align-content: center; }

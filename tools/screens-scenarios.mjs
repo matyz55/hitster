@@ -209,6 +209,14 @@ const setups = [
         await screenIs(page, 'setup');
         const name = await page.evaluate(() => document.querySelector('#setup-title').textContent);
         await capture(page, { id: `ustawienia-${ctx}-${m}`, group: this.group, title: `${name} (${ctx === 'multi' ? 'multiplayer' : '1 gracz'})`, desc: 'Ekran ustawień przed startem gry.' });
+        // wygląd 6.0: ustawienia to kreator – zrzut każdego kolejnego kroku (w obecnym wyglądzie nie ma kroków)
+        const steps = await page.evaluate(() => (typeof ui6SetupStep === 'function' && UI6 ? ui6SetupStep(1) : 0));
+        for (let k = 2; k <= steps; k++) {
+          await page.evaluate((n) => ui6SetupStep(n), k);
+          await page.waitForTimeout(300);
+          await capture(page, { id: `ustawienia-${ctx}-${m}-krok${k}`, group: this.group, title: `${name} (${ctx === 'multi' ? 'multiplayer' : '1 gracz'}) – krok ${k}`, desc: `Kreator ustawień 6.0 – krok ${k} z ${steps}.` });
+        }
+        if (steps) await page.evaluate(() => ui6SetupStep(1));
         await page.click('#btn-back');
         await screenIs(page, 'modes');
       }
