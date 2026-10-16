@@ -280,3 +280,27 @@ test('Z jakiego to ekranu?: 4 różne tytuły, właściwy to dzieło, w którym 
   await page.click(`#actions button.big-choice >> nth=${q.opts.findIndex((o) => o.ok)}`);
   await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(1);
 });
+
+test('Łańcuch skojarzeń: kolejna piosenka łączy się z poprzednią, tylko jedna odpowiedź pasuje do podpowiedzi', async ({ page }) => {
+  await start(page, 'chain', '3');
+  const first = await page.evaluate(() => ({ q: state.quiz.q, opts: state.quiz.options.map((o) => o.label), ok: state.quiz.options.findIndex((o) => o.ok) }));
+  expect(first.opts).toHaveLength(4);
+  expect(new Set(first.opts).size).toBe(4);
+  await page.click(`#actions button.big-choice >> nth=${first.ok}`);
+  await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(1);
+  await page.click('#actions button.primary');
+  await ready(page);
+  const r = await page.evaluate(() => {
+    const info = state.deck.links.get(state.current);
+    const right = state.quiz.options.find((o) => o.ok).label;
+    return { linked: !!info.link, links: info.link ? chainLinks(info.from, state.current).map((l) => l.kind) : [], kind: info.link && info.link.kind, q: state.quiz.q, right,
+      cur: `${state.current.t} — ${artistLine(state.current)}`, prev: info.from && songKey(info.from), prevPlayed: songKey(state.history[0].song) };
+  });
+  expect(r.right).toBe(r.cur);
+  // druga piosenka zwykle jest powiązana z pierwszą (gdy w puli jest jakakolwiek pasująca)
+  if (r.linked) {
+    expect(r.prev).toBe(r.prevPlayed);
+    expect(r.links).toContain(r.kind);
+    expect(r.q).toContain('🔗');
+  }
+});

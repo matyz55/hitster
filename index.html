@@ -196,6 +196,11 @@
         <b>Z jakiego to ekranu?</b>
         <span class="muted">Leci piosenka z filmu, serialu albo gry – wskaż, skąd ją znasz. Cztery tytuły do wyboru.</span>
       </button>
+      <button class="mode" data-mode="chain" data-ctx="single multi">
+        <span class="mode-icon">🔗</span>
+        <b>Łańcuch skojarzeń</b>
+        <span class="muted">Każda kolejna piosenka łączy się z poprzednią: ten sam rok, kraj, autor albo słowo w tytule. Podpowiedź mówi, co je łączy – wybierz graną piosenkę z czterech.</span>
+      </button>
       <button class="mode" data-mode="country" data-ctx="single multi">
         <span class="mode-icon">🌍</span>
         <b>Skąd jest wykonawca?</b>
@@ -307,7 +312,7 @@
 
     <section class="card" data-hide-for="lyrics">
       <h2>Odtwarzanie</h2>
-      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist who screen country bid coop bingo royale">Długość fragmentu
+      <label class="row" data-for="solo multi teams melody timed hilo duel buzz party year artist who screen chain country bid coop bingo royale">Długość fragmentu
         <select id="clip-length">
           <option value="30">30 s (cały)</option>
           <option value="15">15 s</option>
@@ -321,7 +326,7 @@
       <div class="seg" id="audio-out">
         <label><input type="radio" name="audio-out" value="host" checked> Tym urządzeniu</label>
         <label id="audio-out-tv"><input type="radio" name="audio-out" value="tv"> Dużym ekranie (TV)</label>
-        <label data-for="multi teams melody steps cover duel party year artist who screen country bid coop sort5" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
+        <label data-for="multi teams melody steps cover duel party year artist who screen chain country bid coop sort5" data-ctx="multi" id="audio-out-player"><input type="radio" name="audio-out" value="player"> Telefonie gracza, który ma turę</label>
       </div>
       <p class="muted small" id="audio-out-desc">Duży ekran i telefony graczy łączy się w oknie 📺. Gdy wybranego urządzenia nie ma, muzyka gra na tym urządzeniu.</p>
       </div>
@@ -457,7 +462,7 @@
       <div data-for="lyrics">
         <p class="muted small">Każdy gracz ma planszę 3×3: wybierasz kategorię i jedną z dwóch piosenek, a po 9 piosenkach czeka hit za 100 000 zł. Piosenka gra z YouTube od początku, a w pewnym momencie muzyka milknie – wpisz (albo zaśpiewaj) cały brakujący wers. Drabinka: 500 zł → 100 000 zł, gwarantowane 10 000 zł po 5. piosence; przed finałem można zrezygnować z 75 000 zł, w finale bez kół ratunkowych (pomyłka – 50 000 zł). Teksty: lrclib.net, filmy: YouTube.</p>
       </div>
-      <div data-for="melody steps cover mirror mashup buzz duel year artist who screen country bid sort5 seconds">
+      <div data-for="melody steps cover mirror mashup buzz duel year artist who screen chain country bid sort5 seconds">
         <label class="row" style="margin-top:12px"><span id="rounds-label">Piosenek na gracza</span>
           <input type="number" id="rounds" min="1" max="30" value="5">
         </label>
@@ -706,6 +711,12 @@
     <ol>
       <li>Gra tylko piosenkami, które zabrzmiały w filmie, serialu, musicalu albo grze (dane z bazy gry i z Wikidata).</li>
       <li>Do wyboru cztery tytuły – wskaż ten, w którym zabrzmiała piosenka. Dobra odpowiedź – 1 pkt.</li>
+    </ol>
+    <h3>Łańcuch skojarzeń</h3>
+    <ol>
+      <li>Każda kolejna piosenka łączy się z poprzednią jedną cechą: tym samym rokiem wydania, krajem wykonawcy (spoza Polski, USA i Wielkiej Brytanii), autorem muzyki lub tekstu (dane z Wikidata) albo słowem w tytule.</li>
+      <li>Podpowiedź na ekranie mówi, co łączy graną piosenkę z poprzednią. Z czterech piosenek do wyboru pasuje do niej tylko jedna – można ją rozpoznać po melodii albo wydedukować. Dobra odpowiedź – 1 pkt.</li>
+      <li>Gdy żadna piosenka nie łączy się z poprzednią, zaczyna się nowy łańcuch.</li>
     </ol>
     <h3>Okładka z mgły</h3>
     <ol>

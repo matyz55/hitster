@@ -703,3 +703,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Nowy tryb „Z jakiego to ekranu?”: leci piosenka z filmu, serialu, musicalu albo gry – wskaż, skąd ją znasz (cztery tytuły do wyboru). Także jako minigra w Imprezie.
 - Ostatni na placu boju: wpisany rok nie znika, gdy w tym czasie odpowie inny gracz.
 - Uzupełnione brakujące tłumaczenia angielskie; nowy test pilnuje, żeby każdy napis miał wersję angielską.
+
+## 5.33.0 – 16.10.2026 (`HASH`)
+
+- Nowy tryb „Łańcuch skojarzeń”: każda kolejna piosenka łączy się z poprzednią – tym samym rokiem wydania, krajem wykonawcy, autorem muzyki lub tekstu albo słowem w tytule. Podpowiedź mówi, co je łączy, a z czterech piosenek do wyboru pasuje do niej tylko jedna. Także jako minigra w Imprezie.

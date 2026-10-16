@@ -79,7 +79,8 @@ function resumeGame() {
   deck.used = new Map(d.deck.used);
   deck.drawn = d.deck.drawn;
   deck.usedArtists = new Set(d.deck.artists);
-  state.deck = deck;
+  // Łańcuch skojarzeń: talia dalej łączy kolejne piosenki z ostatnią
+  state.deck = state.mode === 'chain' ? new ChainDeck(d.deck.left.map(songByKey).filter(Boolean)) : deck;
   prefetched = null;
   state.phase = 'listen';
   window.track && window.track('wznowienie-gry', { tryb: state.mode });

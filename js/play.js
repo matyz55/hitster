@@ -79,6 +79,10 @@ function startGame(over = {}) {
     if (!window.SONG_FACTS) { loadFacts().then(() => (window.SONG_FACTS ? startGame(over) : alert(T('Nie udało się wczytać danych o piosenkach – spróbuj ponownie.')))); return; }
     base = base.filter((s) => whoQuestions(s).length);
   }
+  // Łańcuch skojarzeń – powiązania przez autorów piosenek pochodzą z danych Wikidata
+  if (state.mode === 'chain' && !window.SONG_FACTS) {
+    loadFacts().then(() => (window.SONG_FACTS ? startGame(over) : alert(T('Nie udało się wczytać danych o piosenkach – spróbuj ponownie.')))); return;
+  }
   // „Z jakiego to ekranu?” – piosenki z filmów, seriali i gier (część danych pochodzi z Wikidata)
   if (state.mode === 'screen') {
     if (!window.SONG_FACTS) { loadFacts().then(() => (window.SONG_FACTS ? startGame(over) : alert(T('Nie udało się wczytać danych o piosenkach – spróbuj ponownie.')))); return; }
@@ -91,7 +95,7 @@ function startGame(over = {}) {
     base = base.filter((s) => state.duel.includes(decadeOf(s)));
   }
   const pool = freshPool(base, needed);
-  state.deck = new Deck(pool, { level: state.difficulty, plShare });
+  state.deck = state.mode === 'chain' ? new ChainDeck(pool) : new Deck(pool, { level: state.difficulty, plShare });
   warmPreviews(pool);
   prefetched = null;
   const artists = new Set(pool.map((s) => artistKeys(s)[0])).size;

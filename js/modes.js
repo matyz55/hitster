@@ -4,6 +4,8 @@
 // • artist  – Kto to śpiewa?: 4 wykonawców do wyboru
 // • country – Skąd jest wykonawca?: 4 kraje (z flagami) do wyboru
 // • screen  – Z jakiego to ekranu?: 4 filmy / seriale / gry do wyboru – w którym zabrzmiała piosenka
+// • chain   – Łańcuch skojarzeń: każda kolejna piosenka łączy się z poprzednią jedną cechą (podpowiedź na ekranie);
+//             z 4 piosenek wybierasz tę, która gra – pasuje do podpowiedzi tylko jedna
 // • bid     – Licytacja: najpierw stawiasz 1–3 pkt na swoją pewność, potem wybierasz dekadę; dobrze – zyskujesz stawkę, źle – tracisz
 const QUIZ = {
   year: {
@@ -34,6 +36,11 @@ const QUIZ = {
   screen: {
     status: () => T('Posłuchaj i wskaż, skąd znasz tę piosenkę.'),
     hint: () => T('W jakim filmie, serialu albo grze zabrzmiała ta piosenka?'),
+    max: () => 1,
+  },
+  chain: {
+    status: () => T('Posłuchaj i wybierz piosenkę – podpowiedź mówi, co łączy ją z poprzednią.'),
+    hint: () => (state.quiz && state.quiz.q ? state.quiz.q : ''),
     max: () => 1,
   },
   country: {
@@ -114,6 +121,96 @@ function screenOptions(song) {
   if (labels.length < 4) return null;
   return shuffle(labels).map((l) => ({ label: l, ok: l === want }));
 }
+// Łańcuch skojarzeń: co łączy dwie piosenki (rok, kraj spoza PL/US/GB, autor muzyki lub tekstu, słowo w tytule)
+const CHAIN_SKIP_WORDS = new Set(['the', 'and', 'you', 'your', 'that', 'this', 'with', 'from', 'have', 'what', 'when', 'will', 'dont', 'just', 'like',
+  'mnie', 'tobie', 'sobie', 'jest', 'jestem', 'jak', 'się', 'nie', 'tak', 'czy', 'dla', 'gdy', 'już', 'może', 'mój', 'moja', 'twój', 'twoja', 'tylko']);
+// słowa tytułu: znormalizowane → w zapisie z tytułu
+function chainWords(s) {
+  const out = new Map();
+  for (const w of s.t.replace(/\s*[([].*?[)\]]/g, '').split(/[^\p{L}\p{N}']+/u)) {
+    const k = norm(w);
+    if (k.length >= 4 && !CHAIN_SKIP_WORDS.has(k) && !out.has(k)) out.set(k, w);
+  }
+  return out;
+}
+function chainPeople(s) {
+  const out = new Set();
+  for (const [k, a, b] of (window.SONG_FACTS && window.SONG_FACTS[songKey(s)]) || []) {
+    if (k === 'ml' || k === 'm') for (const v of [a, k === 'm' ? b : null]) for (const n of String(v || '').split(/,\s*/)) if (n.trim()) out.add(n.trim());
+  }
+  return out;
+}
+function chainLinks(a, b) {
+  if (!a || !b || a === b || artistKeys(a).some((k) => artistKeys(b).includes(k))) return [];
+  const out = [];
+  if (a.y === b.y) out.push({ kind: 'year', text: T('🔗 Ten sam rok wydania co poprzednia piosenka ({0})', b.y) });
+  if (a.cc && a.cc === b.cc && !['PL', 'US', 'GB'].includes(a.cc)) out.push({ kind: 'country', text: T('🔗 Wykonawca z tego samego kraju co poprzednia piosenka: {0}', countryName(b)) });
+  const pb = chainPeople(b);
+  // autor, który sam śpiewa graną piosenkę, zdradziłby odpowiedź
+  for (const n of chainPeople(a)) {
+    if (pb.has(n) && !artistKeys(b).some((k) => norm(n).includes(k))) { out.push({ kind: 'people', text: T('🔗 Ten sam autor co poprzednia piosenka: {0}', n) }); break; }
+  }
+  const wb = chainWords(b);
+  for (const k of chainWords(a).keys()) if (wb.has(k)) { out.push({ kind: 'word', text: T('🔗 To samo słowo w tytule co poprzednia piosenka: „{0}”', wb.get(k)) }); break; }
+  return out;
+}
+// talia łańcucha: następna piosenka połączona z ostatnio wylosowaną (gdy takiej nie ma – nowy łańcuch)
+class ChainDeck {
+  constructor(songs, last = null) {
+    this.list = shuffle(songs.slice()); this.last = last; this.prev = []; this.links = new Map();
+    this.level = 0; this.plShare = 0.5; this.used = new Map(); this.drawn = { PL: 0, INT: 0 }; this.usedArtists = new Set();
+  }
+  get size() { return this.list.length; }
+  * allLists() { yield this.list; }
+  draw() {
+    if (!this.list.length) return null;
+    let pick = null;
+    let link = null;
+    if (this.last) {
+      // rzadsze rodzaje powiązań (autor, kraj) mają pierwszeństwo przed rokiem i słowem
+      const byKind = new Map();
+      for (const s of this.list) {
+        for (const l of chainLinks(this.last, s)) if (!byKind.has(l.kind) || byKind.get(l.kind).length < 8) byKind.set(l.kind, [...(byKind.get(l.kind) || []), [s, l]]);
+      }
+      // ten sam rodzaj powiązania dwa razy z rzędu tylko wtedy, gdy nie ma innego
+      let kind = ['people', 'country', 'word', 'year'].filter((k) => byKind.has(k));
+      if (kind.length > 1) kind = kind.filter((k) => k !== this.lastKind);
+      if (kind.length) {
+        const choices = byKind.get(kind[Math.random() < 0.6 ? 0 : Math.floor(Math.random() * kind.length)]);
+        [pick, link] = choices[Math.floor(Math.random() * choices.length)];
+      }
+    }
+    if (!pick) pick = this.list[this.list.length - 1];
+    this.list.splice(this.list.indexOf(pick), 1);
+    this.links.set(pick, { from: link ? this.last : null, link });
+    this.lastKind = link ? link.kind : null;
+    this.prev.push(this.last);
+    this.last = pick;
+    return pick;
+  }
+  release(song, putBack) {
+    if (this.last === song) this.last = this.prev.pop() || null;
+    if (putBack) this.list.unshift(song);
+  }
+}
+function chainQuiz(song) {
+  const info = (state.deck && state.deck.links && state.deck.links.get(song)) || {};
+  const from = info.link ? info.from : null;
+  const pool = state.quizPool || window.SONGS;
+  // błędne odpowiedzi: piosenki, które NIE pasują do podpowiedzi (inni wykonawcy, podobne lata)
+  const ok = (s) => s !== song && !artistKeys(s).some((k) => artistKeys(song).includes(k)) && !(from && chainLinks(from, s).some((l) => l.kind === info.link.kind));
+  const near = shuffle(pool.filter((s) => s.c === song.c && Math.abs(s.y - song.y) <= 12 && ok(s)));
+  const picks = [song];
+  for (const s of [...near, ...shuffle(pool.filter(ok))]) {
+    if (picks.length >= 4) break;
+    if (!picks.some((p) => artistKeys(p).some((k) => artistKeys(s).includes(k)))) picks.push(s);
+  }
+  const label = (s) => `${s.t} — ${artistLine(s)}`;
+  return {
+    q: from ? `${info.link.text} · ${T('poprzednia: „{0}” ({1})', from.t, artistLine(from))}` : T('🔗 Początek łańcucha – posłuchaj i wybierz piosenkę.'),
+    options: shuffle(picks).map((s) => ({ label: label(s), ok: s === song })),
+  };
+}
 // Kto za tym stoi? – pytania, na które dane o tej piosence znają odpowiedź
 function whoQuestions(song) {
   const out = [];
@@ -165,6 +262,11 @@ function prepareQuiz(song) {
     // brak 3 błędnych odpowiedzi tego rodzaju – pytanie o wykonawcę
     const w = whoOptions(song) || { q: T('Kto to śpiewa?'), options: quizOptions(song, 'artist') };
     state.quiz = { options: w.options, q: w.q, bet: 0, year: null };
+    return;
+  }
+  if (state.mode === 'chain') {
+    const c = chainQuiz(song);
+    state.quiz = { options: c.options, q: c.q, bet: 0, year: null };
     return;
   }
   if (state.mode === 'screen') {

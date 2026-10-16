@@ -1,7 +1,7 @@
 'use strict';
 
 // aktualna wersja gry – ta sama co ostatni wpis w CHANGELOG.md (pokazywana na dole ekranu startowego)
-const GAME_VERSION = '5.32.0';
+const GAME_VERSION = '5.33.0';
 
 /* ---------- narzędzia ---------- */
 const $ = (sel) => document.querySelector(sel);
@@ -469,6 +469,7 @@ const MODES = {
   country: { title: T('Skąd jest wykonawca?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   who: { title: T('Kto za tym stoi?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   screen: { title: T('Z jakiego to ekranu?'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
+  chain: { title: T('Łańcuch skojarzeń'), minPlayers: 1, maxPlayers: MAX_PLAYERS },
   royale: { title: T('Ostatni na placu boju'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
   seconds: { title: T('Licytacja sekund'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
   bomb: { title: T('Gorąca bomba'), minPlayers: 2, maxPlayers: MAX_PLAYERS },
@@ -498,6 +499,7 @@ const PARTY_GAMES = {
   country: { icon: '🌍', name: T('Skąd jest wykonawca?'), mode: () => 'country', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
   who: { icon: '🕵️', name: T('Kto za tym stoi?'), mode: () => 'who', opts: (n) => ({ rounds: n === 1 ? 5 : 2 }) },
   screen: { icon: '🎬', name: T('Z jakiego to ekranu?'), mode: () => 'screen', opts: (n) => ({ rounds: n === 1 ? 4 : 2 }) },
+  chain: { icon: '🔗', name: T('Łańcuch skojarzeń'), mode: () => 'chain', opts: (n) => ({ rounds: n === 1 ? 4 : 2 }) },
   hilo: { icon: '↕️', name: T('Starsza czy nowsza?'), mode: () => 'hilo', opts: (n) => ({ rounds: n === 1 ? 0 : 2 }) },
   buzz: { icon: '🔔', name: 'Kto pierwszy?', min: 2, mode: () => 'buzz', opts: (n) => ({ rounds: Math.min(8, Math.max(4, n + 2)) }) },
   lyrics: { icon: '🎤', name: T('Tak to leciało!'), mode: () => 'lyrics', opts: (n) => ({ rounds: n === 1 ? 3 : 1 }) },

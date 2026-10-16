@@ -62,6 +62,8 @@ Na ekranie startowym wybiera się **Jeden gracz** albo **Multiplayer**:
   miejscowość wykonawcy, prawdziwe nazwisko), cztery odpowiedzi.
 - **Z jakiego to ekranu?** – piosenka z filmu, serialu, musicalu albo gry (pole `w:` w songs.js i dane z Wikidata),
   cztery tytuły do wyboru.
+- **Łańcuch skojarzeń** – każda kolejna piosenka łączy się z poprzednią (rok, kraj spoza PL/US/GB, autor muzyki lub
+  tekstu z Wikidata, słowo w tytule); podpowiedź mówi, co je łączy, a z czterech piosenek pasuje do niej tylko jedna.
 - **Okładka z mgły** – najpierw sama rozmyta okładka (bez dźwięku, 4 pkt), potem ostrzejsza i 1/4/10 s fragmentu (3/2/1 pkt).
 - **Krzywe zwierciadło** – fragment zza ściany (filtr dolnoprzepustowy Web Audio), na helu / zwolniony
   (`playbackRate` bez zachowania wysokości) albo od tyłu (odwrócony bufor PCM zapisany jako WAV); z każdym krokiem słabiej.
