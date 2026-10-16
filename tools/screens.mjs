@@ -4,6 +4,8 @@
 // Każdy ekran: 4 urządzenia (telefon pionowo i poziomo, PC, ultrawide), zrzut całej strony; zrzuty jednego ekranu
 // są składane w jeden obrazek WebP (obok siebie), a ich położenie zapisuje manifest.json.
 // Uruchomienie: node tools/screens.mjs [katalog wyjściowy] [filtr – fragment id scenariusza]
+// UI6=1 – zrzuty nowego wyglądu 6.0 (wersja próbna); PORT – inny port serwera (kilka uruchomień naraz).
+// Przy każdym urządzeniu zapisuje się też kontrola „bez przewijania”: czy strona się przewija i które elementy ucinają treść.
 import { chromium } from '@playwright/test';
 import { spawn } from 'node:child_process';
 import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
@@ -11,7 +13,8 @@ import { SCENARIOS } from './screens-scenarios.mjs';
 
 const OUT = process.argv[2] || 'screens-out';
 const ONLY = process.argv[3] || '';
-const PORT = 8799;
+const PORT = Number(process.env.PORT) || 8799;
+const UI6 = process.env.UI6 === '1';
 const BASE = `http://localhost:${PORT}`;
 export const DEVICES = {
   tel: { w: 360, h: 640, name: 'Telefon pionowo' },
@@ -38,7 +41,7 @@ const browser = await chromium.launch();
 async function newPage(viewport = DEVICES.tel) {
   const ctx = await browser.newContext({ viewport: { width: viewport.w, height: viewport.h }, locale: 'pl-PL', reducedMotion: 'reduce', baseURL: BASE });
   await ctx.addInitScript(mock);
-  await ctx.addInitScript(() => { try { localStorage.setItem('songster.lang', '"pl"'); } catch { /* tryb prywatny */ } });
+  await ctx.addInitScript((ui6) => { try { localStorage.setItem('songster.lang', '"pl"'); localStorage.setItem('songster.ui6', ui6 ? '1' : '0'); } catch { /* tryb prywatny */ } }, UI6);
   await ctx.route(/cloud\.umami\.is/, (r) => r.abort());
   const page = await ctx.newPage();
   page.errors = [];
@@ -87,7 +90,13 @@ async function capture(page, meta, devices = DEVICES) {
     const full = await page.evaluate(() => Math.max(document.documentElement.scrollHeight, document.body.scrollHeight));
     if (full > MAX_H) b64 = (await page.screenshot({ type: 'png', animations: 'disabled', clip: { x: 0, y: 0, width: d.w, height: MAX_H }, fullPage: true })).toString('base64');
     parts.push({ b64 });
-    devs[id] = { name: d.name, vw: d.w, vh: d.h, full };
+    // bez przewijania: strona nie wystaje poza okno, a elementy nie ucinają treści (ui6Check w js/ui6.js)
+    const fit = await page.evaluate(() => {
+      if (typeof ui6Check === 'function') return ui6Check();
+      const e = document.documentElement;
+      return { scrollY: e.scrollHeight > innerHeight + 1, scrollX: e.scrollWidth > innerWidth + 1, clipped: [] };
+    }).catch(() => null);
+    devs[id] = { name: d.name, vw: d.w, vh: d.h, full, fit };
   }
   const img = await compose(parts);
   Object.keys(devs).forEach((k, i) => Object.assign(devs[k], img.pos[i]));
