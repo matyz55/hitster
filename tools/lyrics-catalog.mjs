@@ -6,7 +6,7 @@
 //                                              potem wyszukiwarka YouTube – limit 100 wyszukiwań dziennie)
 //   node tools/lyrics-catalog.mjs wikidata   – bez klucza: tylko teledyski z Wikidata (niesprawdzone – gra sama
 //                                              porównuje długość filmu w trakcie odtwarzania)
-//   node tools/lyrics-catalog.mjs lang       – sprawdza język tekstów już znalezionych (pole pl: udział polskich wersów)
+//   node tools/lyrics-catalog.mjs lang [n]   – sprawdza język tekstów już znalezionych (pole pl: udział polskich wersów)
 //   node tools/lyrics-catalog.mjs build      – zapisuje lyrics-catalog.js (tylko piosenki z polskim tekstem)
 // Film jest przyjmowany, gdy można go osadzić, nie jest zablokowany w Polsce, a jego długość różni się od długości
 // nagrania z tekstem o najwyżej 3 s (wtedy czasy wersów pasują do filmu), a kanał jest oficjalny (OFFICIAL_LABELS niżej).
@@ -99,7 +99,9 @@ async function lrclibGet(id) {
 async function stepLang() {
   const cache = load('lrclib-pl.json', {});
   const yt = load('youtube-pl.json', {});
-  const todo = Object.keys(cache).filter((k) => cache[k] && cache[k].pl === undefined).sort((a, b) => hasVideo(yt[b]) - hasVideo(yt[a]));
+  // opcjonalny limit: node tools/lyrics-catalog.mjs lang 50
+  const todo = Object.keys(cache).filter((k) => cache[k] && cache[k].pl === undefined).sort((a, b) => hasVideo(yt[b]) - hasVideo(yt[a]))
+    .slice(0, Number(process.argv[3]) || Infinity);
   let n = 0;
   for (const k of todo) {
     const r = await lrclibGet(cache[k].id);
