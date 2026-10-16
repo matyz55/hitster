@@ -854,7 +854,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Dekadowa wspinaczka: drabinka dekad z pionkami graczy, które przesuwają się po każdej odpowiedzi (także na dużym ekranie).
 - Mikser: obie piosenki grają naraz także przy autoodtwarzaniu, na iPhonie i przy muzyce ustawionej na duży ekran (Mikser gra zawsze na urządzeniu gospodarza).
 
-## 5.48.0 – 16.10.2026 (`HASH`)
+## 5.48.0 – 16.10.2026 (`7239731`)
 
 - Żetony jako ikonka i liczba („🪙 3”) – w tytule tury, tablicy wyników, na osiach innych graczy, na dużym ekranie i na telefonie gracza.
 - Telefon gracza wygląda jak ekran gospodarza: odkryta karta z płytą po lewej, rokiem, tytułem, wykonawcą z flagą, werdyktem, ciekawostkami i ikonkami „Posłuchaj całości” (YouTube, Spotify, Apple Music); lista graczy w jednej przewijanej linii; miejsca „＋” na osi i karty specjalne jak u gospodarza; w pojedynku na żywo duże kafelki odpowiedzi; odpowiedzi do wyboru w pionowej liście.
