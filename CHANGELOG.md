@@ -783,7 +783,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - Duży ekran: kolejna piosenka przy autoodtwarzaniu startuje z głośników telewizora bez klikania pauzy i „odtwórz” – wyciszanie poprzedniej piosenki nie zatrzymuje już nowej, a telewizor dostaje dodatkowe „pchnięcie” do wczytania dźwięku i ponowną próbę po 2,5 s. Gdy i ta zawiedzie, muzyka gra na urządzeniu gospodarza.
 
-## 5.41.6 – 16.10.2026 (`HASH`)
+## 5.41.6 – 16.10.2026 (`95c15e0`)
 
 - Ciekawostki z przymrużeniem oka: co jakiś czas przy piosenkach Edyty Górniak – „rok i miejsce urodzenia: ok. 4000 lat p.n.e., Wszechświat”, a przy piosenkach Maryli Rodowicz – „A co, już sylwester?” (poza zestawami tematycznymi, np. Eurowizją).
 - Poprawki danych: „Stefania” jest teraz raz – jako Kalush Orchestra (zamiast dwóch wpisów KALUSH i Kalush Orchestra); flaga Ukrainy przy Ruslanie („Wild Dances”, zamiast Hiszpanii), Danii przy Olsen Brothers (zamiast Norwegii) i Chorwacji przy zespole Riva („Rock Me”, zamiast Holandii).
