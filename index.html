@@ -161,6 +161,11 @@
     </div>
     <h3 class="mode-group">Quizy</h3>
     <div class="modes">
+      <button class="mode daily-tile" data-mode="career" data-ctx="single">
+        <span class="mode-icon">🗺️</span>
+        <b>Kariera</b>
+        <span class="muted">Kolejne etapy w różnych trybach – od łatwych przebojów po finałową wspinaczkę przez dekady. Za wynik dostajesz gwiazdki, a gwiazdka odblokowuje następny etap.</span>
+      </button>
       <button class="mode daily-tile" data-mode="daily" data-ctx="single">
         <span class="mode-icon">📆</span>
         <b>Wyzwanie dnia</b>
@@ -596,6 +601,16 @@
   </main>
 
   <!-- STATYSTYKI GRACZA -->
+  <main id="screen-career" class="screen hidden">
+    <h2 class="screen-title">🗺️ Kariera</h2>
+    <p class="muted">Każdy etap to inny tryb i zestaw piosenek. Za wynik dostajesz do trzech gwiazdek – jedna wystarczy, żeby odblokować następny etap. Postęp zapisuje się na tym urządzeniu.</p>
+    <p id="career-total" class="career-total"></p>
+    <div id="career-list" class="career-list"></div>
+    <div class="actions">
+      <button id="btn-career-back" class="primary grow">← Wróć</button>
+    </div>
+  </main>
+
   <main id="screen-stats" class="screen hidden">
     <h2 class="screen-title">Moje statystyki</h2>
     <p class="muted">Statystyki zapisują się tylko na tym urządzeniu (w przeglądarce).</p>
@@ -877,6 +892,7 @@
   <script src="js/playlists.js"></script>
   <script src="js/stats.js"></script>
   <script src="js/achievements.js"></script>
+  <script src="js/career.js"></script>
   <script src="js/resume.js"></script>
   <script src="lyrics-catalog.js"></script>
   <script src="lyrics-cats.js"></script>

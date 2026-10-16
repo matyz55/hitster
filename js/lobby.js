@@ -11,7 +11,7 @@ $('#btn-multi').addEventListener('click', openLobby);
 $$('#screen-modes .mode').forEach((b) => b.addEventListener('click', () => {
   if (b.disabled) return;
   // Wyzwanie dnia ma stałe zasady – bez ekranu ustawień
-  if (b.dataset.mode === 'daily') startDaily(); else openSetup(b.dataset.mode);
+  if (b.dataset.mode === 'daily') startDaily(); else if (b.dataset.mode === 'career') openCareer(); else openSetup(b.dataset.mode);
 }));
 $('#btn-modes-back').addEventListener('click', () => showScreen(playCtx === 'multi' ? 'lobby' : 'home'));
 

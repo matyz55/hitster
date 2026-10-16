@@ -2,13 +2,15 @@
 // Songster – nawigacja między ekranami, przycisk „wstecz”, blokada wygaszania ekranu.
 // Pliki js/*.js to zwykłe skrypty ładowane po kolei (index.html) – współdzielą zmienne globalne.
 /* ---------- nawigacja między ekranami ---------- */
-const SCREENS = ['home', 'lobby', 'modes', 'setup', 'game', 'lyrics', 'end', 'settings', 'stats'];
+const SCREENS = ['home', 'lobby', 'modes', 'setup', 'game', 'lyrics', 'end', 'settings', 'stats', 'career'];
 let screenBeforeSettings = 'home';
 function showScreen(name) {
   // wyjście z gry do menu (logo, „wstecz”, wybór trybu…) – zapisana gra nie jest już potrzebna
   if (['home', 'lobby', 'modes', 'setup'].includes(name) && typeof clearSavedGame === 'function'
     && (!$('#screen-game').classList.contains('hidden') || !$('#screen-end').classList.contains('hidden'))) clearSavedGame();
   if (name === 'home' && typeof renderResumeBox === 'function') renderResumeBox();
+  // Kariera: wyjście z etapu do menu przywraca ustawienia piosenek gracza
+  if (['home', 'lobby', 'modes', 'setup', 'career'].includes(name) && typeof careerRestore === 'function') { careerRestore(); state.career = null; }
   for (const s of SCREENS) $('#screen-' + s).classList.toggle('hidden', s !== name);
   $('#btn-nav-back').classList.toggle('hidden', name === 'home');
   navGuard(name);
@@ -32,6 +34,7 @@ function goBack() {
     case 'setup': $('#btn-back').click(); break;
     case 'settings': $('#btn-settings-back').click(); break;
     case 'stats': $('#btn-stats-back').click(); break;
+    case 'career': $('#btn-career-back').click(); break;
     case 'end': if (state.party && !state.party.done) $('#btn-party-stop').click(); else showModes(); break;
     case 'game':
       if (confirm(T('Przerwać grę i wrócić do wyboru trybu?'))) { state.drawId++; showModes(); }

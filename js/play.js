@@ -21,7 +21,9 @@ function startGame(over = {}) {
   const coopRows = state.coop ? [{ name: T('Drużyna'), members: readSetupRows().map((r) => r.name.trim()).filter(Boolean).join(', ') }] : null;
   if (state.coop) state.mode = 'solo';
   const teams = !!MODES[state.mode].teams;
-  const setupRows = party ? state.party.rows : (coopRows || readSetupRows());
+  // Kariera: etap gra zawsze jeden gracz (bez ekranu ustawień)
+  if (!over.career) state.career = null;
+  const setupRows = party ? state.party.rows : (over.rows || coopRows || readSetupRows());
   if (setupRows.length < minPlayersFor(party ? 'party' : state.mode)) {
     alert(T('W tym trybie potrzeba co najmniej {0} – dodaj kolejnego gracza albo dołącz go przez telefon.', minPlayersFor(state.mode)));
     return;

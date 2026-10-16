@@ -1059,6 +1059,7 @@ function endGame() {
   if (isTimeline()) renderTimeline(tl, best.timeline, false);
   renderPlayedList();
   recordGame(best, Math.round((Date.now() - (state.startedAt || Date.now())) / 1000), won);
+  if (state.career) careerAfterGame(best, won);
   $$('.party-kicker, .moments-box').forEach((n) => n.remove());
   const moments = momentsBox();
   if (moments) $('#ranking').append(moments);

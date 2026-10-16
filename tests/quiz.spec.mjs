@@ -332,6 +332,8 @@ test('Dekadowa wspinaczka: rok do 2 lat różnicy – dekada wyżej, pomyłka �
 
 test('Pierwsze słowa: najpierw 3 słowa bez dźwięku, potem wers; odgadnięcie po 3 słowach = 4 pkt', async ({ page }) => {
   await page.goto('/');
+  // tekst zawsze z wyszukiwania (piosenki z katalogu „Tak to leciało!” mają inny tekst w atrapie)
+  await page.evaluate(() => { window.LYRICS_SONGS = {}; });
   await page.click('#btn-single');
   await page.click('.mode[data-mode=words]');
   await page.fill('#rounds', '2');
