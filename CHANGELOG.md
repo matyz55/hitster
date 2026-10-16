@@ -847,7 +847,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Odpowiedzi do wyboru (Kto to śpiewa?, Kto za tym stoi?, Z jakiego to ekranu?, Łańcuch skojarzeń, Licytacja i ich minigry) – w pionowej liście przycisków równej wysokości.
 - Skąd jest wykonawca: domyślnie wpisujesz kraj, bez podpowiedzi (po polsku albo angielsku, bez polskich znaków; działają też USA, UK, Anglia, Holandia…). W ustawieniach można wrócić do czterech odpowiedzi. Gracz grający na swoim telefonie na razie dostaje cztery odpowiedzi.
 
-## 5.47.0 – 16.10.2026 (`HASH`)
+## 5.47.0 – 16.10.2026 (`ec3912e`)
 
 - Gorąca bomba: bomba zaczyna tykać razem z muzyką (przycisk Start tylko wtedy, gdy przeglądarka zablokuje odtwarzanie). Ponad 20 rodzajów pytań z dwiema odpowiedziami – m.in. rok, dekada, wiek piosenki, kraj, gatunek, zespół czy solista, liczba słów i pierwsza litera tytułu, autor tekstu, kompozytor, album, film, Eurowizja i Opole; pytania w miarę możliwości się nie powtarzają. Gdy fragment się skończy, a bomba jeszcze tyka – od razu następna piosenka i nowe pytanie.
 - Łańcuch skojarzeń: bez muzyki przed odpowiedzią (posłuchać można po odpowiedzi) – podpowiedź pokazuje poprzednią piosenkę i to, co ją łączy z szukaną. Bez pytań o to samo słowo w tytule; nowe powiązania: ten sam producent, ta sama Eurowizja, ten sam festiwal w Opolu, ten sam film, serial albo gra.
