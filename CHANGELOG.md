@@ -691,7 +691,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Na czas: gra nie kończy się po zebraniu określonej liczby kart – trwa, aż minie czas. Gdy czas minie, piosenka milknie, ale bieżącą kartę można jeszcze ułożyć.
 - Bingo muzyczne: bez limitu piosenek – gra trwa, aż ktoś skreśli cały wiersz, kolumnę albo przekątną (z ustawień zniknęło pole „Piosenek na gracza”).
 
-## 5.31.1 – 16.10.2026 (`HASH`)
+## 5.31.1 – 16.10.2026 (`60ddce7`)
 
 - Zestaw Memy: 22 nowe piosenki (m.in. „Ameno”, „Cotton Eye Joe”, „Pump Up the Jam”, „Little Dark Age”, „A Cruel Angel's Thesis”, „Idol” YOASOBI) – w zestawie jest teraz 682 piosenek.
 - 156 nowych ciekawostek „z jakiego memu” (razem 260), każda ze źródłem (najczęściej Know Your Meme albo Wikipedia).
