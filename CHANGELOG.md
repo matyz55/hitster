@@ -840,7 +840,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - Bez zmian w grze: testy mogą działać na innym porcie (zmienna TEST_PORT).
 
-## 5.46.0 – 16.10.2026 (`HASH`)
+## 5.46.0 – 16.10.2026 (`424616e`)
 
 - Impreza i Turniej: w każdej minigrze przycisk „⏭ Pomiń tę minigrę” (także w „Tak to leciało!” i Sztafecie karaoke) – minigra kończy się z dotychczasowymi wynikami i gra przechodzi do przerwy. W Sztafecie karaoke (także jako osobnym trybie) – „⏭ Pomiń tę piosenkę”.
 - Pojedynek dekad: przy „Losowo” nowa para dekad co piosenkę; dekady wybrane w ustawieniach zostają stałe.
