@@ -836,6 +836,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Kategorie z co najmniej 3 piosenkami: 60 z 73.
 - Narzędzie katalogu: przy skupieniu na 600 najpopularniejszych piosenkach nie usuwa już piosenek spoza tej listy, które są w katalogu.
 
-## 5.45.1 – 16.10.2026 (`HASH`)
+## 5.45.1 – 16.10.2026 (`ff95934`)
 
 - Bez zmian w grze: testy mogą działać na innym porcie (zmienna TEST_PORT).
