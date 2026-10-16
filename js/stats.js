@@ -9,14 +9,16 @@ function recordAnswer(song, ok) {
   st.a.push({ d: new Date().toISOString().slice(0, 10), m: state.mode, ok: !!ok, y: song.y, g: song.g || [], k: songKey(song), t: song.t, ar: song.a });
   if (st.a.length > STATS_MAX) st.a = st.a.slice(-STATS_MAX);
   store.set('stats', st);
+  checkAchievements();
 }
 // każda gra: tryb, czas, wynik najlepszego gracza
-function recordGame(best, seconds) {
+function recordGame(best, seconds, won) {
   const st = store.get('stats', { a: [], g: [] });
   const score = isTimeline() ? best.timeline.filter((c) => !c.start).length : (state.mode === 'hilo' ? state.streak : best.score);
-  st.g.push({ d: new Date().toISOString().slice(0, 10), m: state.mode, s: seconds, sc: score, p: state.players.length });
+  st.g.push({ d: new Date().toISOString().slice(0, 10), m: state.mode, s: seconds, sc: score, p: state.players.length, w: !!won });
   if (st.g.length > 1000) st.g = st.g.slice(-1000);
   store.set('stats', st);
+  checkAchievements();
   window.track && window.track('koniec-gry', { tryb: state.mode, czas_s: seconds, wynik: score, graczy: state.players.length });
 }
 
@@ -106,7 +108,7 @@ function renderStats() {
   const st = store.get('stats', { a: [], g: [] });
   const body = $('#stats-body');
   if (!st.a.length && !st.g.length) {
-    body.replaceChildren(el('section', { class: 'card' }, el('p', {}, T('Nie ma jeszcze statystyk – zagraj kilka gier!'))));
+    body.replaceChildren(el('section', { class: 'card' }, el('p', {}, T('Nie ma jeszcze statystyk – zagraj kilka gier!'))), achievementsCard(), transferCard());
     return;
   }
   const okAll = st.a.filter((a) => a.ok).length;
@@ -176,10 +178,10 @@ function renderStats() {
   const modes = el('section', { class: 'card' }, el('h2', {}, T('Rozegrane gry')),
     el('ul', { class: 'record-log' }, [...byMode.entries()].sort((a, b) => b[1] - a[1])
       .map(([m, n]) => el('li', {}, `${MODE_NAMES()[m] || m}: `, el('b', {}, String(n))))));
-  body.replaceChildren(tiles, progress, skill, confused, records, modes);
+  body.replaceChildren(tiles, achievementsCard(), progress, skill, confused, records, modes, transferCard());
 }
 
-$('#btn-stats').addEventListener('click', () => { renderStats(); showScreen('stats'); window.track && window.track('statystyki'); });
+$('#btn-stats').addEventListener('click', () => { progressMsg = ''; renderStats(); showScreen('stats'); window.track && window.track('statystyki'); });
 $('#btn-stats-back').addEventListener('click', () => showScreen('home'));
 $('#btn-stats-reset').addEventListener('click', () => {
   if (!confirm(T('Wyczyścić wszystkie statystyki i historię rekordów na tym urządzeniu?'))) return;

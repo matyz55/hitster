@@ -1058,7 +1058,7 @@ function endGame() {
   tl.classList.toggle('hidden', !isTimeline());
   if (isTimeline()) renderTimeline(tl, best.timeline, false);
   renderPlayedList();
-  recordGame(best, Math.round((Date.now() - (state.startedAt || Date.now())) / 1000));
+  recordGame(best, Math.round((Date.now() - (state.startedAt || Date.now())) / 1000), won);
   $$('.party-kicker, .moments-box').forEach((n) => n.remove());
   const moments = momentsBox();
   if (moments) $('#ranking').append(moments);
