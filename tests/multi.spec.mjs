@@ -385,8 +385,9 @@ test('Gorąca bomba: dobra odpowiedź podaje bombę dalej, zła blokuje, wybuch 
   await page.click('.mode[data-mode=bomb]');
   await page.click('#btn-start');
   await page.waitForFunction(() => state.current && state.bomb && state.phase === 'listen', null, { timeout: 30000 });
-  await page.click('#actions button.primary');
+  // bomba rusza sama, razem z muzyką (bez przycisku Start)
   await expect.poll(() => page.evaluate(() => state.bomb.phase)).toBe('run');
+  expect(await page.evaluate(() => !audio.paused && state.bomb.startedAt > 0)).toBe(true);
   await expect(page.locator('#actions button.big-choice')).toHaveCount(2);
   const holder = await page.evaluate(() => state.turn);
   await page.evaluate(() => bombAnswer(state.bomb.q.options.findIndex((o) => o.ok)));
@@ -401,6 +402,58 @@ test('Gorąca bomba: dobra odpowiedź podaje bombę dalej, zła blokuje, wybuch 
   expect(await page.evaluate((i) => state.players[i].hearts, now)).toBe(2);
   await expect(page.locator('#reveal')).toContainText('Bomba wybuchła');
   await expect(page.locator('#scoreboard')).toContainText('❤️❤️');
+});
+
+test('Gorąca bomba: koniec fragmentu przed wybuchem – od razu następna piosenka i nowe pytanie', async ({ page }) => {
+  await lobby(page, 2);
+  await page.click('.mode[data-mode=bomb]');
+  await page.click('#btn-start');
+  await page.waitForFunction(() => state.bomb && state.bomb.phase === 'run' && !audio.paused, null, { timeout: 30000 });
+  const first = await page.evaluate(() => { state.bomb.explodeAt = Date.now() + 60000; return songKey(state.current); });
+  // fragment dobiega końca
+  await page.evaluate(() => { audio.currentTime = state.clipStart + state.clipLen - 0.5; });
+  await page.waitForFunction((k) => songKey(state.current) !== k && !audio.paused, first, { timeout: 30000 });
+  const r = await page.evaluate(() => ({ phase: state.phase, bomb: state.bomb.phase, q: state.bomb.q && state.bomb.q.options.length, t: audio.currentTime, hist: state.history.length }));
+  expect(r).toMatchObject({ phase: 'listen', bomb: 'run', q: 2, hist: 1 });
+  expect(r.t).toBeLessThan(10);
+});
+
+test('Gorąca bomba: dużo rodzajów pytań, każde z dwiema odpowiedziami i jedną prawdziwą', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => loadFacts());
+  await page.waitForFunction(() => !!window.SONG_FACTS);
+  const r = await page.evaluate(() => {
+    state.bomb = { recent: [] };
+    const kinds = new Map();
+    const bad = [];
+    const songs = shuffle(window.SONGS.slice()).slice(0, 600);
+    for (const s of songs) {
+      for (const [kind, f] of Object.entries(BOMB_QUESTIONS)) {
+        const q = f(s);
+        if (!q) continue;
+        if (q.options.length !== 2 || q.options.filter((o) => o && o.ok).length !== 1 || !q.q) bad.push(`${kind}: ${s.t}`);
+        kinds.set(kind, (kinds.get(kind) || 0) + 1);
+      }
+    }
+    // kilka pytań sprawdzanych z danymi piosenki
+    const check = [];
+    const s = window.SONGS.find((x) => x.y === 1984 && x.c === 'PL');
+    const yes = (q) => q.options.find((o) => o.ok).label;
+    check.push(yes(BOMB_QUESTIONS.exact(s)) === '1984');
+    check.push(yes(BOMB_QUESTIONS.century(s)) === 'XX wiek');
+    check.push(yes(BOMB_QUESTIONS.pl(s)) === 'Polska');
+    const w = window.SONGS.find((x) => x.t === 'Chodź, Pomaluj Mój Świat');
+    check.push(yes(BOMB_QUESTIONS.words(w)) === '4');
+    check.push(yes(BOMB_QUESTIONS.letter(w)) === 'C');
+    // kolejne pytania o tę samą piosenkę – różne rodzaje
+    state.bomb = { recent: [] };
+    const seq = Array.from({ length: 6 }, () => (state.bomb.q = bombQuestion(w)).kind);
+    return { kinds: [...kinds.keys()], bad, check, seq };
+  });
+  expect(r.bad).toEqual([]);
+  expect(r.kinds.length).toBeGreaterThanOrEqual(18);
+  expect(r.check).toEqual([true, true, true, true, true]);
+  expect(new Set(r.seq).size).toBe(6);
 });
 
 test('Turniej: 3 graczy – wolny los, mecz, finał i zwycięzca', async ({ page }) => {

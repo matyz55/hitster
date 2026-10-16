@@ -4,8 +4,8 @@
 // • artist  – Kto to śpiewa?: 4 wykonawców do wyboru
 // • country – Skąd jest wykonawca?: 4 kraje (z flagami) do wyboru
 // • screen  – Z jakiego to ekranu?: 4 filmy / seriale / gry do wyboru – w którym zabrzmiała piosenka
-// • chain   – Łańcuch skojarzeń: każda kolejna piosenka łączy się z poprzednią jedną cechą (podpowiedź na ekranie);
-//             z 4 piosenek wybierasz tę, która gra – pasuje do podpowiedzi tylko jedna
+// • chain   – Łańcuch skojarzeń (bez muzyki): każda kolejna piosenka łączy się z poprzednią jedną cechą (podpowiedź
+//             na ekranie); z 4 piosenek wybierasz tę, która pasuje do podpowiedzi – pasuje tylko jedna
 // • climb   – Dekadowa wspinaczka: piosenka z dekady, na której stoisz; rok z dokładnością do 2 lat – dekada w górę,
 //             pomyłka – w dół; wygrywa, kto pierwszy dotrze do współczesności (lata 20.)
 // • bid     – Licytacja: najpierw stawiasz 1–3 pkt na swoją pewność, potem wybierasz dekadę; dobrze – zyskujesz stawkę, źle – tracisz
@@ -47,7 +47,7 @@ const QUIZ = {
     max: () => 1,
   },
   chain: {
-    status: () => T('Posłuchaj i wybierz piosenkę – podpowiedź mówi, co łączy ją z poprzednią.'),
+    status: () => T('Bez muzyki: podpowiedź mówi, co łączy szukaną piosenkę z poprzednią – wybierz ją z czterech.'),
     hint: () => (state.quiz && state.quiz.q ? state.quiz.q : ''),
     max: () => 1,
   },
@@ -150,18 +150,55 @@ class ClimbDeck {
   }
   release(song, putBack) { if (putBack) this.by.get(decadeOf(song)).unshift(song); }
 }
-// Łańcuch skojarzeń: co łączy dwie piosenki (rok, kraj spoza PL/US/GB, autor muzyki lub tekstu, słowo w tytule)
-const CHAIN_SKIP_WORDS = new Set(['the', 'and', 'you', 'your', 'that', 'this', 'with', 'from', 'have', 'what', 'when', 'will', 'dont', 'just', 'like',
-  'mnie', 'tobie', 'sobie', 'jest', 'jestem', 'jak', 'się', 'nie', 'tak', 'czy', 'dla', 'gdy', 'już', 'może', 'mój', 'moja', 'twój', 'twoja', 'tylko']);
-// słowa tytułu: znormalizowane → w zapisie z tytułu
-function chainWords(s) {
-  const out = new Map();
-  for (const w of s.t.replace(/\s*[([].*?[)\]]/g, '').split(/[^\p{L}\p{N}']+/u)) {
-    const k = norm(w);
-    if (k.length >= 4 && !CHAIN_SKIP_WORDS.has(k) && !out.has(k)) out.set(k, w);
+// drabinka dekad: szczyt (współczesność) i dekady od najnowszej do najstarszej – z miejscem każdego gracza
+const climbShort = (d) => (d === OLDEST_DECADE ? T('do 1969') : T('lata {0}.', d < 2000 ? d % 100 : d));
+const climbRows = () => [{ lvl: CLIMB.length, label: T('🏔️ Szczyt') }, ...CLIMB.map((d, i) => ({ lvl: i, label: climbShort(d) })).reverse()];
+// ruch po ostatniej odpowiedzi (w górę / w dół) – widoczny po odkryciu karty
+const climbMove = (p, i) => (state.phase === 'revealed' && i === state.turn && p.climbFrom != null && p.climbFrom !== (p.climb || 0)
+  ? ((p.climb || 0) > p.climbFrom ? 'up' : 'down') : '');
+function renderClimbLadder() {
+  const box = $('#climb-ladder');
+  if (!box) return;
+  const on = state.mode === 'climb' && state.players.length > 0;
+  box.classList.toggle('hidden', !on);
+  if (!on) return;
+  const rows = climbRows();
+  const sig = `${state.players.map((p) => p.name).join('|')}#${LANG}`;
+  // stałe elementy – pionek przesuwa się płynnie (przejście CSS), zamiast pojawiać się od nowa
+  if (box.dataset.sig !== sig) {
+    box.dataset.sig = sig;
+    box.style.setProperty('--rows', rows.length);
+    box.replaceChildren(
+      el('div', { class: 'cl-rungs' }, rows.map((r) => el('div', { class: 'cl-rung' + (r.lvl === CLIMB.length ? ' cl-top' : ''), 'data-lvl': String(r.lvl) },
+        el('span', { class: 'cl-label' }, r.label)))),
+      el('div', { class: 'cl-track' }, state.players.map((p) => el('div', { class: 'cl-token' }, el('span', { class: 'cl-name' }, p.name), el('span', { class: 'cl-move' })))),
+    );
   }
-  return out;
+  const slots = new Map();
+  const tokens = box.querySelectorAll('.cl-token');
+  state.players.forEach((p, i) => {
+    const lvl = Math.min(p.climb || 0, CLIMB.length);
+    const slot = slots.get(lvl) || 0;
+    slots.set(lvl, slot + 1);
+    const t = tokens[i];
+    const move = climbMove(p, i);
+    t.style.setProperty('--lvl', lvl);
+    t.style.setProperty('--slot', slot);
+    t.className = 'cl-token' + (i === state.turn ? ' active' : '') + (move ? ` ${move}` : '') + (lvl >= CLIMB.length ? ' won' : '');
+    t.querySelector('.cl-move').textContent = move === 'up' ? '▲' : move === 'down' ? '▼' : '';
+    t.title = `${p.name}: ${rows.find((r) => r.lvl === lvl).label}`;
+  });
+  const cur = Math.min(activePlayer().climb || 0, CLIMB.length);
+  box.querySelectorAll('.cl-rung').forEach((r) => r.classList.toggle('cur', Number(r.dataset.lvl) === cur));
 }
+// drabinka dla dużego ekranu i telefonów
+const climbSnapshot = () => (state.mode === 'climb' && state.players.length ? {
+  rows: climbRows().map((r) => ({ label: r.label, lvl: r.lvl })),
+  players: state.players.map((p, i) => ({ name: p.name, lvl: Math.min(p.climb || 0, CLIMB.length), active: i === state.turn, move: climbMove(p, i) })),
+} : null);
+// Łańcuch skojarzeń (bez muzyki – na wiedzę): co łączy dwie piosenki – rok, kraj spoza PL/US/GB, autor muzyki lub
+// tekstu, producent (Wikidata), ta sama Eurowizja, ten sam festiwal w Opolu, ten sam film / serial / gra.
+// Tylko pewne dane z bazy; ten sam wykonawca nie jest powiązaniem (byłoby za proste).
 function chainPeople(s) {
   const out = new Set();
   for (const [k, a, b] of (window.SONG_FACTS && window.SONG_FACTS[songKey(s)]) || []) {
@@ -169,21 +206,35 @@ function chainPeople(s) {
   }
   return out;
 }
+const chainProducers = (s) => new Set(((window.SONG_FACTS && window.SONG_FACTS[songKey(s)]) || []).filter((x) => x[0] === 'pr' && x[1]).map((x) => x[1]));
+// Eurowizja (rok) i festiwal w Opolu (numer) z pola f w songs.js
+const chainEvents = (s, code) => new Set((s.f || []).map((f) => f.split(':')).filter((x) => x[0] === code && x[1]).map((x) => x[1]));
+// osoba z powiązania, która sama śpiewa (którąś z) piosenek, zdradziłaby odpowiedź
+const singsIt = (n, s) => artistKeys(s).some((k) => norm(n).includes(k) || k.includes(norm(n)));
+const CHAIN_KINDS = ['people', 'producer', 'screen', 'euro', 'opole', 'country', 'year'];
 function chainLinks(a, b) {
   if (!a || !b || a === b || artistKeys(a).some((k) => artistKeys(b).includes(k))) return [];
   const out = [];
   if (a.y === b.y) out.push({ kind: 'year', text: T('🔗 Ten sam rok wydania co poprzednia piosenka ({0})', b.y) });
   if (a.cc && a.cc === b.cc && !['PL', 'US', 'GB'].includes(a.cc)) out.push({ kind: 'country', text: T('🔗 Wykonawca z tego samego kraju co poprzednia piosenka: {0}', countryName(b)) });
   const pb = chainPeople(b);
-  // autor, który sam śpiewa graną piosenkę, zdradziłby odpowiedź
   for (const n of chainPeople(a)) {
-    if (pb.has(n) && !artistKeys(b).some((k) => norm(n).includes(k))) { out.push({ kind: 'people', text: T('🔗 Ten sam autor co poprzednia piosenka: {0}', n) }); break; }
+    if (pb.has(n) && !singsIt(n, b)) { out.push({ kind: 'people', text: T('🔗 Ten sam autor co poprzednia piosenka: {0}', n) }); break; }
   }
-  const wb = chainWords(b);
-  for (const k of chainWords(a).keys()) if (wb.has(k)) { out.push({ kind: 'word', text: T('🔗 To samo słowo w tytule co poprzednia piosenka: „{0}”', wb.get(k)) }); break; }
+  const rb = chainProducers(b);
+  for (const n of chainProducers(a)) {
+    if (rb.has(n) && !singsIt(n, b)) { out.push({ kind: 'producer', text: T('🔗 Ten sam producent nagrania co poprzednia piosenka: {0}', n) }); break; }
+  }
+  const eb = chainEvents(b, 'e');
+  for (const y of chainEvents(a, 'e')) if (eb.has(y)) { out.push({ kind: 'euro', text: T('🔗 Śpiewana na tej samej Eurowizji co poprzednia piosenka ({0})', y) }); break; }
+  const ob = chainEvents(b, 'o');
+  for (const n of chainEvents(a, 'o')) if (ob.has(n)) { out.push({ kind: 'opole', text: T('🔗 Śpiewana na tym samym festiwalu w Opolu co poprzednia piosenka ({0} KFPP)', n) }); break; }
+  const wb = new Set(songWorks(b).map(norm));
+  for (const w of songWorks(a)) if (wb.has(norm(w))) { out.push({ kind: 'screen', text: T('🔗 Zabrzmiała w tym samym filmie, serialu albo grze co poprzednia piosenka: {0}', w) }); break; }
   return out;
 }
-// talia łańcucha: następna piosenka połączona z ostatnio wylosowaną (gdy takiej nie ma – nowy łańcuch)
+// talia łańcucha: każda losowana piosenka łączy się z poprzednią; gdy żadna się nie łączy – nowy łańcuch:
+// nowa piosenka początkowa (pokazana, nie zgadywana) i od razu powiązana z nią następna
 class ChainDeck {
   constructor(songs, last = null) {
     this.list = shuffle(songs.slice()); this.last = last; this.prev = []; this.links = new Map();
@@ -191,34 +242,55 @@ class ChainDeck {
   }
   get size() { return this.list.length; }
   * allLists() { yield this.list; }
+  linkFrom(from) {
+    // rzadsze rodzaje powiązań (autor, producent, film, festiwal, kraj) mają pierwszeństwo przed rokiem
+    const byKind = new Map();
+    for (const s of this.list) {
+      for (const l of chainLinks(from, s)) if (!byKind.has(l.kind) || byKind.get(l.kind).length < 8) byKind.set(l.kind, [...(byKind.get(l.kind) || []), [s, l]]);
+    }
+    // ten sam rodzaj powiązania dwa razy z rzędu tylko wtedy, gdy nie ma innego
+    let kind = CHAIN_KINDS.filter((k) => byKind.has(k));
+    if (kind.length > 1) kind = kind.filter((k) => k !== this.lastKind);
+    if (!kind.length) return null;
+    const choices = byKind.get(kind[Math.random() < 0.6 ? 0 : Math.floor(Math.random() * kind.length)]);
+    return choices[Math.floor(Math.random() * choices.length)];
+  }
   draw() {
     if (!this.list.length) return null;
-    let pick = null;
-    let link = null;
-    if (this.last) {
-      // rzadsze rodzaje powiązań (autor, kraj) mają pierwszeństwo przed rokiem i słowem
-      const byKind = new Map();
-      for (const s of this.list) {
-        for (const l of chainLinks(this.last, s)) if (!byKind.has(l.kind) || byKind.get(l.kind).length < 8) byKind.set(l.kind, [...(byKind.get(l.kind) || []), [s, l]]);
-      }
-      // ten sam rodzaj powiązania dwa razy z rzędu tylko wtedy, gdy nie ma innego
-      let kind = ['people', 'country', 'word', 'year'].filter((k) => byKind.has(k));
-      if (kind.length > 1) kind = kind.filter((k) => k !== this.lastKind);
-      if (kind.length) {
-        const choices = byKind.get(kind[Math.random() < 0.6 ? 0 : Math.floor(Math.random() * kind.length)]);
-        [pick, link] = choices[Math.floor(Math.random() * choices.length)];
+    let hit = this.last ? this.linkFrom(this.last) : null;
+    let start = null;
+    // nowy łańcuch: szukamy piosenki początkowej, z którą coś się łączy (kilka prób)
+    for (let tries = 0; !hit && tries < 40 && this.list.length > 1; tries++) {
+      const cand = this.list[Math.floor(Math.random() * this.list.length)];
+      const h = this.linkFrom(cand);
+      if (h) { start = cand; hit = h; }
+    }
+    if (!hit) return null;
+    // trzeci raz z rzędu tylko „ten sam rok” – lepiej nowy łańcuch z ciekawszym powiązaniem (jeśli się znajdzie)
+    this.yearRun = hit[1].kind === 'year' && !start ? (this.yearRun || 0) + 1 : 0;
+    if (this.yearRun >= 3) {
+      for (let tries = 0; tries < 15; tries++) {
+        const cand = this.list[Math.floor(Math.random() * this.list.length)];
+        const h = this.linkFrom(cand);
+        if (h && h[1].kind !== 'year' && h[0] !== cand) { start = cand; hit = h; this.yearRun = 0; break; }
       }
     }
-    if (!pick) pick = this.list[this.list.length - 1];
+    if (start) this.list.splice(this.list.indexOf(start), 1);
+    const [pick, link] = hit;
+    const from = start || this.last;
     this.list.splice(this.list.indexOf(pick), 1);
-    this.links.set(pick, { from: link ? this.last : null, link });
-    this.lastKind = link ? link.kind : null;
-    this.prev.push(this.last);
+    this.links.set(pick, { from, link, start: !!start });
+    this.lastKind = link.kind;
+    this.prev.push({ last: this.last, start });
     this.last = pick;
     return pick;
   }
   release(song, putBack) {
-    if (this.last === song) this.last = this.prev.pop() || null;
+    if (this.last === song) {
+      const p = this.prev.pop() || {};
+      this.last = p.last || null;
+      if (p.start) this.list.unshift(p.start);
+    }
     if (putBack) this.list.unshift(song);
   }
 }
@@ -227,7 +299,8 @@ function chainQuiz(song) {
   const from = info.link ? info.from : null;
   const pool = state.quizPool || window.SONGS;
   // błędne odpowiedzi: piosenki, które NIE pasują do podpowiedzi (inni wykonawcy, podobne lata)
-  const ok = (s) => s !== song && !artistKeys(s).some((k) => artistKeys(song).includes(k)) && !(from && chainLinks(from, s).some((l) => l.kind === info.link.kind));
+  const ok = (s) => s !== song && s !== from && !artistKeys(s).some((k) => artistKeys(song).includes(k) || (from && artistKeys(from).includes(k)))
+    && !(from && chainLinks(from, s).some((l) => l.kind === info.link.kind));
   const near = shuffle(pool.filter((s) => s.c === song.c && Math.abs(s.y - song.y) <= 12 && ok(s)));
   const picks = [song];
   for (const s of [...near, ...shuffle(pool.filter(ok))]) {
@@ -236,7 +309,9 @@ function chainQuiz(song) {
   }
   const label = (s) => `${s.t} — ${artistLine(s)}`;
   return {
-    q: from ? `${info.link.text} · ${T('poprzednia: „{0}” ({1})', from.t, artistLine(from))}` : T('🔗 Początek łańcucha – posłuchaj i wybierz piosenkę.'),
+    q: from ? `${info.start ? T('Nowy łańcuch – poprzednia piosenka: „{0}” ({1}).', from.t, artistLine(from)) : T('Poprzednia piosenka: „{0}” ({1}).', from.t, artistLine(from))} ${info.link.text}`
+      : T('🔗 Wybierz piosenkę.'),
+    from: from ? { t: from.t, a: artistLine(from), y: from.y, start: !!info.start } : null,
     options: shuffle(picks).map((s) => ({ label: label(s), ok: s === song })),
   };
 }
@@ -369,6 +444,7 @@ function answerQuiz(choice) {
       // dekada w górę (wynik = liczba zdobytych dekad) albo w dół
       ok = diff <= CLIMB_TOL;
       const from = p.climb || 0;
+      p.climbFrom = from;
       p.climb = ok ? from + 1 : Math.max(0, from - 1);
       p.score = p.climb;
       state.quiz.year = y;
@@ -1049,8 +1125,9 @@ function secsStatus() {
 }
 
 /* ---------- Gorąca bomba ---------- */
-// Gra muzyka i tyka bomba (coraz szybciej). Kto ją trzyma, odpowiada na szybkie pytanie o piosenkę (dwie odpowiedzi):
-// dobrze – bomba idzie do następnego gracza, źle – 3 s blokady. Wybuch w losowej chwili (25–50 s) zabiera serce
+// Bomba zaczyna tykać razem z muzyką (coraz szybciej). Kto ją trzyma, odpowiada na szybkie pytanie o piosenkę (dwie
+// odpowiedzi): dobrze – bomba idzie do następnego gracza, źle – 3 s blokady. Gdy fragment się skończy, a bomba jeszcze
+// tyka – od razu gra następna piosenka z nowym pytaniem. Wybuch w losowej chwili (25–50 s) zabiera serce
 // trzymającemu; bez serc – odpada. Wygrywa ostatni przy stole.
 const BOMB_MIN = 25000;
 const BOMB_MAX = 50000;
@@ -1059,41 +1136,242 @@ let bombTimer = null;
 function bombAlive() { return state.players.map((p, i) => i).filter((i) => state.players[i].hearts > 0); }
 function startBomb() {
   for (const p of state.players) { p.hearts = ROYALE_HEARTS; p.score = 0; }
+  // pytania o autorów, album, film – z danych Wikidata (wczytywane w tle)
+  loadFacts();
 }
 function bombRound() {
   clearTimeout(bombTimer);
   const alive = bombAlive();
   if (!alive.includes(state.turn)) state.turn = alive[0];
-  state.bomb = { phase: 'wait', q: null, lockUntil: 0, explodeAt: 0, startedAt: 0 };
+  state.bomb = { phase: 'wait', q: null, lockUntil: 0, explodeAt: 0, startedAt: 0, recent: [] };
+  // cały 30-sekundowy fragment od początku; bomba rusza w chwili, gdy zacznie grać muzyka (zdarzenie play)
+  state.clipLen = 30;
+  state.clipStart = 0;
+  playClip();
 }
-// szybkie pytanie o graną piosenkę: dwie odpowiedzi, jedna prawdziwa
-function bombQuestion(song) {
-  const kinds = ['year', 'pl', 'decade', 'artist'];
-  const kind = kinds[Math.floor(Math.random() * kinds.length)];
-  if (kind === 'year') {
-    let pivot = song.y + (Math.floor(Math.random() * 13) - 6);
-    if (pivot === song.y) pivot += 1;
-    return { q: T('Wydana przed {0} czy później?', pivot), options: [{ label: T('Przed {0}', pivot), ok: song.y < pivot }, { label: T('{0} lub później', pivot), ok: song.y >= pivot }] };
-  }
-  if (kind === 'pl') return { q: T('Polska czy zagraniczna?'), options: [{ label: T('Polska'), ok: song.c === 'PL' }, { label: T('Zagraniczna'), ok: song.c !== 'PL' }] };
-  if (kind === 'decade') {
-    const real = decadeOf(song);
+// szybkie pytania o graną piosenkę: dwie odpowiedzi, jedna prawdziwa – tylko takie, na które baza zna pewną odpowiedź
+const bombYesNo = (q, yes) => ({ q, options: [{ label: T('Tak'), ok: !!yes }, { label: T('Nie'), ok: !yes }] });
+const bombTwo = (q, right, wrong, extra = {}) => ({ q, options: shuffle([{ label: right, ok: true, ...extra.right }, { label: wrong, ok: false, ...extra.wrong }]) });
+const bombPick = (list) => list[Math.floor(Math.random() * list.length)];
+// słowa tytułu bez dopisków w nawiasach (same znaki interpunkcyjne nie są słowem)
+const titleWords = (s) => words(s.t).filter((w) => /[\p{L}\p{N}]/u.test(w));
+// grupy gatunków: błędna odpowiedź zawsze z innej grupy niż gatunki piosenki (żeby nie była „też trochę prawdziwa”)
+const BOMB_GENRES = [['rock', 'metal', 'punk i nowa fala', 'rock and roll', 'blues'], ['pop', 'disco', 'elektronika', 'soul i funk', 'latino'],
+  ['hip-hop'], ['jazz'], ['folk i country'], ['klasyczna'], ['reggae']];
+const genreGroup = (g) => BOMB_GENRES.findIndex((x) => x.includes(g));
+const songFactRows = (s) => (window.SONG_FACTS && window.SONG_FACTS[songKey(s)]) || [];
+const artistFactRows = (s) => (window.ARTIST_FACTS && window.ARTIST_FACTS[mainArtist(s)]) || [];
+const songCodes = (s, code) => (s.f || []).map((f) => f.split(':')).filter((x) => x[0] === code);
+const BOMB_QUESTIONS = {
+  year: (s) => {
+    let pivot = Math.min(s.y + (Math.floor(Math.random() * 13) - 6), new Date().getFullYear());
+    if (pivot === s.y) pivot += s.y >= new Date().getFullYear() ? -1 : 1;
+    return { q: T('Wydana przed {0} czy później?', pivot), options: [{ label: T('Przed {0}', pivot), ok: s.y < pivot }, { label: T('{0} lub później', pivot), ok: s.y >= pivot }] };
+  },
+  exact: (s) => {
+    const now = new Date().getFullYear();
+    const other = bombPick([-4, -3, -2, -1, 1, 2, 3, 4].map((d) => s.y + d).filter((y) => y <= now && y >= 1900));
+    return bombTwo(T('W którym roku ją wydano?'), String(s.y), String(other));
+  },
+  age: (s) => {
+    // liczymy od roku wydania – co najmniej 2 lata od progu, więc odpowiedź nie zależy od miesiąca
+    const age = new Date().getFullYear() - s.y;
+    const n = bombPick([5, 10, 15, 20, 25, 30, 40, 50].filter((x) => Math.abs(age - x) >= 2 && x < age + 15 && x > age - 25));
+    return n ? bombYesNo(T('Czy ta piosenka ma więcej niż {0} lat?', n), age > n) : null;
+  },
+  century: (s) => (s.y === 2000 ? null : bombTwo(T('Z którego wieku jest ta piosenka?'), s.y < 2000 ? T('XX wiek') : T('XXI wiek'), s.y < 2000 ? T('XXI wiek') : T('XX wiek'))),
+  decade: (s) => {
+    const real = decadeOf(s);
     const d = Math.random() < 0.5 ? real : real + (Math.random() < 0.5 ? -10 : 10);
-    return { q: T('Wydana w latach: {0}?', decadeLabelLong(d)), options: [{ label: T('Tak'), ok: d === real }, { label: T('Nie'), ok: d !== real }] };
+    if (d < OLDEST_DECADE || d > decadeOf({ y: new Date().getFullYear() })) return null;
+    return bombYesNo(T('Wydana w latach: {0}?', decadeLabelLong(d)), d === real);
+  },
+  pl: (s) => ({ q: T('Polska czy zagraniczna?'), options: [{ label: T('Polska'), ok: s.c === 'PL' }, { label: T('Zagraniczna'), ok: s.c !== 'PL' }] }),
+  artist: (s) => {
+    const opts = quizOptions(s, 'artist');
+    const wrong = opts.filter((o) => !o.ok);
+    return wrong.length ? { q: T('Kto to śpiewa?'), options: shuffle([opts.find((o) => o.ok), wrong[0]]) } : null;
+  },
+  country: (s) => {
+    if (!s.cc || !hasFlag(s.cc)) return null;
+    const pool = (state.quizPool || window.SONGS).filter((x) => x.cc && x.cc !== s.cc && hasFlag(x.cc));
+    if (!pool.length) return null;
+    const cc = bombPick(pool).cc;
+    return bombTwo(T('Skąd jest wykonawca?'), countryName(s), countryName({ cc }), { right: { cc: s.cc }, wrong: { cc } });
+  },
+  words: (s) => {
+    const n = titleWords(s).length;
+    if (!n || n > 8) return null;
+    const other = n === 1 ? 2 : n + (Math.random() < 0.5 ? -1 : 1);
+    return bombTwo(T('Ile słów ma tytuł (bez dopisków w nawiasie)?'), String(n), String(other));
+  },
+  letter: (s) => {
+    const first = (titleWords(s)[0] || '').charAt(0).toUpperCase();
+    if (!/\p{L}/u.test(first)) return null;
+    const others = [...'ABCDEFGHIJKLMNOPRSTUWZ'].filter((x) => norm(x) !== norm(first));
+    return bombTwo(T('Na jaką literę zaczyna się tytuł?'), first, bombPick(others));
+  },
+  genre: (s) => {
+    const own = (s.g || []).filter((g) => genreGroup(g) >= 0);
+    if (!own.length) return null;
+    const groups = new Set(own.map(genreGroup));
+    const wrong = BOMB_GENRES.filter((x, i) => !groups.has(i)).flat().filter((g) => !['rock and roll', 'blues', 'latino'].includes(g));
+    return wrong.length ? bombTwo(T('Jaki to gatunek?'), genreName(bombPick(own)), genreName(bombPick(wrong))) : null;
+  },
+  band: (s) => {
+    // zespół (miejsce powstania) albo solista (miejsce urodzenia) – wg Wikidata; tylko piosenki jednego wykonawcy
+    if (artistsOf(s).length > 1) return null;
+    const af = artistFactRows(s);
+    const band = af.some((x) => x[0] === 'fp');
+    const solo = af.some((x) => x[0] === 'bp');
+    if (band === solo) return null;
+    return bombTwo(T('Śpiewa zespół czy solista?'), band ? T('Zespół') : T('Solista / solistka'), band ? T('Solista / solistka') : T('Zespół'));
+  },
+  singerAge: (s) => {
+    if (artistsOf(s).length > 1) return null;
+    const born = artistFactRows(s).find((x) => x[0] === 'bp' && x[2]);
+    if (!born) return null;
+    // wiek liczony z lat – co najmniej 2 lata od progu, więc miesiąc urodzenia i wydania nie ma znaczenia
+    const age = s.y - born[2];
+    const n = bombPick([20, 25, 30, 35, 40, 50].filter((x) => Math.abs(age - x) >= 2 && Math.abs(age - x) <= 12));
+    return n && age > 5 ? bombYesNo(T('Czy wykonawca miał ponad {0} lat, gdy ukazała się ta piosenka?', n), age > n) : null;
+  },
+  founded: (s) => {
+    if (artistsOf(s).length > 1) return null;
+    const f = artistFactRows(s).find((x) => x[0] === 'fp' && x[2]);
+    if (!f) return null;
+    const pivot = f[2] + bombPick([-5, -4, -3, -2, 2, 3, 4, 5]);
+    return { q: T('Zespół powstał przed {0} czy później?', pivot), options: [{ label: T('Przed {0}', pivot), ok: f[2] < pivot }, { label: T('{0} lub później', pivot), ok: f[2] >= pivot }] };
+  },
+  who: (s) => {
+    const w = whoOptions(s);
+    if (!w) return null;
+    return { q: w.q, options: shuffle([w.options.find((o) => o.ok), w.options.find((o) => !o.ok)]) };
+  },
+  sameAuthor: (s) => {
+    for (const [k, a, b] of songFactRows(s)) {
+      if (k === 'ml') return bombYesNo(T('Czy muzykę i słowa napisała ta sama osoba?'), true);
+      if (k === 'm' && a && b) {
+        const na = a.split(/,\s*/).map(norm);
+        if (!b.split(/,\s*/).map(norm).some((x) => na.includes(x))) return bombYesNo(T('Czy muzykę i słowa napisała ta sama osoba?'), false);
+      }
+    }
+    return null;
+  },
+  screen: (s) => {
+    const o = songWorks(s).length ? screenOptions(s) : null;
+    return o ? { q: T('W jakim filmie, serialu albo grze zabrzmiała?'), options: shuffle([o.find((x) => x.ok), o.find((x) => !x.ok)]) } : null;
+  },
+  euroWin: (s) => {
+    const e = songCodes(s, 'e').find((x) => x[1] !== '2020' && x[2]);
+    return e ? bombYesNo(T('Czy wygrała Eurowizję {0}?', e[1]), e[2] === '1') : null;
+  },
+  euroYear: (s) => {
+    const e = songCodes(s, 'e').find((x) => x[1] !== '2020');
+    if (!e) return null;
+    const y = Number(e[1]);
+    const other = bombPick([-3, -2, -1, 1, 2, 3].map((d) => y + d).filter((x) => x >= 1956 && x <= new Date().getFullYear()));
+    return bombTwo(T('Na której Eurowizji ją zaśpiewano?'), String(y), String(other));
+  },
+  // Eurowizja czy Opole: zagraniczna piosenka z Eurowizji nie była w Opolu (festiwal polskiej piosenki), a polska
+  // piosenka z Opola sprzed 1994 r. nie mogła być na Eurowizji (Polska debiutowała w 1994 r.)
+  festival: (s) => {
+    const euro = (s.tg || []).includes('eurowizja');
+    const opole = (s.tg || []).includes('opole');
+    if (euro && !opole && s.c !== 'PL') return bombTwo(T('Gdzie ją śpiewano?'), T('Na Eurowizji'), T('Na festiwalu w Opolu'));
+    if (opole && !euro && s.y < 1994) return bombTwo(T('Gdzie ją śpiewano?'), T('Na festiwalu w Opolu'), T('Na Eurowizji'));
+    return null;
+  },
+  billboard: (s) => {
+    const b = songCodes(s, 'b').find((x) => x[2]);
+    return b ? bombYesNo(T('Czy była w pierwszej dziesiątce rocznej listy Billboard Hot 100 ({0})?', b[1]), Number(b[2]) <= 10) : null;
+  },
+};
+function bombQuestion(song) {
+  const b = state.bomb || {};
+  const recent = b.recent || [];
+  // rodzaje pytań w losowej kolejności – najpierw te, których ostatnio nie było
+  const kinds = shuffle(Object.keys(BOMB_QUESTIONS));
+  kinds.sort((x, y) => recent.includes(x) - recent.includes(y));
+  for (const kind of kinds) {
+    let q;
+    try { q = BOMB_QUESTIONS[kind](song); } catch (e) { q = null; }
+    if (!q || q.options.length !== 2 || q.options.some((o) => !o) || q.options.filter((o) => o.ok).length !== 1
+      || norm(q.options[0].label) === norm(q.options[1].label)) continue;
+    // to samo pytanie co przed chwilą – szukamy innego
+    if (b.q && b.q.q === q.q) continue;
+    b.recent = [...recent, kind].slice(-6);
+    return { ...q, kind };
   }
-  const opts = quizOptions(song, 'artist').filter((o) => o.ok).concat(shuffle(quizOptions(song, 'artist').filter((o) => !o.ok)).slice(0, 1));
-  return { q: T('Kto to śpiewa?'), options: shuffle(opts) };
+  return { ...BOMB_QUESTIONS.pl(song), kind: 'pl' };
 }
-function bombStart() {
+// bomba rusza razem z muzyką
+function bombRun() {
   const b = state.bomb;
-  if (!b || b.phase !== 'wait' || !state.current) return;
+  if (!b || b.phase !== 'wait' || state.phase !== 'listen' || !state.current) return;
   b.phase = 'run';
   b.startedAt = Date.now();
   b.explodeAt = b.startedAt + BOMB_MIN + Math.random() * (BOMB_MAX - BOMB_MIN);
   b.q = bombQuestion(state.current);
-  state.clipLen = 30;
-  playClip();
   bombTick();
+  render();
+}
+audio.addEventListener('play', () => {
+  if (audio.dataset.prime || state.mode !== 'bomb') return;
+  if (state.bomb && state.bomb.phase === 'wait') bombRun();
+});
+// koniec fragmentu (ostatnia sekunda albo koniec pliku), a bomba tyka – następna piosenka
+const bombClipOver = () => audio.ended || audio.currentTime >= Math.min(state.clipStart + state.clipLen, audio.duration || Infinity) - 1.2;
+audio.addEventListener('timeupdate', () => {
+  const b = state.bomb;
+  if (state.mode === 'bomb' && b && b.phase === 'run' && !b.loading && state.phase === 'listen' && bombClipOver()) bombNextSong();
+});
+// przycisk Start – gdy przeglądarka zablokowała automatyczne odtwarzanie
+function bombStart() {
+  const b = state.bomb;
+  if (!b || b.phase !== 'wait' || !state.current) return;
+  playClip();
+}
+// fragment się skończył, a bomba wciąż tyka – od razu następna piosenka i nowe pytanie
+async function bombNextSong() {
+  const b = state.bomb;
+  if (!b || b.phase !== 'run' || b.loading) return;
+  b.loading = true;
+  render();
+  const myDraw = state.drawId;
+  let song = null;
+  let preview = null;
+  for (let tries = 0; tries < 5 && !preview; tries++) {
+    if (prefetched && prefetched.deck === state.deck) {
+      ({ song } = prefetched);
+      preview = await prefetched.promise;
+      prefetched = null;
+    } else {
+      song = state.deck.draw(null);
+      if (!song) break;
+      preview = await withAudio(await findPreview(song, { quiet: true }).catch(() => null)).catch(() => null);
+    }
+    if (preview && preview.gone) preview = null;
+    if (state.bomb !== b || b.phase !== 'run' || myDraw !== state.drawId || state.phase !== 'listen') {
+      // runda skończyła się w trakcie szukania – piosenka zostaje na następną rundę
+      if (song && preview) prefetched = { song, deck: state.deck, promise: Promise.resolve(preview) };
+      b.loading = false;
+      return;
+    }
+  }
+  b.loading = false;
+  if (!preview) { render(); return; }
+  state.history.push({ song: state.current, preview: state.preview, player: activePlayer().name, ok: true, note: '💣' });
+  markPlayed(song);
+  state.current = song;
+  state.preview = preview;
+  state.clipStart = 0;
+  state.clipLen = 30;
+  setAudioSource(preview);
+  b.q = bombQuestion(song);
+  b.songs = (b.songs || 1) + 1;
+  playClip();
+  prefetchNext();
   render();
 }
 function bombTick() {
@@ -1103,6 +1381,7 @@ function bombTick() {
   const now = Date.now();
   if (now >= b.explodeAt) { bombExplode(); return; }
   fx('tick');
+  if (!b.loading && bombClipOver()) bombNextSong();
   // tykanie przyspiesza: od 900 ms do 150 ms (wg czasu od startu, nie wg chwili wybuchu – ta jest tajemnicą)
   const gap = Math.max(150, 900 - (now - b.startedAt) / 60);
   bombTimer = setTimeout(bombTick, Math.min(gap, b.explodeAt - now + 5));
@@ -1120,7 +1399,7 @@ function bombAnswer(choice) {
   } else {
     fx('bad');
     b.lockUntil = Date.now() + BOMB_LOCK;
-    setTimeout(() => { if (state.bomb === b) { b.q = bombQuestion(state.current); render(); } }, BOMB_LOCK);
+    setTimeout(() => { if (state.bomb === b && b.phase === 'run') { b.q = bombQuestion(state.current); render(); } }, BOMB_LOCK);
   }
   render();
 }
@@ -1152,7 +1431,8 @@ function bombActions() {
     if (b.phase === 'wait') btns.push(el('button', { class: 'primary', onclick: bombStart }, T('💣 Start – podaj bombę dalej!')));
     if (b.phase === 'run' && b.q) {
       const locked = Date.now() < b.lockUntil;
-      b.q.options.forEach((o, i) => btns.push(el('button', { class: 'big-choice', disabled: locked, onclick: () => bombAnswer(i) }, o.label)));
+      b.q.options.forEach((o, i) => btns.push(el('button', { class: 'big-choice', disabled: locked, onclick: () => bombAnswer(i) },
+        o.cc ? flagEl({ cc: o.cc }) : null, o.cc ? ' ' : null, o.label)));
     }
   }
   if (state.phase === 'revealed') {
@@ -1172,8 +1452,26 @@ function bombStatus() {
 /* ---------- Mikser (dwie piosenki naraz) ---------- */
 // Grają jednocześnie dwa 10-sekundowe fragmenty różnych piosenek; gracz wpisuje kolejno oba tytuły (albo obu
 // wykonawców – wg ustawienia „Co zgadujemy?”), po 1 pkt za każdą odgadniętą. Muzyka gra na tym urządzeniu.
+// Druga piosenka gra przez Web Audio (zdekodowany fragment w tym samym AudioContext co pierwsza) – drugi element
+// <audio> bywał blokowany przez przeglądarkę (autoodtwarzanie bez kliknięcia, Safari na iPhonie), zaczynał się,
+// zanim fragment się wczytał, albo wcale, gdy pierwsza piosenka ruszyła, zanim druga była gotowa.
+// Element audio2 zostaje tylko jako zapas, gdy przeglądarka nie zdekoduje fragmentu.
 const audio2 = new Audio();
 audio2.crossOrigin = 'anonymous';
+const mix2 = { src: null, gain: null, analyser: null };
+async function mashupDecode(preview) {
+  try {
+    sfxCtx = sfxCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const buf = await (await fetch(preview.blobUrl || preview.url)).arrayBuffer();
+    return await new Promise((resolve, reject) => {
+      const p = sfxCtx.decodeAudioData(buf, resolve, reject);
+      if (p && p.then) p.then(resolve, reject);
+    });
+  } catch (e) {
+    console.warn('Mikser: nie udało się zdekodować drugiego fragmentu – zapasowy odtwarzacz', e);
+    return null;
+  }
+}
 async function mashupPrepare(myDraw) {
   // druga piosenka: innego wykonawcy, najchętniej z innej dekady
   const first = state.current;
@@ -1183,24 +1481,80 @@ async function mashupPrepare(myDraw) {
     const preview = await withAudio(await findPreview(song));
     if (myDraw !== state.drawId) return;
     if (preview && !preview.gone && !artistKeys(song).some((k) => artistKeys(first).includes(k))) {
+      const buffer = await mashupDecode(preview);
+      if (myDraw !== state.drawId) return;
       markPlayed(song);
-      audio2.src = preview.blobUrl || preview.url;
-      audio2.load();
-      state.mashup = { b: { song, preview }, solved: { a: false, b: false }, start2: Math.random() * 15 };
+      if (!buffer) { audio2.src = preview.blobUrl || preview.url; audio2.load(); }
+      state.mashup = { b: { song, preview, buffer }, solved: { a: false, b: false }, start2: Math.random() * 15 };
       render();
+      // pierwsza piosenka już gra (np. autoodtwarzanie) – dołącza druga
+      mashupSync();
       return;
     }
   }
   state.mashup = null;
 }
+const mashupSecondPlaying = () => !!mix2.src || !audio2.paused;
+function mashupStop2() {
+  if (mix2.src) {
+    const src = mix2.src;
+    mix2.src = null;
+    try { src.onended = null; src.stop(); } catch (e) { /* już zatrzymany */ }
+    try { src.disconnect(); } catch (e) { /* odłączony */ }
+  }
+  if (!audio2.paused) audio2.pause();
+}
+// druga piosenka gra dokładnie wtedy, gdy pierwsza (od tego samego miejsca fragmentu)
+function mashupSync() {
+  const m = state.mashup;
+  const want = state.mode === 'mashup' && m && state.phase === 'listen' && !audio.paused && !audio.dataset.prime;
+  if (!want) { mashupStop2(); return; }
+  if (mashupSecondPlaying()) return;
+  const offset = m.start2 + Math.max(0, audio.currentTime - state.clipStart);
+  const left = Math.max(0.2, state.clipStart + state.clipLen - audio.currentTime);
+  if (m.b.buffer && sfxCtx) {
+    if (sfxCtx.state === 'suspended') sfxCtx.resume();
+    if (!mix2.gain) {
+      mix2.gain = sfxCtx.createGain();
+      mix2.analyser = sfxCtx.createAnalyser();
+      mix2.analyser.fftSize = 512;
+      mix2.gain.connect(sfxCtx.destination);
+      mix2.gain.connect(mix2.analyser);
+    }
+    const src = sfxCtx.createBufferSource();
+    src.buffer = m.b.buffer;
+    src.connect(mix2.gain);
+    const t = sfxCtx.currentTime;
+    mix2.gain.gain.cancelScheduledValues(t);
+    mix2.gain.gain.setValueAtTime(0, t);
+    mix2.gain.gain.linearRampToValueAtTime(0.85, t + FADE);
+    src.start(t, Math.min(offset, Math.max(0, m.b.buffer.duration - 0.5)));
+    // zapas: koniec razem z końcem fragmentu pierwszej piosenki
+    src.stop(t + left + 0.3);
+    src.onended = () => { if (mix2.src === src) mix2.src = null; };
+    mix2.src = src;
+    return;
+  }
+  // zapasowy element audio – czas ustawiamy dopiero, gdy zna długość pliku
+  const go = () => {
+    if (state.mashup !== m || audio.paused) return;
+    try { audio2.currentTime = m.start2 + Math.max(0, audio.currentTime - state.clipStart); } catch (e) { /* jeszcze nie */ }
+    audio2.volume = 0.85;
+    audio2.play().catch(() => {});
+  };
+  if (audio2.readyState >= 1) go(); else audio2.addEventListener('loadedmetadata', go, { once: true });
+}
+// poziom dźwięku drugiej piosenki (0–1) – do sprawdzenia, że naprawdę gra
+function mashupLevel() {
+  if (!mix2.analyser || !mix2.src) return audio2.paused ? 0 : 1;
+  const d = new Float32Array(mix2.analyser.fftSize);
+  mix2.analyser.getFloatTimeDomainData(d);
+  return d.reduce((mx, v) => Math.max(mx, Math.abs(v)), 0);
+}
 // odtwarzanie i pauza obu fragmentów razem
-audio.addEventListener('play', () => {
-  if (state.mode !== 'mashup' || !state.mashup || state.phase !== 'listen') return;
-  audio2.currentTime = state.mashup.start2 + Math.max(0, audio.currentTime - state.clipStart);
-  audio2.volume = 0.85;
-  audio2.play().catch(() => {});
-});
-audio.addEventListener('pause', () => { if (!audio2.paused) audio2.pause(); });
+audio.addEventListener('play', mashupSync);
+audio.addEventListener('playing', mashupSync);
+audio.addEventListener('pause', mashupSync);
 function mashupGuess() {
   const m = state.mashup;
   if (!m || state.phase !== 'listen') return;
@@ -1225,7 +1579,7 @@ function mashupGuess() {
 function revealMashup(gaveUp) {
   const m = state.mashup;
   if (!m || state.phase !== 'listen') return;
-  audio2.pause();
+  mashupStop2();
   const p = activePlayer();
   const pts = (m.solved.a ? 1 : 0) + (m.solved.b ? 1 : 0);
   p.score += pts;

@@ -263,6 +263,8 @@ function tvSync() {
       // „Rok co do roku”: pole roku na telefonie gracza z turą
       bingo: bingoSnapshot(),
       live: liveSnapshot(),
+      // Dekadowa wspinaczka: drabinka dekad z miejscem każdego gracza
+      climb: climbSnapshot(),
       // Ostatni na placu boju: kto jeszcze nie podał roku (pole roku na jego telefonie)
       royale: state.mode === 'royale' && state.royale && state.phase === 'listen' && state.current
         ? { pending: royaleAlive().filter((i) => state.royale.answers[i] == null).map((i) => state.players[i].name) } : null,

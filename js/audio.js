@@ -50,6 +50,8 @@ function rampGain(to, dur) {
 function playClip() {
   // „Na czas”: po końcu czasu piosenka już nie gra – można tylko ułożyć kartę
   if (state.mode === 'timed' && state.timeLeft <= 0 && state.phase !== 'revealed') return;
+  // Łańcuch skojarzeń: na wiedzę – piosenki można posłuchać dopiero po odpowiedzi
+  if (state.mode === 'chain' && state.phase !== 'revealed') return;
   // przed odkryciem odtwarzamy tylko wybrany fragment; po odkryciu – cały podgląd
   if (audio.currentTime < state.clipStart || audio.currentTime >= clipEnd() - 0.2) {
     audio.currentTime = state.phase === 'revealed' ? 0 : state.clipStart;
@@ -86,13 +88,15 @@ const audioOut = () => store.get('audioOut', 'host');
 let channelBlocked = false; // okno dużego ekranu na tym urządzeniu czeka na interakcję, by grać dźwięk
 function audioTargets() {
   const out = audioOut();
+  // Mikser: obie piosenki grają razem na tym urządzeniu (druga nie może grać na dużym ekranie)
+  if (state.mode === 'mashup') return null;
   if (out === 'tv') {
     const tvs = [...remotes].filter((r) => r.role === 'tv' && !r.audioBlocked);
     const channel = tvWindowSeen && !!tvChannel && !channelBlocked;
     return tvs.length || channel ? { remotes: tvs, channel } : null;
   }
   // Krzywe zwierciadło: efekty dźwięku są tylko na tym urządzeniu
-  if (state.mode === 'mirror' || state.mode === 'mashup') return null;
+  if (state.mode === 'mirror') return null;
   if (out === 'player' && state.players.length) {
     const p = activePlayer();
     // w drużynach – telefon członka, który teraz odpowiada (albo telefon z nazwą drużyny)
