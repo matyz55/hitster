@@ -727,6 +727,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Nowy tryb „Sztafeta karaoke” (dla kilku graczy): piosenka z tekstem jak w „Tak to leciało!”, ale z 3–4 przerwami w różnych miejscach – przy każdej odpowiada kolejny gracz. Dobrze dokończony wers to punkt; liczbę piosenek wybierasz w ustawieniach. Także jako minigra w Imprezie.
 - Duży ekran i telefony w minigrze „Tak to leciało!” pokazują punkty zamiast złotówek.
 
-## 5.38.0 – 16.10.2026 (`HASH`)
+## 5.38.0 – 16.10.2026 (`ce65512`)
 
 - Nowy tryb „Kariera” (dla jednego gracza): 18 etapów w różnych trybach i zestawach piosenek – od łatwych przebojów, przez lata 80. i 90., Eurowizję, Opole i memy, po finałową Dekadową wspinaczkę. Za wynik dostajesz do trzech gwiazdek, a gwiazdka odblokowuje następny etap. Twoje ustawienia piosenek po etapie wracają bez zmian.
