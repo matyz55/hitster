@@ -48,6 +48,8 @@ function rampGain(to, dur) {
 }
 // odtwarzanie od początku fragmentu (albo od miejsca pauzy) z wejściem 150 ms
 function playClip() {
+  // „Na czas”: po końcu czasu piosenka już nie gra – można tylko ułożyć kartę
+  if (state.mode === 'timed' && state.timeLeft <= 0 && state.phase !== 'revealed') return;
   // przed odkryciem odtwarzamy tylko wybrany fragment; po odkryciu – cały podgląd
   if (audio.currentTime < state.clipStart || audio.currentTime >= clipEnd() - 0.2) {
     audio.currentTime = state.phase === 'revealed' ? 0 : state.clipStart;

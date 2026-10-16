@@ -28,6 +28,27 @@ test('oś czasu: dobre ułożenie zostaje na osi', async ({ page }) => {
   expect(await page.evaluate(() => activePlayer().timeline.length)).toBe(2);
 });
 
+test('Na czas: bez limitu kart; po końcu czasu piosenka milknie, ale kartę można jeszcze ułożyć', async ({ page }) => {
+  await start(page, 'timed');
+  await page.evaluate(() => { state.winTarget = 1; });
+  await page.evaluate(() => onSlotClick(correctSlot(activePlayer().timeline, state.current.y)));
+  await page.click('#actions button.primary');
+  await expect.poll(() => page.evaluate(() => state.phase)).toBe('revealed');
+  await page.click('#actions button.primary');
+  await ready(page);
+  expect(await screen(page)).toBe('game');
+  // koniec czasu w trakcie piosenki
+  await page.evaluate(() => { state.heard = true; state.timeLeft = 300; });
+  await expect(page.locator('#turn-title')).toContainText('Koniec czasu');
+  expect(await page.evaluate(() => [state.phase, document.querySelector('#audio').paused])).toEqual(['listen', true]);
+  await page.evaluate(() => onSlotClick(correctSlot(activePlayer().timeline, state.current.y)));
+  await page.click('#actions button.primary');
+  await expect.poll(() => page.evaluate(() => state.phase)).toBe('revealed');
+  expect(await page.evaluate(() => activePlayer().timeline.filter((c) => !c.start).length)).toBe(2);
+  await page.click('#actions button.primary');
+  await expect.poll(() => screen(page)).toBe('end');
+});
+
 test('Jaka to melodia: poprawny tytuł daje punkt, potem podsumowanie', async ({ page }) => {
   await start(page, 'melody', (p) => p.fill('#rounds', '1'));
   const title = await page.evaluate(() => state.current.t);

@@ -492,7 +492,7 @@ function bingoActions() {
     btns.push(el('button', { class: 'primary', onclick: bingoReveal }, T('✔ Odkryj ({0}/{1} zaznaczyło)', picked, state.players.length)));
   }
   if (state.phase === 'revealed') {
-    const last = state.bingo.winners.length || state.turnsPlayed >= state.rounds;
+    const last = state.bingo.winners.length;
     btns.push(el('button', { class: 'primary', onclick: nextTurn }, last ? T('Zobacz wyniki →') : T('Następna piosenka →')));
   }
   return btns;

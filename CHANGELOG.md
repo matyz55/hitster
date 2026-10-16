@@ -685,3 +685,8 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - Tak to leciało!: koła ratunkowe są teraz przyciskami pod tekstem już w trakcie śpiewania (wtedy działa wymiana piosenki; odsłonięcie słowa i trzy wersje – przy przerwie).
 - Przy odpowiedzi przycisk „Tak to leciało!” zajmuje całą szerokość, a pod nim są trzy koła ratunkowe.
 - Źródła tekstu i filmu są na samym dole, pod kołami ratunkowymi.
+
+## 5.31.0 – 16.10.2026 (`HASH`)
+
+- Na czas: gra nie kończy się po zebraniu określonej liczby kart – trwa, aż minie czas. Gdy czas minie, piosenka milknie, ale bieżącą kartę można jeszcze ułożyć.
+- Bingo muzyczne: bez limitu piosenek – gra trwa, aż ktoś skreśli cały wiersz, kolumnę albo przekątną (z ustawień zniknęło pole „Piosenek na gracza”).

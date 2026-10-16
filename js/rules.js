@@ -611,20 +611,24 @@ setInterval(() => {
   timerLast = now;
   if (state.mode !== 'timed' || $('#screen-game').classList.contains('hidden') || state.phase === 'ended') return;
   // zegar rusza dopiero, gdy w tej turze zabrzmi muzyka (nie podczas wczytywania ani czekania na ▶)
-  if (!state.current || !state.heard || !['listen', 'placed'].includes(state.phase)) return;
+  if (!state.current || !state.heard || !['listen', 'placed'].includes(state.phase) || state.timeLeft <= 0) return;
   state.timeLeft -= dt;
-  renderTimer();
   if (state.timeLeft <= 0) {
+    // koniec czasu: piosenka milknie, ale bieżącą kartę można jeszcze ułożyć – gra kończy się po jej odkryciu
     state.timeLeft = 0;
     fx('bad');
-    endGame();
+    stopAudio();
+    render();
+    return;
   }
+  renderTimer();
 }, 200);
 function renderTimer() {
   const p = activePlayer();
   const sec = Math.max(0, Math.ceil(state.timeLeft / 1000));
   const placed = p.timeline.filter((c) => !c.start).length;
-  $('#turn-title').textContent = `⏳ ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')} · ${T('ułożone: {0}', placed)}`;
+  $('#turn-title').textContent = state.timeLeft <= 0 ? T('⌛ Koniec czasu – ułóż jeszcze tę kartę · ułożone: {0}', placed)
+    : `⏳ ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')} · ${T('ułożone: {0}', placed)}`;
   $('#turn-title').classList.toggle('hurry', sec <= 10);
   if (sec !== renderTimer.last) { renderTimer.last = sec; tvSync(); }
   $('#turn-info').textContent = T('Żetony: {0}', '🪙'.repeat(p.tokens) || T('brak'));
@@ -910,11 +914,18 @@ function nextTurn() {
     state.ref = state.current;
     return startTurn();
   }
-  if (state.mode === 'buzz' || state.mode === 'bingo') {
-    if (state.turnsPlayed >= state.rounds || (state.bingo && state.bingo.winners.length)) return endGame();
+  // bingo trwa, aż ktoś skreśli linię
+  if (state.mode === 'bingo') {
+    if (state.bingo && state.bingo.winners.length) return endGame();
+    return startTurn();
+  }
+  if (state.mode === 'buzz') {
+    if (state.turnsPlayed >= state.rounds) return endGame();
     return startTurn();
   }
   if (isTimeline()) {
+    // „Na czas” kończy się tylko, gdy minie czas – bez limitu kart
+    if (state.mode === 'timed') return state.timeLeft <= 0 ? endGame() : startTurn();
     const winner = !state.endless && state.players.find((p) => p.timeline.length >= state.winTarget);
     if (winner || (state.mode === 'solo' && activePlayer().lives <= 0)) return endGame();
   } else if (state.turnsPlayed >= state.rounds * state.players.length) {

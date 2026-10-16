@@ -161,7 +161,8 @@ test('liga wieczoru: punkty za miejsca w kolejnych grach', async ({ page }) => {
 test('bingo: plansze 3×3, trafione pole skreślone, trzy w linii kończą grę', async ({ page }) => {
   await lobby(page, 2);
   await page.click('.mode[data-mode=bingo]');
-  await page.fill('#rounds', '10');
+  // bez limitu piosenek – gra trwa, aż ktoś ma BINGO
+  await expect(page.locator('#rounds')).toBeHidden();
   await page.click('#btn-start');
   await ready(page);
   await expect(page.locator('#bingo-boards .bingo-board')).toHaveCount(2);
@@ -180,7 +181,8 @@ test('bingo: plansze 3×3, trafione pole skreślone, trzy w linii kończą grę'
   await expect.poll(() => page.evaluate(() => state.players[0].score)).toBe(1);
   expect(await page.evaluate(() => state.players[1].score)).toBe(0);
   // trzy w linii → BINGO i koniec gry
-  await page.evaluate(() => { const b = state.bingo.boards[1]; b.marked = [true, true, false, false, false, false, false, false, false]; });
+  await page.evaluate(() => { const b = state.bingo.boards[1]; b.marked = [true, true, false, false, false, false, false, false, false]; state.turnsPlayed = 99; });
+  await expect(page.locator('#actions button.primary')).toHaveText(/Następna piosenka/);
   await page.click('#actions button.primary');
   await ready(page);
   await page.evaluate(() => { const b = state.bingo.boards[1]; b.pick = 2; state.bingo.cats[b.cells[2]].test = () => true; bingoReveal(); });
@@ -266,7 +268,6 @@ for (const n of [4, 5]) {
     await lobby(page, 2);
     await page.click('.mode[data-mode=bingo]');
     await page.check(`input[name=bingo-size][value="${n}"]`);
-    await page.fill('#rounds', '10');
     await page.click('#btn-start');
     await ready(page);
     expect(await page.evaluate(() => state.bingo.n)).toBe(n);

@@ -69,7 +69,7 @@ function startGame(over = {}) {
   state.expert = isTimeline() && !party ? expertParts() : [];
   state.letterHint = filterState.letterHint;
   const plShare = poolValue() === 'ALL' ? filterState.plShare / 100 : (poolValue() === 'PL' ? 1 : 0);
-  const needed = state.mode === 'royale' || state.mode === 'bomb' ? 30 : state.mode === 'buzz' || state.mode === 'bingo' ? state.rounds : state.mode === 'sort5' ? names.length * state.rounds * 5
+  const needed = state.mode === 'royale' || state.mode === 'bomb' ? 30 : state.mode === 'buzz' ? state.rounds : state.mode === 'bingo' ? 20 : state.mode === 'sort5' ? names.length * state.rounds * 5
     : (state.hiloMulti ? names.length * state.rounds + 2 : (isTimeline() || state.mode === 'hilo' ? names.length * 3 : names.length * state.rounds));
   let base = songPool();
   // tryby quizowe: podpowiedzi z tej samej puli; „Skąd jest wykonawca?” – tylko piosenki z flagą kraju
@@ -326,6 +326,8 @@ function dealStartYears(pool) {
 
 async function startTurn() {
   stopAudio();
+  // „Na czas”: po końcu czasu (np. po pominięciu ostatniej piosenki) nie ma już nowych kart
+  if (state.mode === 'timed' && state.timeLeft <= 0) return endGame();
   Object.assign(state, {
     phase: 'listen', slot: null, challenger: null, challengeSlot: null, challengeYear: null, awarded: false, challenges: [],
     current: null, preview: null, marks: null, special: null, swapOffer: false, hiloLost: false, skipped: false, heard: false,

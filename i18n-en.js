@@ -827,6 +827,7 @@ window.I18N_EN = {
  "wykonawca na „{0}”": "the artist with “{0}”",
  "{0}: {1}/{2} pkt": "{0}: {1}/{2} pts",
  "ułożone: {0}": "placed: {0}",
+ "⌛ Koniec czasu – ułóż jeszcze tę kartę · ułożone: {0}": "⌛ Time's up – place this last card · placed: {0}",
  "brak": "none",
  "Żetony: {0}": "Tokens: {0}",
  "starsza": "older",
