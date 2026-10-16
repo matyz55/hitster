@@ -454,3 +454,15 @@ test('Pojedynek na żywo: szybsza dobra odpowiedź – 2 pkt, wolniejsza – 1 p
   await expect.poll(() => screen(page)).toBe('end');
   await expect(page.locator('#winner-title')).toContainText('Gracz 1');
 });
+
+test('żetony: ikonka i liczba („🪙 3”) w tytule tury, tablicy wyników i osiach innych graczy', async ({ page }) => {
+  await lobby(page, 2);
+  await page.click('.mode[data-mode=multi]');
+  await page.click('#btn-start');
+  await ready(page);
+  await page.evaluate(() => { state.players.forEach((p, i) => { p.tokens = i + 3; }); state.showAll = true; render(); });
+  const t = await page.evaluate(() => state.players[state.turn].tokens);
+  await expect(page.locator('#turn-info')).toHaveText(`Żetony: 🪙 ${t}`);
+  await expect(page.locator('#scoreboard .score .tokens')).toHaveText(['🪙 3', '🪙 4']);
+  await expect(page.locator('#others .other-head .tokens')).toHaveText([`🪙 ${7 - t}`]);
+});

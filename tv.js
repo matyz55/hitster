@@ -46,6 +46,45 @@ function card(c) {
 }
 // karta z pytajnikiem w miejscu, które wybrał gracz (albo wyzywający) – jeszcze przed odkryciem
 const mystery = (who, ch) => h('div', 'card mystery' + (ch ? ' ch' : ''), h('div', 'q', '?'), h('div', 'who', who));
+// linia odkrycia: { text, cls } (werdykt, ciekawostka – kolory jak u gospodarza) albo sam tekst (starsza wersja gospodarza)
+const revealLine = (l) => (typeof l === 'string' ? h('div', '', l) : h('div', String(l.cls || ''), l.text));
+// „Posłuchaj całości:” – ikonki serwisów jak u gospodarza (ikonki są tutaj, od gospodarza tylko adresy)
+const LISTEN_ICONS = {
+  youtube: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4.5" width="22" height="15" rx="4.5" fill="#FF0000"/><path d="M10 8.6v6.8l5.8-3.4z" fill="#fff"/></svg>',
+  spotify: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#1ED760"/><path d="M6.6 9.3c3.8-1.1 8-.8 11.1 1M7.2 12.5c3.1-.9 6.5-.6 9.2.9M7.8 15.5c2.4-.6 4.9-.4 7 .7" stroke="#000" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>',
+  apple: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="5.5" fill="#FA2D48"/><path d="M15.6 5.4v9.4a2.3 2.3 0 1 1-1.4-2.1V8.3l-5 1.1v6.7a2.3 2.3 0 1 1-1.4-2.1V7.2z" fill="#fff"/></svg>',
+};
+const LISTEN_APPS = { youtube: ['YouTube', 'com.google.android.youtube'], spotify: ['Spotify', 'com.spotify.music'], apple: ['Apple Music', 'com.apple.android.music'] };
+function listenBox(list) {
+  const items = (list || []).filter((x) => LISTEN_ICONS[x.p] && /^https:\/\//.test(x.url || ''));
+  if (!items.length) return null;
+  // Android: od razu aplikacja (link „intent://”), jak u gospodarza; Brave nie obsługuje takich linków
+  const android = /Android/i.test(navigator.userAgent) && !navigator.brave;
+  return h('div', 'listen', h('span', 'listen-label', T('Posłuchaj całości:')), items.map((x) => {
+    const [name, pkg] = LISTEN_APPS[x.p];
+    const a = h('a', 'listen-icon');
+    a.href = x.url; a.target = '_blank'; a.rel = 'noopener';
+    a.title = T('Posłuchaj w: {0}', name); a.setAttribute('aria-label', a.title);
+    a.innerHTML = LISTEN_ICONS[x.p];
+    if (android) {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const u = new URL(x.url);
+        window.location.href = `intent://${u.host}${u.pathname}${u.search}#Intent;scheme=https;package=${pkg};end`;
+      });
+    }
+    return a;
+  }));
+}
+// status tury: podpowiedź z dekadą wyróżniona jak u gospodarza
+function statusEl(cls, s) {
+  const text = s.status || '';
+  const dh = s.decadeHint && text.includes(s.decadeHint) ? s.decadeHint : '';
+  return h('div', cls, dh ? [text.replace(dh, '').trim(), ' ', h('span', 'decade-hint', dh)] : text);
+}
+// karta specjalna, kupiona podpowiedź (pierwsza litera) i odgadnięte części – jak u gospodarza
+const specialEl = (s) => (s.special ? h('p', 'special-badge', s.special) : null);
+const hintEls = (s) => [s.solved ? h('p', 'guess-solved', s.solved) : null, s.letterHint ? h('p', 'letter-hint', s.letterHint) : null];
 
 // elementy jednej osi: karty + wybrane miejsca / znaczniki pomyłki między nimi
 function rowItems(t, pick) {
@@ -152,6 +191,12 @@ const lyMoneyTv = (v) => T('{0} zł', Number(v).toLocaleString(document.document
 function lyLinesEl(l) {
   return h('div', 'ly-lines', (l.lines || []).map((x) => h('p', x.cls, x.text)));
 }
+// kategoria, rok i liczba słów do uzupełnienia („✏️ 5 słów”) – jak znaczniki nad tekstem u gospodarza
+function lyTags(l) {
+  if (!l.song) return null;
+  return h('div', 'ly-tags', l.cat ? h('span', 'ly-tag', l.cat) : null, l.song.y ? h('span', 'ly-tag', l.song.y) : null,
+    l.wordsLabel ? h('span', 'ly-tag ly-words-tag', l.wordsLabel) : null);
+}
 function lyBlanksView(l) {
   const b = l.blanks;
   if (!b) return null;
@@ -168,7 +213,7 @@ function lyricsBoard(l) {
       h('div', 'ly-tv-hit' + (l.board.hit ? ' ready' : ''), T('🏆 Hit za {0}', lyMoneyTv(l.ladder[9]))),
       l.board.pick ? h('div', 'ly-tv-cats', l.board.pick.map((x) => h('div', 'ly-tv-cat', x)))
         : h('div', 'ly-tv-cats', l.board.cats.map((x) => h('div', 'ly-tv-cat' + (x.done ? ' done' : ''), x.name))))
-    : h('div', 'ly-tv-song', l.song ? h('h2', '', `${l.cat} · ${l.song.t}`, h('small', '', ` — ${l.song.a} (${l.song.y})`)) : null, lyLinesEl(l), lyBlanksView(l),
+    : h('div', 'ly-tv-song', lyTags(l), l.song ? h('h2', '', l.song.t, h('small', '', ` — ${l.song.a}`)) : null, lyLinesEl(l), lyBlanksView(l),
       l.hint ? h('p', 'ly-hint', T('🙋 Podpowiedź suflera: {0}', l.hint)) : null,
       l.helper ? h('p', 'muted', T('🙋 {0} wpisuje podpowiedź…', l.helper)) : null,
       l.verdict ? h('p', 'verdict', l.verdict) : null);
@@ -189,7 +234,7 @@ function lyricsPhone(s) {
     inp.addEventListener('input', () => { lyDraft.hint = inp.value; });
     const form = h('form', 'join-form', inp, h('button', 'primary', T('Wyślij')));
     form.addEventListener('submit', (e) => { e.preventDefault(); send({ lyHint: inp.value }); });
-    return h('div', 'picker', top, h('h2', '', T('🙋 {0} prosi Cię o podpowiedź', l.turn)), lyLinesEl(l), lyBlanksView(l), form);
+    return h('div', 'picker', top, h('h2', '', T('🙋 {0} prosi Cię o podpowiedź', l.turn)), lyTags(l), lyLinesEl(l), lyBlanksView(l), form);
   }
   if (mine && l.phase === 'answer' && l.blanks) {
     // jedno pole na cały wers; liczba słów – kropki
@@ -200,12 +245,13 @@ function lyricsPhone(s) {
     const dots = h('div', 'ly-dots', Array.from({ length: l.blanks.n }, (_, i) => h('span', 'ly-dot' + (l.blanks.given[i] ? ' shown' : ''), l.blanks.given[i] || '')));
     const form = h('form', 'ly-phone-form', h('p', 'muted', T('Brakuje słów: {0}', l.blanks.n)), dots, inp, h('button', 'primary', T('Tak to leciało!')));
     form.addEventListener('submit', (e) => { e.preventDefault(); send({ lyAnswer: inp.value, lySubmit: true }); });
-    return h('div', 'picker', top, l.hint ? h('p', 'ly-hint', T('🙋 Podpowiedź suflera: {0}', l.hint)) : null, lyLinesEl(l), form,
+    return h('div', 'picker', top, lyTags(l), l.hint ? h('p', 'ly-hint', T('🙋 Podpowiedź suflera: {0}', l.hint)) : null, lyLinesEl(l), form,
       h('p', 'muted', T('Koła ratunkowe wybiera się na urządzeniu gospodarza.')));
   }
-  return h('div', 'picker', top, l.song ? h('h3', '', `${l.cat} · ${l.song.t}`) : h('p', 'muted', T('{0} wybiera kategorię…', l.turn)),
+  return h('div', 'picker', top, lyTags(l), l.song ? h('h3', 'ly-songname', l.song.t, h('small', '', ` — ${l.song.a}`)) : h('p', 'muted', T('{0} wybiera kategorię…', l.turn)),
     lyLinesEl(l), lyBlanksView(l), l.verdict ? h('p', 'verdict', l.verdict) : null,
-    h('ul', 'p-rank', l.money.map((m) => h('li', m.out ? 'muted' : '', `${m.name}: ${lyValTv(l, m.v)}`))));
+    // wyniki wszystkich graczy – kto teraz śpiewa, wyróżniony
+    h('ul', 'p-rank ly-rank', l.money.map((m) => h('li', ((m.out ? 'muted' : '') + (m.name === l.turn ? ' now' : '')).trim(), `${m.name}: ${lyValTv(l, m.v)}`))));
 }
 
 function renderPhone(s) {
@@ -310,6 +356,24 @@ function challengeYearForm(label, key) {
   setTimeout(() => { if (document.activeElement !== input && !input.value) input.focus(); }, 0);
   return form;
 }
+// „Skąd jest wykonawca?”: kraj wpisywany na telefonie gracza z turą (Sprawdź / Nie wiem) – tekst przetrwa odświeżenia
+let countryDraft = '';
+function countryForm() {
+  const input = h('input', 'country-input');
+  input.type = 'text'; input.autocomplete = 'off'; input.spellcheck = false;
+  input.placeholder = T('Kraj, np. Polska'); input.value = countryDraft;
+  const go = h('button', 'primary', T('Sprawdź'));
+  go.type = 'submit';
+  go.disabled = !input.value.trim();
+  const giveUp = h('button', 'ghost', T('Nie wiem'));
+  giveUp.type = 'button';
+  input.addEventListener('input', () => { countryDraft = input.value; go.disabled = !input.value.trim(); });
+  const form = h('form', 'year-form country-form', h('label', '', T('🌍 Z jakiego kraju jest wykonawca?')), input, go, giveUp);
+  form.addEventListener('submit', (e) => { e.preventDefault(); if (input.value.trim()) { send({ countryAnswer: input.value.trim() }); countryDraft = ''; input.blur(); } });
+  giveUp.addEventListener('click', () => { send({ countryAnswer: '' }); countryDraft = ''; });
+  setTimeout(() => { if (document.activeElement !== input && !input.value) input.focus(); }, 0);
+  return form;
+}
 // „Ułóż piątkę”: lista fragmentów jak u gospodarza; przyciski ▶ ▲ ▼ to przyciski z gry gospodarza,
 // przeciągnięcie wiersza wysyła odpowiednią liczbę przesunięć ▲ albo ▼
 const SORT_BTN = /\bsort-(play|up|down)\b/;
@@ -397,11 +461,11 @@ function render(s) {
   const progress = h('div', 'progress', h('div', 'bar'));
   progress.firstChild.style.width = `${Math.round(audioState.progress * 100)}%`;
   if (!s.hasSong) progress.classList.add('hidden');
-  const body = h('div', 'turn-body', h('div', 'status', s.status || ''), progress);
+  const body = h('div', 'turn-body', statusEl('status', s), progress);
   if (s.reveal) {
     body.append(h('div', 'reveal', h('div', 'year', s.reveal.y),
       h('div', 'song', h('b', '', s.reveal.t), ' — ', s.reveal.a, ' ', flag(s.reveal.cc)),
-      h('div', 'lines', (s.reveal.lines || []).map((l) => h('div', '', l)))));
+      h('div', 'lines', (s.reveal.lines || []).map(revealLine))));
   }
   const main = h('div', 'main', vinyl, body);
   const hint = h('div', 'hint', s.hint || '');
@@ -449,7 +513,7 @@ function render(s) {
   const keep = app.querySelector('.guess-form');
   const bingo = s.bingo ? h('div', 'bingo-boards', s.bingo.boards.map((b) => h('div', 'bingo-board' + (b.won ? ' won' : ''),
     h('div', 'bingo-name', b.name, b.pick != null ? ' ✔' : ''), bingoGrid(b, false, false)))) : null;
-  const card = h('section', 'turn-card', head, coverFog(s), wordsBox(s), main, steps, buzzers, bingo, liveBox(s), hint, guess, actions);
+  const card = h('section', 'turn-card', head, coverFog(s), wordsBox(s), main, specialEl(s), steps, buzzers, bingo, liveBox(s), ...hintEls(s), hint, guess, actions);
   app.replaceChildren(...[who, scoresRow, card, tls, others].filter(Boolean));
   if (guess && keep) restoreGuess(keep, guess);
   fit();
@@ -487,23 +551,27 @@ function vTimeline(t, pick, title) {
   if (title) box.append(h('div', 'vtl-title', title));
   box.append(h('div', 'vtl-hint', T('↑ starsze')));
   for (let i = 0; i <= t.cards.length; i++) {
-    if (t.slot === i) box.append(h('div', 'vrow vmys', h('span', 'q', '?'), h('span', '', t.slotLabel)));
-    if (t.challengeSlot === i) box.append(h('div', 'vrow vmys ch', h('span', 'q', '?'), h('span', '', t.challengeLabel)));
-    for (const c of t.challenges || []) if (c.slot === i) box.append(h('div', 'vrow vmys ch', h('span', 'q', '?'), h('span', '', c.label)));
+    // wybrane miejsce – jak wybrany „＋” u gospodarza (ramka z imieniem)
+    if (t.slot === i) box.append(h('div', 'vrow vmys', t.slotLabel));
+    if (t.challengeSlot === i) box.append(h('div', 'vrow vmys ch', t.challengeLabel));
+    for (const c of t.challenges || []) if (c.slot === i) box.append(h('div', 'vrow vmys ch', c.label));
     if (t.marks) {
       if (t.marks.slot === i) box.append(h('div', 'vrow vmark bad', `✘ ${t.marks.who}`));
       if (t.marks.challengeSlot === i) box.append(h('div', 'vrow vmark challenge', `✘ ${t.marks.challenger}`));
       if (t.marks.correct === i) box.append(h('div', 'vrow vmark ok', `✔ ${t.marks.year}`));
     }
     if (pick && t.slot !== i && t.challengeSlot !== i && !(t.challenges || []).some((c) => c.slot === i)) {
-      const b = h('button', 'vslot', T('＋ tutaj'));
+      // „＋” jak u gospodarza; przy jednej karcie na osi – podpisany kierunek
+      const one = t.cards.length === 1;
+      const b = h('button', 'vslot' + (one ? ' labeled' : ''), one ? (i === 0 ? T('＋ Wcześniej') : T('＋ Później')) : '＋');
+      b.setAttribute('aria-label', T('Miejsce {0}', i + 1));
       b.addEventListener('click', () => { b.classList.add('chosen'); send({ slot: i }); });
       box.append(b);
     }
     if (i < t.cards.length) {
       const c = t.cards[i];
       box.append(c.start
-        ? h('div', 'vrow vcard vstart', h('span', 'y', yearOf(c)), h('span', 'ta', T('karta startowa')))
+        ? h('div', 'vrow vcard vstart', h('span', 'y', yearOf(c)), h('span', 'ta', h('small', 'vstart-lbl', T('karta startowa'))))
         : h('div', 'vrow vcard' + (c.new ? ' vnew' : ''), h('span', 'y', yearOf(c)), h('span', 'ta', h('b', '', c.t), h('small', '', c.a)), flag(c.cc)));
     }
   }
@@ -568,8 +636,13 @@ function renderPlayer(s) {
   // wyzwanie „dokładny rok” – pole roku u wyzywającego (zamiast przycisku „Odkryj kartę” gospodarza)
   const yearForm = s.challengeInput && ids.includes(s.challengeInput.who) ? challengeYearForm(T('⚔ Twoje wyzwanie: podaj dokładny rok wydania'), 'challengeYear')
     : (s.yearAsk && s.yearAsk.who.includes(me) ? challengeYearForm(T('📅 W którym roku wydano tę piosenkę?'), 'yearAnswer')
-      : (s.royale && s.royale.pending.includes(me) ? challengeYearForm(T('🏁 W którym roku wydano tę piosenkę? (kto pomyli się najbardziej, traci serce)'), 'royaleYear') : null));
-  const rest = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text) && !(yearForm && b.cls.includes('primary')) && !(s.sort && SORT_BTN.test(b.cls)) && !/\broyale-ok\b/.test(b.cls) && !/\blive-opt\b/.test(b.cls));
+      : (s.royale && s.royale.pending.includes(me) ? challengeYearForm(T('🏁 W którym roku wydano tę piosenkę? (kto pomyli się najbardziej, traci serce)'), 'royaleYear')
+        : (s.countryAsk && [].concat(s.countryAsk.who || []).some((n) => ids.includes(n)) ? countryForm() : null)));
+  const rest0 = btns.filter((b) => b !== skipB && !/^⏭/.test(b.text) && !(yearForm && b.cls.includes('primary')) && !(s.sort && SORT_BTN.test(b.cls)) && !/\broyale-ok\b/.test(b.cls) && !/\blive-opt\b/.test(b.cls));
+  // odpowiedzi do wyboru (quizy, starsza/nowsza…) – osobna pionowa lista przycisków równej wysokości
+  const isChoice = (b) => /\bbig-choice\b/.test(b.cls) && !/\bsecs-bid\b/.test(b.cls);
+  const choices = rest0.filter(isChoice);
+  const rest = rest0.filter((b) => !isChoice(b));
   const myChallenge = ids.includes(s.challenger) || (s.challengers || []).some((n) => ids.includes(n));
   const pick = !!(s.slots && mineTurn && (s.phase !== 'challenge' || myChallenge));
   // karta tury – jak na urządzeniu gospodarza
@@ -578,20 +651,22 @@ function renderPlayer(s) {
   if (play) play.classList.add('ht-play');
   const prog = h('div', 'ht-progress', h('div', 'bar'));
   prog.firstChild.style.width = `${Math.round(audioState.progress * 100)}%`;
-  const body = h('div', 'ht-body', h('div', 'ht-status', s.reveal ? '' : (s.status || '')),
-    play || skipB ? h('div', 'ht-controls', play, skipB ? mk(skipB, 'ghost') : null) : null, s.hasSong ? prog : null);
   const steps = s.steps ? h('div', 'ht-steps', s.steps.items.map((x, i) => h('div', (i < s.steps.current ? 'done' : '') + (i === s.steps.current ? ' current' : ''),
     h('b', '', x.label || `${x.len} s`), h('small', '', ` ${T('{0} pkt', x.pts)}`)))) : null;
+  // odkryta karta obok płyty – jak u gospodarza: rok, tytuł i wykonawca, werdykt, ciekawostki, „Posłuchaj całości”
   const reveal = s.reveal ? h('div', 'ht-reveal', h('div', 'y', s.reveal.y), h('div', 't', h('b', '', s.reveal.t), ' — ', s.reveal.a, ' ', flag(s.reveal.cc)),
-    h('div', 'lines', (s.reveal.lines || []).map((l) => h('div', '', l)))) : null;
+    h('div', 'lines', (s.reveal.lines || []).map(revealLine)), listenBox(s.reveal.listen)) : null;
+  const body = h('div', 'ht-body', s.reveal ? null : statusEl('ht-status', s),
+    play || skipB ? h('div', 'ht-controls', play, skipB ? mk(skipB, 'ghost') : null) : null, s.hasSong ? prog : null, steps, reveal);
   // w swojej turze oś z miejscami „＋ tutaj” jest w karcie (jak u gospodarza)
   // „Starsza czy nowsza?”: wspólne karty (bez właściciela) – w karcie u wszystkich
   const shared = !!(active && !active.name);
   const turnTl = (myView || shared) && active ? vTimeline(active, pick, null) : null;
   const card = h('section', 'ht-card' + (rest.length ? ' with-actions' : ''),
     h('div', 'ht-head', h('h2', '', s.title || ''), h('span', 'ht-info', s.info || '')),
-    coverFog(s), wordsBox(s), h('div', 'ht-mystery', vinyl, body), steps, reveal, buzz, guess, yearForm, bingoBoard(s), liveBox(s),
+    coverFog(s), wordsBox(s), h('div', 'ht-mystery', vinyl, body), specialEl(s), buzz, guess, ...hintEls(s), yearForm, bingoBoard(s), liveBox(s),
     s.challenge ? h('p', 'ht-hint', s.challenge) : null, s.hint ? h('p', 'ht-hint', s.hint) : null,
+    choices.length ? h('div', 'ht-actions p-choices', choices.map((b) => mk(b))) : null,
     s.sort ? sortBox(s, myView) : null, turnTl, rest.length ? h('div', 'ht-actions', rest.map((b) => mk(b))) : null);
   const board = (s.scores || []).length ? h('div', 'ht-scores', s.scores.map((x) => h('span', x.active ? 'act' : '', x.text))) : null;
   const sections = [];
@@ -619,8 +694,23 @@ function renderPlayer(s) {
   const markKey = mark && active ? `${active.name}:${active.slot}:${active.challengeSlot}` : '';
   if (mark && markKey !== lastMark) mark.scrollIntoView({ block: 'center', behavior: 'smooth' });
   lastMark = markKey;
+  fitChoices();
 }
 let lastMark = '';
+// odpowiedzi do wyboru: przyciski równej wysokości, razem wypełniają wolne miejsce do dołu ekranu
+function fitChoices() {
+  for (const box of app.querySelectorAll('.p-choices, .live-opts')) {
+    const n = box.children.length;
+    if (!n) continue;
+    const r = box.getBoundingClientRect();
+    const card = box.closest('.ht-card');
+    const after = card ? Math.max(0, card.getBoundingClientRect().bottom - r.bottom) : 0;
+    const gap = 10;
+    const avail = window.innerHeight - Math.max(0, r.top) - after - 16;
+    const rowH = Math.max(56, Math.min(110, (avail - gap * (n - 1)) / n));
+    box.style.gridAutoRows = `${Math.floor(rowH)}px`;
+  }
+}
 
 // Bingo: własna plansza gracza na telefonie (stuknięcie = zaznaczenie pola), na dużym ekranie – plansze wszystkich
 // Okładka z mgły: duża rozmyta okładka (rozmycie jako ułamek szerokości – liczone po wstawieniu na ekran)
@@ -842,6 +932,8 @@ function musicCmd(m) {
     // na koniec zatrzymać nowej (wcześniej trzeba było dać pauzę i znowu „odtwórz”)
     clearInterval(fadeTimer);
     const token = ++playToken;
+    // wycinek zerowej długości (np. licytacja sekund jeszcze trwa) – nic nie gramy, tylko wczytujemy
+    if (m.until != null && m.until - m.t < 0.1) { loadTrack(m.url); musicUntil = null; if (!music.paused) fadeTo(0, 150, () => music.pause()); return; }
     const src = blobs.get(m.url) || m.url;
     if (music.dataset.url !== m.url) { music.src = src; music.dataset.url = m.url; }
     musicUntil = m.until;
@@ -849,6 +941,9 @@ function musicCmd(m) {
     const start = () => {
       if (token !== playToken) return;
       clearInterval(fadeTimer);
+      // koniec wycinka ustawiany przy każdym starcie: ciche „pchnięcie” przed wczytaniem mogło go już skasować
+      // (wtedy grał cały fragment zamiast wylicytowanych sekund)
+      musicUntil = m.until;
       try { music.currentTime = m.t; } catch (e) { /* jeszcze nie gotowe */ }
       music.volume = 0;
       music.play().then(() => { startedToken = token; if (token === playToken) { soundHint(false); fadeTo(1, 150); } }).catch((e) => {
@@ -1009,7 +1104,7 @@ function fit() {
     if (fs > 10) fs *= 0.92; else minH *= 0.9;
   }
 }
-window.addEventListener('resize', () => last && render(last));
+window.addEventListener('resize', () => { if (last) render(last); if (PLAYER) fitChoices(); });
 
 // połączenie z grą
 if (PLAYER) {

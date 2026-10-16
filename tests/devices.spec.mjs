@@ -298,3 +298,105 @@ test('duży ekran: następna piosenka gra od razu po zatrzymaniu poprzedniej (au
   });
   expect(ok).toEqual({ paused: false, url: 'https://audio.test/b.wav' });
 });
+
+// bez sieci: telefon gracza (tv.html?join=…) dostaje stan gry wprost – wygląd jak na telefonie gospodarza
+async function phoneView(browser) {
+  const p = await newPage(browser, phone);
+  await p.goto('/tv.html?join=TEST');
+  await p.evaluate(() => { me = 'Ania'; window.sent = []; sendFn = (m) => window.sent.push(m); });
+  return p;
+}
+const gameSnap = (extra) => ({
+  screen: 'game', mode: 'multi', players: ['Ania', 'Bartek', 'Celina', 'Darek', 'Ewa'], title: 'Tura: Ania', info: 'Żetony: 🪙 2',
+  scores: ['Ania', 'Bartek', 'Celina', 'Darek', 'Ewa'].map((n, i) => ({ text: `${n}: 1/10 kart · 🪙 ${i}`, active: i === 0 })),
+  phase: 'listen', turnName: 'Ania', turnWho: null, hasSong: true, playing: false, buttons: [], status: 'Posłuchaj.',
+  timelines: [{ name: 'Ania', active: true, cards: [{ y: 1984, start: true }], sub: '' }], ...extra,
+});
+
+test('telefon gracza: odkryta karta obok płyty, ikonki serwisów, lista graczy w jednej linii, „＋” jak u gospodarza', async ({ browser }) => {
+  const p = await phoneView(browser);
+  await p.evaluate((s) => render(s), gameSnap({ slots: true }));
+  // lista graczy w jednej linii, przewijana w bok
+  const sc = await p.evaluate(() => { const b = document.querySelector('.ht-scores'); return { wrap: getComputedStyle(b).flexWrap, tops: new Set([...b.children].map((n) => n.offsetTop)).size }; });
+  expect(sc).toEqual({ wrap: 'nowrap', tops: 1 });
+  // jedna karta na osi: podpisane „＋ Wcześniej” / „＋ Później”, niska przerywana ramka
+  await expect(p.locator('.vslot')).toHaveText(['＋ Wcześniej', '＋ Później']);
+  expect(Math.round((await p.locator('.vslot').first().boundingBox()).height)).toBe(30);
+  await p.locator('.vslot').first().click();
+  expect(await p.evaluate(() => window.sent)).toContainEqual({ slot: 0 });
+  // odkryta karta: w karcie tury obok płyty, kolory werdyktu i ciekawostki, „Posłuchaj całości”
+  await p.evaluate((s) => render(s), gameSnap({ phase: 'revealed', reveal: { y: 1969, t: 'Piosenka', a: 'Zespół', cc: 'PL',
+    lines: [{ text: '✔ Dobrze!', cls: 'verdict ok' }, { text: '🎙 Ciekawostka', cls: 'fact' }],
+    listen: ['youtube', 'spotify', 'apple'].map((x) => ({ p: x, url: `https://example.com/${x}` })) } }));
+  await expect(p.locator('.ht-mystery .ht-body .ht-reveal .y')).toHaveText('1969');
+  await expect(p.locator('.ht-reveal .listen-icon')).toHaveCount(3);
+  const colors = await p.evaluate(() => ['.lines .verdict', '.lines .fact'].map((q) => getComputedStyle(document.querySelector(q)).color));
+  expect(colors).toEqual(['rgb(61, 220, 132)', 'rgb(45, 226, 230)']);
+  noErrors(p);
+});
+
+test('telefon gracza: kupiona podpowiedź, karta specjalna, odpowiedzi do wyboru i pojedynek na żywo', async ({ browser }) => {
+  const p = await phoneView(browser);
+  await p.evaluate((s) => render(s), gameSnap({ mode: 'melody', letterHint: '💡 tytuł zaczyna się na „B”', special: '✨ Karta podwójna – dobre ułożenie daje dodatkową kartę',
+    buttons: ['A', 'B', 'C', 'D'].map((x) => ({ text: x, cls: 'big-choice', disabled: false })).concat([{ text: '💡 Pierwsza litera (−1 pkt)', cls: 'ghost', disabled: true }]) }));
+  await expect(p.locator('.ht-card .letter-hint')).toHaveText('💡 tytuł zaczyna się na „B”');
+  await expect(p.locator('.ht-card .special-badge')).toContainText('Karta podwójna');
+  // cztery odpowiedzi: pionowa lista przycisków tej samej wysokości (co najmniej jak u gospodarza)
+  const boxes = await p.locator('.p-choices button').evaluateAll((bs) => bs.map((b) => b.getBoundingClientRect()).map((r) => ({ x: Math.round(r.x), h: Math.round(r.height) })));
+  expect(boxes).toHaveLength(4);
+  expect(new Set(boxes.map((b) => b.x)).size).toBe(1);
+  expect(new Set(boxes.map((b) => b.h)).size).toBe(1);
+  expect(boxes[0].h).toBeGreaterThanOrEqual(56);
+  await expect(p.locator('.ht-actions:not(.p-choices) button')).toHaveText(['💡 Pierwsza litera (−1 pkt)']);
+  await p.evaluate((s) => render(s), gameSnap({ mode: 'live', live: { options: ['A', 'B', 'C', 'D'], target: 10, open: true, pending: ['Ania'], bars: [{ name: 'Ania', v: 0 }, { name: 'Bartek', v: 2 }] } }));
+  const live = await p.locator('.live-opts button').evaluateAll((bs) => bs.map((b) => Math.round(b.getBoundingClientRect().height)));
+  expect(Math.min(...live)).toBeGreaterThanOrEqual(56);
+  noErrors(p);
+});
+
+test('telefon gracza: „Skąd jest wykonawca?” – kraj wpisany na telefonie, „Nie wiem”', async ({ browser }) => {
+  const p = await phoneView(browser);
+  await p.evaluate((s) => render(s), gameSnap({ mode: 'country', countryAsk: { who: ['Ania'] } }));
+  await p.fill('.country-form input', 'Polska');
+  await p.click('.country-form button.primary');
+  await p.click('.country-form button.ghost');
+  expect(await p.evaluate(() => window.sent)).toEqual([{ countryAnswer: 'Polska' }, { countryAnswer: '' }]);
+  // nie moja tura – bez pola
+  await p.evaluate((s) => render(s), gameSnap({ mode: 'country', countryAsk: { who: ['Bartek'] } }));
+  await expect(p.locator('.country-form')).toHaveCount(0);
+  noErrors(p);
+});
+
+test('telefon gracza: Sztafeta karaoke – liczba słów do uzupełnienia, tekst i wyniki', async ({ browser }) => {
+  const p = await phoneView(browser);
+  await p.evaluate(() => render({ screen: 'lyrics', players: ['Ania', 'Bartek'], lyrics: { phase: 'play', turn: 'Bartek', stage: 0, ladder: [], points: true,
+    money: [{ name: 'Ania', v: 2 }, { name: 'Bartek', v: 1 }], cat: 'Disco polo', song: { t: 'Piosenka', a: 'Zespół', y: 1999 },
+    lines: [{ cls: 'now', text: 'Pierwszy wers' }], words: 5, wordsLabel: '✏️ 5 słów', blanks: null } }));
+  await expect(p.locator('.ly-words-tag')).toHaveText('✏️ 5 słów');
+  await expect(p.locator('.ly-lines .now')).toHaveText('Pierwszy wers');
+  await expect(p.locator('.ly-rank li')).toHaveText(['Ania: 2 pkt', 'Bartek: 1 pkt']);
+  noErrors(p);
+});
+
+test('telefon gracza z muzyką: wycinek kończy się po wylicytowanych sekundach, pusty wycinek nie gra', async ({ browser }) => {
+  const p = await newPage(browser);
+  await p.goto('/tv.html');
+  await p.click('body');
+  const r = await p.evaluate(async () => {
+    const wait = (ms) => new Promise((ok) => setTimeout(ok, ms));
+    const u = 'https://audio.test/bid.wav';
+    musicCmd({ audioCmd: 'load', url: u });
+    for (let i = 0; i < 50 && !blobs.get(u); i++) await wait(50);
+    // licytacja jeszcze trwa (wycinek 0 s) – nic nie gra (wcześniej grał cały fragment)
+    musicCmd({ audioCmd: 'play', url: u, t: 0, until: 0 });
+    await wait(1500);
+    const zero = music.paused;
+    // po licytacji – tylko wylicytowane sekundy
+    musicCmd({ audioCmd: 'play', url: u, t: 0, until: 1 });
+    await wait(2600);
+    return { zero, paused: music.paused, t: music.currentTime };
+  });
+  expect(r.zero).toBe(true);
+  expect(r.paused).toBe(true);
+  expect(r.t).toBeLessThan(1.6);
+});

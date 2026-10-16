@@ -1251,5 +1251,7 @@ window.I18N_EN = {
  "Numer 1 Listy Trójki": "Number 1 on the Trójka chart",
  "Polski Top Wszech Czasów": "Polish All-Time Top (Trójka)",
  "Czasy PRL-u": "Communist-era Poland",
- "XXI wiek": "21st century"
+ "XXI wiek": "21st century",
+ "Kraj, np. Polska": "Country, e.g. Poland",
+ "🌍 Z jakiego kraju jest wykonawca?": "🌍 Which country is the artist from?"
 };

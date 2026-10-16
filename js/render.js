@@ -101,6 +101,8 @@ function render() {
   if (typeof scheduleSave === 'function') scheduleSave();
 }
 
+// żetony: ikonka i liczba („🪙 3”) – czytelniejsze niż rząd monet
+function tokensLabel(n) { return `🪙 ${Math.max(0, n || 0)}`; }
 // tablica wyników i tytuł tury – zależnie od trybu
 function renderHeader(p, timeline) {
   const sb = $('#scoreboard');
@@ -117,7 +119,7 @@ function renderHeader(p, timeline) {
     class: 'score' + (i === state.turn && state.mode !== 'buzz' && state.mode !== 'bingo' ? ' active' : ''),
     style: state.mode === 'buzz' ? `border-color:${BUZZ_COLORS[i]}` : null,
   }, pl.name, ': ', timeline
-    ? [el('b', {}, String(pl.timeline.length)), T('/{0} kart · ', state.winTarget), el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || '–'),
+    ? [el('b', {}, String(pl.timeline.length)), T('/{0} kart · ', state.winTarget), el('span', { class: 'tokens' }, tokensLabel(pl.tokens)),
       pl.shield ? ' 🛡️' : '', pl.fogUntil > state.turnsPlayed ? ' 🌫️' : '']
     : state.mode === 'royale' || state.mode === 'bomb' ? ['❤️'.repeat(Math.max(0, pl.hearts)) || '💀', state.mode === 'bomb' && i === state.turn && state.bomb && state.bomb.phase !== 'boom' ? ' 💣' : '']
     : state.mode === 'climb' ? [el('b', {}, climbLabel(pl)), (pl.climb || 0) >= CLIMB.length ? ' 🏔️' : '']
@@ -165,7 +167,7 @@ function renderHeader(p, timeline) {
       : state.coop ? T('Wspólna oś: {0} z {1} · odpowiada: {2}', cardsLabel(p.timeline.length), state.winTarget, answering(p) || '–')
       : (state.endless ? T('Ułożone piosenki: {0} · rekord: {1}', placed, Math.max(rec, placed))
         : T('Twoja oś: {0} z {1}', cardsLabel(p.timeline.length), state.winTarget));
-    info.textContent = T('Żetony: {0}', '🪙'.repeat(p.tokens) || T('brak'))
+    info.textContent = T('Żetony: {0}', tokensLabel(p.tokens))
       + (state.mode === 'solo' ? T(' · Pomyłki: {0}', '❤️'.repeat(Math.max(0, p.lives))) : '');
   }
 }
@@ -248,7 +250,7 @@ function renderOthers() {
   box.replaceChildren(el('h2', {}, state.mode === 'teams' ? T('Osie pozostałych drużyn') : T('Osie pozostałych graczy')), ...state.players.map((pl, i) => (i === state.turn ? null
     : el('div', { class: 'other' },
       el('div', { class: 'other-head' }, el('b', {}, pl.name), ` · ${cardsLabel(pl.timeline.length)} · `,
-        el('span', { class: 'tokens' }, '🪙'.repeat(pl.tokens) || T('brak żetonów'))),
+        el('span', { class: 'tokens' }, tokensLabel(pl.tokens))),
       el('div', { class: 'mini-timeline' }, pl.timeline.map((s) => el('div', { class: 'mini' + (s === fresh ? ' new' : '') + (s.start ? ' start' : '') },
         el('b', {}, String(s.y)), el('span', { class: 'mt' }, s.start ? T('start') : s.t), el('span', { class: 'ma' }, s.start ? '' : s.a)))))))
     .filter(Boolean));
