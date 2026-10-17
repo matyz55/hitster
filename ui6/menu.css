@@ -12,42 +12,77 @@ html.ui6 .topbar-actions button { border-radius: 999px; }
 html.ui6 .nav-back { border-radius: 999px; width: var(--tap); padding: 0; font-size: 1.2rem; }
 
 /* ---------- ekran startowy ---------- */
-html.ui6 #screen-home { padding-top: calc(var(--gap) * .8); align-items: stretch; }
+/* PC: nagłówek, trzy kafelki (ikona, opis, przykładowe tryby, zachęta) i pasek: baza piosenek · ostatnia gra · statystyki */
+html.ui6 #screen-home { padding-top: calc(var(--gap) * .8); align-items: stretch; justify-content: center; }
+html.ui6 #screen-home > :is(.ctx-pick, .ui6-home-info, #resume-box) { width: 100%; max-width: 1800px; align-self: center; box-sizing: border-box; }
 html.ui6 #screen-home .lead {
   flex: none; margin: 0; font-size: clamp(1.2rem, .9rem + 2.2vmin, 2.6rem); font-weight: 800; letter-spacing: .01em;
   background: linear-gradient(90deg, var(--accent), var(--gold) 55%, var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 html.ui6 #screen-home .ctx-pick.ui6-pick {
-  flex: 1 1 auto; min-height: 0; margin: 0; display: grid; gap: var(--gap);
+  flex: 1 1 auto; min-height: 0; max-height: 30rem; margin: 0; display: grid; gap: var(--gap);
   grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr);
-  width: 100%; max-width: 2200px; align-self: center;
 }
+@media (max-aspect-ratio: 4/5) { html.ui6 #screen-home .ctx-pick.ui6-pick { max-height: none; } }
 html.ui6 #screen-home .ui6-pick .mode.ctx {
   --c: var(--accent);
-  position: relative; min-height: 0; height: 100%; margin: 0; padding: clamp(12px, 2.4vmin, 40px);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: clamp(4px, 1vmin, 14px);
+  container-type: size;
+  position: relative; min-height: 0; height: 100%; margin: 0; padding: clamp(12px, 2.4vmin, 36px) clamp(12px, 2vmin, 32px);
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; gap: clamp(6px, 1.2vmin, 16px);
   border-radius: calc(var(--radius) * 1.3); border: 2px solid color-mix(in srgb, var(--c) 55%, transparent);
-  background: radial-gradient(120% 90% at 50% 0%, color-mix(in srgb, var(--c) 26%, transparent), transparent 70%), var(--panel);
+  background: radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--c) 24%, transparent), transparent 70%), var(--panel);
   box-shadow: 0 14px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
 }
-html.ui6 #screen-home .ui6-pick #btn-multi { --c: var(--accent-2); }
-html.ui6 #screen-home .ui6-pick #btn-tv-home { --c: var(--gold); }
+html.ui6 #screen-home .ui6-pick #btn-multi { --c: var(--accent-2); --on-c: #062a2b; }
+html.ui6 #screen-home .ui6-pick #btn-tv-home { --c: var(--gold); --on-c: #2a1d00; }
 html.ui6 #screen-home .ui6-pick .mode.ctx:hover, html.ui6 #screen-home .ui6-pick .mode.ctx:focus-visible {
   border-color: var(--c); box-shadow: 0 0 0 1px var(--c), 0 18px 50px color-mix(in srgb, var(--c) 30%, transparent);
 }
-html.ui6 #screen-home .ui6-pick .mode-icon { font-size: clamp(2rem, 1rem + 6vmin, 6.5rem); line-height: 1; filter: drop-shadow(0 6px 16px color-mix(in srgb, var(--c) 45%, transparent)); }
-html.ui6 #screen-home .ui6-pick .mode.ctx b { font-size: clamp(1.15rem, .8rem + 2.4vmin, 3rem); color: var(--text); }
-html.ui6 #screen-home .ui6-pick .mode.ctx .muted { font-size: clamp(.8rem, .7rem + .6vmin, 1.25rem); max-width: 32ch; line-height: 1.35; }
-/* telefon pionowo i wąskie okna: kafelki jeden pod drugim, ikona z lewej */
+/* ikona w podświetlonym kółku – pierwszy element ma margines „auto”, więc treść stoi na środku nad przyciskiem */
+html.ui6 #screen-home .ui6-pick .mode-icon {
+  margin-top: auto; flex: none; display: grid; place-items: center; width: 1.75em; height: 1.75em; border-radius: 50%;
+  font-size: clamp(2rem, .8rem + 5vmin, 5.2rem); line-height: 1;
+  background: radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--c) 34%, transparent), color-mix(in srgb, var(--c) 8%, transparent) 70%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--c) 40%, transparent), 0 10px 34px color-mix(in srgb, var(--c) 28%, transparent);
+}
+html.ui6 #screen-home .ui6-pick .mode.ctx b { font-size: clamp(1.15rem, .8rem + 2.2vmin, 2.8rem); color: var(--text); line-height: 1.15; }
+html.ui6 #screen-home .ui6-pick .mode.ctx .muted { font-size: clamp(14px, .7rem + .6vmin, 1.25rem); max-width: 34ch; line-height: 1.35; }
+html.ui6 .ui6-tile-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; max-width: 30em; }
+html.ui6 .ui6-tag {
+  padding: .2em .75em; border-radius: 999px; font-size: max(13px, .8rem); font-weight: 600; line-height: 1.3; white-space: nowrap;
+  color: color-mix(in srgb, var(--c) 55%, var(--text)); border: 1px solid color-mix(in srgb, var(--c) 40%, transparent);
+  background: color-mix(in srgb, var(--c) 10%, transparent);
+}
+html.ui6 .ui6-tile-go {
+  margin-top: auto; flex: none; display: inline-flex; align-items: center; gap: .4em; min-height: var(--tap); padding: 0 1.4em; border-radius: 999px;
+  font-weight: 700; font-size: max(14px, .95rem); color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--c) 70%, transparent); background: color-mix(in srgb, var(--c) 20%, transparent);
+}
+html.ui6 .ui6-tile-go::after { content: "›"; font-size: 1.3em; line-height: 1; }
+html.ui6 #screen-home .ui6-pick .mode.ctx:is(:hover, :focus-visible) .ui6-tile-go { background: var(--c); color: var(--on-c, #fff); }
+/* niski kafelek: najpierw bez przykładowych trybów, potem bez zachęty i opisu */
+@container (max-height: 330px) { html.ui6 .ui6-tile-tags { display: none; } }
+@container (max-height: 200px) {
+  html.ui6 .ui6-tile-go { display: none; }
+  html.ui6 #screen-home .ui6-pick .mode-icon { margin-top: auto; }
+  html.ui6 #screen-home .ui6-pick .mode.ctx .muted { margin-bottom: auto; }
+}
+@container (max-height: 140px) { html.ui6 #screen-home .ui6-pick .mode.ctx .muted { display: none; } html.ui6 #screen-home .ui6-pick .mode.ctx b { margin-bottom: auto; } }
+/* telefon pionowo i wąskie okna: kafelki jeden pod drugim, ikona z lewej, strzałka z prawej */
 @media (max-aspect-ratio: 4/5) {
   html.ui6 #screen-home .ctx-pick.ui6-pick { grid-template-columns: minmax(0, 1fr); grid-template-rows: repeat(3, minmax(0, 1fr)); }
   html.ui6 #screen-home .ui6-pick .mode.ctx {
-    display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto; column-gap: clamp(10px, 3vw, 24px); row-gap: 2px;
-    align-content: center; justify-content: stretch; text-align: left;
+    container-type: normal;
+    display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: auto auto; column-gap: clamp(10px, 3vw, 24px); row-gap: 3px;
+    align-content: center; justify-content: stretch; text-align: left; padding: clamp(10px, 3vw, 24px);
   }
-  html.ui6 #screen-home .ui6-pick .mode-icon { grid-row: 1 / 3; font-size: clamp(2.2rem, 11vw, 4.5rem); }
-  html.ui6 #screen-home .ui6-pick .mode.ctx b { align-self: end; }
-  html.ui6 #screen-home .ui6-pick .mode.ctx .muted { align-self: start; max-width: none; }
+  html.ui6 #screen-home .ui6-pick .mode-icon { grid-row: 1 / 3; margin: 0; font-size: clamp(1.9rem, 9vw, 4rem); }
+  html.ui6 #screen-home .ui6-pick .mode.ctx b { grid-column: 2; align-self: end; }
+  html.ui6 #screen-home .ui6-pick .mode.ctx .muted { grid-column: 2; align-self: start; max-width: none; display: block; }
+  html.ui6 .ui6-tile-tags { display: none; }
+  html.ui6 .ui6-tile-go { grid-column: 3; grid-row: 1 / 3; margin: 0; padding: 0; width: 1.6em; min-height: 0; height: 1.6em; justify-content: center; font-size: 1.1rem; border: 0; font-size: 0; display: inline-flex; }
+  html.ui6 .ui6-tile-go::after { font-size: 1.6rem; color: var(--c); }
+  html.ui6 #screen-home .ui6-pick .mode.ctx:is(:hover, :focus-visible) .ui6-tile-go { background: transparent; }
 }
 /* bardzo niskie okno (telefon poziomo): bez opisów i nagłówka */
 @media (max-height: 420px) {
@@ -55,35 +90,57 @@ html.ui6 #screen-home .ui6-pick .mode.ctx .muted { font-size: clamp(.8rem, .7rem
   html.ui6 #screen-home .ui6-pick .mode.ctx .muted { display: none; }
 }
 
-/* ostatnio grany tryb – jedno stuknięcie */
-html.ui6 #screen-home .ui6-last {
-  flex: none; align-self: center; width: min(100%, 34rem); min-height: calc(var(--tap) * 1.15);
-  display: flex; align-items: center; gap: .8em; text-align: left; padding: .35em 1.1em .35em .45em;
-  border-radius: 999px; border: 1px solid rgba(255,61,127,.5); background: linear-gradient(90deg, rgba(255,61,127,.22), rgba(255,61,127,.06));
+/* pasek informacji: baza piosenek, ostatnia gra (jedno stuknięcie), moje statystyki */
+html.ui6 #screen-home .ui6-home-info { flex: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); }
+html.ui6 #screen-home .ui6-info {
+  --c: var(--accent-2);
+  min-width: 0; min-height: calc(var(--tap) * 1.5); margin: 0; display: flex; align-items: center; gap: .8em; text-align: left;
+  padding: .5em 1em .5em .6em; border-radius: var(--radius); border: 1px solid var(--line); background: var(--panel); color: var(--text); font-weight: 400;
 }
-html.ui6 #screen-home .ui6-last.hidden { display: none; }
-html.ui6 #screen-home .ui6-last[data-ctx=multi] { border-color: rgba(45,226,230,.5); background: linear-gradient(90deg, rgba(45,226,230,.2), rgba(45,226,230,.05)); }
+html.ui6 #screen-home button.ui6-info:hover { border-color: var(--c); }
+html.ui6 #screen-home .ui6-last { --c: var(--accent); border-color: rgba(255,61,127,.55); background: linear-gradient(90deg, rgba(255,61,127,.2), rgba(255,61,127,.04) 70%), var(--panel); }
+html.ui6 #screen-home .ui6-last[data-ctx=multi] { --c: var(--accent-2); border-color: rgba(45,226,230,.5); background: linear-gradient(90deg, rgba(45,226,230,.18), rgba(45,226,230,.04) 70%), var(--panel); }
+html.ui6 #screen-home .ui6-last.ui6-first { --c: var(--gold); border-color: rgba(255,201,60,.5); background: linear-gradient(90deg, rgba(255,201,60,.16), transparent 70%), var(--panel); }
 html.ui6 .ui6-last-play {
-  flex: none; display: grid; place-items: center; width: calc(var(--tap) * .9); height: calc(var(--tap) * .9); border-radius: 50%;
-  background: var(--accent); color: #fff; font-size: 1rem; box-shadow: 0 4px 14px rgba(255,61,127,.45);
+  flex: none; display: grid; place-items: center; width: calc(var(--tap) * .95); height: calc(var(--tap) * .95); border-radius: 50%;
+  background: color-mix(in srgb, var(--c, var(--accent)) 22%, transparent); color: var(--text); font-size: 1.1rem; font-weight: 700;
 }
-html.ui6 .ui6-last[data-ctx=multi] .ui6-last-play { background: var(--accent-2); color: #062a2b; box-shadow: 0 4px 14px rgba(45,226,230,.4); }
-html.ui6 .ui6-last-txt { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
-html.ui6 .ui6-last-txt small { color: var(--muted); font-size: .78rem; }
-html.ui6 .ui6-last-txt b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1rem; }
+html.ui6 .ui6-last .ui6-last-play { background: var(--c); color: #fff; box-shadow: 0 4px 14px color-mix(in srgb, var(--c) 45%, transparent); }
+html.ui6 .ui6-last:is([data-ctx=multi], .ui6-first) .ui6-last-play { color: #14121c; }
+html.ui6 .ui6-last-txt { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; gap: 1px; }
+html.ui6 .ui6-last-txt small { color: var(--muted); font-size: max(13px, .8rem); }
+html.ui6 .ui6-last-txt :is(b, .muted) { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html.ui6 .ui6-last-txt b { font-size: 1.02rem; }
+html.ui6 .ui6-last-txt .muted { font-size: max(13px, .8rem); }
+/* telefon pionowo: bez bazy piosenek; ostatnia gra i statystyki obok siebie */
+@media (max-aspect-ratio: 4/5) {
+  html.ui6 #screen-home .ui6-info-songs { display: none; }
+  html.ui6 #screen-home .ui6-info { padding: .35em .7em .35em .4em; gap: .55em; min-height: calc(var(--tap) * 1.2); }
+  html.ui6 #screen-home .ui6-info .ui6-last-txt .muted { display: none; }
+  html.ui6 #screen-home .ui6-home-info { grid-template-columns: minmax(0, 1fr) auto; }
+  html.ui6 #screen-home .ui6-info .ui6-last-txt b { white-space: normal; font-size: .95rem; }
+  html.ui6 #screen-home .ui6-info-stats .ui6-last-txt b { display: none; }
+  html.ui6 #screen-home .ui6-info-stats .ui6-last-txt small { max-width: 6.5em; font-size: 13px; color: var(--text); }
+}
+/* telefon poziomo: jeden wiersz – ostatnia gra i statystyki */
+@media (max-height: 420px) {
+  html.ui6 #screen-home .ui6-home-info { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  html.ui6 #screen-home .ui6-info-songs { display: none; }
+  html.ui6 #screen-home .ui6-info { min-height: var(--tap); padding: .2em .7em .2em .3em; }
+  html.ui6 #screen-home .ui6-info .ui6-last-txt .muted { display: none; }
+  html.ui6 .ui6-last-play { width: calc(var(--tap) * .8); height: calc(var(--tap) * .8); }
+}
 
-/* stopka: statystyki, instalacja, liczba piosenek, wersja */
+/* stopka: instalacja, wersja (zdanie o bazie piosenek – w pasku informacji) */
 html.ui6 #screen-home .ui6-home-foot {
   flex: none; margin: 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px calc(var(--gap) * 1.2);
 }
 html.ui6 #screen-home .ui6-home-foot button { border-radius: 999px; font-size: .88rem; min-height: var(--tap); padding: 0 1em; }
-html.ui6 #screen-home .ui6-home-foot #home-info, html.ui6 #screen-home .ui6-home-foot .app-version { margin: 0; font-size: .75rem; }
-html.ui6 #screen-home .ui6-home-foot .app-version { opacity: .6; }
+html.ui6 #screen-home .ui6-home-foot #home-info { display: none; }
+html.ui6 #screen-home .ui6-home-foot .app-version { margin: 0; font-size: 13px; opacity: .6; }
 html.ui6 #screen-home .install-box { flex: none; margin: 0; }
+html.ui6 #screen-home .install-box:not(:has(> :not(.hidden))) { display: none; }
 html.ui6 #screen-home .install-box #ios-install { margin: 0 auto; max-width: 60ch; }
-@media (max-width: 600px) {
-  html.ui6 #screen-home #home-info { display: none; }
-}
 
 /* przerwana gra */
 html.ui6 #screen-home #resume-box {
@@ -125,16 +182,34 @@ html.ui6 #screen-settings .ly-reports li { break-inside: avoid; }
 html.ui6 #screen-settings > .actions #btn-settings-back { padding: 0 1em; font-size: 1rem; }
 
 /* ---------- statystyki ---------- */
-html.ui6 #screen-stats > p.muted { flex: none; margin: 0; }
-@media (max-height: 520px) { html.ui6 #screen-stats > p.muted { display: none; } }
+/* nagłówek: tytuł i uwaga w jednym wierszu */
+html.ui6 .ui6-stats-head { flex: none; display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px var(--gap); }
+html.ui6 .ui6-stats-head p { margin: 0; }
+@media (max-height: 520px), (max-width: 600px) { html.ui6 .ui6-stats-head p { display: none; } }
+/* podsumowanie nad stronami: cztery liczby w jednym pasku */
+html.ui6 .ui6-stats-sum { flex: none; }
+html.ui6 .ui6-stats-sum:empty { display: none; }
+html.ui6 .ui6-stats-sum > .card p { margin: 0; }
+html.ui6 .ui6-stats-sum .stat-tiles {
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); padding: 0; background: none; border: 0; box-shadow: none;
+}
+html.ui6 .ui6-stats-sum .tile {
+  min-width: 0; display: flex; flex-direction: column; gap: 0; padding: .55em 1em; border-radius: var(--radius);
+  background: linear-gradient(160deg, rgba(255,201,60,.12), transparent 60%), var(--panel); border: 1px solid var(--line);
+}
+html.ui6 .ui6-stats-sum .tile b { font-size: clamp(1.4rem, 1rem + 1.8vmin, 2.6rem); line-height: 1.15; color: var(--gold); white-space: nowrap; }
+/* telefon: 2×2, liczba z prawej */
+@media (max-width: 600px), (max-height: 500px) {
+  html.ui6 .ui6-stats-sum .stat-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  html.ui6 .ui6-stats-sum .tile { flex-direction: row-reverse; justify-content: space-between; align-items: baseline; gap: .4em; padding: .3em .7em; }
+  html.ui6 .ui6-stats-sum .tile b { font-size: 1.15rem; }
+  html.ui6 .ui6-stats-sum .tile .muted { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+}
 html.ui6 #stats-body .card h2 { color: var(--accent-2); }
-html.ui6 #stats-body .stat-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
-html.ui6 #stats-body .stat-tiles .tile { background: var(--panel-2); border-radius: calc(var(--radius) * .8); padding: .5em .7em; }
-html.ui6 #stats-body .stat-tiles .tile b { font-size: clamp(1.3rem, 1rem + 1.4vmin, 2.2rem); color: var(--gold); }
-html.ui6 #stats-body .achievements { grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); gap: calc(var(--gap) * .6); }
-html.ui6 #stats-body .ach { padding: .5em; gap: .5em; break-inside: avoid; }
-html.ui6 #stats-body .ach-icon { font-size: 1.4rem; }
-html.ui6 #stats-body .ach .small { font-size: .74rem; }
+html.ui6 #stats-body .achievements { grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: calc(var(--gap) * .6); }
+html.ui6 #stats-body .ach { padding: .55em .6em; gap: .55em; break-inside: avoid; }
+html.ui6 #stats-body .ach-icon { font-size: 1.5rem; }
+html.ui6 #stats-body .ach .small { font-size: 13px; line-height: 1.3; }
 html.ui6 #stats-body .line-chart { max-height: 34dvh; width: 100%; }
 html.ui6 #stats-body .bar-row { break-inside: avoid; }
 html.ui6 #stats-body .confused li, html.ui6 #stats-body .record-log li { break-inside: avoid; margin-bottom: .25em; }
@@ -145,9 +220,16 @@ html.ui6 #screen-career {
   display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto minmax(0, 1fr) auto; align-items: center;
 }
 html.ui6 #screen-career > .screen-title { grid-column: 1; grid-row: 1; }
-html.ui6 #screen-career .career-total { grid-column: 2; grid-row: 1; margin: 0; font-size: 1.05rem; }
+/* zebrane gwiazdki z paskiem postępu */
+html.ui6 #screen-career .career-total {
+  grid-column: 2; grid-row: 1; margin: 0; font-size: 1.05rem; padding-bottom: 7px; min-width: 9em; text-align: right;
+  background: linear-gradient(var(--gold), var(--gold)) left bottom / var(--p, 0%) 4px no-repeat,
+    linear-gradient(var(--line), var(--line)) left bottom / 100% 4px no-repeat;
+}
 html.ui6 #screen-career > p.muted { grid-column: 1 / -1; grid-row: 2; margin: 0; max-width: 90ch; }
 html.ui6 #screen-career > .actions { grid-column: 1 / -1; grid-row: 4; }
+/* „Wróć” spokojniejszy niż etapy – główną akcją jest wybór etapu */
+html.ui6 #screen-career #btn-career-back { background: var(--panel); border: 1px solid var(--line); color: var(--text); box-shadow: none; }
 html.ui6 #screen-career .career-list {
   --cols: 6; --rows: 3;
   grid-column: 1 / -1; grid-row: 3; align-self: stretch; min-height: 0; height: 100%; margin: 0;
@@ -157,35 +239,57 @@ html.ui6 #screen-career .career-list {
 @media (max-aspect-ratio: 1/1) {
   html.ui6 #screen-career .career-list { --cols: 3; --rows: 6; }
 }
+/* kafelek: numer i gwiazdki u góry, duża ikona trybu, nazwa i cel na dole */
 html.ui6 #screen-career .career-stage {
-  container-type: size; position: relative; min-height: 0; height: 100%; margin: 0; padding: 0; overflow: visible;
+  container-type: size; min-height: 0; height: 100%; margin: 0; overflow: hidden;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-areas: "no stars" "icon icon" "name name"; align-items: center; gap: 2px 6px;
+  padding: clamp(6px, 1.2vmin, 16px); text-align: left;
   border: 1px solid var(--line); border-radius: var(--radius);
   background: linear-gradient(160deg, rgba(255,61,127,.16), transparent 60%), var(--panel);
 }
-html.ui6 #screen-career .career-stage > * { position: absolute; }
 html.ui6 #screen-career .career-stage:not(.locked):hover { border-color: var(--accent); }
 html.ui6 #screen-career .career-stage.locked { opacity: .5; background: var(--panel); }
+html.ui6 #screen-career .career-stage.ui6-next {
+  border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 26px rgba(255,61,127,.35);
+  background: linear-gradient(160deg, rgba(255,61,127,.32), transparent 70%), var(--panel);
+}
 html.ui6 #screen-career .career-no {
-  left: clamp(5px, 5cqmin, 18px); top: clamp(5px, 5cqmin, 18px);
-  width: auto; height: auto; min-width: 1.7em; padding: .1em .35em; border-radius: 999px; box-sizing: border-box;
-  font-size: clamp(11px, min(6cqw, 11cqh), 22px); line-height: 1.4; background: var(--panel-2);
+  grid-area: no; display: inline-block; justify-self: start; white-space: nowrap; text-align: center; width: auto; height: auto; min-width: 1.8em; padding: .1em .4em; border-radius: 999px; box-sizing: border-box;
+  font-size: max(13px, .85rem); line-height: 1.35; background: var(--panel-2);
 }
 html.ui6 #screen-career .career-stage:not(.locked) .career-no { background: var(--accent); color: #fff; }
-html.ui6 #screen-career .career-stars {
-  right: clamp(5px, 5cqmin, 18px); top: clamp(5px, 5cqmin, 18px); letter-spacing: 0;
-  font-size: clamp(11px, min(6.5cqw, 12cqh), 26px); line-height: 1.4;
+html.ui6 #screen-career .career-stage.locked .career-no::after { content: " 🔒"; font-size: .85em; }
+html.ui6 #screen-career .career-stars { grid-area: stars; justify-self: end; letter-spacing: 0; font-size: max(13px, .95rem); line-height: 1.35; }
+html.ui6 #screen-career .ui6-career-icon {
+  grid-area: icon; justify-self: center; line-height: 1; font-size: clamp(18px, 26cqh, 4rem);
 }
-html.ui6 #screen-career .career-name {
-  left: clamp(5px, 5cqmin, 18px); right: clamp(5px, 5cqmin, 18px); bottom: clamp(5px, 5cqmin, 18px); top: calc(clamp(5px, 5cqmin, 18px) + 1.6em);
-  display: flex; flex-direction: column; justify-content: center; gap: .25em; font-size: clamp(12px, min(8cqw, 15cqh), 28px);
-}
-html.ui6 #screen-career .career-name b { font-size: 1em; line-height: 1.17; overflow-wrap: anywhere; hyphens: auto; }
-html.ui6 #screen-career .career-name small { font-size: max(11px, .72em); line-height: 1.25; }
-/* małe kafelki: bez celu gwiazdek */
-@container (max-height: 110px) or (max-width: 150px) {
-  html.ui6 #screen-career .career-name small { display: none; }
+html.ui6 #screen-career .career-stage.locked .ui6-career-icon { filter: grayscale(1); }
+html.ui6 #screen-career .career-name { grid-area: name; min-width: 0; display: flex; flex-direction: column; gap: .2em; }
+html.ui6 #screen-career .career-name b { font-size: clamp(13px, min(8cqw, 13cqh), 1.35rem); line-height: 1.2; overflow-wrap: anywhere; hyphens: auto; }
+html.ui6 #screen-career .career-name small { font-size: 13px; line-height: 1.25; }
+html.ui6 #screen-career .career-stage.ui6-lock-more .career-name small { display: none; }
+/* niskie kafelki: bez celu gwiazdek i bez dużej ikony */
+@container (max-height: 100px) { html.ui6 #screen-career .career-name small { display: none; } }
+@container (max-height: 120px) { html.ui6 #screen-career .ui6-career-icon { display: none; } }
+/* telefon pionowo i poziomo: małe kafelki – numer, gwiazdki, nazwa */
+@media (max-aspect-ratio: 1/1) and (max-width: 700px), (max-height: 500px) {
+  html.ui6 #screen-career .career-stage { grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "no stars" "name name"; padding: 6px 7px; }
+  html.ui6 #screen-career .ui6-career-icon { display: none; }
+  html.ui6 #screen-career .career-name { align-self: center; }
+  html.ui6 #screen-career .career-name b { font-size: 13px; }
+  html.ui6 #screen-career .career-stars { font-size: 13px; }
 }
 @media (max-height: 560px) { html.ui6 #screen-career > p.muted { display: none; } }
+/* telefon poziomo: „Wróć” w wierszu tytułu – więcej miejsca na etapy */
+@media (max-height: 500px) {
+  html.ui6 #screen-career { grid-template-columns: minmax(0, 1fr) auto auto; grid-template-rows: auto minmax(0, 1fr); column-gap: var(--gap); }
+  html.ui6 #screen-career > .actions { grid-column: 3; grid-row: 1; }
+  html.ui6 #screen-career > .actions button { flex: none; min-height: 0; height: calc(var(--tap) * .9); padding: 0 1em; }
+  html.ui6 #screen-career .career-list { grid-row: 2; }
+  html.ui6 #screen-career .career-stage { padding: 4px 6px; gap: 0 4px; }
+  html.ui6 #screen-career .career-name b { line-height: 1.15; }
+}
 @media (max-aspect-ratio: 1/1) and (max-width: 500px) { html.ui6 #screen-career > p.muted { display: none; } }
 
 /* ---------- okno zasad: wybór trybu i treść jednego trybu ---------- */
@@ -222,6 +326,8 @@ html.ui6 #dlg-connect .ui6-sec {
   background: var(--panel-2); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(10px, 1.6vmin, 22px);
 }
 html.ui6 #dlg-connect .ui6-sec { break-after: column; }
+/* telefon: części jedna pod drugą (ile się zmieści na stronie), nie każda na osobnej stronie */
+@media (max-width: 899px), (max-height: 519px) { html.ui6 #dlg-connect .ui6-sec { break-after: auto; } }
 html.ui6 #dlg-connect .ui6-sec h3 { margin: 0 0 .5em; color: var(--accent-2); }
 html.ui6 #dlg-connect .ui6-sec p { margin: 0 0 .6em; }
 html.ui6 #dlg-connect .ui6-sec > button { width: 100%; }
@@ -261,10 +367,6 @@ html.ui6 :is(#stats-body, #screen-settings .ui6-flow) .card h2 { break-after: av
 /* niski ekran (telefon poziomo): węższe kolumny – dwie obok siebie zamiast jednej szerokiej */
 @media (max-height: 500px) {
   html.ui6 .ui6-menu-pages { --colw: 17rem; }
-  html.ui6 #stats-body .stat-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 8px; }
-  html.ui6 #stats-body .stat-tiles .tile { flex-direction: row-reverse; justify-content: space-between; align-items: baseline; gap: .4em; padding: .15em .5em; }
-  html.ui6 #stats-body .stat-tiles .tile .muted { font-size: .75rem; white-space: nowrap; }
-  html.ui6 #stats-body .stat-tiles .tile b { font-size: 1.1rem; }
 }
 /* przycisk „Gotowe” i akcje: nie na całą szerokość ultrawide */
 html.ui6 :is(#screen-settings, #screen-stats, #screen-career) > .actions { justify-content: flex-end; }
@@ -284,3 +386,6 @@ html.ui6 :is(#screen-settings, #screen-stats, #screen-career) > .actions button 
 @media (max-height: 500px) {
   html.ui6 .ui6-connect-pages { --colw: 16rem; }
 }
+
+/* ---------- lobby (układ w modes.css): nagłówek listy graczy w jednym wierszu ---------- */
+html.ui6 #screen-lobby .ui6-lplayers > h2 { white-space: nowrap; }

@@ -1299,5 +1299,21 @@ window.I18N_EN = {
  "Tekst nierówno z muzyką?": "Lyrics out of sync with the music?",
  "tekst za wcześnie": "lyrics too early",
  "tekst za późno": "lyrics too late",
- "przesunięcie {0} s": "offset {0} s"
+ "przesunięcie {0} s": "offset {0} s",
+ "Kod QR": "QR code",
+ "Bez instalacji": "No installation",
+ "Telefony jako piloty": "Phones as remotes",
+ "Wybierz tryb": "Choose a mode",
+ "Dodaj graczy": "Add players",
+ "Połącz ekran": "Connect a screen",
+ "Baza piosenek": "Song library",
+ "{0} polskich · {1} zagranicznych": "{0} Polish · {1} international",
+ "dziś": "today",
+ "wczoraj": "yesterday",
+ "Pierwszy raz?": "First time?",
+ "Zasady wszystkich trybów": "Rules of all modes",
+ "Ostatnia gra: {0}": "Last game: {0}",
+ "Osiągnięcia i postępy": "Achievements and progress",
+ "{0} piosenki": "{0} songs",
+ "{0} piosenek": "{0} songs"
 };
