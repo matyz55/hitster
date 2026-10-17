@@ -534,4 +534,7 @@ test('żetony: ikonka i liczba („🪙 3”) w tytule tury, tablicy wyników i 
   await expect(page.locator('#turn-info')).toHaveText(`Żetony: 🪙 ${t}`);
   await expect(page.locator('#scoreboard .score .tokens')).toHaveText(['🪙 3', '🪙 4']);
   await expect(page.locator('#others .other-head .tokens')).toHaveText([`🪙 ${7 - t}`]);
+  // na przyciskach koszt jako ikonka zamiast słowa „żeton”
+  await expect(page.locator('#btn-skip')).toHaveText('⏭ Pomiń (🪙 1)');
+  await expect(page.getByRole('button', { name: 'Kup tę kartę (🪙 3)' })).toBeVisible();
 });

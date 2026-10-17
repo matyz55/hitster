@@ -24,7 +24,7 @@ function render() {
   renderHeader(p, timeline);
 
   const canSkip = ['listen', 'placed'].includes(state.phase) && !!state.current && !(isSteps() || ['buzz', 'hilo', 'duel', 'sort5', 'bingo', 'royale', 'seconds', 'bomb', 'mashup', 'live'].includes(state.mode)) && !isQuiz();
-  $('#btn-skip').textContent = timeline ? T('⏭ Pomiń ({0} żeton)', SKIP_COST) : T('⏭ Inna piosenka');
+  $('#btn-skip').textContent = timeline ? T('⏭ Pomiń (🪙 {0})', SKIP_COST) : T('⏭ Inna piosenka');
   $('#btn-skip').disabled = !canSkip || (timeline && p.tokens < SKIP_COST);
   $('#btn-skip').classList.toggle('hidden', (isSteps() || ['buzz', 'hilo', 'duel', 'sort5', 'bingo', 'royale', 'seconds', 'bomb', 'mashup', 'live'].includes(state.mode)) || isQuiz());
   // Ułóż piątkę: każdy fragment ma własny przycisk ▶
@@ -348,7 +348,7 @@ function renderActions() {
       class: 'ghost', disabled: p.tokens < BUY_COST || !state.deck.size,
       title: T('Za 3 żetony odtwarzana piosenka trafia od razu na właściwe miejsce Twojej osi'),
       onclick: buyCard,
-    }, T('Kup tę kartę ({0} żetony)', BUY_COST)));
+    }, T('Kup tę kartę (🪙 {0})', BUY_COST)));
   } else if (state.phase === 'challenge' && state.challengeMode === 'all') {
     // wszyscy naraz: kolejni wyzywający dołączają (1 żeton), każdy wskazuje swoje miejsce
     state.players.forEach((pl, i) => {
@@ -397,7 +397,7 @@ function renderActions() {
       btns.push(el('button', {
         class: 'ok', disabled: state.awarded || p.tokens >= MAX_TOKENS,
         onclick: () => { p.tokens += 1; state.awarded = true; render(); },
-      }, state.awarded ? T('+1 żeton przyznany')
+      }, state.awarded ? T('+1 🪙 przyznany')
         : (state.mode === 'teams' ? T('🪙 Drużyna odgadła wykonawcę i tytuł') : T('🪙 Odgadł(a) wykonawcę i tytuł'))));
     }
     if (state.swapOffer) btns.push(...swapButtons(p));
@@ -406,7 +406,7 @@ function renderActions() {
         class: 'ghost', disabled: p.tokens < BUY_COST || !state.deck.size,
         title: T('Za 3 żetony dobierasz losową kartę z talii, która od razu trafia na właściwe miejsce osi'),
         onclick: buyCard,
-      }, T('Kup losową kartę ({0} żetony)', BUY_COST)));
+      }, T('Kup losową kartę (🪙 {0})', BUY_COST)));
     }
     const over = state.mode === 'solo' && (p.lives <= 0 || (!state.endless && p.timeline.length >= state.winTarget));
     btns.push(el('button', { class: 'primary', onclick: nextTurn },
