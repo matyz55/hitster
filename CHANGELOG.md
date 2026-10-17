@@ -885,3 +885,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.49.3 – 17.10.2026 (`f9dbaab`)
 
 - Wersja próbna wyglądu 6.0 (włączana w ustawieniach): większe najmniejsze napisy – opisy i podpisy mają co najmniej ok. 13 px, czytelniej na telefonie.
+
+## 5.49.4 – 17.10.2026 (`HASH`)
+
+- „Tak to leciało!”: katalog 346 piosenek, +170 (nowe filmy do piosenek z polskim tekstem). Kategorie z co najmniej 3 piosenkami: 68 z 73.
