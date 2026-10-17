@@ -34,16 +34,17 @@ html.ui6 .ui6-sbox { min-height: 0; min-width: 0; overflow: hidden; }
 html.ui6 .ui6-strack { display: flex; height: 100%; }
 html.ui6 .ui6-sstep { flex: 0 0 100%; min-width: 0; height: 100%; display: flex; flex-direction: column; gap: calc(var(--gap) * .6); }
 html.ui6 .ui6-sstep.hidden { display: none; }
-html.ui6 .ui6-shead { display: none; margin: 0; font-size: .95rem; color: var(--accent-2); text-transform: uppercase; letter-spacing: .06em; }
 html.ui6 .ui6-spages { --colw: 22rem; }
 html.ui6 .ui6-sstep > .ui6-nav .ui6-tab { font-size: .8rem; }
-/* szeroki ekran: wszystkie kroki obok siebie, każdy z nagłówkiem */
-html.ui6 #screen-setup.ui6-swide > .ui6-ssteps { display: none; }
+/* nagłówek sekcji taki sam jak nazwa kroku w pasku (np. „Piosenki”) – bez powtórzenia */
+html.ui6 #screen-setup:not(.ui6-one) .card > h2.ui6-sdup { display: none; }
+/* szeroki ekran: bez kroków – wszystkie sekcje po kolei w kolumnach na całą szerokość (js/ui6-setup.js) */
+html.ui6 .ui6-swbox { display: none; grid-area: body; min-height: 0; min-width: 0; overflow: hidden; }
+html.ui6 #screen-setup.ui6-swide > .ui6-swbox { display: block; --colw: 17rem; }
+html.ui6 #screen-setup.ui6-swide > :is(.ui6-ssteps, .ui6-sbox) { display: none; }
 html.ui6 #screen-setup.ui6-swide { grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "title" "body" "actions"; }
-html.ui6 #screen-setup.ui6-swide .ui6-strack { gap: var(--gap); }
-html.ui6 #screen-setup.ui6-swide .ui6-sstep { flex: 1 1 0; }
-html.ui6 #screen-setup.ui6-swide .ui6-sstep:first-child { flex-grow: .75; }
-html.ui6 #screen-setup.ui6-swide .ui6-shead { display: block; }
+html.ui6 #screen-setup > .actions > .ui6-swnav { flex: 0 0 auto; margin-right: auto; }
+html.ui6 #screen-setup:not(.ui6-swide) > .actions > .ui6-swnav { display: none; }
 html.ui6 #screen-setup.ui6-swide > .actions { justify-content: flex-end; }
 html.ui6 #screen-setup.ui6-swide > .actions > button { flex: 0 1 14rem; }
 html.ui6 #screen-setup.ui6-swide > .actions > #btn-start { flex: 0 1 26rem; }
@@ -102,20 +103,22 @@ html.ui6 #sec-players .team-row .p-name { font-weight: 700; }
   html.ui6 .ui6-sstep-b.on { flex: 1 1 auto; }
 }
 html.ui6 #screen-setup > .actions > .ui6-nav { flex: 0 0 auto; }
-html.ui6 #screen-setup > .actions > .ui6-nav:not(.ui6-cur) { display: none; }
+html.ui6 #screen-setup > .actions > .ui6-nav:not(.ui6-cur):not(.ui6-swnav) { display: none; }
 html.ui6 #screen-setup > .actions > .ui6-nav .ui6-tabs { max-width: 6rem; }
 /* sekcje mogą przechodzić do następnej kolumny/strony – zamiast zostawiać pustą kolumnę; niepodzielne są pojedyncze opcje */
 html.ui6 .ui6-spages .ui6-flow > .card { break-inside: auto; -webkit-column-break-inside: auto; }
 html.ui6 .ui6-spages .card > h2 { break-after: avoid; }
 html.ui6 .ui6-spages .card .label { break-after: avoid; }
 html.ui6 .ui6-spages .card :is(.row, .check, .seg label, .player-row, .chip, .share, .filter-head, .duel-pick, .card > button, summary, p) { break-inside: avoid; }
-html.ui6 #screen-setup.ui6-one .ui6-shead { display: none; }
-/* tekst nie mniejszy niż 12 px */
-html.ui6 :is(#screen-setup, #screen-lobby, #screen-modes) .small { font-size: max(12px, .8rem); }
-html.ui6 :is(#screen-setup, #screen-lobby, #screen-modes) .muted { font-size: max(12px, .88rem); }
+/* tekst nie mniejszy niż 13 px */
+html.ui6 :is(#screen-setup, #screen-lobby, #screen-modes) .small { font-size: max(13px, .82rem); }
+html.ui6 :is(#screen-setup, #screen-lobby, #screen-modes) .muted { font-size: max(13px, .88rem); }
 html.ui6 #screen-setup .card.ui6-empty { display: none; }
-/* wąski telefon: „← Wstecz” jako sama strzałka (cały napis by się nie zmieścił obok „Dalej” i „Graj od razu”) */
+/* „Dalej →” – drugi co do ważności (pełny, ale spokojniejszy niż „Graj”); „Graj od razu” – skrót, główny kolor */
+html.ui6 #screen-setup > .actions > .ui6-snext { background: var(--panel-2); border: 1px solid var(--accent); color: var(--text); font-weight: 700; }
+/* wąski telefon: „← Wróć” i „← Wstecz” jako ta sama kwadratowa strzałka – „Dalej” i „Graj od razu” mieszczą się w całości */
 @media (max-width: 480px) {
-  html.ui6 #screen-setup > .actions > .ui6-sprev { flex: 0 0 var(--tap); font-size: 0; padding: 0; }
-  html.ui6 #screen-setup > .actions > .ui6-sprev::before { content: "←"; font-size: 1.2rem; }
+  html.ui6 #screen-setup > .actions > :is(.ui6-sprev, #btn-back) { flex: 0 0 var(--tap); font-size: 0; padding: 0; }
+  html.ui6 #screen-setup > .actions > :is(.ui6-sprev, #btn-back)::before { content: "←"; font-size: 1.25rem; }
+  html.ui6 #screen-setup > .actions > button { font-size: 1rem; }
 }

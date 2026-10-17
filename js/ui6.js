@@ -62,7 +62,8 @@ function ui6Pager(box, opts = {}) {
   p.update = () => {
     if (!box.offsetParent) return;
     const s = step();
-    p.pages = Math.max(1, Math.round((flow.scrollWidth + gap()) / s));
+    // ostatnia strona może mieć tylko część kolumn – zaokrąglamy w górę (z małym zapasem na ułamki pikseli)
+    p.pages = Math.max(1, Math.ceil((flow.scrollWidth + gap()) / s - 0.05));
     // zawartość mogła się skrócić – nie zostajemy na pustej stronie
     if (p.page > p.pages - 1) p.page = p.pages - 1;
     box.scrollLeft = p.page * s;

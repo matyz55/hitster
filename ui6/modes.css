@@ -1,6 +1,7 @@
 /* Songster 6.0 – wybór trybu (wersja próbna); reguły tylko przy html.ui6.
    Układ: tytuł (+ gracze w multi) / zakładki grup / kafelki na stronach / „Wróć” i kropki stron.
-   Poziomo (telefon obrócony, PC, ultrawide) zakładki stoją w kolumnie po lewej. Kafelki ustawia js/ui6-modes.js. */
+   Poziomo (telefon obrócony, PC, ultrawide) zakładki stoją w kolumnie po lewej, „Wróć” pod nimi, kropki stron pod kafelkami.
+   Kafelki ustawia js/ui6-modes.js: zawsze szerokie (ikona obok tytułu i opisu), wypełniają pole od góry. */
 html.ui6 #screen-modes {
   display: grid; gap: var(--gap);
   grid-template-columns: minmax(0, 1fr);
@@ -12,34 +13,41 @@ html.ui6 #screen-modes.hidden { display: none; }
 html.ui6 #modes-title { grid-area: title; align-self: center; }
 html.ui6 #screen-modes .ui6-mtabs { grid-area: tabs; }
 html.ui6 #screen-modes .ui6-mbox { grid-area: box; }
-html.ui6 #screen-modes > .actions { grid-area: actions; margin: 0; display: flex; align-items: center; }
+/* „Wróć” i kropki stron w tym samym wierszu (pionowo) albo „Wróć” pod zakładkami, kropki pod kafelkami (poziomo) */
+html.ui6 #screen-modes > .actions { grid-area: actions; margin: 0; display: flex; align-items: center; justify-self: start; }
 html.ui6 #screen-modes > .actions > #btn-modes-back { flex: 0 1 auto; min-width: 7em; }
+html.ui6 #screen-modes > .ui6-mnav { grid-area: actions; justify-self: end; align-self: center; }
 
 /* gracze w multiplayerze: jedna zwarta linia pod tytułem */
 html.ui6 #modes-lobby { grid-area: lobby; margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; min-width: 0; }
 html.ui6 #modes-lobby.hidden { display: none; }
 html.ui6 #modes-lobby .chips { margin: 0; gap: 4px; }
-html.ui6 #modes-lobby .chip { padding: 2px 9px; font-size: max(12px, .78rem); }
+html.ui6 #modes-lobby .chip { padding: 2px 9px; font-size: max(13px, .8rem); }
 html.ui6 #modes-lobby p { margin: 0; flex: 1 1 18rem; min-width: 0; }
 @media (max-width: 700px), (max-height: 500px) { html.ui6 #modes-lobby p { display: none; } }
 
 /* ---------- zakładki grup ---------- */
 html.ui6 .ui6-mtabs { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: calc(var(--gap) * .6); min-width: 0; }
 html.ui6 .ui6-mtab {
-  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  min-height: calc(var(--tap) * 1.15); padding: 4px 4px; min-width: 0;
-  background: var(--panel); border: 1px solid var(--line); color: var(--muted); font-size: .8rem; line-height: 1.1;
+  position: relative; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: .5em;
+  min-height: calc(var(--tap) * 1.1); padding: 4px 4px; min-width: 0;
+  background: var(--panel); border: 1px solid var(--line); color: var(--muted); font-size: .92rem; line-height: 1.1;
 }
 html.ui6 .ui6-mtab-i { font-size: 1.25rem; line-height: 1; }
-html.ui6 .ui6-mtab-t { text-align: center; white-space: nowrap; }
+html.ui6 .ui6-mtab-t { text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+/* liczba trybów w grupie */
+html.ui6 .ui6-mtab-n {
+  flex: none; min-width: 1.7em; padding: 1px 6px; border-radius: 999px; background: var(--panel-2); color: var(--muted);
+  font-size: max(13px, .8rem); font-weight: 700; text-align: center; font-variant-numeric: tabular-nums;
+}
 html.ui6 .ui6-mtab.on { color: var(--text); border-color: var(--accent); background: linear-gradient(160deg, rgba(255,61,127,.28), rgba(255,61,127,.08)), var(--panel); box-shadow: 0 0 0 1px var(--accent) inset; }
-html.ui6 .ui6-mtab-v { position: absolute; top: -6px; right: -4px; font-size: max(12px, .72rem); font-weight: 700; color: #1b1300; background: var(--gold); border-radius: 999px; padding: 1px 6px; }
-html.ui6 .ui6-mtab { flex-direction: row; gap: .5em; font-size: .92rem; }
-/* wąski telefon: nieaktywne zakładki same ikony, aktywna – ikona i nazwa */
+html.ui6 .ui6-mtab.on .ui6-mtab-n { background: var(--accent); color: #fff; }
+html.ui6 .ui6-mtab-v { position: absolute; top: -6px; right: -4px; font-size: max(13px, .75rem); font-weight: 700; color: #1b1300; background: var(--gold); border-radius: 999px; padding: 1px 6px; }
+/* wąski telefon: nieaktywne zakładki same ikony, aktywna – ikona i nazwa (liczba trybów tylko na szerszym ekranie) */
 @media (max-width: 559px) {
   html.ui6 .ui6-mtabs { grid-auto-columns: auto; grid-template-columns: none; display: flex; }
   html.ui6 .ui6-mtab { flex: 0 0 var(--tap); padding: 0; }
-  html.ui6 .ui6-mtab:not(.on) .ui6-mtab-t { display: none; }
+  html.ui6 .ui6-mtab:not(.on) .ui6-mtab-t, html.ui6 .ui6-mtab-n { display: none; }
   html.ui6 .ui6-mtab.on { flex: 1 1 auto; padding: 0 .6em; }
 }
 
@@ -48,46 +56,42 @@ html.ui6 .ui6-mtrack { display: flex; height: 100%; width: max-content; }
 html.ui6 .ui6-mgroup { display: contents; }
 html.ui6 .ui6-mgroup.hidden, html.ui6 .ui6-mgroup > .mode-group { display: none; }
 html.ui6 #screen-modes .modes { display: contents; margin: 0; }
-html.ui6 .ui6-mpage { flex: none; height: 100%; display: grid; gap: var(--mgap); justify-content: center; align-content: center; }
+html.ui6 .ui6-mpage { flex: none; height: 100%; display: grid; gap: var(--mgap); justify-content: center; align-content: start; }
 
-/* ---------- kafelek ---------- */
+/* ---------- kafelek: ikona po lewej, obok tytuł i opis; wielkość napisów rośnie z kafelkiem ---------- */
 html.ui6 #screen-modes .mode {
   grid-column: auto; container-type: size; position: relative; overflow: hidden; min-width: 0; min-height: 0; margin: 0;
-  display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto 1fr; column-gap: .7em; row-gap: .25em;
-  align-content: start; align-items: center; text-align: left;
-  padding: clamp(10px, 1.6vmin, 22px); border: 1px solid var(--line); border-radius: var(--radius);
-  background: radial-gradient(120% 90% at 0% 0%, color-mix(in srgb, var(--g) 26%, transparent), transparent 62%), var(--panel);
-  box-shadow: 0 10px 28px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.04);
+  display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto auto;
+  column-gap: clamp(.7em, 5cqh, 1.4em); row-gap: .2em; align-content: safe center; align-items: center; justify-items: start; text-align: left;
+  padding: clamp(8px, 1.4vmin, 20px) clamp(12px, 2vmin, 28px);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: radial-gradient(120% 120% at 0% 0%, color-mix(in srgb, var(--g) 24%, transparent), transparent 60%), var(--panel);
+  box-shadow: 0 8px 22px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.04);
   transition: border-color .15s ease, background-color .15s ease;
 }
 html.ui6 #screen-modes .mode::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--g); opacity: .85; }
 html.ui6 #screen-modes .mode:hover:not(:disabled), html.ui6 #screen-modes .mode:focus-visible { border-color: var(--g); background-color: var(--panel-2); }
 html.ui6 #screen-modes .mode.hidden { display: none; }
-html.ui6 #screen-modes .mode .mode-icon { grid-row: 1 / span 2; font-size: clamp(1.5rem, 26cqh, 3.6rem); line-height: 1; }
-html.ui6 #screen-modes .mode > b { grid-column: 2; align-self: end; font-size: clamp(.95rem, .55rem + min(5cqh, 4.5cqw), 1.7rem); line-height: 1.15; overflow-wrap: break-word; hyphens: auto; }
-html.ui6 #screen-modes .mode > .muted { grid-column: 1 / -1; grid-row: 3; align-self: start; font-size: clamp(12px, .6rem + 2.4cqh, 1.05rem); line-height: 1.3; margin-top: .3em; max-width: 60ch; }
-html.ui6 #screen-modes .mode > .votes, html.ui6 #screen-modes .mode > .mode-need { grid-column: 1 / -1; justify-self: start; font-size: max(12px, .78rem); padding: 2px 8px; }
-html.ui6 #screen-modes .mode > .mode-need { padding: 0; }
-html.ui6 #screen-modes .mode.voted { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset, 0 10px 28px rgba(0,0,0,.3); }
-html.ui6 #screen-modes .mode:disabled { opacity: .5; }
-/* duży kafelek: ikona nad tytułem, opis pod spodem */
-/* (klasy stron ustawia js/ui6-modes.js według wielkości kafelka) */
-@media all {
-  html.ui6 #screen-modes .ui6-mbig .mode { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; align-content: center; }
-  html.ui6 #screen-modes .ui6-mbig .mode .mode-icon { grid-row: auto; }
-  html.ui6 #screen-modes .ui6-mbig .mode > b { grid-column: 1; }
-  html.ui6 #screen-modes .ui6-mbig .mode > .muted { grid-row: auto; }
+html.ui6 #screen-modes .mode .mode-icon { grid-column: 1; grid-row: 1 / 4; align-self: center; font-size: clamp(1.5rem, min(46cqh, 13cqw), 6rem); line-height: 1; }
+html.ui6 #screen-modes .mode > b { grid-column: 2; grid-row: 1; font-size: clamp(1.02rem, .6rem + 7cqh, 2.4rem); line-height: 1.15; overflow-wrap: break-word; hyphens: auto; }
+html.ui6 #screen-modes .mode > .muted {
+  grid-column: 2; grid-row: 2; margin: 0; max-width: 64ch; color: var(--muted);
+  font-size: clamp(max(13px, .85rem), .5rem + 4.4cqh, 1.4rem); line-height: 1.3;
+  display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;
 }
-/* wąski kafelek: ikona nad tytułem, wyśrodkowane */
-@media all {
-  html.ui6 #screen-modes .ui6-mnarrow .mode { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; justify-items: center; text-align: center; align-content: center; }
-  html.ui6 #screen-modes .ui6-mnarrow .mode .mode-icon { grid-row: auto; font-size: clamp(1.4rem, 22cqh, 2.6rem); }
-  html.ui6 #screen-modes .ui6-mnarrow .mode > b { grid-column: 1; align-self: center; }
-  html.ui6 #screen-modes .ui6-mnarrow .mode > .votes, html.ui6 #screen-modes .ui6-mnarrow .mode > .mode-need { justify-self: center; }
-}
+html.ui6 #screen-modes .mode > .votes, html.ui6 #screen-modes .mode > .mode-need { grid-column: 2; grid-row: 3; font-size: max(13px, .8rem); padding: 2px 8px; margin: .15em 0 0; }
+html.ui6 #screen-modes .mode > .mode-need { padding: 0; color: var(--gold); font-weight: 600; }
+html.ui6 #screen-modes .mode.voted { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold) inset, 0 8px 22px rgba(0,0,0,.28); }
+/* nieaktywny (za mało graczy): wyraźnie wyszarzony, napis „Potrzeba…” zostaje czytelny */
+html.ui6 #screen-modes .mode:disabled { opacity: 1; cursor: not-allowed; background: var(--panel); box-shadow: none; border-style: dashed; }
+html.ui6 #screen-modes .mode:disabled > :not(.mode-need) { opacity: .45; filter: grayscale(.8); }
+html.ui6 #screen-modes .mode:disabled::after { opacity: .25; }
+/* wąski kafelek (telefon poziomo z wieloma trybami): ikona nad tytułem, wyśrodkowane */
+html.ui6 #screen-modes .ui6-mnarrow .mode { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; justify-items: center; text-align: center; }
+html.ui6 #screen-modes .ui6-mnarrow .mode .mode-icon { grid-row: auto; font-size: clamp(1.4rem, 22cqh, 2.6rem); }
+html.ui6 #screen-modes .ui6-mnarrow .mode > :is(b, .muted, .votes, .mode-need) { grid-column: 1; grid-row: auto; }
 html.ui6 #screen-modes .mode.ui6-nodesc > .muted { display: none; }
-html.ui6 #screen-modes .mode.ui6-nodesc { align-content: center; grid-template-rows: none; }
-html.ui6 #screen-modes .mode.ui6-tight > b { font-size: .9rem; }
+html.ui6 #screen-modes .mode.ui6-tight > b { font-size: .95rem; }
 html.ui6 #screen-modes .mode.ui6-tight .mode-icon { font-size: 1.3rem; }
 
 /* kolory grup */
@@ -97,30 +101,35 @@ html.ui6 #screen-modes .ui6-g2 .mode { --g: #2de2e6; }
 html.ui6 #screen-modes .ui6-g3 .mode { --g: #a77bff; }
 html.ui6 #screen-modes .ui6-g4 .mode { --g: #3ddc84; }
 
-/* pasek stron obok „Wróć” */
-html.ui6 .ui6-mnav { flex: 1 1 auto; justify-content: flex-end; }
+/* pasek stron */
 html.ui6 .ui6-mnav.ui6-off { visibility: hidden; }
 
-/* ---------- poziomo: zakładki w kolumnie po lewej ---------- */
+/* ---------- poziomo: zakładki w kolumnie po lewej, „Wróć” pod nimi ---------- */
 @media (min-aspect-ratio: 4/3) {
   html.ui6 #screen-modes {
-    grid-template-columns: clamp(7.5rem, 16vw, 16rem) minmax(0, 1fr);
+    grid-template-columns: clamp(8rem, 17vw, 17rem) minmax(0, 1fr);
     grid-template-rows: auto auto minmax(0, 1fr) auto;
-    grid-template-areas: "title title" "tabs lobby" "tabs box" "tabs actions";
+    grid-template-areas: "title title" "tabs lobby" "tabs box" "back nav";
   }
-  html.ui6 #screen-modes:has(#modes-lobby.hidden) { grid-template-areas: "title title" "tabs box" "tabs box" "tabs actions"; }
-  html.ui6 .ui6-mtabs { grid-auto-flow: row; grid-auto-rows: minmax(var(--tap), auto); grid-auto-columns: auto; align-content: start; }
-  html.ui6 .ui6-mtab { flex-direction: row; justify-content: flex-start; padding: .4em .8em; font-size: .95rem; text-align: left; }
-  html.ui6 .ui6-mtab-t { text-align: left; }
+  html.ui6 #screen-modes:has(#modes-lobby.hidden) { grid-template-areas: "title title" "tabs box" "tabs box" "back nav"; }
+  html.ui6 #screen-modes > .actions { grid-area: back; justify-self: stretch; }
+  html.ui6 #screen-modes > .actions > #btn-modes-back { flex: 1 1 auto; min-width: 0; }
+  html.ui6 #screen-modes > .ui6-mnav { grid-area: nav; justify-self: center; }
+  html.ui6 .ui6-mtabs { grid-auto-flow: row; grid-auto-rows: minmax(calc(var(--tap) * 1.15), auto); grid-auto-columns: auto; align-content: start; }
+  html.ui6 .ui6-mtab { justify-content: flex-start; padding: .4em .8em; font-size: 1rem; text-align: left; }
+  html.ui6 .ui6-mtab-t { flex: 1 1 auto; text-align: left; }
 }
-/* telefon poziomo: mało wysokości – tytuł obok zakładek, bez dodatkowego wiersza */
+/* telefon poziomo: mało wysokości – zakładki na całą wysokość po lewej, tytuł (albo gracze w multi) nad kafelkami */
 @media (min-aspect-ratio: 4/3) and (max-height: 500px) {
-  html.ui6 #screen-modes { grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "title lobby" "tabs box" "tabs actions"; }
-  html.ui6 #screen-modes:has(#modes-lobby.hidden) { grid-template-areas: "title box" "tabs box" "tabs actions"; }
+  html.ui6 #screen-modes { grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "tabs lobby" "tabs box" "back nav"; }
+  html.ui6 #screen-modes:not(:has(#modes-lobby.hidden)) #modes-title { display: none; }
+  html.ui6 #screen-modes:has(#modes-lobby.hidden) { grid-template-areas: "tabs title" "tabs box" "back nav"; }
   html.ui6 #modes-title { font-size: 1rem; }
-  html.ui6 .ui6-mtabs { gap: 4px; }
-  html.ui6 .ui6-mtab { min-height: var(--tap); font-size: .82rem; padding: 0 .5em; }
+  html.ui6 .ui6-mtabs { gap: 4px; grid-auto-rows: minmax(var(--tap), auto); }
+  html.ui6 .ui6-mtab { min-height: var(--tap); font-size: .88rem; padding: 0 .5em; }
   html.ui6 .ui6-mtab-i { font-size: 1rem; }
+  html.ui6 #screen-modes { grid-template-columns: 9.5rem minmax(0, 1fr); }
+  html.ui6 .ui6-mtab-n { display: none; }
 }
 
 /* =================== lobby multiplayera =================== */
