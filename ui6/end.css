@@ -4,11 +4,14 @@
 
 html.ui6 #screen-end { gap: calc(var(--gap) * .8); --endcol: 20rem; }
 
-/* ---------- wynik ---------- */
+/* ---------- wynik: najważniejsza rzecz na ekranie ---------- */
 html.ui6 #screen-end .end-hero { flex: none; text-align: center; padding-top: calc(var(--gap) * .4); }
-html.ui6 #screen-end .end-hero .party-kicker { margin: 0 0 .15em; font-size: clamp(.85rem, .75rem + .5vmin, 1.2rem); }
+html.ui6 #screen-end .end-hero .party-kicker {
+  display: inline-block; margin: 0 0 .3em; padding: .15em .8em; border-radius: 999px; border: 1px solid rgba(45, 226, 230, .35);
+  background: rgba(45, 226, 230, .08); color: var(--accent-2); font-weight: 700; font-size: clamp(.85rem, .75rem + .5vmin, 1.25rem);
+}
 html.ui6 #winner-title {
-  margin: 0; font-size: clamp(1.15rem, .9rem + 2vmin, 2.8rem); line-height: 1.15; font-weight: 800;
+  margin: 0; font-size: clamp(1.3rem, .9rem + 2.4vmin, 3.2rem); line-height: 1.15; font-weight: 800; text-wrap: balance;
   background: linear-gradient(90deg, var(--gold), #ffe9a8 45%, var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent;
   overflow-wrap: anywhere;
 }
@@ -45,11 +48,11 @@ html.ui6 #screen-end #winner-timeline {
 }
 html.ui6 #screen-end #ranking h3 { margin: 0 0 .5em; font-size: 1.02rem; color: var(--accent-2); }
 html.ui6 #screen-end #ranking > h3 { padding: 0 .3em; }
-html.ui6 #screen-end ol.ranking { list-style: none; counter-reset: r; display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; }
+html.ui6 #screen-end ol.ranking { --rk: clamp(.95rem, .85rem + .5vmin, 1.3rem); list-style: none; counter-reset: r; display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; }
 html.ui6 #screen-end #ranking > ol.ranking { padding: clamp(10px, 1.4vmin, 22px); }
 html.ui6 #screen-end ol.ranking li {
   counter-increment: r; display: flex; align-items: center; gap: .6em; padding: .45em .7em; border-radius: 10px; background: var(--panel-2);
-  font-size: clamp(.95rem, .85rem + .5vmin, 1.3rem); font-variant-numeric: tabular-nums;
+  font-size: var(--rk); font-variant-numeric: tabular-nums;
 }
 html.ui6 #screen-end ol.ranking li::before { content: counter(r) "."; min-width: 1.6em; text-align: center; color: var(--muted); font-weight: 700; }
 html.ui6 #screen-end ol.ranking li:nth-child(1)::before { content: "🥇"; }
@@ -57,13 +60,20 @@ html.ui6 #screen-end ol.ranking li:nth-child(2)::before { content: "🥈"; }
 html.ui6 #screen-end ol.ranking li:nth-child(3)::before { content: "🥉"; }
 html.ui6 #screen-end ol.ranking li:first-child { background: linear-gradient(90deg, rgba(255, 201, 60, .22), rgba(255, 201, 60, .05)); font-weight: 700; }
 html.ui6 #screen-end ol.ranking li.me { box-shadow: inset 0 0 0 2px var(--gold); }
+html.ui6 #screen-end ol.ranking li:first-child:not(:only-child) { font-size: calc(var(--rk) * 1.12); }
 html.ui6 #screen-end .league-box h3 { color: var(--gold); }
+/* punkty z ostatniej minigry „(+3)” – osobno przy prawej krawędzi, zielone */
+html.ui6 #screen-end ol.ranking li .plus { margin-left: auto; padding-left: .5em; color: var(--ok); font-weight: 800; white-space: nowrap; }
 html.ui6 #screen-end .moments li { font-size: .9rem; }
 html.ui6 #screen-end .party-box > p, html.ui6 #screen-end .tour-box > p { margin: .6em 0 0; }
-html.ui6 #screen-end .tour-round { margin: 0 0 .6em; }
+html.ui6 #screen-end .tour-round { margin: 0 0 .7em; }
+html.ui6 #screen-end .tour-round > b { display: block; font-size: .9rem; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
 html.ui6 #screen-end .tour-round ul { list-style: none; padding: 0; margin: .3em 0 0; display: flex; flex-direction: column; gap: 4px; }
-html.ui6 #screen-end .tour-round li { padding: .35em .7em; border-radius: 8px; background: var(--panel-2); }
-html.ui6 #screen-end .tour-round li.next { box-shadow: inset 0 0 0 2px var(--accent-2); }
+html.ui6 #screen-end .tour-round li { padding: .4em .7em; border-radius: 8px; background: var(--panel-2); font-variant-numeric: tabular-nums; opacity: 1; font-weight: 400; color: var(--text); }
+html.ui6 #screen-end .tour-round li.done { color: var(--muted); }
+html.ui6 #screen-end .tour-round li .win { color: var(--gold); font-weight: 800; }
+html.ui6 #screen-end .tour-round li.next { box-shadow: inset 0 0 0 2px var(--accent-2); color: var(--accent-2); font-weight: 700; }
+html.ui6 #screen-end .tour-box > p.muted { color: var(--text); }
 html.ui6 #screen-end .career-result { text-align: center; }
 html.ui6 #screen-end .career-result p { margin: 0 0 .4em; }
 html.ui6 #screen-end .career-result .actions { margin: .4em 0 0; }
@@ -95,12 +105,17 @@ html.ui6 #played-list .pt { min-width: 0; overflow-wrap: anywhere; }
 html.ui6 #played-list .pn { grid-column: 2; }
 html.ui6 #played-list .listen { grid-column: 3; grid-row: 1 / span 2; }
 html.ui6 #screen-end .end-songs-pages .ui6-flow > #played-list { break-inside: auto; }
+/* bez piosenek – mała karta z napisem zamiast pustej karty na całą wysokość */
+html.ui6 #screen-end .end-songs-card:has(#played-list > li.muted:only-child) { flex: none; }
+html.ui6 #screen-end .end-songs-card:has(#played-list > li.muted:only-child) .end-pages { flex: none; }
+html.ui6 #played-list li.muted { padding: .3em 0; }
 
 /* ---------- przyciski ---------- */
-html.ui6 #screen-end > .actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--gap); }
+/* drugorzędne przyciski tak szerokie jak napis (bez zawijania), główny zajmuje resztę rzędu */
+html.ui6 #screen-end > .actions { flex: none; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--gap); }
 html.ui6 #screen-end > .actions.hidden { display: none; }
 html.ui6 #screen-end > .actions button { min-height: max(var(--tap), 6vmin); font-size: clamp(.95rem, .85rem + .5vmin, 1.35rem); line-height: 1.2; }
-html.ui6 #screen-end > #end-multi { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr); }
+html.ui6 #screen-end > #end-multi { grid-template-columns: auto auto minmax(0, 1fr); }
 
 /* ---------- telefony i wąskie okna: jedna zakładka naraz ---------- */
 @media not all and (min-width: 900px) and (min-height: 521px) {
@@ -113,9 +128,10 @@ html.ui6 #screen-end > #end-multi { grid-template-columns: minmax(0, 1fr) minmax
 }
 /* telefon pionowo: dwa mniejsze przyciski obok siebie, główny pod nimi na całą szerokość */
 @media (max-width: 600px) {
-  html.ui6 #screen-end > #end-multi { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; }
-  html.ui6 #screen-end > #end-multi .primary { grid-column: 1 / -1; }
-  html.ui6 #screen-end > .actions button { font-size: .9rem; padding: .3em .6em; }
+  html.ui6 #screen-end > .actions { gap: 8px; }
+  /* trzy przyciski – długie napisy nie mieszczą się obok siebie: każdy w osobnym rzędzie, główny na dole */
+  html.ui6 #screen-end > #end-multi { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  html.ui6 #screen-end > .actions button { font-size: .95rem; padding: .3em .7em; }
   html.ui6 #screen-end .end-tab { font-size: .85rem; padding: 0 .3em; }
   html.ui6 #screen-end .end-bar { gap: 6px; }
   html.ui6 #screen-end .end-bar .ui6-nav { gap: 4px; }
@@ -132,9 +148,10 @@ html.ui6 #screen-end > #end-multi { grid-template-columns: minmax(0, 1fr) minmax
   html.ui6 #screen-end .end-bar { grid-area: bar; }
   html.ui6 #screen-end .end-body { grid-area: body; }
   html.ui6 #screen-end > .actions { grid-area: act; }
-  html.ui6 #screen-end > .actions button { min-height: var(--tap); font-size: .85rem; padding: .2em .6em; }
-  html.ui6 #screen-end > #end-multi { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.6fr); }
-  html.ui6 #screen-end ol.ranking li { font-size: .9rem; padding: .3em .6em; }
+  html.ui6 #screen-end > .actions { gap: 6px; }
+  html.ui6 #screen-end > .actions button { min-height: var(--tap); font-size: .88rem; padding: .2em .5em; }
+  html.ui6 #screen-end ol.ranking { --rk: .9rem; }
+  html.ui6 #screen-end ol.ranking li { padding: .3em .6em; }
 }
 
 /* ---------- szeroki ekran: wyniki (w kolumnach) i piosenki obok siebie, bez zakładek ---------- */
@@ -146,6 +163,10 @@ html.ui6 #screen-end > #end-multi { grid-template-columns: minmax(0, 1fr) minmax
   /* mało treści – kafelki rozkładają się na kolumny zamiast jednej wąskiej kolumny po lewej */
   html.ui6 #screen-end .end-res .ui6-flow { column-fill: balance; }
   html.ui6 #screen-end > .actions { max-width: 1400px; width: 100%; margin-left: auto; margin-right: auto; }
+  html.ui6 #screen-end > .actions button { padding-inline: 1.4em; }
+  /* dużo miejsca – większy ranking */
+  html.ui6 #screen-end ol.ranking { --rk: clamp(1.05rem, .8rem + 1vmin, 1.6rem); gap: 8px; }
+  html.ui6 #screen-end ol.ranking li { padding: .5em .9em; }
 }
 /* na pasku zakładek bez kropek – zawsze „1/2” */
 html.ui6 #screen-end .end-bar .ui6-nav .ui6-count.hidden { display: inline !important; }
@@ -153,3 +174,5 @@ html.ui6 #screen-end .end-bar .ui6-nav .ui6-count.hidden { display: inline !impo
 html.ui6 #screen-end.end-nores .end-res { display: none; }
 html.ui6 #screen-end.end-nores .end-body { grid-template-columns: minmax(0, 1fr); }
 html.ui6 #screen-end.end-nores .end-bar .ui6-nav[data-panel=songs] { display: flex; }
+/* powiadomienia (np. nowe osiągnięcie) nad przyciskami, nie na nich */
+html.ui6 body:has(#screen-end:not(.hidden)) .toasts { bottom: calc(var(--end-act, 0px) + var(--gut) * 1.6); }

@@ -85,6 +85,14 @@ if (UI6) {
     if (wasHidden && !hidden) setTab('res');
     wasHidden = hidden;
   }).observe(scr, { attributes: true, attributeFilter: ['class'] });
+  // wysokość widocznego rzędu przycisków – powiadomienia pokazują się nad nim
+  const acts = $$('#screen-end > .actions');
+  const lift = () => {
+    const a = acts.find((x) => !x.classList.contains('hidden'));
+    document.documentElement.style.setProperty('--end-act', `${a ? a.offsetHeight : 0}px`);
+  };
+  const ro = new ResizeObserver(lift);
+  acts.forEach((a) => ro.observe(a));
   new MutationObserver(refresh).observe($('#ranking'), { childList: true });
   new MutationObserver(refresh).observe($('#winner-timeline'), { attributes: true, attributeFilter: ['class'] });
   refresh();

@@ -41,6 +41,12 @@ html.ui6 .topbar-actions button, html.ui6 .nav-back { min-height: 0; height: var
   html.ui6 #btn-settings::before { content: "⚙"; font-size: 1.1rem; }
   html.ui6 #btn-rules { font-size: 0; width: var(--tap); padding: 0; }
   html.ui6 #btn-rules::before { content: "?"; font-size: 1.1rem; font-weight: 700; }
+  /* wstecz i ⏭ (pominięcie minigry) – kwadratowe jak reszta ikon; przy ciasnym pasku zwęża się tylko tytuł */
+  html.ui6 .nav-back, html.ui6 #btn-mini-skip { flex: none; width: var(--tap); padding: 0; }
+  html.ui6 .topbar { gap: 8px; }
+  html.ui6 .topbar-actions { flex: none; gap: 6px; }
+  html.ui6 .topbar h1 { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  html.ui6 body:has(#btn-mini-skip:not(.hidden)) .topbar h1 { font-size: 1.1rem; }
 }
 
 /* ---------- ekran: cała wysokość pod paskiem, sekcje w środku zamiast jedna pod drugą w nieskończoność ---------- */
