@@ -889,3 +889,11 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.49.4 – 17.10.2026 (`42dbbea`)
 
 - „Tak to leciało!”: katalog 346 piosenek, +170 (nowe filmy do piosenek z polskim tekstem). Kategorie z co najmniej 3 piosenkami: 68 z 73.
+
+## 5.49.5 – 17.10.2026 (`HASH`)
+
+Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd), druga runda poprawek:
+- Ekran startowy: kafelki „Gram sam / Gramy razem / Duży ekran” z przykładowymi trybami i przyciskiem, pod nimi baza piosenek, ostatnia gra („Zagraj znowu”) i statystyki; statystyki z czterema liczbami zawsze na wierzchu; czytelniejsza kariera z paskiem gwiazdek.
+- „Tak to leciało!” i sztafeta: na telefonie mniejszy film i więcej miejsca na tekst i odpowiedź; linijka „tekst za wcześnie · tekst za późno” na samym dole w jednym wierszu; większe napisy i koła ratunkowe.
+- Duży ekran: imiona graczy w osobnej kolumnie, liczba kart i żetonów („🪙 2”) większa, karty od lewej na linii osi; telefon gracza: kafelki wyników bez przewijania w bok, karta tury jak u gospodarza, odpowiedzi jako pionowa lista, widoczna wykupiona podpowiedź.
+- Koniec gry, impreza i turniej: większy zwycięzca, wyraźniejsze punkty „(+3)”, czytelniejsza drabinka turnieju, przyciski po grze zawsze widoczne; górny pasek z ⏭ mieści się na telefonie.
