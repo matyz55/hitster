@@ -917,7 +917,7 @@ Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd) – ekran gry:
 
 Wersja próbna wyglądu 6.0: pojedynek na żywo mieści się na telefonie trzymanym poziomo; na telefonie gracza okładka albumu jako kwadrat (nie koło), a ikonki serwisów w jednym rzędzie.
 
-## 5.50.0 – 17.10.2026 (`HASH`)
+## 5.50.0 – 17.10.2026 (`30445f8`)
 
 - „Tak to leciało!”: zagadka nie trafia już na zapowiedzi i okrzyki z koncertów (np. „Dzięki wielkie Poznań!”, „Jeszcze raz!”, „Brawo wy”), chórki w nawiasach ani onomatopeje („la la la”, „hej hej”, „uuu”, „oh yeah”).
 - „Tak to leciało!”: w kategorii z wykonawcą do wyboru jest starsza i nowsza piosenka (jak w programie); nie dotyczy Męskiego Grania.
