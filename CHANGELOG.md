@@ -867,7 +867,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - „Tak to leciało!”: usunięty film do „Słodkiego, miłego życia” (Kombi), w którym tekst nie zgadzał się z muzyką – piosenka wróci, gdy znajdzie się film zgodny z tekstem. Narzędzie katalogu pomija filmy zgłoszone jako niedziałające albo źle zsynchronizowane (tools/lyrics-data/bad-videos.json).
 
-## 5.49.0 – 17.10.2026 (`HASH`)
+## 5.49.0 – 17.10.2026 (`e3608ab`)
 
 - „Tak to leciało!”: na samym dole ekranu piosenki są dyskretne przyciski „tekst za wcześnie” i „tekst za późno” – każde kliknięcie przesuwa tekst karaoke (i moment przerwy) o pół sekundy. Ustawienie zapamiętuje się dla danego filmu na tym urządzeniu i trafia do raportu w Ustawieniach (przycisk „Kopiuj raport”), a po przekazaniu raportu – do katalogu dla wszystkich.
 - „Tak to leciało!”: usunięte z katalogu 14 filmów, które według raportu gracza nie ruszały albo były krótsze niż nagranie z tekstem (m.in. „Otwieram wino”, „Ostatnia Nocka”, „Sen o Warszawie”, „Piechotą do lata”, „Królowa łez”). Piosenki bez innego działającego filmu wypadły – katalog ma teraz 176 piosenek.
