@@ -898,7 +898,7 @@ Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd), druga runda poprawek:
 - Duży ekran: imiona graczy w osobnej kolumnie, liczba kart i żetonów („🪙 2”) większa, karty od lewej na linii osi; telefon gracza: kafelki wyników bez przewijania w bok, karta tury jak u gospodarza, odpowiedzi jako pionowa lista, widoczna wykupiona podpowiedź.
 - Koniec gry, impreza i turniej: większy zwycięzca, wyraźniejsze punkty „(+3)”, czytelniejsza drabinka turnieju, przyciski po grze zawsze widoczne; górny pasek z ⏭ mieści się na telefonie.
 
-## 5.49.6 – 17.10.2026 (`HASH`)
+## 5.49.6 – 17.10.2026 (`95a4e50`)
 
 Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd):
 - Wybór trybu: na PC kafelki trybów od góry wypełniają ekran (ikona, tytuł, opis), „Wróć” zawsze pod zakładkami, przy zakładkach liczba trybów; na telefonie lista kilku trybów na stronę zamiast wysokich kart; niedostępne tryby wyraźnie wyszarzone.
