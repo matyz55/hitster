@@ -24,4 +24,7 @@ if (UI6) {
   ladder.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
   strip.addEventListener('change', sync);
   sync();
+  // na wąskim telefonie pominięcie piosenki w sztafecie to sama ikonka ⏭ – pełny napis jako podpowiedź
+  const skipSong = $('#btn-ly-skip-song');
+  if (skipSong) skipSong.title = T('⏭ Pomiń tę piosenkę');
 }
