@@ -905,7 +905,7 @@ Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd):
 - Ustawienia przed grą: bez podwójnych nagłówków, na PC sekcje w kolumnach na całą szerokość, strony tylko gdy treść się nie mieści; wyraźniejszy „Dalej →”, na wąskim telefonie „Wróć” jako strzałka.
 - Poprawka: przy podziale treści na strony ostatnia, krótka strona nie jest już pomijana.
 
-## 5.49.7 – 17.10.2026 (`HASH`)
+## 5.49.7 – 17.10.2026 (`2b99529`)
 
 Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd) – ekran gry:
 - Oś czasu na PC: karta do przeciągnięcia i oś w jednym bloku na środku, po prawej duża płyta ze statusem i przyciskami; po odkryciu okładka obok opisu karty (zamiast okładki wciśniętej w kształt płyty).
