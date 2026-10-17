@@ -6,8 +6,22 @@
 /* ---------- ekran ---------- */
 html.ui6 #screen-game { gap: calc(var(--gap) * .6); position: relative; }
 html.ui6 #screen-game > * { flex: none; }
-html.ui6 #party-bar, html.ui6 #conn-strip { margin: 0; font-size: .88rem; line-height: 1.25; }
+html.ui6 #party-bar, html.ui6 #conn-strip { margin: 0; font-size: .92rem; line-height: 1.25; }
 html.ui6 #party-bar { text-align: center; }
+
+/* żeton z liczbą („🪙 3”, js/ui6-game.js): ten sam złoty znaczek w wynikach, nagłówku tury i na przyciskach */
+html.ui6 #screen-game .ui6-coin {
+  display: inline-flex; align-items: center; gap: .22em; padding: .05em .45em .05em .3em; margin: 0 .1em; border-radius: 999px;
+  background: rgba(255, 200, 60, .16); border: 1px solid rgba(255, 200, 60, .35); color: var(--gold); font-weight: 800;
+  line-height: 1.2; white-space: nowrap; vertical-align: .05em; font-variant-numeric: tabular-nums; letter-spacing: 0;
+}
+html.ui6 #screen-game .ui6-coin-i { font-size: .95em; line-height: 1; }
+html.ui6 #screen-game button.primary .ui6-coin, html.ui6 #screen-game button.ok .ui6-coin { background: rgba(0,0,0,.22); border-color: rgba(0,0,0,.18); color: inherit; }
+html.ui6 #screen-game button:disabled .ui6-coin { filter: grayscale(1); }
+html.ui6 #turn-info:has(.ui6-coin) { color: var(--muted); }
+
+/* ⏭ pominięcie minigry w górnym pasku: taki sam kwadratowy przycisk jak ⚙ */
+html.ui6 #btn-mini-skip { width: var(--tap); padding: 0; font-size: 1.15rem; line-height: 1; flex: none; }
 
 /* wyniki: jeden wąski pasek */
 html.ui6 .g-sbrow { display: flex; gap: 6px; align-items: center; min-width: 0; }
@@ -17,12 +31,12 @@ html.ui6 #scoreboard .score {
   flex: 0 1 auto; padding: 2px 10px; border-radius: 10px; border-width: 1.5px; background: var(--panel); min-width: 0;
   display: flex; flex-direction: column; justify-content: center; line-height: 1.15; min-height: var(--tap);
 }
-html.ui6 #scoreboard .sc-n { font-size: .86rem; color: var(--muted); overflow-wrap: anywhere; }
+html.ui6 #scoreboard .sc-n { font-size: .9rem; color: var(--muted); overflow-wrap: anywhere; }
 html.ui6 #scoreboard .sc-v { font-size: .9rem; white-space: nowrap; }
 html.ui6 #scoreboard .score b { font-size: 1rem; }
 html.ui6 #scoreboard .score.active { background: rgba(255,61,127,.18); }
 html.ui6 #scoreboard .score.active .sc-n { color: var(--text); font-weight: 700; }
-html.ui6 #scoreboard .score .tokens { letter-spacing: 0; font-size: .86rem; }
+html.ui6 #scoreboard .score .tokens { letter-spacing: 0; font-size: .9rem; }
 html.ui6 .g-others-btn { flex: none; align-self: stretch; width: var(--tap); min-height: var(--tap); padding: 0; font-size: 1.15rem; }
 
 /* ---------- karta tury ---------- */
@@ -33,7 +47,7 @@ html.ui6 #screen-game .player-turn {
 html.ui6 .player-turn > * { margin: 0; min-width: 0; }
 html.ui6 .turn-head { flex: none; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 12px; }
 html.ui6 #turn-title { font-size: 1.02rem; margin: 0; line-height: 1.25; }
-html.ui6 #turn-info { font-size: .88rem; line-height: 1.3; }
+html.ui6 #turn-info { font-size: .92rem; line-height: 1.3; }
 html.ui6 #turn-info.tokens { letter-spacing: 0; }
 html.ui6 .g-zone { display: flex; flex-direction: column; gap: calc(var(--gap) * .7); min-height: 0; min-width: 0; }
 html.ui6 .g-media, html.ui6 .g-side { flex: none; }
@@ -44,9 +58,12 @@ html.ui6 .g-side:not(:has(> :not(.hidden))), html.ui6 .g-media:not(:has(> :not(.
 /* płyta, status, ▶/⏭, pasek postępu */
 html.ui6 .g-player { display: flex; gap: var(--gap); align-items: center; margin: 0; }
 html.ui6 .g-player .vinyl { --vs: clamp(52px, 9vmin, 120px); width: var(--vs); height: var(--vs); box-shadow: 0 0 0 3px #000, 0 6px 20px rgba(0,0,0,.4); }
+/* po odkryciu w miejscu płyty jest okładka albumu – kwadrat z zaokrągleniem, nie koło (inaczej wygląda jak kolorowa kula) */
+html.ui6 .g-player .vinyl.cover { border-radius: calc(var(--radius) * .6); animation: none; background-color: #000;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.12), 0 6px 20px rgba(0,0,0,.45); }
 html.ui6 .g-player .vinyl .label { width: 38%; height: 38%; font-size: max(12px, calc(var(--vs) * .2)); }
 html.ui6 .mystery-body { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-html.ui6 #mystery-status { font-size: .85rem; line-height: 1.3; max-width: 60ch; }
+html.ui6 #mystery-status { font-size: .9rem; line-height: 1.3; max-width: 60ch; }
 html.ui6 .mystery .controls { display: flex; gap: 6px; margin: 0; flex-wrap: nowrap; }
 html.ui6 .mystery .controls button { flex: 1 1 auto; white-space: nowrap; padding: 0 .9em; }
 html.ui6 .mystery .controls .hidden + button, html.ui6 .mystery .controls button:only-child { flex: 1 1 auto; }
@@ -56,9 +73,9 @@ html.ui6 #audio-note { margin: 0; }
 /* odkrycie */
 html.ui6 .reveal { margin: 0; padding: 8px 12px; font-size: .9rem; line-height: 1.3; display: flex; flex-direction: column; gap: 2px; }
 html.ui6 .reveal .year { font-size: 1.6rem; line-height: 1.05; }
-html.ui6 .reveal .fact { margin: 0; font-size: .86rem; }
+html.ui6 .reveal .fact { margin: 0; font-size: .9rem; }
 html.ui6 .reveal .listen { margin: 2px 0 0; gap: 8px; }
-html.ui6 .reveal .listen-label { font-size: .86rem; }
+html.ui6 .reveal .listen-label { font-size: .9rem; }
 html.ui6 .reveal .listen-icon { width: var(--tap); height: var(--tap); padding: 4px; }
 
 /* okładka z mgły, pierwsze słowa, kroki */
@@ -69,12 +86,12 @@ html.ui6 #cover-fog { flex: 1 1 0; height: auto; width: auto; max-width: 100%; m
 html.ui6 #words-box { margin: 0 auto; font-size: clamp(1.05rem, .8rem + 1.6vmin, 2.2rem); line-height: 1.35; max-width: 34ch; }
 html.ui6 #steps-bar { margin: 0; gap: 4px; }
 html.ui6 #steps-bar .step { padding: 3px 2px; min-width: 0; }
-html.ui6 #steps-bar .step small { font-size: .86rem; }
+html.ui6 #steps-bar .step small { font-size: .9rem; }
 
 /* karta specjalna, kto odpowiada, podpowiedź */
-html.ui6 #special-badge { margin: 0; padding: 6px 10px; font-size: .85rem; line-height: 1.3; }
+html.ui6 #special-badge { margin: 0; padding: 6px 10px; font-size: .9rem; line-height: 1.3; }
 html.ui6 #buzz-who { margin: 0; padding: 6px 12px; }
-html.ui6 #hint { margin: 0; min-height: 0; font-size: .88rem; line-height: 1.3; max-width: 70ch; }
+html.ui6 #hint { margin: 0; min-height: 0; font-size: .92rem; line-height: 1.3; max-width: 70ch; }
 html.ui6 #hint:empty { display: none; }
 
 /* odpowiedź: pole + podpowiedzi */
@@ -86,7 +103,7 @@ html.ui6 #guess-form .actions:not(:has(> :not(.hidden))) { display: none; }
 html.ui6 .suggest { max-height: none !important; overflow: hidden; }
 html.ui6 .suggest li { padding: 0 12px; min-height: var(--tap); display: flex; align-items: center; flex-wrap: wrap; column-gap: .3em; }
 html.ui6 .suggest li.ui6-cut { display: none; }
-html.ui6 #guess-solved, html.ui6 #letter-hint { font-size: .88rem; }
+html.ui6 #guess-solved, html.ui6 #letter-hint { font-size: .92rem; }
 
 /* przyciski graczy (Kto pierwszy?) – cała wolna wysokość */
 html.ui6 .g-side:has(> #buzzers:not(.hidden)) { flex: 1 1 0; }
@@ -99,7 +116,7 @@ html.ui6 .g-bingo-pages { flex: 1 1 0; }
 html.ui6 #bingo-boards.ui6-flow { display: block; margin: 0; column-width: 15rem; }
 html.ui6 .bingo-board { padding: 6px; }
 html.ui6 .bingo-name { margin: 0 0 4px; font-size: .9rem; }
-html.ui6 .bingo-cell { min-height: var(--tap); font-size: .86rem; line-height: 1.15; padding: 3px; overflow-wrap: anywhere; }
+html.ui6 .bingo-cell { min-height: var(--tap); font-size: .9rem; line-height: 1.15; padding: 3px; overflow-wrap: anywhere; }
 html.ui6 .g-side > .ui6-nav { flex: none; }
 html.ui6 .g-side > .ui6-nav:has(.ui6-tab) > .ui6-prev, html.ui6 .g-side > .ui6-nav:has(.ui6-tab) > .ui6-next { display: none; }
 html.ui6 .g-side > .ui6-nav .ui6-tab { min-height: var(--tap); flex: 1 1 auto; text-overflow: clip; padding: 0 .6em; }
@@ -119,10 +136,10 @@ html.ui6 #timeline .tcard {
   display: grid; grid-template-columns: minmax(3.2em, auto) minmax(0, 1fr) auto; grid-template-areas: "y t f" "y a f"; align-items: center; column-gap: 10px;
 }
 html.ui6 #timeline .tcard .y { grid-area: y; font-size: 1.35rem; line-height: 1.1; }
-html.ui6 #timeline .tcard .t { grid-area: t; font-size: .85rem; line-height: 1.2; overflow-wrap: anywhere; }
-html.ui6 #timeline .tcard .a { grid-area: a; font-size: .86rem; line-height: 1.2; overflow-wrap: anywhere; }
+html.ui6 #timeline .tcard .t { grid-area: t; font-size: .9rem; line-height: 1.2; overflow-wrap: anywhere; }
+html.ui6 #timeline .tcard .a { grid-area: a; font-size: .9rem; line-height: 1.2; overflow-wrap: anywhere; }
 html.ui6 #timeline .tcard .flag { grid-area: f; font-size: 1.1rem; }
-html.ui6 #timeline .tcard.start .a { font-size: .86rem; letter-spacing: .3px; }
+html.ui6 #timeline .tcard.start .a { font-size: .9rem; letter-spacing: .3px; }
 html.ui6 #timeline .slot { width: auto; height: var(--tap); min-height: var(--tap); margin: 0; font-size: 1rem; border-radius: 10px; }
 html.ui6 #timeline .slot.chosen, html.ui6 #timeline .slot.challenge { width: auto; height: var(--tap); font-size: .9rem; font-weight: 700; }
 html.ui6 #timeline .mark { width: auto; min-height: var(--tap); margin: 0; padding: 4px 10px; }
@@ -131,10 +148,10 @@ html.ui6 #timeline .ui6-fold { display: none !important; }
 html.ui6 #timeline .ui6-grp {
   display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: var(--tap); padding: 0 12px;
   border-radius: 10px; border: 1px solid var(--line); background: repeating-linear-gradient(180deg, #2f2650 0 5px, #261f40 5px 9px);
-  color: var(--text); text-align: left; font-size: .85rem;
+  color: var(--text); text-align: left; font-size: .9rem;
 }
 html.ui6 #timeline .ui6-grp-y { color: var(--gold); font-weight: 800; letter-spacing: .3px; white-space: nowrap; }
-html.ui6 #timeline .ui6-grp-n { color: var(--muted); font-size: .86rem; white-space: nowrap; }
+html.ui6 #timeline .ui6-grp-n { color: var(--muted); font-size: .9rem; white-space: nowrap; }
 html.ui6 #timeline .ui6-grp:hover { border-color: var(--accent-2); }
 
 /* Starsza czy nowsza? – dwie karty obok siebie */
@@ -152,7 +169,10 @@ html.ui6 #actions {
   background: none; border: 0; border-radius: 0;
 }
 html.ui6 #actions:empty { display: none; }
-html.ui6 #actions > button { flex: 1 1 0; min-width: 0; padding: .25em .6em; line-height: 1.15; font-size: .9rem; }
+/* przyciski mają szerokość swojego napisu (w jednej linijce); gdy obok siebie się nie mieszczą, przechodzą do nowego
+   wiersza i rozciągają się na całą szerokość – zamiast trzech wąskich przycisków z napisem w trzech linijkach */
+html.ui6 #actions > button { flex: 1 1 max-content; min-width: 0; max-width: 100%; padding: .25em .7em; line-height: 1.15; font-size: .95rem; }
+html.ui6 #actions > button.ghost { font-size: .92rem; }
 html.ui6 #actions > button.primary { flex-grow: 1.5; }
 html.ui6 #actions > input { flex: 1 1 8em; min-width: 0; font-size: 1rem; }
 html.ui6 #actions .big-choice { flex: 1 1 calc(50% - var(--gap)); min-height: calc(var(--tap) * 1.15); font-size: 1rem; }
@@ -161,7 +181,7 @@ html.ui6 #actions .royale-row input { min-width: 0; }
 /* pojedynek na żywo: każdy gracz – imię i 4 odpowiedzi w siatce 2×2 */
 html.ui6 #actions .live-row { flex: 1 1 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin: 0; padding: 6px; border-radius: 12px; background: rgba(255,255,255,.03); }
 html.ui6 #actions .live-row > b { grid-column: 1 / -1; font-size: .9rem; }
-html.ui6 .player-turn #actions .live-row .big-choice { min-height: var(--tap); font-size: .88rem; padding: 2px 6px; line-height: 1.15; }
+html.ui6 .player-turn #actions .live-row .big-choice { min-height: var(--tap); font-size: .92rem; padding: 2px 6px; line-height: 1.15; }
 html.ui6 #actions:has(> .live-row) { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); }
 html.ui6 #actions:has(> .live-row) > button { grid-column: 1 / -1; }
 /* „Odgadł(a) wykonawcę i tytuł” przy trzech przyciskach – na całą szerokość, żeby napis się mieścił */
@@ -177,7 +197,7 @@ html.ui6 #actions .sort-row { padding: 0 6px; gap: 4px; min-height: var(--tap); 
 html.ui6 #actions .sort-row .drag-grip { min-height: 0; white-space: nowrap; font-size: 1rem; }
 html.ui6 #actions .sort-row button { min-height: 40px; }
 html.ui6 .player-turn.g-d2 #actions .sort-end { display: none; }
-html.ui6 #actions .sort-end { font-size: .86rem; }
+html.ui6 #actions .sort-end { font-size: .9rem; }
 
 /* ---------- osie pozostałych graczy: same lata, okno po stuknięciu „👀 Osie” ---------- */
 html.ui6 #others { display: none; }
@@ -188,19 +208,48 @@ html.ui6 #others.ui6-open:not(.hidden) {
 }
 html.ui6 #others h2 { margin: 0; font-size: .9rem; }
 html.ui6 #others .other { padding: 4px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; }
-html.ui6 #others .other-head { margin: 0; font-size: .88rem; }
+html.ui6 #others .other-head { margin: 0; font-size: .92rem; }
 html.ui6 #others .mini-timeline { display: flex; flex-wrap: wrap; gap: 3px; overflow: visible; padding: 0; }
-html.ui6 #others .mini { width: auto; padding: 1px 6px; border-radius: 6px; font-size: .88rem; }
-html.ui6 #others .mini b { font-size: .85rem; }
+html.ui6 #others .mini { width: auto; padding: 1px 6px; border-radius: 6px; font-size: .92rem; }
+html.ui6 #others .mini b { font-size: .9rem; }
 html.ui6 #others .mini .mt, html.ui6 #others .mini .ma { display: none; }
 
 /* ---------- bez osi (quizy, zgadywanie) w pionie: płyta duża na środku, odpowiedzi na dole (pod kciukiem) ---------- */
 html.ui6 .player-turn:not(:has(#timeline:not(.hidden))) > .g-media { flex: 1 1 auto; justify-content: center; }
+/* plansze bingo i przyciski graczy potrzebują miejsca – płyta bez rozciągania (inaczej plansza miała zero wysokości) */
+html.ui6 .player-turn:has(> .g-side > .g-bingo-pages:not(.hidden), > .g-side > #buzzers:not(.hidden)) > .g-media { flex: none; }
+html.ui6 .player-turn:has(> .g-side > .g-bingo-pages:not(.hidden), > .g-side > #buzzers:not(.hidden)) .g-player .vinyl { --vs: clamp(52px, 16vmin, 120px); }
+@media (max-aspect-ratio: 11/10) { html.ui6 .g-bingo-pages:not(.hidden) { min-height: calc(var(--tap) * 3 + 3.4rem); } }
+/* pole odpowiedzi w przyciskach (np. kraj): na wąskim ekranie w osobnym wierszu, pełny napis podpowiedzi */
+@media (max-aspect-ratio: 11/10) { html.ui6 #actions > input { flex-basis: 100%; } }
 html.ui6 .player-turn:not(:has(#timeline:not(.hidden))) .g-player { flex-direction: column; text-align: center; }
 html.ui6 .player-turn:not(:has(#timeline:not(.hidden))) .g-player .vinyl { --vs: clamp(64px, 30vmin, 170px); }
 html.ui6 .player-turn:not(:has(#timeline:not(.hidden))) .mystery-body { width: min(100%, 34rem); }
 html.ui6 .player-turn:not(:has(#timeline:not(.hidden))) .reveal { text-align: left; }
 html.ui6 .player-turn:not(:has(#timeline:not(.hidden))) #actions .big-choice:not(.live-opt) { min-height: calc(var(--tap) * 1.3); }
+/* niski ekran (telefon poziomo): cztery odpowiedzi muszą się zmieścić jedna pod drugą */
+@media (max-height: 500px) {
+  html.ui6 .player-turn:not(:has(#timeline:not(.hidden))) #actions .big-choice:not(.live-opt) { min-height: var(--tap); padding-block: 0; }
+  html.ui6 .player-turn:not(:has(#timeline:not(.hidden))) #actions:has(> .big-choice) { gap: 6px; }
+  html.ui6 #actions .sort-row { min-height: 0; }
+  html.ui6 .bingo-cell { min-height: 36px; padding: 1px 3px; }
+  html.ui6 .g-side > .ui6-nav .ui6-tab { min-height: 36px; }
+  html.ui6 #actions .sort-row button { min-height: 38px; }
+}
+html.ui6 #actions .sort-row button { white-space: nowrap; }
+/* niski poziomy ekran z odpowiedziami do wyboru: polecenie pod płytą po lewej, cała prawa kolumna na odpowiedzi */
+@media (min-aspect-ratio: 11/10) and (max-height: 500px) {
+  html.ui6 #screen-game .player-turn:not(:has(#timeline:not(.hidden))):has(#actions .big-choice):not(:has(.live-row, .royale-row)) {
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-areas: "sb actions" "head actions" "media actions" "side actions";
+  }
+  html.ui6 .player-turn:not(:has(#timeline:not(.hidden))):has(#actions .big-choice):not(:has(.live-row, .royale-row)) > #actions { align-self: center; }
+  /* po odkryciu z samym „Dalej”: odkrycie (np. długa lista Ułóż piątkę) na całą prawą kolumnę, przycisk po lewej */
+  html.ui6 #screen-game .player-turn:not(:has(#timeline:not(.hidden))):has(#reveal:not(.hidden)):not(:has(#actions .big-choice, #actions input, .live-row, .royale-row, .sort-box, #buzzers:not(.hidden), .g-bingo-pages:not(.hidden), #climb-ladder:not(.hidden), #cover-fog:not(.hidden))) {
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-areas: "sb media" "head media" "side media" "actions media";
+  }
+}
 
 /* ---------- poziomo i na PC: oś po lewej, karta i przyciski po prawej ---------- */
 @media (min-aspect-ratio: 11/10) {
@@ -310,6 +359,22 @@ html.ui6 .player-turn:not(:has(#timeline:not(.hidden))) #actions .big-choice:not
   html.ui6 #actions .royale-row input, html.ui6 #actions .royale-row button { min-height: 3.2rem; font-size: 1.1rem; }
 }
 
+/* ---------- PC i telewizor (bez ultrawide): oś czasu ---------- */
+@media (min-width: 1000px) and (min-height: 600px) and (min-aspect-ratio: 11/10) and (max-aspect-ratio: 2/1) {
+  /* oś czasu: po prawej płyta duża na środku wolnego miejsca (to, czego się słucha), pod nią podpowiedź i przyciski;
+     po lewej karta do przeciągnięcia i oś razem, na środku kolumny – bez pustki pod osią */
+  html.ui6 #screen-game .player-turn:has(#timeline:not(.hidden)) { grid-template-rows: auto auto minmax(0, 1fr) auto auto; }
+  html.ui6 .player-turn:has(#timeline:not(.hidden)) > .g-media { justify-content: center; align-self: stretch; }
+  html.ui6 .player-turn:has(#timeline:not(.hidden)) > .g-side { align-self: end; }
+  html.ui6 .player-turn:has(#timeline:not(.hidden)) > .g-board { justify-content: center; }
+  html.ui6 .player-turn:has(#timeline:not(.hidden)) > .g-board > #timeline { flex: 0 1 auto; }
+  html.ui6 .player-turn:has(#timeline:not(.hidden)):not(:has(#reveal:not(.hidden))) .g-player { flex-direction: column; text-align: center; }
+  html.ui6 .player-turn:has(#timeline:not(.hidden)):not(:has(#reveal:not(.hidden))) .g-player .vinyl { --vs: clamp(110px, 24vmin, 300px); }
+  html.ui6 .player-turn:has(#timeline:not(.hidden)):not(:has(#reveal:not(.hidden))) .mystery-body { width: min(100%, 36rem); }
+  html.ui6 .player-turn:has(#timeline:not(.hidden)):has(#reveal:not(.hidden)) .g-player { align-items: flex-start; }
+  html.ui6 .player-turn:has(#timeline:not(.hidden)):has(#reveal:not(.hidden)) .g-player .vinyl { --vs: clamp(110px, 20vmin, 260px); }
+}
+
 /* ---------- ultrawide: oś szeroko u dołu, karty obok siebie ---------- */
 @media (min-aspect-ratio: 2/1) and (min-width: 1600px) {
   html.ui6 #screen-game .player-turn:has(#timeline:not(.hidden)) {
@@ -385,4 +450,35 @@ html.ui6 .player-turn.g-d3 .reveal .listen { display: none; }
 html.ui6 .player-turn.g-d3 .g-player .vinyl { display: none; }
 html.ui6 .player-turn.g-d3 #turn-info { display: none; }
 html.ui6 .player-turn.g-d4:has(#reveal:not(.hidden)) .mystery .controls, html.ui6 .player-turn.g-d4 .mystery .progress { display: none; }
-html.ui6 .player-turn.g-d4 #hint { font-size: .86rem; }
+html.ui6 .player-turn.g-d4 #hint { font-size: .9rem; }
+
+/* żeton w pasku wyników: bez obwódki (pasek musi zmieścić kilku graczy w jednym wierszu) */
+html.ui6 #scoreboard .ui6-coin { background: none; border: 0; padding: 0; margin: 0 0 0 .15em; gap: .15em; }
+
+/* ---------- Dekadowa wspinaczka: drabinka pod płytą, na całą wolną wysokość (szczeble liczy js/ui6-game.js) ---------- */
+html.ui6 .g-media:has(> #climb-ladder:not(.hidden)) { flex: 1 1 0; justify-content: flex-start; }
+html.ui6 #climb-ladder { flex: 1 1 0; min-height: calc(var(--rows, 8) * 20px + 8px); max-height: calc(var(--rows, 8) * 46px + 8px); margin: 0;
+  --label: 6.4em; --tok: 7.2em; font-size: .9rem; }
+html.ui6 #climb-ladder { display: flex; flex-direction: column; justify-content: flex-end; }
+html.ui6 #climb-ladder .cl-label { font-size: .9rem; }
+html.ui6 #climb-ladder .cl-token { font-size: .9rem; --th: min(calc(var(--rung) - 6px), 2.3em); height: var(--th);
+  bottom: calc(var(--lvl, 0) * var(--rung) + (var(--rung) - var(--th)) / 2); }
+html.ui6 #climb-ladder .cl-move { font-size: .85rem; }
+html.ui6 .player-turn:has(#climb-ladder:not(.hidden)) .g-player .vinyl { --vs: clamp(48px, 14vmin, 150px); }
+@media (max-height: 500px) {
+  html.ui6 #climb-ladder { min-height: calc(var(--rows, 8) * 15px + 8px); }
+  html.ui6 #climb-ladder .cl-token { --th: 18px; font-size: .8rem; }
+  html.ui6 #climb-ladder .cl-label { font-size: .8rem; }
+}
+/* poziomo i na PC: drabinka w prawej kolumnie na całą wysokość, po lewej płyta, odkrycie, odpowiedź i przyciski */
+@media (min-aspect-ratio: 11/10) {
+  html.ui6 #screen-game .player-turn:has(#climb-ladder:not(.hidden)) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+    grid-template-areas: "sb lad" "head lad" "media lad" "side lad" "actions lad";
+  }
+  html.ui6 .player-turn > .g-media:has(> #climb-ladder:not(.hidden)) { display: contents; }
+  html.ui6 .g-media > #climb-ladder { grid-area: lad; align-self: stretch; max-height: none; min-height: 0; }
+  html.ui6 .player-turn:has(#climb-ladder:not(.hidden)) .g-media > .mystery { grid-area: media; align-self: center; min-height: 0; }
+  html.ui6 .player-turn:has(#climb-ladder:not(.hidden)) > .g-side, html.ui6 .player-turn:has(#climb-ladder:not(.hidden)) > #actions { width: 100%; align-self: end; }
+}
