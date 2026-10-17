@@ -873,6 +873,6 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - „Tak to leciało!”: usunięte z katalogu 14 filmów, które według raportu gracza nie ruszały albo były krótsze niż nagranie z tekstem (m.in. „Otwieram wino”, „Ostatnia Nocka”, „Sen o Warszawie”, „Piechotą do lata”, „Królowa łez”). Piosenki bez innego działającego filmu wypadły – katalog ma teraz 176 piosenek.
 - Poprawka: pominięcie minigry „Tak to leciało!” w trybie imprezy nie powoduje już błędu przy zapisie gry.
 
-## 5.49.1 – 17.10.2026 (`HASH`)
+## 5.49.1 – 17.10.2026 (`85353a8`)
 
 - Na przyciskach „Pomiń”, „Kup tę kartę” i „Kup losową kartę” koszt jest pokazany ikonką żetonu z liczbą (np. „⏭ Pomiń (🪙 1)”, „Kup tę kartę (🪙 3)”) zamiast słowa „żeton”; tak samo na przycisku „+1 🪙 przyznany”.
