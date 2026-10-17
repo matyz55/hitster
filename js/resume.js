@@ -30,7 +30,7 @@ function saveGame() {
     v: 1, at: Date.now(), ctx: playCtx,
     title: (state.party ? MODES.party : MODES[state.baseMode || state.mode] || {}).title || '',
     fields: Object.fromEntries(SAVE_FIELDS.map((k) => [k, state[k]])),
-    players: state.players.map((p) => ({ ...p, timeline: p.timeline.map(cardOut) })),
+    players: state.players.map((p) => ({ ...p, timeline: (p.timeline || []).map(cardOut) })),
     ref: state.ref ? songKey(state.ref) : null,
     history: state.history.map((h) => ({ song: songKey(h.song), player: h.player, ok: h.ok, note: h.note })),
     deck: { left: deckLeft, level: state.deck.level, plShare: state.deck.plShare, used: [...state.deck.used], drawn: state.deck.drawn,

@@ -1293,5 +1293,9 @@ window.I18N_EN = {
  "🔗 Zabrzmiała w tym samym filmie, serialu albo grze co poprzednia piosenka: {0}": "🔗 Featured in the same film, series or game as the previous song: {0}",
  "Nowy łańcuch – poprzednia piosenka: „{0}” ({1}).": "New chain – previous song: “{0}” ({1}).",
  "Poprzednia piosenka: „{0}” ({1}).": "Previous song: “{0}” ({1}).",
- "🌍 Z jakiego kraju jest wykonawca?": "🌍 Which country is the artist from?"
+ "🌍 Z jakiego kraju jest wykonawca?": "🌍 Which country is the artist from?",
+ "Tekst nierówno z muzyką?": "Lyrics out of sync with the music?",
+ "tekst za wcześnie": "lyrics too early",
+ "tekst za późno": "lyrics too late",
+ "przesunięcie {0} s": "offset {0} s"
 };

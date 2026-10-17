@@ -835,3 +835,8 @@ body.no-anim *, body.no-anim *::before, body.no-anim *::after { animation: none 
 .lyc-box > div, .lyc-box iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
 #lyc-report { width: 100%; margin-top: 8px; }
 
+/* Tak to leciało!: przesunięcie tekstu – dyskretnie na samym dole ekranu */
+.ly-sync { text-align: center; margin: 18px auto 4px; opacity: .55; }
+.ly-sync:hover, .ly-sync:focus-within { opacity: 1; }
+.ly-sync button { background: none; border: 0; padding: 2px 4px; min-height: 0; color: inherit; font: inherit; text-decoration: underline dotted; cursor: pointer; box-shadow: none; }
+.ly-sync #ly-sync-off { margin-left: 6px; font-variant-numeric: tabular-nums; }

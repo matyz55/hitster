@@ -39,6 +39,8 @@ function lyCatalog() {
     const raw = cat[songKey(s)];
     const all = typeof raw[1] === 'number' ? (Array.isArray(raw[0]) ? raw[0] : [raw[0]]).map((id) => ({ id, lr: raw[1], d: raw[2] }))
       : raw.map(([id, lr, d]) => ({ id, lr, d }));
+    // czwarta liczba (o ile jest) – przesunięcie tekstu względem filmu w sekundach (ustalone przez graczy)
+    if (typeof raw[1] !== 'number') raw.forEach(([, , , off], i) => { if (off) all[i].off = off; });
     const vids = all.filter((v) => !bad.has(v.id));
     return { song: s, vids, yts: vids.map((v) => v.id), lr: vids.length ? vids[0].lr : 0, d: vids.length ? vids[0].d : 0 };
   }).filter((it) => it.yts.length);
@@ -353,6 +355,38 @@ function lyPlayHit() {
   if (!it) return;
   lyPlay(it, lyAnySong([songKey(it.song)]), T('Hit za {0}', lyMoney(LY_LADDER[9])));
 }
+// przesunięcie tekstu względem filmu (sekundy; dodatnie – tekst później): ustawione na tym urządzeniu albo z katalogu
+const LY_OFF_STEP = 0.5;
+function lyOffset(cur = state.lyrics && state.lyrics.cur) {
+  if (!cur || !cur.videoId) return 0;
+  const own = store.get('lyOffsets', {})[cur.videoId];
+  if (own != null) return own;
+  const v = cur.it.vids.find((x) => x.id === cur.videoId);
+  return (v && v.off) || 0;
+}
+// czas w nagraniu z tekstem (wersy, przerwa) odpowiadający bieżącemu miejscu w filmie
+const lyNow = () => (lyYT && lyYT.getCurrentTime ? lyYT.getCurrentTime() : 0) - lyOffset();
+function lyShift(dir) {
+  const cur = state.lyrics && state.lyrics.cur;
+  if (!cur || !cur.videoId) return;
+  const all = store.get('lyOffsets', {});
+  const off = Math.round((lyOffset(cur) + dir * LY_OFF_STEP) * 10) / 10;
+  all[cur.videoId] = off;
+  store.set('lyOffsets', all);
+  lyRenderSync();
+  lyRenderLyrics(lyNow());
+}
+function lyRenderSync() {
+  const box = $('#ly-sync');
+  const cur = state.lyrics && state.lyrics.cur;
+  const show = !!(cur && cur.lines && ['play', 'answer', 'result'].includes(state.phase));
+  box.classList.toggle('hidden', !show);
+  if (!show) return;
+  const off = lyOffset(cur);
+  $('#ly-sync-off').textContent = off ? T('przesunięcie {0} s', `${off > 0 ? '+' : ''}${String(off).replace('.', LANG === 'en' ? '.' : ',')}`) : '';
+}
+$('#ly-sync-early').addEventListener('click', () => lyShift(1));
+$('#ly-sync-late').addEventListener('click', () => lyShift(-1));
 async function lyStartSong() {
   const ly = state.lyrics;
   const cur = ly.cur;
@@ -378,7 +412,7 @@ async function lyStartSong() {
     if (!cur.gap) throw new Error('brak miejsca na przerwę');
     cur.given = cur.gap.blanks.map(() => '');
     // minigra: od początku zwrotki albo refrenu z przerwą (kilka wersów wcześniej), a nie od początku piosenki
-    cur.startAt = ly.mini ? Math.max(0, lines[Math.max(0, cur.gap.line - 4)].t - 1.5) : 0;
+    cur.startAt = ly.mini ? Math.max(0, lines[Math.max(0, cur.gap.line - 4)].t - 1.5 + lyOffset({ ...cur, videoId: cur.it.yts[cur.vi] })) : 0;
     state.phase = 'play';
     lyRender();
     lyLoadVideo(player);
@@ -459,7 +493,7 @@ function lyOnTick() {
   const cur = state.lyrics && state.lyrics.cur;
   if (!cur || !lyYT || !lyYT.getCurrentTime) return;
   if (state.phase === 'play' && !cur.started && !state.lyrics.manualPlay && Date.now() - cur.loadedAt > lyAutoplayMs()) { lyNoAutoplay(); return; }
-  const t = lyYT.getCurrentTime();
+  const t = lyNow();
   if (state.phase === 'play' && cur.gap && cur.started && t >= cur.gap.pauseAt) {
     lyYT.pauseVideo();
     state.phase = 'answer';
@@ -474,7 +508,7 @@ function lyOnTick() {
   if (state.phase === 'result') {
     if (!cur.revealing && t >= cur.gap.pauseAt + 0.4) { cur.revealing = true; cur.revealAt = Date.now(); lyRenderAnswer(); }
     if (lyRelayLeft() && t >= cur.resumeUntil) { lyYT.pauseVideo(); clearInterval(lyTick); lyTick = null; }
-    lySeekPaint(t);
+    lySeekPaint(lyYT.getCurrentTime());
   }
   lyRenderLyrics(t);
 }
@@ -614,7 +648,7 @@ function lySubmit() {
   cur.revealing = true;
   cur.revealAt = Date.now();
   cur.resumeUntil = cur.gap.end + 3;
-  try { lyYT.seekTo(Math.max(0, back.t - 0.5), true); lyYT.playVideo(); lyNoCaptions(); } catch (e) { /* odtwarzacz niedostępny */ }
+  try { lyYT.seekTo(Math.max(0, back.t - 0.5 + lyOffset()), true); lyYT.playVideo(); lyNoCaptions(); } catch (e) { /* odtwarzacz niedostępny */ }
   clearInterval(lyTick);
   lyTick = setInterval(lyOnTick, 50);
   lyRender();
@@ -680,7 +714,7 @@ $('#ly-seek-bar').addEventListener('change', (e) => {
   if (state.phase !== 'result' || !lyYT) return;
   try { lyYT.seekTo(+e.target.value, true); lyYT.playVideo(); lyNoCaptions(); } catch (err) { /* odtwarzacz niedostępny */ }
   if (!lyTick) lyTick = setInterval(lyOnTick, 50);
-  lyRenderLyrics(+e.target.value);
+  lyRenderLyrics(+e.target.value - lyOffset());
 });
 $('#ly-seek-play').addEventListener('click', () => {
   if (state.phase !== 'result' || !lyYT) return;
@@ -840,7 +874,8 @@ function lyRender() {
   $('#ly-seek-play').textContent = lyYT && lyYT.getPlayerState && lyYT.getPlayerState() === 1 ? '⏸' : '▶';
   $('#ly-status').textContent = state.phase === 'loading' ? T('Wczytywanie piosenki…')
     : state.phase === 'play' && !(cur && cur.lines) ? T('Wczytywanie tekstu…') : '';
-  lyRenderLyrics(lyYT && lyYT.getCurrentTime ? lyYT.getCurrentTime() : 0);
+  lyRenderLyrics(lyNow());
+  lyRenderSync();
   lyRenderAnswer();
   tvSync();
 }

@@ -73,7 +73,10 @@ async function lycRun(all) {
 // raport do przekazania: filmy, które nie działają (id:kod), w jednej linii
 function lycReport() {
   const bad = Object.entries(lycResults()).filter(([, r]) => !r.ok).map(([id, r]) => `${id}:${r.err}`);
-  return `Songster – Tak to leciało! – filmy, które się nie odtwarzają (${bad.length}): ${bad.join(' ')}`;
+  // przesunięcia tekstu ustawione przez graczy (przyciski pod piosenką) – trafiają do tools/lyrics-data/offsets.json
+  const off = Object.entries(store.get('lyOffsets', {})).filter(([, o]) => o).map(([id, o]) => `${id}:${o > 0 ? '+' : ''}${o}`);
+  return `Songster – Tak to leciało! – filmy, które się nie odtwarzają (${bad.length}): ${bad.join(' ')}`
+    + (off.length ? ` · przesunięcia tekstu (${off.length}): ${off.join(' ')}` : '');
 }
 function lycRender() {
   const res = lycResults();
@@ -83,7 +86,7 @@ function lycRender() {
   $('#lyc-summary').textContent = checked.length
     ? T('Sprawdzone filmy: {0} z {1}, nie odtwarza się: {2} (pomijane na tym urządzeniu).', checked.length, list.length, bad.length)
     : T('Filmów w katalogu: {0}. Sprawdzanie trwa kilka minut – filmy grają bez dźwięku.', list.length);
-  $('#lyc-copy').classList.toggle('hidden', !bad.length);
+  $('#lyc-copy').classList.toggle('hidden', !bad.length && !Object.values(store.get('lyOffsets', {})).some(Boolean));
 }
 $('#lyc-run').addEventListener('click', () => lycRun(false));
 $('#lyc-stop').addEventListener('click', () => { lycStop = true; });

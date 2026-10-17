@@ -377,6 +377,9 @@ async function stepYoutube() {
 // filmy, które nie odtwarzają się w osadzonym odtwarzaczu na urządzeniach graczy (raport ze sprawdzarki w grze:
 // Ustawienia → Tak to leciało! → Sprawdź filmy) – tools/lyrics-data/bad-videos.json: { id: kod błędu }
 const BAD = new Set(Object.keys(load('bad-videos.json', {})));
+// przesunięcia tekstu względem filmu (s; dodatnie – tekst później) ustawione przez graczy przyciskami pod piosenką
+// i przekazane w raporcie – tools/lyrics-data/offsets.json: { id: sekundy }; w katalogu czwarta liczba przy filmie
+const OFFSETS = load('offsets.json', {});
 function stepBuild() {
   const lr = load('lrclib-pl.json', {});
   const yt = load('youtube-pl.json', {});
@@ -385,7 +388,6 @@ function stepBuild() {
     const l = lr[key(s)]; const v = yt[key(s)];
     // zapisany tytuł filmu nie pasuje do piosenki albo to wersja z tekstem na ekranie – pomijamy (bez zapytań do API)
     if (hasVideo(v) && v.title && !usableVideo(v, s)) continue;
-    // tylko piosenki z polskim tekstem (język sprawdzony krokiem lrclib albo lang)
     // tylko piosenki z polskim tekstem (język sprawdzony krokiem lrclib albo lang); każdy film z tekstem o swojej długości:
     // [[film, tekst, długość], …] – filmy bez znanej długości (stare zapisy) dostają tekst główny
     if (!l || !hasVideo(v) || l.pl === undefined || l.pl < PL_MIN) continue;
@@ -394,11 +396,11 @@ function stepBuild() {
       if (BAD.has(id)) continue;
       const d = v.dur && v.dur[id];
       const m = d ? lrFor(d, l) : [l.id, l.d];
-      if (m) alts.push([id, m[0], m[1]]);
+      if (m) alts.push(OFFSETS[id] ? [id, m[0], m[1], OFFSETS[id]] : [id, m[0], m[1]]);
     }
     if (alts.length) out[key(s)] = alts;
   }
-  const js = '// Tryb „Tak to leciało!”: piosenka → [film YouTube albo lista filmów (gra próbuje kolejnych), tekst w LRCLIB, długość w s]\n'
+  const js = '// Tryb „Tak to leciało!”: piosenka → [[film YouTube, tekst w LRCLIB, długość w s, przesunięcie tekstu w s (opcjonalnie)], …] (gra próbuje kolejnych filmów)\n'
     + '// – generuje tools/lyrics-catalog.mjs.\n'
     + '// Teksty nie są tu zapisane – gra pobiera je z lrclib.net w trakcie rozgrywki.\n'
     + `window.LYRICS_SONGS = ${JSON.stringify(out, null, 0).replace(/\],"/g, '],\n"')};\n`;

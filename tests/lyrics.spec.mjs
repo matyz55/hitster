@@ -406,3 +406,29 @@ test('Sztafeta karaoke: bieżącą piosenkę można pominąć – gra bierze nas
   await page.click('#btn-ly-skip-song');
   await expect.poll(() => screen(page)).toBe('end');
 });
+
+test('Tak to leciało!: przyciski na dole przesuwają tekst względem filmu (zapis na urządzeniu, w raporcie i z katalogu)', async ({ page }) => {
+  await startLyrics(page);
+  await playToGap(page);
+  await expect(page.locator('#ly-sync')).toBeVisible();
+  await page.getByRole('button', { name: 'tekst za wcześnie' }).click();
+  await page.getByRole('button', { name: 'tekst za wcześnie' }).click();
+  await page.getByRole('button', { name: 'tekst za późno' }).click();
+  await expect(page.locator('#ly-sync-off')).toHaveText('przesunięcie +0,5 s');
+  const r = await page.evaluate(() => {
+    const id = state.lyrics.cur.videoId;
+    return { id, off: store.get('lyOffsets', {})[id], diff: lyYT.getCurrentTime() - lyNow(), rep: lycReport() };
+  });
+  expect(r.off).toBe(0.5);
+  expect(r.diff).toBeCloseTo(0.5, 5);
+  expect(r.rep).toContain(`przesunięcia tekstu (1): ${r.id}:+0.5`);
+  // przesunięcie z katalogu (czwarta liczba), gdy na urządzeniu nie ustawiono własnego
+  const cat = await page.evaluate(() => {
+    const cur = state.lyrics.cur;
+    store.set('lyOffsets', {});
+    const v = cur.it.vids.find((x) => x.id === cur.videoId);
+    v.off = -1.5;
+    return lyOffset();
+  });
+  expect(cat).toBe(-1.5);
+});
