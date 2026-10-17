@@ -249,6 +249,9 @@ html.ui6 #actions .sort-row button { white-space: nowrap; }
     grid-template-rows: auto auto minmax(0, 1fr) auto;
     grid-template-areas: "sb media" "head media" "side media" "actions media";
   }
+  /* pojedynek na żywo na niskim ekranie: odpowiedzi od góry kolumny, niższe – dwa rzędy graczy mieszczą się w oknie */
+  html.ui6 .player-turn:has(#actions > .live-row) > #actions { align-self: start; gap: 4px; }
+  html.ui6 .player-turn #actions .live-row .big-choice { min-height: 0; padding: 3px 6px; font-size: .85rem; line-height: 1.12; }
 }
 
 /* ---------- poziomo i na PC: oś po lewej, karta i przyciski po prawej ---------- */
