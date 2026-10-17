@@ -176,3 +176,6 @@ html.ui6 #screen-end.end-nores .end-body { grid-template-columns: minmax(0, 1fr)
 html.ui6 #screen-end.end-nores .end-bar .ui6-nav[data-panel=songs] { display: flex; }
 /* powiadomienia (np. nowe osiągnięcie) nad przyciskami, nie na nich */
 html.ui6 body:has(#screen-end:not(.hidden)) .toasts { bottom: calc(var(--end-act, 0px) + var(--gut) * 1.6); }
+/* same piosenki (bez wyników i ligi) – zamiast jedynej zakładki zwykły nagłówek karty */
+html.ui6 #screen-end .end-tab.hidden + .end-tab.hidden + .end-tab { display: none; }
+html.ui6 #screen-end.end-nores:has(.end-tab.hidden + .end-tab.hidden) .end-songs-card h2 { display: block; }
