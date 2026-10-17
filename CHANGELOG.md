@@ -913,6 +913,6 @@ Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd) – ekran gry:
 - Dekadowa wspinaczka: drabinka w stylu 6.0, wypełnia wolne miejsce; bingo na telefonie: plansza znów widoczna; cztery odpowiedzi i „Ułóż piątkę” mieszczą się na telefonie poziomo; pole kraju w „Skąd jest wykonawca” w osobnym wierszu.
 - Większe drobne napisy na telefonie; przycisk ⏭ minigry kwadratowy jak ⚙.
 
-## 5.49.8 – 17.10.2026 (`HASH`)
+## 5.49.8 – 17.10.2026 (`f880daf`)
 
 Wersja próbna wyglądu 6.0: pojedynek na żywo mieści się na telefonie trzymanym poziomo; na telefonie gracza okładka albumu jako kwadrat (nie koło), a ikonki serwisów w jednym rzędzie.
