@@ -38,7 +38,6 @@ window.LYRICS_SONGS = {"Piotr Szczepanik & Alibabki|Goniąc kormorany":[["mDTCj3
 "Maanam|Kocham cię, kochanie moje":[["9qRbjK4KPFc",36010852,294],["WAXkEQ9Yzrs",21702658,292],["XrvCji4eQW0",36010852,294],["nIncb6Gy2js",21702658,292]],
 "Republika|Śmierć W Bikini":[["bDucj8Cz6bk",20085148,263]],
 "Grażyna Łobaszewska|Czas nas uczy pogody":[["JL78y0-_ieg",14747477,293],["kbDTSdVv27I",14747477,293],["JQxlkAcFiMw",14747477,293]],
-"Kombi|Słodkiego, miłego życia":[["XqmUVs7wAIA",20076141,287]],
 "Maanam|Krakowski spleen":[["lj424ntRzsU",21946777,279],["BqUpUtaS9VY",23167418,276],["N1vvbpuZTSs",21946777,279],["f4vJPKgCVzY",21946777,279],["Yspb7Pu5fvc",34324410,274]],
 "Maanam|Raz-dwa, raz-dwa":[["GhhaKVefQrQ",37451075,126],["vgLGXnptNzk",26581415,120]],
 "Maanam|To tylko tango":[["jVh19uttkA4",23454120,151]],

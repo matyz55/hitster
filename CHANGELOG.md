@@ -862,3 +862,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 - „Tak to leciało!” i Sztafeta karaoke: telefon i duży ekran pokazują kategorię, rok i liczbę słów do uzupełnienia od startu piosenki, a także wyniki graczy.
 - Licytacja sekund i Pierwsze słowa z muzyką na telefonie gracza: telefon nie gra już całego fragmentu w trakcie licytacji ani na krokach bez dźwięku – tylko wylicytowane sekundy albo fragment z ostatniego kroku.
 - Skąd jest wykonawca: kraj można wpisać także na telefonie gracza (przyciski „Sprawdź” i „Nie wiem”).
+
+## 5.48.1 – 17.10.2026 (`HASH`)
+
+- „Tak to leciało!”: usunięty film do „Słodkiego, miłego życia” (Kombi), w którym tekst nie zgadzał się z muzyką – piosenka wróci, gdy znajdzie się film zgodny z tekstem. Narzędzie katalogu pomija filmy zgłoszone jako niedziałające albo źle zsynchronizowane (tools/lyrics-data/bad-videos.json).
