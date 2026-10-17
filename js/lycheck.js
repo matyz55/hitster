@@ -30,9 +30,9 @@ function lycPlayerReady() {
   }));
 }
 // jeden film: odtwarzanie albo błąd (albo brak startu w 15 s); długość porównana z nagraniem z tekstem
-function lycOne(p, v) {
+function lycOne(p, v, ms = LYC_TIMEOUT) {
   return new Promise((res) => {
-    const t = setTimeout(() => res({ ok: false, err: 'timeout' }), LYC_TIMEOUT);
+    const t = setTimeout(() => res({ ok: false, err: 'timeout' }), ms);
     p.onState = (s) => {
       if (s !== 1) return;
       clearTimeout(t);
@@ -59,7 +59,12 @@ async function lycRun(all) {
   for (let i = 0; i < list.length && !lycStop; i++) {
     const v = list[i];
     box.textContent = T('Sprawdzanie {0} z {1} · nie działa: {2}', i + 1, list.length, bad);
-    const r = await lycOne(p, v);
+    // karta w tle – przeglądarka nie odtwarza filmów, więc każdy wyszedłby jako „timeout”; czekamy na powrót
+    while (document.hidden && !lycStop) await new Promise((r) => setTimeout(r, 500));
+    if (lycStop) break;
+    let r = await lycOne(p, v);
+    // nie ruszył – druga próba z dłuższym czasem (wolne łącze, reklama przed filmem)
+    if (!r.ok && r.err === 'timeout' && !lycStop && !document.hidden) r = await lycOne(p, v, LYC_TIMEOUT * 2);
     done[v.id] = { ...r, d: new Date().toISOString().slice(0, 10) };
     if (!r.ok) { bad += 1; lyMarkBad(v.id); }
     store.set('lyChecked', done);
@@ -75,8 +80,11 @@ function lycReport() {
   const bad = Object.entries(lycResults()).filter(([, r]) => !r.ok).map(([id, r]) => `${id}:${r.err}`);
   // przesunięcia tekstu ustawione przez graczy (przyciski pod piosenką) – trafiają do tools/lyrics-data/offsets.json
   const off = Object.entries(store.get('lyOffsets', {})).filter(([, o]) => o).map(([id, o]) => `${id}:${o > 0 ? '+' : ''}${o}`);
+  // zgłoszenia z gry („Zła wersja piosenki”, „film pokazuje tekst”)
+  const rep = store.get('lyReports', []).filter((r) => r.v).map((r) => `${r.v}:${r.r || 'zgl'}`).filter((x, i, a) => a.indexOf(x) === i);
   return `Songster – Tak to leciało! – filmy, które się nie odtwarzają (${bad.length}): ${bad.join(' ')}`
-    + (off.length ? ` · przesunięcia tekstu (${off.length}): ${off.join(' ')}` : '');
+    + (off.length ? ` · przesunięcia tekstu (${off.length}): ${off.join(' ')}` : '')
+    + (rep.length ? ` · zgłoszenia z gry (${rep.length}): ${rep.join(' ')}` : '');
 }
 function lycRender() {
   const res = lycResults();
@@ -86,7 +94,7 @@ function lycRender() {
   $('#lyc-summary').textContent = checked.length
     ? T('Sprawdzone filmy: {0} z {1}, nie odtwarza się: {2} (pomijane na tym urządzeniu).', checked.length, list.length, bad.length)
     : T('Filmów w katalogu: {0}. Sprawdzanie trwa kilka minut – filmy grają bez dźwięku.', list.length);
-  $('#lyc-copy').classList.toggle('hidden', !bad.length && !Object.values(store.get('lyOffsets', {})).some(Boolean));
+  $('#lyc-copy').classList.toggle('hidden', !bad.length && !Object.values(store.get('lyOffsets', {})).some(Boolean) && !store.get('lyReports', []).length);
 }
 $('#lyc-run').addEventListener('click', () => lycRun(false));
 $('#lyc-stop').addEventListener('click', () => { lycStop = true; });

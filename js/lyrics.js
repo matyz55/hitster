@@ -61,6 +61,16 @@ function lyCategoryList(items) {
 // plansza gracza: 9 kategorii po 2 piosenki (najwyżej 3 kategorie-wykonawcy); najpierw kategorie, których nie było
 // w ostatnich grach na tym urządzeniu; piosenki nie powtarzają się w grze (gdy ich zabraknie – mogą się powtórzyć
 // u różnych graczy)
+// dwie piosenki wykonawcy: losowa ze starszej połowy i losowa z nowszej (różne lata, gdy się da)
+function lyOldNew(items) {
+  const byYear = shuffle(items).sort((a, b) => a.song.y - b.song.y);
+  if (byYear.length < 2) return byYear;
+  const half = Math.ceil(byYear.length / 2);
+  const old = byYear[Math.floor(Math.random() * Math.min(half, byYear.length - 1))];
+  const newer = byYear.filter((it) => it !== old && it.song.y > old.song.y);
+  const pool = newer.length ? newer.slice(Math.max(0, newer.length - half)) : byYear.filter((it) => it !== old);
+  return [old, pool[Math.floor(Math.random() * pool.length)]];
+}
 function lyMakeBoard(used) {
   const recent = new Set(store.get('lyRecentCats', []));
   const pick = (avoid) => {
@@ -74,7 +84,10 @@ function lyMakeBoard(used) {
       if (board.length >= LY_CATS) break;
       if (c.kind === 'artist' && artists >= 3) continue;
       const two = [];
-      for (const it of shuffle(c.items)) {
+      // kategoria z wykonawcą: jak w programie – starsza i nowsza piosenka (poza Męskim Graniem – to jeden projekt rok w rok)
+      const span = c.kind === 'artist' && !/^m[eę]skie granie/i.test(c.name);
+      const items = span ? lyOldNew(c.items.filter((it) => !busy.has(songKey(it.song)))) : shuffle(c.items);
+      for (const it of items) {
         if (two.length === 2) break;
         if (busy.has(songKey(it.song))) continue;
         if (c.kind !== 'artist' && two.some((p) => mainArtist(p.song) === mainArtist(it.song))) continue;
@@ -159,6 +172,21 @@ function lyWordOk(given, want) {
 // miejsce przerwy: cały wers (same słowa, bez znaków interpunkcyjnych jako osobnych pól), który do tej pory
 // nie padł w piosence; liczba słów i miejsce w piosence zależą od etapu – gdy nic nie pasuje, warunki łagodnieją
 const lyKey = (text) => lyWords(text).map(lyFold).filter(Boolean).join(' ');
+// wers nadaje się na zagadkę? Nie: didaskalia i zapowiedzi z koncertów („(Dzięki wielkie Poznań!)”, „Jeszcze raz!”),
+// chórki w nawiasach i wykrzyknienia / onomatopeje („la la la”, „hej hej”, „uuu”, „yeah”)
+const LY_TALK = /\b(dzi[eę]k\p{L}*|brawo|kochani|dobry wiecz[oó]r|dobranoc|jeszcze raz|wszyscy razem|r[eę]ce w g[oó]r[eę]|g[lł]o[sś]niej|nie s[lł]ysz[eę]|klaszcz\p{L}*|[sś]piewa(my|cie|jcie)( razem| g[lł]o[sś]no)?|pozna[nń]\p{L}*|warszaw\p{L}*|krak[oó]w\p{L}*|wroc[lł]aw\p{L}*|gda[nń]sk\p{L}*|[lł][oó]d[zź]\p{L}*|katowic\p{L}*|sopo[tc]\p{L}*|jarocin\p{L}*|szczecin\p{L}*|lublin\p{L}*|bia[lł]ystok\p{L}*|opol[eu]|toru[nń]\p{L}*)\b/iu;
+const LY_INTERJ = new Set(['la', 'lala', 'nana', 'oh', 'och', 'ach', 'ah', 'aha', 'uh', 'uhu', 'ooh', 'hej', 'hey', 'jee', 'yeah', 'yeh', 'mmm', 'hmm', 'mhm',
+  'dum', 'bum', 'bam', 'łaj', 'aj', 'oj', 'ej', 'eh', 'he', 'hu', 'ha', 'hi', 'ou', 'uo', 'wow', 'yo', 'ye', 'tralala', 'lalala', 'nanana', 'szubidubi', 'daba', 'dabadu']);
+function lyGapLineOk(text) {
+  if (/[()[\]]/.test(text) || LY_TALK.test(text)) return false;
+  const ws = lyWords(text).map(lyNorm).filter(Boolean);
+  // powtórzona sylaba w słowie („lalala”, „nanana”) albo przeciągnięta głoska („uuuu”, „jeeeee”)
+  if (ws.some((w) => /(.)\1\1/u.test(w) || (w.length >= 4 && /^(\p{L}{1,3})\1+$/u.test(w)))) return false;
+  // to samo krótkie słowo dwa razy z rzędu („na na”, „hej hej”) albo wykrzyknienia
+  if (ws.some((w, i) => i && w.length <= 3 && w === ws[i - 1])) return false;
+  if (ws.filter((w) => LY_INTERJ.has(w)).length >= 1 && ws.length <= 3) return false;
+  return ws.filter((w) => LY_INTERJ.has(w)).length < 2;
+}
 function lyPickGap(lines, stage, duration, minT = 0) {
   const dur = duration || lines[lines.length - 1].t + 5;
   const [minW, maxW] = LY_WORDS[stage - 1];
@@ -174,11 +202,11 @@ function lyPickGap(lines, stage, duration, minT = 0) {
       const t = lines[i].t;
       if (t < Math.max(10, minT) || (strict >= 1 && (t / dur < from || t / dur > to))) continue;
       // tylko polskie wersy (piosenki bywają z angielskim refrenem albo wtrąceniem)
-      if (!fresh(i) || window.lyLineLang(lines[i].text) === 'en') continue;
+      if (!fresh(i) || window.lyLineLang(lines[i].text) === 'en' || !lyGapLineOk(lines[i].text)) continue;
       let span = [i];
       let n = words(i).length;
       // na wyższych etapach krótki wers + następny (też nowy) – razem
-      if (n < minW && stage >= 8 && i + 1 < lines.length && fresh(i + 1) && window.lyLineLang(lines[i + 1].text) !== 'en') { span = [i, i + 1]; n += words(i + 1).length; }
+      if (n < minW && stage >= 8 && i + 1 < lines.length && fresh(i + 1) && window.lyLineLang(lines[i + 1].text) !== 'en' && lyGapLineOk(lines[i + 1].text)) { span = [i, i + 1]; n += words(i + 1).length; }
       if (n < 2 || (strict >= 2 && (n < minW || n > maxW))) continue;
       out.push(span);
     }
@@ -385,6 +413,19 @@ function lyRenderSync() {
   const off = lyOffset(cur);
   $('#ly-sync-off').textContent = off ? T('przesunięcie {0} s', `${off > 0 ? '+' : ''}${String(off).replace('.', LANG === 'en' ? '.' : ',')}`) : '';
 }
+// film z tekstem na ekranie (lyric video, karaoke) zdradza odpowiedź – w trakcie piosenki gra bierze inny film (od tego
+// samego miejsca), a film trafia do zgłoszeń i nie pojawi się w kolejnych grach; zasady YouTube nie pozwalają zasłonić
+// ani ukryć grającego odtwarzacza, więc zamiast ukrywania – zmiana filmu
+function lyChangeVideo() {
+  const ly = state.lyrics;
+  const cur = ly && ly.cur;
+  if (!cur || !cur.videoId) return;
+  store.set('lyReports', [...store.get('lyReports', []), { k: songKey(cur.it.song), v: cur.videoId, l: cur.lrId, r: 'tekst', d: new Date().toISOString().slice(0, 10) }].slice(-200));
+  if (state.phase !== 'play') { lyMarkBad(cur.videoId); lyFlash(T('Ten film nie pojawi się w kolejnych grach.')); lyRender(); return; }
+  try { cur.startAt = Math.max(0, lyYT.getCurrentTime() - 1); } catch (e) { /* odtwarzacz niedostępny */ }
+  lyVideoFailed(T('Film pokazywał tekst piosenki.'));
+}
+$('#ly-sync-video').addEventListener('click', lyChangeVideo);
 $('#ly-sync-early').addEventListener('click', () => lyShift(1));
 $('#ly-sync-late').addEventListener('click', () => lyShift(-1));
 async function lyStartSong() {

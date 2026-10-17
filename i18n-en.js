@@ -1315,5 +1315,8 @@ window.I18N_EN = {
  "Ostatnia gra: {0}": "Last game: {0}",
  "Osiągnięcia i postępy": "Achievements and progress",
  "{0} piosenki": "{0} songs",
- "{0} piosenek": "{0} songs"
+ "{0} piosenek": "{0} songs",
+ "film pokazuje tekst – zmień film": "video shows the lyrics – change video",
+ "Ten film nie pojawi się w kolejnych grach.": "This video won't appear in future games.",
+ "Film pokazywał tekst piosenki.": "The video showed the lyrics."
 };

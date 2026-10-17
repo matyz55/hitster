@@ -916,3 +916,11 @@ Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd) – ekran gry:
 ## 5.49.8 – 17.10.2026 (`f880daf`)
 
 Wersja próbna wyglądu 6.0: pojedynek na żywo mieści się na telefonie trzymanym poziomo; na telefonie gracza okładka albumu jako kwadrat (nie koło), a ikonki serwisów w jednym rzędzie.
+
+## 5.50.0 – 17.10.2026 (`HASH`)
+
+- „Tak to leciało!”: zagadka nie trafia już na zapowiedzi i okrzyki z koncertów (np. „Dzięki wielkie Poznań!”, „Jeszcze raz!”, „Brawo wy”), chórki w nawiasach ani onomatopeje („la la la”, „hej hej”, „uuu”, „oh yeah”).
+- „Tak to leciało!”: w kategorii z wykonawcą do wyboru jest starsza i nowsza piosenka (jak w programie); nie dotyczy Męskiego Grania.
+- „Tak to leciało!”: na dole ekranu nowy dyskretny przycisk „film pokazuje tekst – zmień film” – gra od razu bierze inny film tej piosenki (albo inną piosenkę), a film trafia do zgłoszeń i nie pojawi się w kolejnych grach. Zgłoszenia z gry są teraz też w raporcie w Ustawieniach.
+- Sprawdzarka filmów: film, który nie ruszył, dostaje drugą, dłuższą próbę, a sprawdzanie czeka, gdy karta przeglądarki jest w tle (wcześniej takie filmy wychodziły jako niedziałające).
+- Usunięte 77 filmów z raportu gracza; katalog ma teraz 317 piosenek.

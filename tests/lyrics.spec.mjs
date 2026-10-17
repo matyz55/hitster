@@ -432,3 +432,47 @@ test('Tak to leciało!: przyciski na dole przesuwają tekst względem filmu (zap
   });
   expect(cat).toBe(-1.5);
 });
+
+test('Tak to leciało!: zagadka nie trafia na zapowiedzi z koncertu, chórki w nawiasach ani onomatopeje', async ({ page }) => {
+  await page.goto('/');
+  const r = await page.evaluate(() => {
+    const bad = ['(Dzięki wielkie Poznań!)', 'Dzięki wielkie poznań, dziękujemy', 'Brawo wy!', '(Jeszcze raz!)', 'La la la la', 'Hej hej, hej hej', 'Uuuu, jestem tu', 'Oh yeah', 'Na na na na na'];
+    const good = ['Nie chcę tańczyć do melodii, którą znam', 'Jestem wolny, już mnie porwał wiatr', 'O tobie myślę co dzień'];
+    // piosenka: tylko didaskalia i onomatopeje poza jednym zwykłym wersem
+    const lines = [...bad, ...bad, good[0], ...bad].map((text, i) => ({ t: 12 + i * 4, text }));
+    const picks = new Set(Array.from({ length: 40 }, () => { const g = lyPickGap(lines, 3, 200); return g && lines[g.line].text; }));
+    return { bad: bad.map(lyGapLineOk), good: good.map(lyGapLineOk), picks: [...picks] };
+  });
+  expect(r.bad).toEqual(r.bad.map(() => false));
+  expect(r.good).toEqual([true, true, true]);
+  expect(r.picks).toEqual(['Nie chcę tańczyć do melodii, którą znam']);
+});
+
+test('Tak to leciało!: w kategorii wykonawcy starsza i nowsza piosenka (poza Męskim Graniem)', async ({ page }) => {
+  await page.goto('/');
+  const r = await page.evaluate(() => {
+    const items = [1975, 1980, 1990, 2005, 2015].map((y, i) => ({ song: { a: 'X', t: `t${i}`, y } }));
+    return Array.from({ length: 30 }, () => lyOldNew(items).map((it) => it.song.y)).every(([a, b]) => a < b && a <= 1990 && b >= 1990);
+  });
+  expect(r).toBe(true);
+});
+
+test('Tak to leciało!: „film pokazuje tekst – zmień film” bierze inny film i zgłasza poprzedni', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    const pl = window.SONGS.filter((s) => s.c === 'PL').slice(0, 400);
+    window.LYRICS_SONGS = Object.fromEntries(pl.map((s, i) => [songKey(s), [[`vid${i}`, 1000 + i, 180], [`alt${i}`, 1000 + i, 180]]]));
+  });
+  await page.click('#btn-single');
+  await page.click('.mode[data-mode=lyrics]');
+  await page.click('#btn-start');
+  await page.locator('.ly-cat:not(.done)').first().click();
+  await page.locator('.ly-song').first().click();
+  await expect.poll(() => page.evaluate(() => state.phase === 'play' && state.lyrics.cur.started)).toBe(true);
+  const first = await page.evaluate(() => state.lyrics.cur.videoId);
+  await page.getByRole('button', { name: 'film pokazuje tekst – zmień film' }).click();
+  await expect.poll(() => page.evaluate(() => state.lyrics.cur.videoId)).not.toBe(first);
+  const r = await page.evaluate(() => ({ bad: store.get('lyBadVideos', []), rep: lycReport() }));
+  expect(r.bad).toContain(first);
+  expect(r.rep).toContain(`${first}:tekst`);
+});
