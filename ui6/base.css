@@ -3,7 +3,7 @@
    a to, co się nie mieści, przechodzi na kolejne strony (js/ui6.js) zamiast wypływać w dół. */
 html.ui6 {
   /* jedna skala dla wszystkich ekranów: od telefonu 360×640 po telewizor 1920×1080 */
-  font-size: clamp(14px, calc(1.05vmin + 9px), 24px);
+  font-size: clamp(15px, calc(1.05vmin + 9.5px), 24px);
   --gut: clamp(10px, 1.8vmin, 28px);
   --gap: clamp(8px, 1.4vmin, 20px);
   --radius: clamp(12px, 1.6vmin, 22px);
@@ -62,8 +62,9 @@ html.ui6 button.primary { box-shadow: 0 6px 18px rgba(255,61,127,.28); }
 html.ui6 .actions { gap: var(--gap); margin-top: 0; }
 html.ui6 .actions button { flex: 1 1 auto; }
 html.ui6 .actions .grow { flex: 2 1 auto; }
-html.ui6 .muted { font-size: .88rem; }
-html.ui6 .small { font-size: .78rem; }
+/* drugorzędne napisy nie mniejsze niż ok. 13 px – czytelne także na telefonie trzymanym w ręce */
+html.ui6 .muted { font-size: max(13px, .92rem); }
+html.ui6 .small { font-size: max(13px, .85rem); }
 html.ui6 input[type=text], html.ui6 input[type=number], html.ui6 input[type=search], html.ui6 select, html.ui6 textarea { min-height: var(--tap); border-color: var(--line); }
 
 /* ---------- strony z treścią (js/ui6.js: ui6Pager) ---------- */
