@@ -904,3 +904,11 @@ Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd):
 - Wybór trybu: na PC kafelki trybów od góry wypełniają ekran (ikona, tytuł, opis), „Wróć” zawsze pod zakładkami, przy zakładkach liczba trybów; na telefonie lista kilku trybów na stronę zamiast wysokich kart; niedostępne tryby wyraźnie wyszarzone.
 - Ustawienia przed grą: bez podwójnych nagłówków, na PC sekcje w kolumnach na całą szerokość, strony tylko gdy treść się nie mieści; wyraźniejszy „Dalej →”, na wąskim telefonie „Wróć” jako strzałka.
 - Poprawka: przy podziale treści na strony ostatnia, krótka strona nie jest już pomijana.
+
+## 5.49.7 – 17.10.2026 (`HASH`)
+
+Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd) – ekran gry:
+- Oś czasu na PC: karta do przeciągnięcia i oś w jednym bloku na środku, po prawej duża płyta ze statusem i przyciskami; po odkryciu okładka obok opisu karty (zamiast okładki wciśniętej w kształt płyty).
+- Przyciski na dole w jednej linijce każdy; „Kup tę kartę” i „Kup losową kartę” na telefonie w osobnym wierszu; żetony „🪙 3” jako jednakowy złoty znaczek.
+- Dekadowa wspinaczka: drabinka w stylu 6.0, wypełnia wolne miejsce; bingo na telefonie: plansza znów widoczna; cztery odpowiedzi i „Ułóż piątkę” mieszczą się na telefonie poziomo; pole kraju w „Skąd jest wykonawca” w osobnym wierszu.
+- Większe drobne napisy na telefonie; przycisk ⏭ minigry kwadratowy jak ⚙.
