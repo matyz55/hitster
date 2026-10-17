@@ -16,7 +16,17 @@ if (UI6) {
       box.append(...kids);
       return box;
     };
-    zone('g-media', ['#cover-fog', '#words-box', '#screen-game .mystery', '#audio-note']);
+    zone('g-media', ['#cover-fog', '#words-box', '#screen-game .mystery', '#audio-note', '#climb-ladder']);
+    // drabinka „Dekadowej wspinaczki”: szczeble dzielą wysokość drabinki (wypełnia wolne miejsce pod płytą)
+    const ladder = $('#climb-ladder');
+    const fitLadder = () => {
+      const rows = Number(ladder.style.getPropertyValue('--rows')) || ladder.querySelectorAll('.cl-rung').length;
+      if (!rows || !ladder.clientHeight) return;
+      const r = Math.max(innerHeight < 500 ? 15 : 20, Math.min(64, Math.floor((ladder.clientHeight - 8) / rows)));
+      if (ladder.style.getPropertyValue('--rung') !== `${r}px`) ladder.style.setProperty('--rung', `${r}px`);
+    };
+    new ResizeObserver(fitLadder).observe(ladder);
+    new MutationObserver(fitLadder).observe(ladder, { childList: true });
     zone('g-side', ['#special-badge', '#buzz-who', '#buzzers', '#bingo-boards', '#guess-form', '#hint']);
     const board = zone('g-board', ['#drag-card', '#timeline']);
     $('#vinyl').closest('.mystery').classList.add('g-player');
@@ -105,6 +115,33 @@ if (UI6) {
     };
     new MutationObserver(tidyScores).observe(sb, { childList: true });
     tidyScores();
+
+    /* ---------- żetony: „🪙 3” (i „(🪙 3)” na przyciskach) jako jednakowy złoty znaczek ---------- */
+    const COIN = /\(?🪙\s*(\d+)\)?/;
+    const coinify = (root) => {
+      const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode: (n) => (COIN.test(n.data) && !n.parentElement.closest('.ui6-coin, script, style') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT),
+      });
+      const list = [];
+      while (walk.nextNode()) list.push(walk.currentNode);
+      for (let n of list) {
+        let m;
+        while ((m = COIN.exec(n.data))) {
+          const rest = n.splitText(m.index);
+          n = rest.splitText(m[0].length);
+          const chip = el('span', { class: 'ui6-coin', 'aria-label': T('Żetony: {0}', m[1]) }, el('span', { class: 'ui6-coin-i', 'aria-hidden': 'true' }, '🪙'), m[1]);
+          rest.replaceWith(chip);
+        }
+      }
+    };
+    const scr = $('#screen-game');
+    new MutationObserver((recs) => {
+      for (const r of recs) {
+        const t = r.type === 'characterData' ? r.target.parentElement : r.target;
+        if (t && !t.closest('.ui6-coin')) coinify(t);
+      }
+    }).observe(scr, { childList: true, subtree: true, characterData: true });
+    coinify(scr);
 
     /* ---------- gęstość: gdy karta tury się nie mieści, chowamy po kolei mniej ważne rzeczy ---------- */
     const LEVELS = ['g-d1', 'g-d2', 'g-d3', 'g-d4'];
