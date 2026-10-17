@@ -897,3 +897,10 @@ Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd), druga runda poprawek:
 - „Tak to leciało!” i sztafeta: na telefonie mniejszy film i więcej miejsca na tekst i odpowiedź; linijka „tekst za wcześnie · tekst za późno” na samym dole w jednym wierszu; większe napisy i koła ratunkowe.
 - Duży ekran: imiona graczy w osobnej kolumnie, liczba kart i żetonów („🪙 2”) większa, karty od lewej na linii osi; telefon gracza: kafelki wyników bez przewijania w bok, karta tury jak u gospodarza, odpowiedzi jako pionowa lista, widoczna wykupiona podpowiedź.
 - Koniec gry, impreza i turniej: większy zwycięzca, wyraźniejsze punkty „(+3)”, czytelniejsza drabinka turnieju, przyciski po grze zawsze widoczne; górny pasek z ⏭ mieści się na telefonie.
+
+## 5.49.6 – 17.10.2026 (`HASH`)
+
+Wersja próbna wyglądu 6.0 (Ustawienia → Wygląd):
+- Wybór trybu: na PC kafelki trybów od góry wypełniają ekran (ikona, tytuł, opis), „Wróć” zawsze pod zakładkami, przy zakładkach liczba trybów; na telefonie lista kilku trybów na stronę zamiast wysokich kart; niedostępne tryby wyraźnie wyszarzone.
+- Ustawienia przed grą: bez podwójnych nagłówków, na PC sekcje w kolumnach na całą szerokość, strony tylko gdy treść się nie mieści; wyraźniejszy „Dalej →”, na wąskim telefonie „Wróć” jako strzałka.
+- Poprawka: przy podziale treści na strony ostatnia, krótka strona nie jest już pomijana.
