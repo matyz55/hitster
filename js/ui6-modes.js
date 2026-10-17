@@ -20,13 +20,13 @@ if (UI6 && $('#screen-modes')) {
   });
   scr.insertBefore(tabs, $('#modes-lobby').nextSibling);
   scr.insertBefore(box, tabs.nextSibling);
-  // pasek stron w obrębie grupy: ‹ kropki ›, obok przycisku „Wróć”
+  // pasek stron w obrębie grupy: ‹ kropki › – w wierszu „Wróć” (pionowo) albo pod kafelkami (poziomo); miejsce ustawia CSS
   const nav = el('nav', { class: 'ui6-nav ui6-mnav', 'aria-label': T('Strony') });
   const prev = el('button', { type: 'button', class: 'ghost ui6-prev', 'aria-label': T('Poprzednia strona') }, '‹');
   const next = el('button', { type: 'button', class: 'ghost ui6-next', 'aria-label': T('Następna strona') }, '›');
   const dots = el('div', { class: 'ui6-tabs' });
   nav.append(prev, dots, next);
-  $('#btn-modes-back').parentElement.append(nav);
+  $('#btn-modes-back').parentElement.after(nav);
   // opis kafelka jako podpowiedź (gdy na małym kafelku opis jest schowany)
   for (const t of $$('#screen-modes .mode')) { const d = t.querySelector(':scope > .muted'); if (d && !t.title) t.title = d.textContent.trim(); }
 
@@ -34,19 +34,19 @@ if (UI6 && $('#screen-modes')) {
   let flat = []; // [{ group, el }]
   let pw = 0;
   const visGroups = () => groups.filter((g) => g.tiles.some((t) => !t.classList.contains('hidden')));
-  // najlepsza siatka dla n kafelków w polu w×h: bez pustych miejsc, kafelki raczej szerokie niż wysokie
+  // najlepsza siatka dla n kafelków w polu w×h: kafelki szerokie (ikona obok tytułu i opisu) wypełniają jak najwięcej
+  // miejsca, ale nie są wyższe, niż trzeba (maxH zależy od szerokości) – przy dwóch trybach dwa szerokie pasy, przy wielu siatka
   function grid(n, w, h, gap, minW, minH, maxW, maxH) {
     const maxC = Math.max(1, Math.floor((w + gap) / (minW + gap)));
-    const maxR = Math.max(1, Math.floor((h + gap) / (minH + gap)));
     let best = null;
     for (let c = 1; c <= Math.min(maxC, n); c++) {
       const r = Math.ceil(n / c);
-      if (r > maxR) continue;
       const tw = Math.min((w - (c - 1) * gap) / c, maxW);
-      const th = Math.min((h - (r - 1) * gap) / r, maxH);
-      const score = (c * r - n) * 1.2 + Math.abs(Math.log((tw / th) / 1.7)) * 2 - Math.log(tw * th) * 0.3
-        + Math.abs(Math.log(((c * tw) / (r * th)) / (w / h))) * 0.5;
-      if (!best || score < best.score) best = { c, r, tw, th, score };
+      const th = Math.min((h - (r - 1) * gap) / r, maxH(tw));
+      if (th < minH && c > 1) continue;
+      const cover = (n * tw * th) / (w * h);
+      const score = cover - (c * r - n) * 0.15 - Math.abs(Math.log((tw / th) / 3)) * 0.25;
+      if (!best || score > best.score) best = { c, r, tw, th, score };
     }
     return best;
   }
@@ -55,8 +55,8 @@ if (UI6 && $('#screen-modes')) {
     if (!W || !H) return;
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
     const gap = parseFloat(getComputedStyle(scr).rowGap) || 10;
-    const minW = rem * 9; const minH = rem * 4.6;
-    const maxW = rem * 34; const maxH = rem * 20;
+    const minW = rem * 12; const minH = rem * 4.6;
+    const maxW = rem * 64; const maxH = (tw) => Math.max(minH, Math.min(tw / 2.5, rem * 18));
     pw = W;
     flat = [];
     for (const g of groups) {
@@ -71,11 +71,10 @@ if (UI6 && $('#screen-modes')) {
       const maxR = Math.max(1, Math.floor((H + gap) / (minH + gap)));
       const nPages = Math.ceil(vis.length / (maxC * maxR));
       const per = Math.ceil(vis.length / nPages);
-      const gr = grid(per, W, H, gap, minW, minH, maxW, maxH) || { c: maxC, r: maxR, tw: minW, th: minH };
+      const gr = grid(per, W, H, gap, minW, minH, maxW, maxH);
+      const narrow = gr.tw < rem * 10.5;
       for (let p = 0; p < nPages; p++) {
-        const big = gr.th >= rem * 11 && gr.tw >= rem * 15;
-        const narrow = gr.tw < rem * 10.5;
-        const pg = el('div', { class: `ui6-mpage${big ? ' ui6-mbig' : ''}${narrow ? ' ui6-mnarrow' : ''}` });
+        const pg = el('div', { class: `ui6-mpage${narrow ? ' ui6-mnarrow' : ''}` });
         pg.style.width = `${W}px`;
         pg.style.gap = `${gap}px`;
         pg.style.gridTemplateColumns = `repeat(${gr.c}, ${Math.floor(gr.tw)}px)`;
@@ -86,10 +85,22 @@ if (UI6 && $('#screen-modes')) {
         flat.push({ group: g, el: pg });
       }
     }
-    // opis kafelka tylko tam, gdzie się mieści (tytuł i ikona zawsze)
+    // opis kafelka przycięty do tylu linijek, ile się mieści (pełny opis w podpowiedzi); tytuł i ikona zawsze
     for (const t of $$('#screen-modes .mode:not(.hidden)')) {
       t.classList.remove('ui6-nodesc', 'ui6-tight');
-      if (t.scrollHeight > t.clientHeight + 1) t.classList.add('ui6-nodesc');
+      const d = t.querySelector(':scope > .muted');
+      if (d) d.style.webkitLineClamp = '';
+      if (d) {
+        // opis ma overflow: hidden, więc wiersz siatki może go ścisnąć – liczymy miejsce sami
+        const cs = getComputedStyle(t);
+        const ds = getComputedStyle(d);
+        const inner = t.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+        const rest = [...t.children].filter((x) => x !== d && !x.classList.contains('mode-icon') && x.offsetParent);
+        const used = rest.reduce((s, x) => s + x.offsetHeight, 0) + (parseFloat(cs.rowGap) || 0) * rest.length + (parseFloat(ds.marginTop) || 0);
+        const lh = parseFloat(ds.lineHeight) || 17;
+        const lines = Math.floor((inner - used + 1) / lh);
+        if (d.scrollHeight > lines * lh + 1) { if (lines >= 1) d.style.webkitLineClamp = String(lines); else t.classList.add('ui6-nodesc'); }
+      }
       if (t.scrollHeight > t.clientHeight + 1 || t.scrollWidth > t.clientWidth + 1) t.classList.add('ui6-tight');
     }
     page = Math.max(0, Math.min(page, flat.length - 1));
@@ -110,6 +121,7 @@ if (UI6 && $('#screen-modes')) {
         type: 'button', role: 'tab', 'aria-label': g.h.textContent.trim(), title: g.h.textContent.trim(), class: `ui6-mtab${on ? ' on' : ''}${votes ? ' voted' : ''}`, 'aria-selected': String(on),
         onclick: () => go(flat.findIndex((f) => f.group === g)),
       }, el('span', { class: 'ui6-mtab-i', 'aria-hidden': 'true' }, g.icon), el('span', { class: 'ui6-mtab-t' }, g.h.textContent.trim()),
+      el('span', { class: 'ui6-mtab-n', 'aria-hidden': 'true' }, String(g.tiles.filter((t) => !t.classList.contains('hidden')).length)),
       votes ? el('span', { class: 'ui6-mtab-v', title: T('Głosy') }, `🗳${votes}`) : null);
     }));
     const mine = flat.map((f, i) => [f, i]).filter(([f]) => f.group === cur);
