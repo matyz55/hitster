@@ -296,7 +296,6 @@ html.ui6 body.player .ht-controls button { min-height: 50px; border-radius: 12px
 html.ui6 body.player .ht-hint { font-size: .82em; line-height: 1.3; }
 html.ui6 body.player .ht-actions { position: static; margin: 0; padding: 0; background: none; border: 0; border-radius: 0; gap: 8px; }
 html.ui6 body.player .ht-actions button { min-height: 50px; border-radius: 12px; font-weight: 700; }
-html.ui6 body.player .ht-actions button.big-choice { min-height: 56px; padding: 8px 10px; font-size: 1.05em; flex: 1 1 calc(50% - 8px); }
 html.ui6 body.player .ht-reveal .y { font-size: 1.9em; text-shadow: 0 0 .3em rgba(255, 201, 60, .35); }
 html.ui6 body.player .ht-card .vtl { min-height: 0; }
 /* ciasno: mniejsza płyta, krótsze odstępy */
@@ -308,7 +307,6 @@ html.ui6 body.player .u6-main.tight.pick .ht-hint { display: none; }
 html.ui6 body.player .u6-main.tight.pick .ht-actions { flex-wrap: nowrap; }
 html.ui6 body.player .u6-main.tight.pick .ht-actions button { flex: 1 1 0; min-width: 0; font-size: .85em; padding: 4px 6px; }
 html.ui6 body.player .u6-main.tight .ht-controls button, html.ui6 body.player .u6-main.tight .ht-actions button { min-height: 46px; padding: 6px 10px; }
-html.ui6 body.player .u6-main.tight .ht-actions button.big-choice { min-height: 48px; }
 
 /* panel osi: zakładki (twoja oś / gracz z turą / pozostali) i oś zwijana do grzbietów */
 html.ui6 body.player .u6-panel { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 6px;
@@ -367,8 +365,6 @@ html.ui6 body.player .u6-main:has(.p-buzz) > .ht-card { flex: 1 1 auto; }
 html.ui6 body.player .ht-card:has(.p-buzz) { display: flex; }
 html.ui6 body.player .bingo-cell { min-height: 0; font-size: 12px; padding: 4px 3px; }
 html.ui6 body.player .bingo-grid { grid-auto-rows: minmax(40px, 1fr); }
-html.ui6 body.player .live-opts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-html.ui6 body.player .live-opts button { min-height: 56px; font-weight: 800; border-radius: 12px; border: 2px solid var(--line); background: var(--panel-2); color: var(--text); }
 html.ui6 body.player .sort-row { padding: 2px 6px; }
 html.ui6 body.player .sort-row button { min-height: 44px; }
 html.ui6 body.player .u6-paged.u6-fill { flex: 1 1 auto; margin: 0 auto; }
@@ -378,17 +374,12 @@ html.ui6 body.player .u6-paged > .u6-pages { text-align: center; }
 html.ui6 body.player .ht-body > .ht-reveal { background: none; padding: 0; }
 html.ui6 body.player .ht-body > .ht-reveal .t { font-size: .95em; }
 html.ui6 body.player .ht-body > .ht-reveal .lines div { font-size: .82em; }
-/* gra bez osi (quizy): odpowiedzi duże, na dole karty – pod kciukiem */
 html.ui6 body.player .u6-main.solo > .ht-card { justify-content: flex-start; }
-html.ui6 body.player .ht-actions:has(> .big-choice) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(56px, auto); }
-html.ui6 body.player .u6-main.solo .ht-actions:has(> .big-choice) { flex: 1 1 auto; margin-top: auto; grid-auto-rows: minmax(56px, 110px); align-content: end; }
-html.ui6 body.player .ht-actions > .big-choice { font-size: 1.1em; }
 /* karta tury: kolumna informacji i kolumna sterowania – jedna pod drugą, a poziomo (karta na całą szerokość) obok siebie */
 html.ui6 body.player .u6-col { display: contents; }
 html.ui6 body.player .u6-main.wide > .ht-card.u6-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); column-gap: 14px; align-items: stretch; }
 html.ui6 body.player .u6-main.wide .u6-col { display: flex; flex-direction: column; gap: 8px; min-height: 0; min-width: 0; }
 html.ui6 body.player .u6-main.wide .u6-colB { justify-content: center; }
-html.ui6 body.player .u6-main.wide .u6-colB .ht-actions:has(> .big-choice) { flex: 1 1 auto; grid-auto-rows: minmax(48px, 1fr); margin: 0; }
 html.ui6 body.player .u6-main.wide .bingo-grid { grid-auto-rows: minmax(36px, 1fr); }
 html.ui6 body.player .u6-main.wide .bingo-board { flex: 1 1 auto; display: flex; flex-direction: column; }
 html.ui6 body.player .u6-main.wide .bingo-board .bingo-grid { flex: 1 1 auto; }
@@ -408,3 +399,131 @@ html.ui6 body.player .p-opts { grid-template-columns: minmax(0, 1fr) minmax(0, 1
 }
 html.ui6 body.player .u6-main.solo .bingo-board { flex: 1 1 auto; display: flex; flex-direction: column; }
 html.ui6 body.player .u6-main.solo:not(.wide) .bingo-grid { flex: 1 1 auto; grid-auto-rows: minmax(40px, 76px); align-content: center; }
+
+/* ===================================================================== runda 2: czytelność i spójność ===================================================================== */
+/* żetony wszędzie tak samo: złota ikonka z liczbą („🪙 2”) */
+html.ui6 .u6-coin { color: var(--gold); font-weight: 800; white-space: nowrap; letter-spacing: 0; font-variant-numeric: tabular-nums; }
+html.ui6 .u6-tokens { letter-spacing: 0; }
+html.ui6 .u6-tokens .u6-lbl { color: var(--muted); font-weight: 600; }
+
+/* ---------- duży ekran: osie jak tory – imię w swojej kolumnie (z odstępem od paska gracza z turą), karty od lewej ---------- */
+html.ui6 body:not(.player) .timelines.multi .tl-row { padding: .25em .6em .25em 1.1em; gap: .9em; }
+html.ui6 body:not(.player) .timelines.multi .tl-row:not(.active) { background: rgba(255, 255, 255, .03); }
+html.ui6 body:not(.player) .tl-name { line-height: 1.1; }
+html.ui6 body:not(.player) .tl-name small, html.ui6 body:not(.player) .tl-row.active .tl-name small {
+  font-size: max(.62em, 14px); margin-top: .3em; color: var(--muted); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+html.ui6 body:not(.player) .tl-name small .u6-stat { color: var(--text); font-weight: 900; font-size: 1.25em; }
+html.ui6 body:not(.player) .tl-name small .u6-coin { font-size: 1.25em; }
+/* karty od lewej (od najstarszej), w tle linia osi – pusty tor nie wygląda na zgubioną kartę na środku */
+html.ui6 body:not(.player) .timelines.multi .tl {
+  justify-content: flex-start;
+  background: linear-gradient(90deg, rgba(255, 255, 255, .16), rgba(255, 255, 255, .03)) left center / 100% 2px no-repeat;
+}
+html.ui6 body:not(.player) .timelines.multi .tl > .card.start { background-color: var(--panel); }
+html.ui6 body:not(.player) .timelines.multi .tl-row.active .tl { background-image: linear-gradient(90deg, rgba(255, 61, 127, .55), rgba(45, 226, 230, .12)); }
+/* nagłówek tury: „Żetony” spokojnie, liczba żetonów duża */
+html.ui6 body:not(.player) .turn-head .info.u6-tokens { display: inline-flex; align-items: center; gap: .45em; padding: .15em .9em; font-size: 1.05em; }
+html.ui6 body:not(.player) .turn-head .info.u6-tokens .u6-lbl { font-size: .8em; }
+html.ui6 body:not(.player) .turn-head .info.u6-tokens .u6-coin { font-size: 1.25em; }
+/* czytelność z kanapy: wyniki, podpowiedzi i drobne opisy większe */
+html.ui6 body:not(.player) .scores .score { font-size: 1.05em; }
+html.ui6 body:not(.player) .scores .score .u6-stat { font-weight: 900; }
+html.ui6 body:not(.player) :is(.letter-hint, .guess-solved) { font-size: 1.2em; font-weight: 700; }
+html.ui6 body:not(.player) .special-badge { font-size: 1.05em; }
+html.ui6 body:not(.player) .actions .note { font-size: .9em; color: var(--muted); }
+
+/* ---------- telefon: pasek wyników – kafelki „imię / 1/10 · 🪙 2” w siatce na całą szerokość, bez przewijania ---------- */
+html.ui6 body.player .ht-scores.u6-chips {
+  display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: 4px; margin: 0; padding: 0; overflow: hidden;
+}
+html.ui6 body.player .ht-scores.u6-chips > span {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 0; padding: 3px 4px; border-radius: 10px;
+  background: var(--glass), var(--panel); border: 1px solid var(--line); line-height: 1.2; font-size: 13px; white-space: normal;
+}
+html.ui6 body.player .ht-scores.u6-chips > span.act { border-color: var(--accent); background: rgba(255, 61, 127, .16); box-shadow: 0 0 0 1px var(--accent) inset; }
+html.ui6 body.player .ht-scores.u6-chips > span > :is(b, small) {
+  display: block; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13px;
+}
+html.ui6 body.player .ht-scores.u6-chips > span > small { color: var(--muted); font-weight: 600; }
+html.ui6 body.player .ht-scores.u6-chips > span span { display: inline; padding: 0; border: 0; border-radius: 0; background: none; font-size: inherit; white-space: nowrap; }
+html.ui6 body.player .ht-scores.u6-chips > span > small > * + * { margin-left: .35em; }
+html.ui6 body.player .ht-scores.u6-chips .u6-stat { color: var(--text); }
+@media (orientation: landscape) {
+  html.ui6 body.player .u6-bar { flex-wrap: nowrap; gap: 10px; }
+  html.ui6 body.player .u6-bar .p-top { flex: none; max-width: 40%; }
+  html.ui6 body.player .u6-bar .ht-scores.u6-chips { flex: 1 1 0; }
+}
+/* nagłówek karty tury: „Żetony” mniejszym, spokojnym napisem, liczba wyraźnie */
+html.ui6 body.player .ht-info.u6-tokens { display: inline-flex; align-items: center; gap: 6px; }
+html.ui6 body.player .ht-info.u6-tokens .u6-lbl { font-size: .9em; }
+html.ui6 body.player .ht-info.u6-tokens .u6-coin { font-size: 1.15em; }
+
+/* ---------- telefon: karta tury jak u gospodarza ---------- */
+html.ui6 body.player .ht-vinyl.cover { box-shadow: 0 0 0 2px #000, 0 6px 16px rgba(0, 0, 0, .45); }
+html.ui6 body.player .ht-status { color: var(--text); font-weight: 600; line-height: 1.3; }
+/* ▶ Odtwórz i ⏭ Pomiń (🪙 1) w jednym rzędzie, bez zawijania */
+html.ui6 body.player .ht-controls button { white-space: nowrap; padding: 6px 10px; }
+html.ui6 body.player .ht-controls .p-play { flex: 1.5 1 0; }
+html.ui6 body.player .ht-controls .ghost { flex: 1 1 0; font-size: .92em; min-width: 0; }
+/* kupiona podpowiedź (pierwsza litera), odgadnięte części i karta specjalna – zawsze widoczne, wyraźne */
+html.ui6 body.player .letter-hint {
+  margin: 0; padding: 8px 12px; border-radius: 12px; font-size: 16px; font-weight: 700; color: var(--gold);
+  background: rgba(255, 201, 60, .1); border: 1px solid rgba(255, 201, 60, .45);
+}
+html.ui6 body.player .guess-solved { margin: 0; padding: 8px 12px; border-radius: 12px; font-size: 15px; font-weight: 700; background: rgba(61, 220, 132, .1); border: 1px solid rgba(61, 220, 132, .45); }
+html.ui6 body.player .special-badge { margin: 0; font-size: 14px; }
+html.ui6 body.player .ht-hint { color: var(--muted); }
+/* odkryta karta: ikonki serwisów w zasięgu kciuka */
+html.ui6 body.player .ht-reveal .t { line-height: 1.25; }
+html.ui6 body.player .ht-reveal .listen { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+html.ui6 body.player .ht-reveal .listen-label { font-size: 13px; color: var(--muted); }
+html.ui6 body.player .ht-reveal .listen-icon svg { width: 30px; height: 30px; display: block; }
+
+/* ---------- telefon: odpowiedzi do wyboru i pojedynek na żywo – pionowa lista przycisków równej wysokości ---------- */
+html.ui6 body.player :is(.ht-actions.p-choices, .live-opts) {
+  display: flex; flex-direction: column; flex-wrap: nowrap; flex-shrink: 0; gap: 8px; margin: 0; padding: 0; counter-reset: ui6opt;
+}
+html.ui6 body.player :is(.p-choices, .live-opts) > button {
+  counter-increment: ui6opt; position: relative; flex: 0 0 56px; min-height: 0; height: auto; width: 100%; padding: 4px 12px 4px 50px;
+  display: flex; align-items: center; justify-content: flex-start; text-align: left; font-size: 17px; font-weight: 800; line-height: 1.2;
+  border-radius: 14px; border: 2px solid #4a3f6e; background: var(--glass), var(--panel-2); color: var(--text);
+  overflow: hidden; text-overflow: ellipsis; overflow-wrap: anywhere;
+}
+html.ui6 body.player :is(.p-choices, .live-opts) > button::before {
+  content: counter(ui6opt, upper-alpha); position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 15px; font-weight: 900; background: var(--c6, var(--accent)); color: #12101a;
+}
+html.ui6 body.player :is(.p-choices, .live-opts) > button:nth-child(4n+1) { --c6: var(--accent); }
+html.ui6 body.player :is(.p-choices, .live-opts) > button:nth-child(4n+2) { --c6: var(--accent-2); }
+html.ui6 body.player :is(.p-choices, .live-opts) > button:nth-child(4n+3) { --c6: var(--gold); }
+html.ui6 body.player :is(.p-choices, .live-opts) > button:nth-child(4n+4) { --c6: var(--ok); }
+html.ui6 body.player :is(.p-choices, .live-opts) > button:active:not(:disabled) { border-color: var(--accent-2); }
+html.ui6 body.player :is(.p-choices, .live-opts) > button:disabled { opacity: .4; }
+html.ui6 body.player :is(.p-choices, .live-opts) > button.ok { background: var(--ok); color: #0b1d12; border-color: var(--ok); }
+/* gra bez osi: lista wypełnia wolne miejsce na dole karty (pod kciukiem), przyciski rosną razem – zawsze równe */
+html.ui6 body.player .u6-main.solo .ht-actions.p-choices { flex: 1 0 auto; min-height: 0; margin-top: auto; justify-content: flex-end; }
+html.ui6 body.player .u6-main.solo .p-choices > button { flex: 1 1 0; max-height: 92px; min-height: 46px; }
+html.ui6 body.player .u6-main.wide .u6-colB .ht-actions.p-choices { flex: 1 0 auto; margin: 0; justify-content: center; }
+html.ui6 body.player .u6-main.wide .u6-colB .p-choices > button { flex: 1 1 0; min-height: 44px; max-height: 80px; }
+html.ui6 body.player .u6-main.tight .ht-card .p-choices > button { min-height: 42px; padding: 2px 10px 2px 48px; font-size: 16px; }
+html.ui6 body.player .u6-main.tight .ht-card .live-opts > button { padding: 2px 10px 2px 48px; }
+html.ui6 body.player .u6-main.tight .special-badge { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-top: 4px; padding-bottom: 4px; }
+html.ui6 body.player .u6-main.tight :is(.letter-hint, .guess-solved) { padding: 5px 10px; }
+html.ui6 body.player .ht-scores.u6-chips.narrow .u6-den { display: none; }
+
+/* ---------- telefon: „Skąd jest wykonawca?” i pola roku – pole na całą szerokość, pod nim Sprawdź | Nie wiem ---------- */
+html.ui6 body.player .year-form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; margin: 0; }
+html.ui6 body.player .year-form > label { grid-column: 1 / -1; font-weight: 800; font-size: 16px; color: var(--accent-2); line-height: 1.3; }
+html.ui6 body.player .year-form > input { grid-column: 1 / -1; width: 100%; min-width: 0; min-height: 54px; font-size: 18px; text-align: center; }
+html.ui6 body.player .year-form > button { min-height: 52px; font-weight: 800; border-radius: 14px; }
+html.ui6 body.player .year-form > button:only-of-type { grid-column: 1 / -1; }
+html.ui6 body.player .year-form > button.primary { border: 0; background: var(--accent); color: #fff; box-shadow: 0 6px 18px rgba(255, 61, 127, .3); }
+html.ui6 body.player .year-form > button.primary:disabled { opacity: .4; box-shadow: none; }
+html.ui6 body.player .year-form > button.ghost { background: transparent; border: 1px solid var(--line); color: var(--text); }
+
+/* ---------- telefon: oś zwijana do grzbietów – bez marginesów (liczy je js/ui6-tv.js), nadmiar nigdy nie zasłania tytułu ---------- */
+html.ui6 body.player .vtl.u6-acc > .vrow { margin: 0; }
+html.ui6 body.player .vtl.u6-acc > .vtl-title { margin-top: 0; }
+html.ui6 body.player .u6-view .vtl, html.ui6 body.player .ht-card .vtl.u6-acc { justify-content: safe center; }
+html.ui6 body.player .vrow .vstart-lbl { font-size: 13px; letter-spacing: .3px; }
