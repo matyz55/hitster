@@ -876,3 +876,8 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 ## 5.49.1 – 17.10.2026 (`85353a8`)
 
 - Na przyciskach „Pomiń”, „Kup tę kartę” i „Kup losową kartę” koszt jest pokazany ikonką żetonu z liczbą (np. „⏭ Pomiń (🪙 1)”, „Kup tę kartę (🪙 3)”) zamiast słowa „żeton”; tak samo na przycisku „+1 🪙 przyznany”.
+
+## 5.49.2 – 17.10.2026 (`HASH`)
+
+- Impreza i turniej: pominięcie minigry to teraz mała ikonka ⏭ w górnym pasku obok ustawień (zamiast dużego przycisku nad grą); widać ją tylko w trakcie minigry.
+- Za pominiętą minigrę nikt nie dostaje punktów imprezy, a pominięta gra nie liczy się do statystyk, rekordów i osiągnięć. Pominięty mecz turnieju nie ma wyniku („pominięty”), a o awansie decyduje los.

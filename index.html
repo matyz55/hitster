@@ -32,6 +32,7 @@
     <button id="btn-nav-back" class="ghost nav-back hidden" title="Wstecz" aria-label="Wstecz">←</button>
     <h1 id="logo" role="button" tabindex="0" title="Ekran startowy">🎵 Songster</h1>
     <div class="topbar-actions">
+      <button id="btn-mini-skip" class="ghost btn-mini-skip hidden" title="Pomiń tę minigrę" aria-label="Pomiń tę minigrę">⏭</button>
       <button id="btn-settings" class="ghost" title="Ustawienia">⚙ Ustawienia</button>
       <button id="btn-tv" class="ghost" title="Duży ekran (TV / rzutnik)" aria-label="Duży ekran">📺</button>
       <button id="btn-rules" class="ghost">Zasady</button>
@@ -540,7 +541,6 @@
   <!-- EKRAN GRY -->
   <main id="screen-game" class="screen hidden">
     <p id="party-bar" class="party-bar hidden"></p>
-    <p id="mini-skip" class="mini-skip hidden"><button type="button" class="ghost small btn-mini-skip">⏭ Pomiń tę minigrę</button></p>
     <p id="conn-strip" class="conn-strip hidden"></p>
     <section id="scoreboard"></section>
 
@@ -602,7 +602,6 @@
     <h2 id="ly-title" class="screen-title"></h2>
     <p id="ly-skip" class="mini-skip hidden">
       <button type="button" id="btn-ly-skip-song" class="ghost small hidden">⏭ Pomiń tę piosenkę</button>
-      <button type="button" id="btn-ly-mini-skip" class="ghost small btn-mini-skip hidden">⏭ Pomiń tę minigrę</button>
     </p>
     <p id="ly-msg" class="muted hidden"></p>
     <div class="ly-wrap">

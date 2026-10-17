@@ -284,23 +284,26 @@ test('ciekawostki: żarty przy piosenkach Edyty Górniak i Maryli Rodowicz (co j
   expect(r.plain).not.toContain('Wszechświat');
 });
 
-test('Impreza: pominięcie minigry kończy ją z dotychczasowym wynikiem i przechodzi do przerwy', async ({ page }) => {
+test('Impreza: pominięcie minigry (⏭ obok ustawień) kończy ją bez punktów i przechodzi do przerwy', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => store.set('partyGames', ['melody', 'duel']));
   await start(page, 'party', (p) => p.fill('#party-games', '2'));
-  await expect(page.locator('#mini-skip')).toBeVisible();
+  await expect(page.locator('#btn-mini-skip')).toBeVisible();
+  await expect(page.locator('#btn-mini-skip')).toHaveText('⏭');
   await page.evaluate(() => { state.players[0].score = 2; });
-  await page.click('#mini-skip button');
+  await page.click('#btn-mini-skip');
   await expect.poll(() => screen(page)).toBe('end');
   await expect(page.locator('#end-party')).toBeVisible();
-  expect(await page.evaluate(() => [state.party.idx, state.party.points[0]])).toEqual([1, 2]);
+  expect(await page.evaluate(() => [state.party.idx, state.party.points[0]])).toEqual([1, 0]);
+  // na ekranie przerwy przycisku nie ma
+  await expect(page.locator('#btn-mini-skip')).toBeHidden();
   await page.click('#btn-party-next');
   await ready(page);
-  await page.click('#mini-skip button');
+  await page.click('#btn-mini-skip');
   await expect(page.locator('#end-actions')).toBeVisible();
   // poza imprezą przycisku nie ma
   await start(page, 'melody');
-  await expect(page.locator('#mini-skip')).toBeHidden();
+  await expect(page.locator('#btn-mini-skip')).toBeHidden();
 });
 
 test('Pojedynek dekad: przy „Losowo” para dekad zmienia się co piosenkę, wybrane dekady zostają stałe', async ({ page }) => {

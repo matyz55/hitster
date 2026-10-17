@@ -369,17 +369,17 @@ test('Impreza: minigrę „Tak to leciało!” można pominąć – impreza idzi
     await page.evaluate(() => { state.party.plan = ['lyrics', 'hilo']; playPartyGame(); });
   }
   await expect.poll(() => screen(page)).toBe('lyrics');
-  await expect(page.locator('#btn-ly-mini-skip')).toBeVisible();
+  await expect(page.locator('#btn-mini-skip')).toBeVisible();
   // w zwykłej minigrze nie ma pominięcia piosenki (to tylko sztafeta)
   await expect(page.locator('#btn-ly-skip-song')).toBeHidden();
-  await page.click('#btn-ly-mini-skip');
+  await page.click('#btn-mini-skip');
   await expect.poll(() => screen(page)).toBe('end');
   await expect(page.locator('#end-party')).toBeVisible();
   expect(await page.evaluate(() => [state.party.idx, state.party.done, state.lyrics.cur])).toEqual([1, false, null]);
   await page.click('#btn-party-next');
   await expect.poll(() => screen(page)).toBe('game');
   expect(await page.evaluate(() => state.mode)).toBe('hilo');
-  await expect(page.locator('#mini-skip')).toBeVisible();
+  await expect(page.locator('#btn-mini-skip')).toBeVisible();
 });
 
 test('Sztafeta karaoke: bieżącą piosenkę można pominąć – gra bierze następną', async ({ page }) => {
@@ -396,7 +396,7 @@ test('Sztafeta karaoke: bieżącą piosenkę można pominąć – gra bierze nas
   await page.click('#btn-start');
   await expect.poll(() => page.evaluate(() => state.phase), { timeout: 20000 }).toBe('answer');
   // osobny tryb (nie impreza) – bez pominięcia minigry
-  await expect(page.locator('#btn-ly-mini-skip')).toBeHidden();
+  await expect(page.locator('#btn-mini-skip')).toBeHidden();
   const first = await page.evaluate(() => songKey(state.lyrics.cur.it.song));
   await page.click('#btn-ly-skip-song');
   await expect.poll(() => page.evaluate(() => state.lyrics.cur && songKey(state.lyrics.cur.it.song)), { timeout: 20000 }).not.toBe(first);

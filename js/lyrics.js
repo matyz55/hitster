@@ -815,10 +815,9 @@ function lyRender() {
     : multi ? T('🎤 Tak to leciało! – gra {0}', me.name) : T('🎤 Tak to leciało!');
   // pominięcie minigry (impreza, turniej) i piosenki w sztafecie
   const skipSong = !!(ly.mini && ly.mini.relay && ly.cur && ['loading', 'play', 'answer'].includes(state.phase));
-  const skipMini = !!(state.party || state.tour);
   $('#btn-ly-skip-song').classList.toggle('hidden', !skipSong);
-  $('#btn-ly-mini-skip').classList.toggle('hidden', !skipMini);
-  $('#ly-skip').classList.toggle('hidden', !skipSong && !skipMini);
+  $('#ly-skip').classList.toggle('hidden', !skipSong);
+  miniSkipPaint();
   $('#ly-scores').replaceChildren(...(multi ? state.players.map((p, i) => el('span', { class: `score${i === state.turn ? ' active' : ''}${p.out ? ' out' : ''}` },
     ly.mini ? `${p.name}: ${pointsLabel(p.score)}` : `${p.name}: ${lyMoney(p.score)}${p.out ? (p.quit ? ' ✋' : ' ✖') : ''}`)) : []));
   // przy planszy: drabinka i stan kół ratunkowych; w trakcie piosenki koła są przyciskami pod tekstem

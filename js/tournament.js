@@ -71,10 +71,10 @@ function tourAfterGame() {
   const [pa, pb] = [m.a, m.b].map((n) => state.players.find((p) => p.name === n));
   const va = pa ? metric(pa) : 0;
   const vb = pb ? metric(pb) : 0;
-  m.score = `${va}:${vb}`;
-  // remis w pominiętym meczu – bez dogrywki (ta sama minigra mogłaby znów nie działać), o awansie decyduje los
-  if (va === vb && (m.again || 0) < 2 && !state.miniSkipped) m.again = (m.again || 0) + 1;
-  else { m.w = va === vb ? (Math.random() < 0.5 ? m.a : m.b) : (va > vb ? m.a : m.b); m.again = 0; }
+  // pominięty mecz – wynik się nie liczy i nie ma dogrywki (ta sama minigra mogłaby znów nie działać): o awansie decyduje los
+  m.score = state.miniSkipped ? T('pominięty') : `${va}:${vb}`;
+  if (!state.miniSkipped && va === vb && (m.again || 0) < 2) m.again = (m.again || 0) + 1;
+  else { m.w = state.miniSkipped || va === vb ? (Math.random() < 0.5 ? m.a : m.b) : (va > vb ? m.a : m.b); m.again = 0; }
   if (m.w && !tourMatch()) {
     const winners = tourRound().map((x) => x.w);
     if (winners.length === 1) { t.done = true; t.champion = winners[0]; }

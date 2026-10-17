@@ -1070,7 +1070,8 @@ function endGame() {
   tl.classList.toggle('hidden', !isTimeline());
   if (isTimeline()) renderTimeline(tl, best.timeline, false);
   renderPlayedList();
-  recordGame(best, Math.round((Date.now() - (state.startedAt || Date.now())) / 1000), won);
+  // pominięta minigra nie liczy się do statystyk, rekordów i osiągnięć
+  if (!state.miniSkipped) recordGame(best, Math.round((Date.now() - (state.startedAt || Date.now())) / 1000), won);
   if (state.career) careerAfterGame(best, won);
   $$('.party-kicker, .moments-box').forEach((n) => n.remove());
   const moments = momentsBox();

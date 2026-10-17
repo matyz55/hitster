@@ -17,6 +17,7 @@ function showScreen(name) {
   if (name !== 'game') stopAudio();
   if (name !== 'lyrics' && typeof lyStop === 'function') lyStop();
   updateWakeLock();
+  if (typeof miniSkipPaint === 'function') miniSkipPaint();
   window.scrollTo(0, 0);
   tvSync();
 }

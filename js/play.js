@@ -265,6 +265,8 @@ function partyAfterGame() {
     const better = new Set(res.filter((x) => x > v)).size;
     return Math.max(0, 3 - better);
   });
+  // pominięta minigra – bez punktów
+  if (state.miniSkipped) gained.fill(0);
   gained.forEach((g, i) => { pt.points[i] += g; });
   pt.last = gained;
   pt.idx += 1;
@@ -325,11 +327,16 @@ $('#btn-party-stop').addEventListener('click', () => {
   updateEndButtons();
   tvSync();
 });
-// pominięcie minigry (np. gdy coś nie działa): minigra kończy się z dotychczasowymi wynikami, impreza (turniej) idzie dalej
+// pominięcie minigry (np. gdy coś nie działa): za minigrę nikt nie dostaje punktów, impreza (turniej) idzie dalej;
+// przycisk ⏭ w górnym pasku obok ustawień – tylko w trakcie minigry imprezy albo meczu turnieju
+function miniSkipPaint() {
+  const on = !!(state.party || state.tour) && state.phase !== 'ended' && ['game', 'lyrics'].includes(currentScreen());
+  $('#btn-mini-skip').classList.toggle('hidden', !on);
+}
 function skipMinigame() {
   if (!(state.party || state.tour) || state.phase === 'ended') return;
   const lyrics = currentScreen() === 'lyrics';
-  if (!confirm(T('Pominąć tę minigrę? Zostają dotychczasowe wyniki, a gra przejdzie dalej.'))) return;
+  if (!confirm(T('Pominąć tę minigrę? Nikt nie dostanie za nią punktów, a gra przejdzie dalej.'))) return;
   state.miniSkipped = true;
   try {
     if (lyrics) {
@@ -415,7 +422,7 @@ async function startTurn() {
   $('#guess-form').reset();
   $('#guess-song').disabled = false;
   $('#letter-hint').classList.add('hidden');
-  $('#mini-skip').classList.toggle('hidden', !(state.party || state.tour));
+  miniSkipPaint();
   render();
   applyAudioRoute();
   await (state.mode === 'sort5' ? drawSort5() : drawSong());
