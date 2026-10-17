@@ -203,6 +203,75 @@ if (UI6) {
     }
   }
 
+  /* ---------- żetony „🪙 3” i stan gracza „1/10 kart · 🪙 2” – krótko, w osobnych kawałkach ---------- */
+  const COIN = /🪙\s*\d+/;
+  // „1/10 kart · 🪙 2” → [„1/10”, „🪙 2”]; inny tekst (np. „3 pkt”) zostaje bez zmian
+  function statParts(text) {
+    const frac = text.match(/\d+\s*\/\s*\d+/);
+    const coin = text.match(COIN);
+    if (!frac && !coin) return [text.trim()];
+    return [frac ? frac[0].replace(/\s+/g, '') : '', coin ? coin[0].replace(/\s+/, ' ') : ''].filter(Boolean);
+  }
+  const coinEl = (t) => mk('span', 'u6-coin', t);
+  // ułamek „1/10”: mianownik w osobnym kawałku – w wąskich kafelkach chowany (cel jest ten sam dla wszystkich)
+  const statEl = (p) => {
+    const m = p.match(/^(\d+)(\/\d+)$/);
+    if (!m) return mk('span', 'u6-stat', p);
+    const n = mk('span', 'u6-stat', m[1]);
+    n.append(mk('span', 'u6-den', m[2]));
+    return n;
+  };
+  const statEls = (text) => statParts(text).map((p) => (COIN.test(p) ? coinEl(p) : statEl(p)));
+  // pasek wyników na telefonie: kafelki „imię / 1/10 · 🪙 2” w siatce na całą szerokość (bez przewijania w bok)
+  function scoreChips(board) {
+    if (!board || board.u6) return;
+    board.u6 = true;
+    for (const sp of [...board.children]) {
+      const t = sp.textContent;
+      const k = t.indexOf(': ');
+      const name = k > 0 ? t.slice(0, k) : t;
+      const rest = k > 0 ? t.slice(k + 2) : '';
+      sp.title = t;
+      sp.replaceChildren(mk('b', '', name));
+      if (rest) { const sm = mk('small', ''); sm.append(...statEls(rest)); sp.append(sm); }
+    }
+    board.classList.add('u6-chips');
+  }
+  // duży ekran: ten sam tekst, ale liczba kart pogrubiona, a żetony jako złota ikonka z liczbą
+  function markStats(node) {
+    if (!node || node.u6 || node.children.length) return;
+    const t = node.textContent;
+    const re = /(\d+\s*\/\s*\d+)|(🪙\s*\d+)/g;
+    const out = [];
+    let at = 0; let m;
+    while ((m = re.exec(t))) {
+      if (m.index > at) out.push(t.slice(at, m.index));
+      out.push(m[1] ? mk('b', 'u6-stat', m[1].replace(/\s+/g, '')) : coinEl(m[2].replace(/\s+/, ' ')));
+      at = m.index + m[0].length;
+    }
+    if (!out.length) return;
+    if (at < t.length) out.push(t.slice(at));
+    node.u6 = true;
+    node.replaceChildren(...out);
+  }
+  // „Żetony: 🪙 2” (informacja w nagłówku tury) → spokojny podpis i wyraźna liczba żetonów
+  function tokenInfo(node) {
+    if (!node || node.u6) return;
+    const m = node.textContent.match(/^(.*?)\s*(🪙\s*\d+)\s*$/);
+    if (!m) return;
+    node.u6 = true;
+    node.title = node.textContent;
+    node.replaceChildren(...[m[1] ? mk('span', 'u6-lbl', m[1].replace(/[:：]\s*$/, '')) : null, coinEl(m[2].replace(/\s+/, ' '))].filter(Boolean));
+    node.classList.add('u6-tokens');
+  }
+  function sizeChips(board) {
+    if (!board || !board.u6) return;
+    const n = board.children.length;
+    const cols = Math.max(1, Math.min(n, Math.floor((board.clientWidth + 4) / 66)));
+    board.style.setProperty('--cols', cols);
+    board.classList.toggle('narrow', board.clientWidth / cols < 84);
+  }
+
   /* ---------- rozgrywka na telefonie ---------- */
   function buildGame(s) {
     const card = app.querySelector(':scope > .ht-card');
@@ -217,7 +286,13 @@ if (UI6) {
     const body = card.querySelector('.ht-body');
     if (rev && body) body.append(rev);
     // dwie kolumny karty (poziomo, gdy karta ma całą szerokość): informacje | to, czym gracz steruje
-    const ctrl = [...card.children].filter((x) => x.matches('.bingo-board, .live-box, .ht-actions, .guess-form, .year-form, .p-buzz, .sort-box'));
+    // ▶ Odtwórz i ⏭ Pomiń – pod płytą na całą szerokość karty (obok płyty zostaje sam status, przyciski się nie zawijają)
+    const controls = body && body.querySelector(':scope > .ht-controls');
+    if (controls) card.querySelector('.ht-mystery').after(controls);
+    // przy odpowiedziach do wyboru pozostałe przyciski (np. 💡 Pierwsza litera) są w kolumnie informacji, obok podpowiedzi
+    const choicesHere = !!card.querySelector(':scope > .p-choices');
+    const ctrl = [...card.children].filter((x) => x.matches('.ht-controls, .bingo-board, .live-box, .ht-actions, .guess-form, .year-form, .p-buzz, .sort-box')
+      && !(choicesHere && x.matches('.ht-actions:not(.p-choices)')));
     if (ctrl.length) {
       const colA = mk('div', 'u6-col u6-colA');
       const colB = mk('div', 'u6-col u6-colB');
@@ -238,6 +313,8 @@ if (UI6) {
     if (own) views.push({ key: 'own', label: T('Moja oś'), node: own });
     const others = app.querySelector(':scope > .ht-others');
     if (others) views.push({ key: 'others', label: T('Inni'), node: others, list: [...others.querySelectorAll('.vtl')] });
+    scoreChips(board);
+    tokenInfo(card.querySelector('.ht-info'));
     const bar = mk('div', 'u6-bar');
     bar.append(...[top, board].filter(Boolean));
     const main = mk('div', 'u6-main');
@@ -304,6 +381,7 @@ if (UI6) {
   }
   function layoutGame(main) {
     main.classList.remove('tight', 'tabbed', 'split', 'solo', 'pick', 'wide');
+    sizeChips(app.querySelector('.u6-bar > .ht-scores'));
     const { views, card, panel } = main.u6;
     card.classList.remove('hidden');
     const land = innerWidth > innerHeight;
@@ -317,7 +395,7 @@ if (UI6) {
     showView(main);
     const pick = views.some((v) => v.pick);
     main.classList.toggle('pick', pick);
-    const cramped = () => overflows(card) || (!land && panel.clientHeight < (pick ? 230 : 150));
+    const cramped = () => overflows(card) || (!land && panel.clientHeight < (pick ? 320 : 150));
     if (cramped()) { main.classList.add('tight'); showView(main); }
     if (cramped()) { main.classList.remove('split'); main.classList.add('tabbed'); main.classList.toggle('wide', land); showView(main); }
   }
@@ -344,6 +422,13 @@ if (UI6) {
     }
     // Tak to leciało! – tv.js nie dopasowuje tego ekranu; ta sama pętla co dla pozostałych (mniejsza czcionka, aż się zmieści)
     if (s && s.screen === 'lyrics') fit();
+    // rozgrywka: żetony w nagłówku tury i stan graczy przy osiach – liczby wyraźne z kanapy
+    const card = app.querySelector('.turn-card');
+    if (card) {
+      tokenInfo(card.querySelector('.turn-head .info'));
+      app.querySelectorAll('.tl-name small, .scores .score').forEach(markStats);
+      fit();
+    }
   }
   // flaga albo okładka wczytana po dopasowaniu ekranu zmienia wysokość karty tury – dopasowujemy jeszcze raz
   let refit = 0;
