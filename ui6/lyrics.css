@@ -5,14 +5,26 @@
 
 /* ---------- ekran: nagłówek (tytuł + wyniki), komunikat, główna część ---------- */
 html.ui6 #screen-lyrics {
-  display: grid; grid-template-columns: minmax(0, auto) minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr);
-  grid-template-areas: "title scores" "msg msg" "wrap wrap"; gap: 0 var(--gap);
+  display: grid; grid-template-columns: minmax(0, auto) auto minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-areas: "title skip scores" "msg msg msg" "wrap wrap wrap" "sync sync sync"; gap: 0 var(--gap);
 }
 html.ui6 #ly-title { grid-area: title; align-self: center; margin: 0 0 calc(var(--gap) * .6); overflow-wrap: anywhere; }
 html.ui6 #ly-scores { grid-area: scores; display: flex; flex-wrap: wrap; justify-content: flex-end; align-content: center; gap: 6px; margin: 0 0 calc(var(--gap) * .6); min-width: 0; }
 html.ui6 #ly-scores:empty { display: none; }
-html.ui6 #ly-scores .score { padding: .25em .7em; font-size: .82rem; border-radius: 999px; white-space: nowrap; }
+html.ui6 #ly-scores .score { padding: .25em .7em; font-size: max(13px, .82rem); border-radius: 999px; white-space: nowrap; }
 html.ui6 #ly-scores .score.active { background: rgba(255, 61, 127, .16); }
+/* pominięcie piosenki w sztafecie: mały przycisk obok tytułu (telefon: obok wyników) */
+html.ui6 #ly-skip { grid-area: skip; align-self: center; margin: 0 0 calc(var(--gap) * .6); }
+html.ui6 #btn-ly-skip-song { min-height: var(--tap); padding: 0 .9em; font-size: max(13px, .85rem); white-space: nowrap; }
+/* „Tekst nierówno z muzyką?” – na samym dole, przygaszona linijka (wyraźniejsza po najechaniu / zaznaczeniu) */
+html.ui6 #ly-sync {
+  grid-area: sync; display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; column-gap: .35em; row-gap: 0;
+  margin: calc(var(--gap) * .35) 0 calc(var(--gut) * -.6); font-size: 13px; line-height: 1.35; opacity: .5; min-width: 0;
+}
+html.ui6 #ly-sync:hover, html.ui6 #ly-sync:focus-within { opacity: 1; }
+html.ui6 #ly-sync button { min-height: 0; height: auto; padding: 1px 3px; border: 0; background: none; box-shadow: none; font: inherit; color: inherit; white-space: nowrap; }
+html.ui6 #ly-sync #ly-sync-off:empty { display: none; }
+html.ui6 #ly-sync #ly-sync-off { margin-left: .3em; }
 html.ui6 #ly-msg { grid-area: msg; margin: 0 0 calc(var(--gap) * .6); text-align: center; color: var(--gold); }
 html.ui6 #screen-lyrics .ly-wrap {
   grid-area: wrap; min-height: 0; height: 100%; display: grid; gap: var(--gap); align-items: stretch;
@@ -31,7 +43,7 @@ html.ui6 #ly-ladder .ly-ladder li.top { flex-grow: 1.4; justify-content: space-b
 html.ui6 #ly-ladder .ly-ladder li.safe { box-shadow: inset 0 0 0 1px rgba(255, 201, 60, .45); }
 html.ui6 #ly-ladder .ly-ladder li.now { background: var(--accent); box-shadow: 0 0 16px rgba(255, 61, 127, .45); }
 html.ui6 #ly-ladder .ly-ladder li.now b { color: #fff; }
-html.ui6 #ly-ladder .ly-lifes { flex: none; font-size: .82rem; gap: 4px; }
+html.ui6 #ly-ladder .ly-lifes { flex: none; font-size: max(13px, .82rem); gap: 4px; }
 html.ui6 #ly-ladder .ly-lifes span { padding: .25em .5em; border-radius: 8px; background: var(--panel-2); }
 
 /* ---------- plansza: 3×3 kategorie wypełniające miejsce, hit za 100 000 zł, wybór jednej z dwóch piosenek ---------- */
@@ -99,24 +111,33 @@ html.ui6 #ly-answer > .actions { display: grid; grid-template-columns: 1fr; gap:
 html.ui6 #ly-answer > .actions .primary { min-height: max(var(--tap), 7vmin); font-size: clamp(1.05rem, .95rem + .6vmin, 1.5rem); }
 html.ui6 #ly-answer > .actions .small { white-space: normal; line-height: 1.2; }
 html.ui6 #ly-answer .ly-flash, html.ui6 #ly-answer .ly-credit { margin: 0; text-align: center; }
-html.ui6 #ly-answer .ly-credit { margin-top: auto; font-size: .75rem; }
+html.ui6 #ly-answer .ly-credit { margin-top: auto; font-size: max(13px, .75rem); }
 html.ui6 #ly-answer .ly-helper { margin: 0; }
 
 /* ---------- telefon pionowo (i wąskie okna): drabinka jako pasek u góry, wszystko w jednej kolumnie ---------- */
 @media (orientation: portrait), (max-width: 760px) and (min-height: 521px) {
-  html.ui6 #screen-lyrics { grid-template-columns: minmax(0, 1fr); grid-template-areas: "title" "scores" "msg" "wrap"; grid-template-rows: auto auto auto minmax(0, 1fr); }
+  html.ui6 #screen-lyrics { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "title title" "scores skip" "msg msg" "wrap wrap" "sync sync";
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto; }
+  html.ui6 #ly-skip { margin: 2px 0 calc(var(--gap) * .6); }
   html.ui6 #ly-scores { justify-content: flex-start; flex-wrap: nowrap; overflow: hidden; }
   html.ui6 #screen-lyrics .ly-wrap { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); }
   html.ui6 #screen-lyrics .ly-wrap:has(#ly-ladder.hidden) { grid-template-rows: minmax(0, 1fr); }
+  /* film: pas 16:9 na całą szerokość, ale najwyżej ok. 1/3 wysokości (min. 200 px); w przerwie – 200 px.
+     Resztę miejsca dostaje tekst karaoke (wyśrodkowany) i odpowiedź. */
   html.ui6 #ly-stage {
-    grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(200px, 1fr) auto auto auto;
+    --ly-vid: clamp(200px, 34svh, calc((100vw - 3.5rem) * 9 / 16));
+    grid-template-columns: minmax(0, 1fr); grid-template-rows: auto var(--ly-vid) auto minmax(0, 1fr) auto;
     grid-template-areas: "song" "video" "status" "lines" "answer"; gap: calc(var(--gap) * .6);
   }
+  html.ui6 #ly-stage:has(#ly-input) { --ly-vid: clamp(200px, 22svh, calc((100vw - 3.5rem) * 9 / 16)); }
+  html.ui6 #ly-lines { display: flex; flex-direction: column; justify-content: safe center; }
+  /* w trakcie piosenki tytuł ekranu nie jest potrzebny (na górze pasek drabinki i tytuł piosenki) */
+  html.ui6 #screen-lyrics:has(#ly-stage:not(.hidden)) #ly-title { display: none; }
   html.ui6 #ly-answer { justify-content: flex-start; }
   html.ui6 #ly-title { font-size: 1.05rem; }
   html.ui6 #screen-lyrics .ly-main { padding: 8px 10px; }
   html.ui6 #ly-song .ly-songtitle { font-size: 1rem; }
-  html.ui6 #ly-song .ly-tag { font-size: .72rem; padding: 1px 8px; }
+  html.ui6 #ly-song .ly-tag { font-size: .87rem; padding: 1px 8px; }
   html.ui6 #ly-lines { font-size: 1rem; line-height: 1.3; }
   /* telefon: najwyżej 4 wersy w trakcie piosenki, 3 po odpowiedzi (miejsce na wynik) */
   html.ui6 #ly-lines p:nth-child(n+5), html.ui6 #ly-stage:has(.verdict) #ly-lines p:nth-child(n+4) { display: none; }
@@ -124,8 +145,8 @@ html.ui6 #ly-answer .ly-helper { margin: 0; }
   html.ui6 #ly-stage:has(.ly-variants) #ly-lines p.past, html.ui6 #ly-answer:has(.ly-variants) .ly-dots,
   html.ui6 #ly-answer:has(.ly-variants) #ly-input, html.ui6 #ly-answer:has(.ly-variants) > .ly-extra,
   html.ui6 #ly-answer:has(.ly-variants) > .ly-credit { display: none; }
-  html.ui6 #ly-answer:has(.ly-variants) > .ly-lifebtns { flex: 1 1 0; }
-  html.ui6 #ly-answer:has(.ly-variants) > .ly-lifebtns button { font-size: .7rem; }
+  html.ui6 #ly-stage:has(.ly-variants) #ly-lines p:not(.now) { display: none; }
+  html.ui6 #ly-answer:has(.ly-variants) > .ly-submit { flex: 1 1 100%; }
 }
 
 /* ---------- pasek drabinki (telefony): bieżący etap i główna nagroda, po stuknięciu – cała drabinka ---------- */
@@ -141,9 +162,9 @@ html.ui6 #ly-answer .ly-helper { margin: 0; }
   html.ui6 #ly-ladder.ly-strip:not(.open) .ly-ladder li:not(.now):not(.top) { display: none; }
   html.ui6 #ly-ladder.ly-strip:not(.open) .ly-ladder li.top { order: 2; flex-grow: 1; }
   html.ui6 #ly-ladder.ly-strip.open .ly-ladder { flex-direction: row-reverse; flex-wrap: wrap-reverse; }
-  html.ui6 #ly-ladder.ly-strip.open .ly-ladder li { flex: 1 1 calc(20% - 6px); padding: 0 .35em; font-size: .75rem; justify-content: center; gap: .3em; }
+  html.ui6 #ly-ladder.ly-strip.open .ly-ladder li { flex: 1 1 calc(33.3% - 6px); padding: 0 .35em; font-size: .87rem; justify-content: center; gap: .3em; }
   html.ui6 #ly-ladder.ly-strip.open .ly-ladder li span { display: none; }
-  html.ui6 #ly-ladder.ly-strip .ly-lifes { flex-direction: row; flex-wrap: wrap; gap: 4px; font-size: .75rem; flex-basis: 100%; }
+  html.ui6 #ly-ladder.ly-strip .ly-lifes { flex-direction: row; flex-wrap: wrap; gap: 4px; font-size: .87rem; flex-basis: 100%; }
   html.ui6 #ly-ladder.ly-strip .ly-lifes span { padding: .15em .45em; }
 }
 
@@ -162,25 +183,28 @@ html.ui6 #ly-answer .ly-helper { margin: 0; }
   html.ui6 #ly-answer > .ly-submit { order: 5; flex: none; width: auto; min-height: var(--tap); padding: 0 .9em; font-size: 1rem; white-space: nowrap; }
   html.ui6 #ly-answer > .ly-lifebtns { order: 6; grid-template-columns: repeat(3, minmax(0, 1fr)); }
   html.ui6 #ly-answer > .ly-flash { order: 8; }
-  html.ui6 #ly-answer > .ly-credit { order: 9; font-size: .7rem; margin-top: 0; }
+  html.ui6 #ly-answer > .ly-credit { order: 9; font-size: .87rem; margin-top: 0; }
   html.ui6 #ly-answer .ly-extra { flex-wrap: nowrap; }
-  html.ui6 #ly-answer .ly-lifebtns button { font-size: .78rem; line-height: 1.15; padding: .2em .3em; }
+  html.ui6 #ly-answer .ly-lifebtns button { font-size: .87rem; line-height: 1.12; padding: .15em .25em; }
   html.ui6 #ly-answer .ly-dot { min-width: 20px; height: 20px; }
-  html.ui6 #ly-answer > .actions { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  /* po odpowiedzi: „Dalej” na całą szerokość, pod nim zgłoszenie błędu jako dyskretna linijka */
+  html.ui6 #ly-answer > .actions { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   html.ui6 #ly-answer > .actions .primary { min-height: var(--tap); font-size: 1rem; }
-  html.ui6 #ly-answer > .actions .small { font-size: .75rem; }
+  html.ui6 #ly-answer > .actions .small { font-size: .87rem; min-height: 34px; padding: 0 .5em; border-color: transparent; background: none; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   html.ui6 #ly-answer .ly-variants { gap: 4px; }
-  html.ui6 #ly-answer .ly-variants button { min-height: var(--tap); font-size: .8rem; padding: .15em .5em; }
+  html.ui6 #ly-answer .ly-variants button { min-height: var(--tap); font-size: .9rem; padding: .15em .5em; }
 }
 
 /* ---------- telefon poziomo (niski ekran): pasek drabinki obok wyników, film z boku, obok tekst i odpowiedź ---------- */
 @media (orientation: landscape) and (max-height: 520px) {
   html.ui6 #screen-lyrics { grid-template-columns: minmax(0, 1fr) minmax(0, auto); grid-template-rows: auto auto minmax(0, 1fr);
-    grid-template-areas: "ladder scores" "msg msg" "main main"; gap: 0 8px; padding-bottom: 8px; }
-  html.ui6 #screen-lyrics:has(#ly-ladder.hidden) { grid-template-areas: "scores scores" "msg msg" "main main"; }
+    grid-template-areas: "ladder scores" "msg msg" "main main" "sync sync"; grid-template-rows: auto auto minmax(0, 1fr) auto; gap: 0 8px; padding-bottom: 8px; }
+  html.ui6 #screen-lyrics:has(#ly-ladder.hidden) { grid-template-areas: "scores skip" "msg msg" "main main" "sync sync"; }
+  html.ui6 #ly-skip { margin: 0 0 6px; }
+  html.ui6 #ly-sync { margin: 4px 0 -4px; }
   html.ui6 #ly-title { display: none; }
   html.ui6 #ly-scores { margin: 0 0 6px; flex-wrap: nowrap; overflow: hidden; justify-content: flex-start; }
-  html.ui6 #ly-scores .score { font-size: .75rem; }
+  html.ui6 #ly-scores .score { font-size: .87rem; }
   html.ui6 #screen-lyrics .ly-wrap { display: contents; }
   html.ui6 #screen-lyrics .ly-side { grid-area: ladder; margin-bottom: 6px; min-height: 0; padding-top: 3px; padding-bottom: 3px; }
   html.ui6 #screen-lyrics .ly-main { grid-area: main; padding: 8px; }
@@ -228,7 +252,7 @@ html.ui6.kbd body:has(#screen-lyrics:not(.hidden)) > .topbar { display: none; }
 html.ui6.kbd #screen-lyrics { padding-top: 6px; grid-template-areas: "wrap"; grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); padding-bottom: 6px; }
 html.ui6.kbd #ly-title, html.ui6.kbd #ly-scores, html.ui6.kbd #ly-msg, html.ui6.kbd #screen-lyrics .ly-side,
 html.ui6.kbd #ly-song, html.ui6.kbd #ly-status, html.ui6.kbd #ly-answer .ly-lifebtns, html.ui6.kbd #ly-answer .ly-extra,
-html.ui6.kbd #ly-answer .ly-credit, html.ui6.kbd #ly-answer .ly-flash { display: none; }
+html.ui6.kbd #ly-answer .ly-credit, html.ui6.kbd #ly-answer .ly-flash, html.ui6.kbd #ly-sync, html.ui6.kbd #ly-skip { display: none; }
 html.ui6.kbd #screen-lyrics .ly-wrap { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
 html.ui6.kbd #screen-lyrics .ly-main { padding: 6px; }
 html.ui6.kbd #screen-lyrics #ly-stage {
@@ -269,7 +293,7 @@ html.ui6 #ly-song .ly-words-tag { background: rgba(255, 201, 60, .16); color: va
 html.ui6 #ly-answer > .ly-quit { margin: 0; white-space: normal; line-height: 1.2; }
 @media (orientation: portrait), (max-width: 760px) and (min-height: 521px) {
   html.ui6 #ly-stage:has(> .ly-seek:not(.hidden)) {
-    grid-template-rows: auto minmax(200px, 1fr) auto auto auto auto;
+    grid-template-rows: auto var(--ly-vid) auto auto minmax(0, 1fr) auto;
     grid-template-areas: "song" "video" "seek" "status" "lines" "answer";
   }
 }
@@ -284,7 +308,7 @@ html.ui6 #ly-answer > .ly-quit { margin: 0; white-space: normal; line-height: 1.
   html.ui6 #ly-song .ly-songtags .ly-tag:not(.ly-words-tag) { display: none; }
   html.ui6 #ly-stage:has(> .ly-seek:not(.hidden)) {
     grid-template-rows: auto auto auto minmax(0, 1fr) auto;
-    grid-template-areas: "video song" "video status" "video lines" "video answer" "seek answer";
+    grid-template-areas: "video song" "video status" "video lines" "video answer" "video seek";
   }
 }
 html.ui6.kbd #screen-lyrics #ly-stage > .ly-seek { display: none; }
@@ -300,12 +324,12 @@ html.ui6 #ly-stage > .ly-seek button { min-height: var(--tap); width: var(--tap)
 /* ---------- kilku graczy na telefonie: wyniki zawijane, sufler w jednym rzędzie z 🎤 ---------- */
 @media (orientation: portrait), (max-height: 520px), (max-width: 760px) {
   html.ui6 #ly-scores { flex-wrap: wrap; overflow: visible; align-items: center; gap: 4px; }
-  html.ui6 #ly-scores .score { font-size: .72rem; padding: .2em .55em; }
+  html.ui6 #ly-scores .score { font-size: .87rem; padding: .2em .6em; }
   html.ui6 #ly-answer > .ly-extra:has(.ly-help) { display: flex; flex-wrap: nowrap; align-items: center; gap: 6px; }
   html.ui6 #ly-answer > .ly-extra:has(.ly-help) > button { flex: none; width: var(--tap); padding: 0; font-size: 0; }
   html.ui6 #ly-answer > .ly-extra:has(.ly-help) > button::before { content: "🎤"; font-size: 1.2rem; }
-  html.ui6 #ly-answer .ly-help { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: nowrap; gap: 4px; font-size: .8rem; white-space: nowrap; }
-  html.ui6 #ly-answer .ly-help button { flex: 1 1 0; min-width: 0; padding: 0 .3em; font-size: .78rem; white-space: normal; line-height: 1.1; }
+  html.ui6 #ly-answer .ly-help { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: nowrap; align-items: center; gap: 4px; font-size: .87rem; white-space: nowrap; }
+  html.ui6 #ly-answer .ly-help button { flex: 1 1 0; min-width: 0; padding: 0 .3em; font-size: .87rem; white-space: normal; line-height: 1.1; }
   /* przy przerwie źródła są już widoczne w trakcie piosenki – tu miejsce na pole i koła */
   html.ui6 #ly-answer:has(#ly-input) > .ly-credit { display: none; }
   html.ui6 #ly-stage:has(.ly-help) #ly-lines p.past { display: none; }
@@ -316,7 +340,72 @@ html.ui6 #ly-stage > .ly-seek button { min-height: var(--tap); width: var(--tap)
 }
 @media (orientation: landscape) and (max-height: 520px) {
   html.ui6 #screen-lyrics { grid-template-columns: minmax(0, auto) minmax(0, 1fr); }
-  html.ui6 #screen-lyrics:has(#ly-ladder.hidden) { grid-template-columns: minmax(0, 1fr); }
+  html.ui6 #screen-lyrics:has(#ly-ladder.hidden) { grid-template-columns: minmax(0, 1fr) auto; }
   html.ui6 #ly-scores { align-self: center; justify-content: flex-end; }
   html.ui6 #ly-ladder.ly-strip .ly-ladder li { flex: 0 1 auto; gap: .6em; }
+}
+
+/* ---------- szeroki ekran: w prawej kolumnie najpierw odpowiedź (słowa, pole, „Tak to leciało!”, 🎤),
+   koła ratunkowe niżej – osobno, spokojniej ---------- */
+@media (orientation: landscape) and (min-height: 521px) and (min-width: 761px) {
+  html.ui6 #ly-answer { justify-content: flex-start; }
+  html.ui6 #ly-answer > .ly-extra { order: 1; }
+  html.ui6 #ly-answer > .ly-lifebtns { order: 2; margin-top: auto; padding-top: calc(var(--gap) * .8); border-top: 1px solid var(--line); }
+  html.ui6 #ly-answer > .ly-flash { order: 3; }
+  html.ui6 #ly-answer > .ly-credit { order: 4; }
+  html.ui6 #ly-answer:has(> .ly-lifebtns) > .ly-credit { margin-top: 0; }
+  html.ui6 #ly-answer .ly-count { text-align: center; }
+  html.ui6 #ly-answer .ly-dots { gap: 8px; }
+  html.ui6 #ly-answer .ly-dot { min-width: 28px; height: 28px; }
+  html.ui6 #ly-answer .ly-lifebtns button:disabled { opacity: .45; }
+  html.ui6 #ly-song .ly-tag { font-size: max(13px, .8rem); }
+  /* po odpowiedzi: wynik na środku kolumny (źródła zostają na dole) */
+  html.ui6 #ly-answer > .ly-reveal { margin-top: auto; }
+}
+
+/* ---------- telefon pionowo: w przerwie bez znaczników kategorii i roku (liczbę słów pokazują kropki) ---------- */
+@media (orientation: portrait), (max-width: 760px) and (min-height: 521px) {
+  html.ui6 #ly-stage:has(#ly-input) .ly-songtags { display: none; }
+}
+
+/* ---------- ⏭ pominięcie minigry w górnym pasku (impreza, turniej): na wąskim ekranie logo jako sama ikonka ---------- */
+@media (max-width: 600px) {
+  html.ui6 body:has(#screen-lyrics:not(.hidden)) .topbar:has(#btn-mini-skip:not(.hidden)) h1 { font-size: 0; }
+  html.ui6 body:has(#screen-lyrics:not(.hidden)) .topbar:has(#btn-mini-skip:not(.hidden)) h1::before { content: "🎵"; font-size: 1.5rem; }
+  html.ui6 body:has(#screen-lyrics:not(.hidden)) #btn-mini-skip { width: var(--tap); padding: 0; font-size: 1.1rem; }
+}
+
+/* ---------- telefony: linijka przesuwania tekstu tylko gdy gra muzyka (w przerwie i na planszy niepotrzebna);
+   na wąskim ekranie bez pytania – same „tekst za wcześnie · tekst za późno” ---------- */
+html.ui6 #screen-lyrics:has(#ly-stage.hidden) #ly-sync { display: none; }
+@media (orientation: portrait), (max-height: 520px), (max-width: 760px) {
+  html.ui6 #screen-lyrics:has(#ly-input) #ly-sync { display: none; }
+}
+@media (max-width: 420px) {
+  html.ui6 #ly-sync > span:first-child { display: none; }
+}
+@media (orientation: portrait), (max-width: 760px) and (min-height: 521px) {
+  /* po odpowiedzi: tylko śpiewany teraz wers (rozwiązanie widać w kafelkach słów) */
+  html.ui6 #ly-stage:has(.verdict) #ly-lines p:not(.now) { display: none; }
+}
+/* telefon poziomo: linijka przesuwania obok paska drabinki (jeden gracz), po odpowiedzi pasek przewijania w prawej kolumnie */
+@media (orientation: landscape) and (max-height: 520px) {
+  html.ui6 #screen-lyrics:has(#ly-scores:empty):not(:has(#ly-ladder.hidden)) { grid-template-areas: "ladder sync" "msg msg" "main main"; }
+  html.ui6 #screen-lyrics:has(#ly-scores:empty):not(:has(#ly-ladder.hidden)) #ly-sync { align-self: center; justify-content: flex-end; margin: 0 0 6px; }
+  html.ui6 #ly-stage:has(.verdict) #ly-lines p:not(.now) { display: none; }
+  html.ui6 #ly-stage:has(.verdict) #ly-answer { gap: 4px; }
+  html.ui6 #ly-sync > span:first-child { display: none; }
+  html.ui6 #ly-answer > .actions { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 6px; }
+  html.ui6 #ly-answer > .actions .small { white-space: normal; line-height: 1.15; min-height: var(--tap); text-align: left; }
+}
+
+/* ---------- sztafeta na wąskim telefonie: „Pomiń tę piosenkę” jako ikonka ⏭ obok wyników (pełny napis – podpowiedź i czytniki) ---------- */
+@media (max-width: 480px) {
+  html.ui6 #btn-ly-skip-song { width: var(--tap); padding: 0; font-size: 0; }
+  html.ui6 #btn-ly-skip-song::before { content: "⏭"; font-size: 1.15rem; }
+}
+
+/* plansza na telefonie: długie nazwy kategorii (np. „Wspomnienia”) dzielone zamiast wystawać poza kafelek */
+@media (max-width: 480px) {
+  html.ui6 #ly-board .ly-cat { padding: .3em .25em; font-size: .95rem; hyphens: auto; overflow-wrap: anywhere; }
 }
