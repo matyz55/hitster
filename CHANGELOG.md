@@ -881,3 +881,7 @@ Pierwsza, statyczna wersja gry w przeglądarce, wzorowana na planszówce Hitster
 
 - Impreza i turniej: pominięcie minigry to teraz mała ikonka ⏭ w górnym pasku obok ustawień (zamiast dużego przycisku nad grą); widać ją tylko w trakcie minigry.
 - Za pominiętą minigrę nikt nie dostaje punktów imprezy, a pominięta gra nie liczy się do statystyk, rekordów i osiągnięć. Pominięty mecz turnieju nie ma wyniku („pominięty”), a o awansie decyduje los.
+
+## 5.49.3 – 17.10.2026 (`f9dbaab`)
+
+- Wersja próbna wyglądu 6.0 (włączana w ustawieniach): większe najmniejsze napisy – opisy i podpisy mają co najmniej ok. 13 px, czytelniej na telefonie.
